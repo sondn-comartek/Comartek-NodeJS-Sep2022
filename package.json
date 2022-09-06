@@ -1,0 +1,25 @@
+{
+  "name": "comartek-nodejs-sep2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022.git"
+  },
+  "author": "giang-dv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022/issues"
+  },
+  "homepage": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022#readme"
+}
