@@ -1,0 +1,20 @@
+{
+  "name": "Comartek-NodeJS-Sep2022",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022.git",
+  "author": "nguyenling <linhnv@comartek.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
