@@ -1,17 +1,23 @@
 const User = require("../models/user");
+const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const nodemailer = require("nodemailer");
 const register = async (req, res) => {
   let { email, username, password, re_password } = req.body;
   if (password == re_password) {
-    let created = await User.create({
-      email: email,
-      username: username,
-      password: password,
-    });
-    return res.json({ status: "created", message: created });
+    try {
+      let created = await User.create({
+        email: email,
+        username: username,
+        password: password,
+      });
+      return res.status(StatusCodes.CREATED).json({ message: created });
+    } catch (error) {
+      return res.status(StatusCodes.CONFLICT).json({
+        message: { message: ReasonPhrases.CONFLICT, error: error },
+      });
+    }
   }
-  return res.json({
-    status: "fail",
+  return res.status(StatusCodes.CONFLICT).json({
     message: "password is not match re_password",
   });
 };
@@ -21,9 +27,31 @@ const login = async (req, res) => {
   let isCompare = await userResult.comparePassword(password);
   if (isCompare) {
     let token = userResult.createJWT();
-    return res.json({ status: "success", message: { token: token } });
+    return res.status(StatusCodes.OK).json({ message: { token: token } });
   }
-  res.json({ status: "fail", message: "login fail" });
+  res
+    .status(StatusCodes.UNAUTHORIZED)
+    .json({ message: ReasonPhrases.UNAUTHORIZED });
+};
+const changePassword = async (req, res) => {
+  let info = res.locals.user;
+  if (password != re_password) {
+    res
+      .status(StatusCodes.CONFLICT)
+      .json({ message: "password is not compare with re_password" });
+  }
+  let userUpdate = await User.findOneAndUpdate(
+    { _id: id },
+    { password: password }
+  );
+  if (userUpdate) {
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "update password success" });
+  }
+  return res
+    .status(StatusCodes.BAD_REQUEST)
+    .json({ message: StatusCodes.BAD_REQUEST });
 };
 const sendMailer = async (target, message) => {
   let testAccount = nodemailer.createTestAccount();
@@ -77,4 +105,4 @@ const forgotPassword = async (req, res) => {
   }
   res.json({ status: "fail", message: "forgot password fail" });
 };
-module.exports = { register, login, forgotPassword };
+module.exports = { register, login, forgotPassword, changePassword };

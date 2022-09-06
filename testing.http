@@ -17,9 +17,17 @@ Content-Type: application/json
 
 {
     "email": "nguyenling@gmail.com",
-    "password": "root"
+    "password": "tAdOhYBk"
 }
 
+
+
+###
+#change password
+
+PUT {{ENDPOINT}}/change
+Content-Type:  application/json
+HEAD
 ###
 #forgot password
 POST {{ENDPOINT}}/forgot
