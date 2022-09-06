@@ -20,6 +20,11 @@ userSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+userSchema.pre("findOneAndUpdate", async function () {
+  let data = this.getUpdate();
+  const salt = await bcrypt.genSalt();
+  data.password = await bcrypt.hash(data.password, salt);
+});
 userSchema.methods.comparePassword = async function (candidatePassword) {
   let isMatch = await bcrypt.compare(candidatePassword, this.password);
   return isMatch;

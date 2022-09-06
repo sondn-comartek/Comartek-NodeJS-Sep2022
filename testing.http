@@ -1,8 +1,8 @@
 GET http://localhost:8000/api/v1/
 
-
+@ENDPOINT=http://localhost:8000/api/v1
 ### register
-POST http://localhost:8000/api/v1/add/user
+POST {{ENDPOINT}}/add/user
 Content-Type: application/json
 
 {
@@ -12,10 +12,19 @@ Content-Type: application/json
     "re_password": "root"
 }
 ###
-POST http://localhost:8000/api/v1/login
+POST {{ENDPOINT}}/login
 Content-Type: application/json
 
 {
     "email": "nguyenling@gmail.com",
     "password": "root"
+}
+
+###
+#forgot password
+POST {{ENDPOINT}}/forgot
+Content-Type:  application/json
+
+{
+    "email": "nguyenling@gmail.com"
 }
