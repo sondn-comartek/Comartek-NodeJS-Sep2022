@@ -22,12 +22,12 @@ content-type: application/json
     "email" : "wuetoix3333@gmail.com"
 }
 ### RESET PASSWORD 
-GET http://localhost:3000/auth/resetPwd?secret=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjUzNzQzNywiZXhwIjoxNjYyNTQ4MjM3fQ.WvXBvJT_vNa2wjeBZ4SCOi_44ATvjlN18NXK0Ki7aV8
+GET http://localhost:3000/auth/resetPwd?secret=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjU0NDI3NywiZXhwIjoxNjYyODAzNDc3fQ.zz5t-mVk_xSXzSDV8iRNAADc6JqQujQyqXgeL7F0ISc
 
 ### UPDATE PASSWORD
 PATCH  http://localhost:3000/auth/updatePwd
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjUzNzQzNywiZXhwIjoxNjYyNTQ4MjM3fQ.WvXBvJT_vNa2wjeBZ4SCOi_44ATvjlN18NXK0Ki7aV8
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjU0NDI3NywiZXhwIjoxNjYyODAzNDc3fQ.zz5t-mVk_xSXzSDV8iRNAADc6JqQujQyqXgeL7F0ISc
 
 {
     "password" : "123456789aA@@@" 
