@@ -3,7 +3,7 @@ const fs = require('fs')
 const bcrypt = require('bcrypt')
 const User = require('./Users')
 const jwt = require('jsonwebtoken')
-const { castObject } = require('./Users')
+const nodemailer = require('nodemailer')
 const genToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
@@ -19,11 +19,11 @@ route.post('/register', async (req, res) => {
                 message: "Password must be match password confirm"
             })
         }
-        let hashPassword = await bcrypt.hashSync(password, 12)
-        passwordConfirm = hashPassword
+        password = await bcrypt.hashSync(password, 12)
+        passwordConfirm = password
         const user = await User.create({
             email,
-            password: hashPassword,
+            password,
             passwordConfirm
         })
         console.log(user)
@@ -50,52 +50,60 @@ route.post('/login', async (req, res) => {
     })
 })
 
-route.patch('/changePassword',
-    async (req, res, next) => {
-        try {
-            let token
-            if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-                token = req.headers.authorization.split(' ')[1]
-            }
-            if (!token) {
-                return res.status(400).json({
-                    mess: "Please login"
-                })
-            }
-            const decoded = jwt.verify(token, process.env.JWT_SECRET)
-            const user = await User.findById(decoded.id)
-            if (!user) {
-                res.status(400).json({
-                    mess: "Invalid token"
-                })
-            }
-            req.user = user
-            next()
-        } catch (err) {
-            console.log(err)
+route.patch('/changePassword/:token', async (req, res) => {
+    try {
+        let token = req.params.token
+        if (!token) {
+            return res.status(400).json({
+                mess: "Please login"
+            })
         }
-    }, async (req, res) => {
-        try {
-            const { password, passwordConfirm, newPassword } = req.body
-            if (password !== passwordConfirm) {
-                return res.json({
-                    message: "Password must be match password confirm"
-                })
-            }
-            if (await bcrypt.compare(password, req.user.password)) {
-                await User.findByIdAndUpdate(req.user.id, { password: newPassword })
-                return res.status(200).json({
-                    mess: "success"
-                })
-            }
-            else {
-                return res.status(400).json({
-                    mess: "Invalid Password"
-                })
-            }
-        } catch (err) {
-            console.log(err)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const user = await User.findById(decoded.id)
+        if (!user) {
+            res.status(400).json({
+                mess: "Invalid token"
+            })
         }
+
+        let { newPassword } = req.body
+        newPassword = await bcrypt.hashSync(newPassword, 12)
+        await User.findByIdAndUpdate(user.id, { password: newPassword })
+        return res.status(200).json({
+            mess: "success"
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+route.post('/fogotpassword', async (req, res) => {
+    const email = req.body.email
+    const user = await User.findOne({ email })
+    const access_token = genToken(user.id)
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'mrflooo.1230@gmail.com',
+            pass: 'sjyjgfaplmrrvxou'
+        }
+    });
+    let mailOptions = {
+        from: 'mrflooo.1230@gmail.com',
+        to: email,
+        subject: 'Your Password Change Link',
+        html: `<a href="${process.env.CLIENT_URL}/changePassword/${access_token}"> click here </a>`
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    return res.status(200).json({
+        status: "Success"
     })
+})
 
 module.exports = route
