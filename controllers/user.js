@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const nodemailer = require("nodemailer");
 const register = async (req, res) => {
@@ -34,7 +35,7 @@ const login = async (req, res) => {
     .json({ message: ReasonPhrases.UNAUTHORIZED });
 };
 const changePassword = async (req, res) => {
-  let info = res.locals.user;
+  let { password, re_password, id } = res.locals.user;
   if (password != re_password) {
     res
       .status(StatusCodes.CONFLICT)
@@ -69,8 +70,8 @@ const sendMailer = async (target, message) => {
     from: (await testAccount).user, // sender address
     to: target, // list of receivers
     subject: "Hello Guy", // Subject line
-    text: `New password ${message}`, // plain text body
-    html: `<b>new password ${message}</b>`, // html body
+    text: `token valid ${message}`, // plain text body
+    html: `<b>forgot password click link in <a href="http:/localhost:8000/api/v1/temp/${message}">here</a></b>`, // html body
   });
   console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -97,10 +98,21 @@ const forgotPassword = async (req, res) => {
     { password: newPass }
   );
   if (userByEmail) {
-    await sendMailer(userByEmail.email, newPass);
+    let token = jwt.sign(
+      {
+        id: userByEmail["_id"],
+        username: userByEmail["username"],
+        action: "forgot",
+      },
+      process.env.KEY,
+      {
+        expiresIn: process.env.EXPIRESIN,
+      }
+    );
+    await sendMailer(userByEmail.email, token);
     return res.json({
       status: "success",
-      message: { message: "update password success", password: newPass },
+      message: { message: "update password success", token: token },
     });
   }
   res.json({ status: "fail", message: "forgot password fail" });

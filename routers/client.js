@@ -19,7 +19,16 @@ router.post(
   handleValidate,
   register
 );
-router.post("/login", login);
+router.post(
+  "/login",
+  body("email").isEmail(),
+  body("password").isLength(8),
+  handleValidate,
+  login
+);
+router.get("/temp/:token", (req, res) => {
+  res.json(req.params.token);
+});
 router.post("/forgot", forgotPassword);
 router.put("/change", auth, changePassword);
 module.exports = router;

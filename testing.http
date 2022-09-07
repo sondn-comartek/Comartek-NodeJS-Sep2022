@@ -1,6 +1,7 @@
 GET http://localhost:8000/api/v1/
 
 @ENDPOINT=http://localhost:8000/api/v1
+@TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTcwN2M3NzY4NDMyYTRhM2JkNWRjZSIsInVzZXJuYW1lIjoibmd1eWVubGluZyIsImFjdGlvbiI6ImZvcmdvdCIsImlhdCI6MTY2MjUyMjcyNiwiZXhwIjoxNjYyNzgxOTI2fQ.Vp_XGgd1L_cFTyEeyXFIoh7y0th5R7xh6IkBBtjDhfk
 ### register
 POST {{ENDPOINT}}/add/user
 Content-Type: application/json
@@ -17,7 +18,7 @@ Content-Type: application/json
 
 {
     "email": "nguyenling@gmail.com",
-    "password": "tAdOhYBk"
+    "password": "12345678"
 }
 
 
@@ -27,7 +28,12 @@ Content-Type: application/json
 
 PUT {{ENDPOINT}}/change
 Content-Type:  application/json
-HEAD
+Authorization:  Bearer {{TOKEN}}
+
+{
+    "password": "12345678",
+    "re_password": "12345678"
+}
 ###
 #forgot password
 POST {{ENDPOINT}}/forgot

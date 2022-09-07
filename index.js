@@ -1,4 +1,5 @@
 const app = require("express")();
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const clientRouter = require("./routers/client");
 const connectDB = require("./database/connectDB");
@@ -9,6 +10,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/api/v1", clientRouter);
 httpServer.listen(PORT, () => {
-  connectDB();
+  connectDB(process.env.URL);
   console.log(`server is running ${PORT}`);
 });

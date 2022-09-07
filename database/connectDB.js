@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const connectDB = () => {
+const connectDB = (url) => {
   mongoose.connect(
-    `mongodb://localhost:27017/lecture`,
+    url,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

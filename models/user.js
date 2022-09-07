@@ -35,9 +35,9 @@ userSchema.methods.createJWT = function () {
       id: this._id,
       username: this.username,
     },
-    "key",
+    process.env.KEY,
     {
-      expiresIn: "3d",
+      expiresIn: process.env.EXPIRESIN,
     }
   );
 };
