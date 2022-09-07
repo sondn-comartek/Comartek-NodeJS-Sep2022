@@ -13,6 +13,7 @@ app.use(
     extended: true,
   })
 );
+
 route(app);
 app.listen(PORT, () => {
   console.log(`sever is running at port :  ${PORT}`);
