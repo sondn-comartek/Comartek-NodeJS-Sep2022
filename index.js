@@ -7,8 +7,16 @@ const routers=require(`./routes`)
 const notFound=require(`./middleware/notFound`)
 const errorHandle=require(`./middleware/errorHandle`)
 
+//security middleware
+const xss=require(`xss`)
+const helmet=require(`helmet`)
+const cors=require(`cors`)
+
+
+
 //middleware
 app.use(express.json())
+
 app.use(`/api/v1`,routers)
 app.use(notFound)
 app.use(errorHandle)
