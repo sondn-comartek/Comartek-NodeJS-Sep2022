@@ -8,15 +8,21 @@ const notFound=require(`./middleware/notFound`)
 const errorHandle=require(`./middleware/errorHandle`)
 
 //security middleware
-const xss=require(`xss`)
+const xss=require(`xss-clean`)
 const helmet=require(`helmet`)
 const cors=require(`cors`)
+const rateLimiter=require(`express-rate-limit`)
 
 
 
 //middleware
 app.use(express.json())
-
+app.use(
+    rateLimiter({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    })
+  )
 app.use(`/api/v1`,routers)
 app.use(notFound)
 app.use(errorHandle)
