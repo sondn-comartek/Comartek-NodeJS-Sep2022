@@ -8,18 +8,19 @@ const hostUrl = process.env.URL_HOST;
 
 const register = async (req, res, next) => {
   try {
-    // validate user
-    const { email, password } = await validateUser.validateAsync(req.body);
+    // validate user data of client send to server 
+    const { email , password } = await validateUser.validateAsync(req.body);
+    // check email of user data after validated 
     const users = await getUsers();
-    // check email of user register
     const emailIsExisted = users.some( user => user.email === email);
+    // if email exist in db , fire the error 
     if (emailIsExisted)
       throw new Error(`email _ ${email} have been registed already !`);
-    // encrypt password
+    // otherwise encrypt the password
     const pwdEncrypted = await encryptPwd(password);
-    // store user into db
+    // store user is encrypted password into db
     await storeUser({ email: email, password: pwdEncrypted });
-    // response to client
+    // response data to client 
     return res.status(201).json({
       success: true,
       message: "register successfully ! ",
@@ -34,16 +35,18 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    // validate user
+    // validate user data of client send to server 
     const { email, password } = await validateUser.validateAsync(req.body);
-    // find user in db
+    // find user data in db 
     const users = await getUsers();
     const userIsExisting = users.filter( user => user.email === email)[0];
+    // if user isn't exist in db  in db , fire error 
     if (!userIsExisting) throw new Error(" email incorrect ");
-    // decode password 
+    // otherwise decode the password of client send to server and compare with the password of user 
     const result = await decodePwd(password, userIsExisting.password);
+    // if not true , fire error
     if (!result) throw new Error(" password incorrect ");
-    // generate tokens
+    // otherwise generate tokens 
     const accessToken = generateTokens({email : email}).accessToken()
     const refreshToken = generateTokens({email : email}).accessToken()
     // store rf token in db of user
@@ -51,7 +54,7 @@ const login = async (req, res, next) => {
       ...userIsExisting,
       refreshToken: refreshToken,
     });
-    // response to client
+    // response data to client
     return res.status(200).json({
       success: true,
       message: "login successfully",
@@ -69,20 +72,21 @@ const login = async (req, res, next) => {
 const forgotPwd = async (req, res, next) => {
   const email = req.body.email;
   try {
-    // find user in db 
+    // find user have email of client send to server    
     const users = await getUsers();
     const emailIsExisted = users.some( user => user.email === email);
+    // if user isn't exist , fire error
     if (!emailIsExisted)
       throw new Error(`email _ ${email} haven't been registed yet !`);
-    // generate forgot token 
+    // otherwise genarate token
     const forgotPwdToken = generateTokens({ email : email }).forgotPwdToken()
-    // send mail forgot pwd to user
+    // send mail to email of user with the link have this token
     await sendMail({
       to: email,
       subject: "RESET PASSWORD USER",
       text: `${hostUrl}/auth/resetPwd?secret=${forgotPwdToken}`,
     });
-    // response to client
+    // response data to client
     return res.status(250).json({
       success: true,
       message: "forgot password successfully",
@@ -98,9 +102,9 @@ const forgotPwd = async (req, res, next) => {
 const resetPwd = async (req, res, next) => {
   try {
     const forgotPwdToken = req.query.secret;
-    // verify forgot password token 
+    // server verify forgot password token
     const { email } = verifyToken(forgotPwdToken).forgotPwdToken();
-    // response to client 
+    // if valid , accept implement the update password
     res.status(200).json({
       success: true,
       email : email , 
@@ -116,26 +120,27 @@ const resetPwd = async (req, res, next) => {
 };
 
 const updatePwd = async (req, res, next) => {
+  // client send forgot password token to server
   const authHeader = req.headers.authorization;
   const forgotPwdToken = authHeader && authHeader.split(" ")[1];
   try {
-    // verify forgot password token 
+    // server verify forgot password token 
     const { email } = verifyToken(forgotPwdToken).forgotPwdToken();
-    // validate user
+    // validate the password
     const { password } = await validateUser.validateAsync({
       email: email,
       password: req.body.password,
     });
-    //  find user 
+    // find user who send update new password request 
     const users = await getUsers();
     const user = users.filter( user => user.email === email)[0];
+    // encrypt password and update new password 
     const newUser = JSON.parse(JSON.stringify(user));
-    // encrypt password 
     const encryptedPwd = await encryptPwd(password);
-    // update user
     newUser.password = encryptedPwd;
+    // store new password in db
     await updateUser(user, newUser);
-    // response to client
+    // response data to client
     return res.status(201).json({
       success: true,
       message: "password updated !",
