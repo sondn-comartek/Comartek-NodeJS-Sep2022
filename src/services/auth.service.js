@@ -1,21 +1,34 @@
 const { isMatchingPassword } = require("../helpers/password");
 const { createToken } = require("../helpers/token");
 const UserRepository = require("../repositories/user.repo");
+const EmailValidator = require("../validator/email");
+const PasswordValidator = require("../validator/password");
 
 const Errors = {
   PasswordNotMatch: "Mật khẩu không trùng khớp",
   PasswordIncorrect: "Mật khẩu không chính xác",
   RegisterdEmail: "Email đã được sử dụng",
   NotRegisteredEmail: "Email không chính xác",
+  NotEnoughInfo: "Hãy điền đẩy đủ thông tin",
 };
 
 const AuthService = {
   register: async (name, email, password, confirmPassword) => {
+    if (!name || !email || !password || !confirmPassword) {
+      return {
+        error: Errors.NotEnoughInfo,
+      };
+    }
+
+    await EmailValidator.validateAsync({ email });
+
     if (!(await isMatchingPassword(password, confirmPassword))) {
       return {
         error: Errors.PasswordNotMatch,
       };
     }
+
+    await PasswordValidator.validateAsync({ password });
 
     if (await UserRepository.getUserByEmail(email)) {
       return {
