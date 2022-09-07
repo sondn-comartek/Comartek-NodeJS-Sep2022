@@ -1,4 +1,5 @@
 const verifyOTP = require("../middlewares/verify-otp");
+const verifyToken = require("../middlewares/verify-token");
 const PasswordService = require("../services/password.service");
 
 const passwordRouter = require("express").Router();
@@ -27,7 +28,7 @@ passwordRouter.post("/make-forgot-request", async (req, res) => {
   }
 });
 
-passwordRouter.post("/update", verifyOTP, async (req, res) => {
+passwordRouter.post("/update", verifyToken, async (req, res) => {
   const { email, newPassword } = req.body;
 
   try {

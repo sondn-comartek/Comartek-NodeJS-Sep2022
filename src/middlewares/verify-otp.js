@@ -27,7 +27,7 @@ const verifyOTP = async (req, res, next) => {
   }
 
   if (otpOnDatabase.isVerified) {
-    return res.status(400).json({ error: "Mã OTP đã được sử dụng" });
+    return res.status(400).json({ error: OTPErrors.Expired });
   }
 
   otpOnDatabase.isVerified = true;

@@ -1,4 +1,5 @@
 const { sendOtpToEmail } = require("../helpers/email");
+const { createToken } = require("../helpers/token");
 const OTPRepostiroy = require("../repositories/otp.repo");
 const UserRepository = require("../repositories/user.repo");
 
@@ -11,8 +12,12 @@ const PasswordService = {
     try {
       const user = await UserRepository.getUserByEmail(email);
       if (user) {
-        const otp = await OTPRepostiroy.create(email);
-        await sendOtpToEmail(email, otp.code);
+        // const otp = await OTPRepostiroy.create(email);
+
+        // Generate a jwt
+        const token = createToken({ email });
+
+        await sendOtpToEmail(email, token);
         return {
           success: true,
         };
