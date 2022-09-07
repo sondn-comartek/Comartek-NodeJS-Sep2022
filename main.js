@@ -1,24 +1,25 @@
-const express = require('express')
-const app = express()
-const port = process.env.port || 3000
+const init = require('./src/config/init')
+const bootstrap = async () => {
+  await init()
 
-app.post('/register', (req, res) => {
+  const express = require('express')
+  const registerRouter = require('./src/controller/register') 
+  const loginRouter = require('./src/controller/login')
+  const passwordRouter = require('./src/controller/password')
+
+  const app = express()
+  const port = process.env.port || 3000
   
-})
+  app.use(express.urlencoded({extended: true}))
+  app.use(express.json())
+  app.use(express.static('public'))
+  app.use(registerRouter)
+  app.use(loginRouter)
+  app.use(passwordRouter)
 
-app.post('/login', (req, res) => {
-
-})
-
-app.post('/password/reset', (req, res) => {
-
-})
-
-app.put('/password/reset/:token', (req, res) => {
-
-})
-
-
-app.listen(port, () => {
-  console.log(`Server runing on ${port}`)
-})
+  app.listen(port, () => {
+    console.log(`Server runing on ${port}`)
+  })
+}
+bootstrap()
+.catch(err => {throw err})
