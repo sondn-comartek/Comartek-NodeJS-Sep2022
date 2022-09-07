@@ -16,5 +16,5 @@ app.use(
 
 route(app);
 app.listen(PORT, () => {
-  console.log(`sever is running at port :  ${PORT}`);
+  console.log(`server is running at port :  ${PORT}`);
 });
