@@ -34,6 +34,27 @@ let handleForgotPassword = async (req, res) => {
   return res.status(200).json(response);
 };
 
+let handleResetPassword = async (req, res) => {
+  let token = req.body.token;
+  let new_password = req.body.new_password;
+
+  if (!token) {
+    return res.status(403).json({
+      errCode: 1,
+      message: "Missing token",
+    });
+  }
+  if (!new_password) {
+    return res.status(422).json({
+      errCode: 1,
+      message: "Missing new password",
+    });
+  }
+
+  let response = await userService.resetPassword(token, new_password);
+  return res.status(200).json(response);
+};
+
 let handleUpdatePassword = async (req, res) => {
   let data = req.body;
   const token = req.headers["authorization"];
@@ -51,5 +72,6 @@ module.exports = {
   handleRegister,
   handleLogin,
   handleForgotPassword,
+  handleResetPassword,
   handleUpdatePassword,
 };
