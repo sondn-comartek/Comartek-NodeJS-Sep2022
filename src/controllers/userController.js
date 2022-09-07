@@ -1,13 +1,52 @@
 import userService from "../services/userService";
 
-let handleRegister = async (req, res) => {
-  let message = await userService.createNewUser(req.body);
+const Joi = require("joi");
+
+const schema = Joi.object({
+  username: Joi.string().alphanum().min(3).max(30),
+
+  password: Joi.string(),
+
+  passwordConfirm: Joi.ref("password"),
+
+  token: Joi.string(),
+
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net"] },
+  }),
+});
+
+const handleRegister = async (req, res) => {
+  const { email, password, username, passwordConfirm } = req.body;
+
+  if (!email || !password || !username || !passwordConfirm) {
+    return res.status(422).json({
+      errCode: 1,
+      message: "Please enter all required information",
+    });
+  }
+
+  try {
+    await schema.validateAsync({ email, password, username, passwordConfirm });
+  } catch (error) {
+    return res.status(422).json({
+      errCode: 1,
+      message: "Please enter information correctly",
+    });
+  }
+
+  const message = await userService.createNewUser(
+    email,
+    password,
+    username,
+    passwordConfirm
+  );
   return res.status(200).json(message);
 };
 
-let handleLogin = async (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
+const handleLogin = async (req, res) => {
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(422).json({
@@ -16,12 +55,21 @@ let handleLogin = async (req, res) => {
     });
   }
 
-  let response = await userService.handleLogin(email, password);
+  try {
+    await schema.validateAsync({ email, password });
+  } catch (error) {
+    return res.status(422).json({
+      errCode: 1,
+      message: "Please enter email or password correctly",
+    });
+  }
+
+  const response = await userService.handleLogin(email, password);
   return res.status(200).json(response);
 };
 
-let handleForgotPassword = async (req, res) => {
-  let email = req.body.email;
+const handleForgotPassword = async (req, res) => {
+  const email = req.body.email;
 
   if (!email) {
     return res.status(422).json({
@@ -30,13 +78,21 @@ let handleForgotPassword = async (req, res) => {
     });
   }
 
-  let response = await userService.forgotPassword(email);
+  try {
+    await schema.validateAsync({ email });
+  } catch (error) {
+    return res.status(422).json({
+      errCode: 1,
+      message: "Please enter email correctly",
+    });
+  }
+
+  const response = await userService.forgotPassword(email);
   return res.status(200).json(response);
 };
 
-let handleResetPassword = async (req, res) => {
-  let token = req.body.token;
-  let new_password = req.body.new_password;
+const handleResetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
 
   if (!token) {
     return res.status(403).json({
@@ -44,28 +100,15 @@ let handleResetPassword = async (req, res) => {
       message: "Missing token",
     });
   }
-  if (!new_password) {
+  if (!newPassword) {
     return res.status(422).json({
       errCode: 1,
       message: "Missing new password",
     });
   }
 
-  let response = await userService.resetPassword(token, new_password);
+  const response = await userService.resetPassword(token, newPassword);
   return res.status(200).json(response);
-};
-
-let handleUpdatePassword = async (req, res) => {
-  let data = req.body;
-  const token = req.headers["authorization"];
-  if (token == null) {
-    return res.status(403).json({
-      errCode: 1,
-      message: "No token is provided",
-    });
-  }
-  let message = await userService.updatePassword(data, token);
-  return res.status(200).json(message);
 };
 
 module.exports = {
@@ -73,5 +116,4 @@ module.exports = {
   handleLogin,
   handleForgotPassword,
   handleResetPassword,
-  handleUpdatePassword,
 };
