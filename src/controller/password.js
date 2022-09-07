@@ -86,6 +86,7 @@ router.put('/password/reset', async (req, res, next) => {
       {
         where: { id: userID },
       })
+    return res.status(200).json({message: "update password sucess"})
   } catch (err) {
     console.log(err)
     return res.status(500).json({ message: "Server Err" })
