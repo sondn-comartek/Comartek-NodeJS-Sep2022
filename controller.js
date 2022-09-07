@@ -14,19 +14,22 @@ const genToken = (id) => {
 route.post('/register', async (req, res) => {
     try {
         let { email, password, passwordConfirm } = req.body
+        const userTmp = await User.findOne({ email })
+        if (userTmp) {
+            return res.status(400).json({
+                status: "Email has already existed"
+            })
+        }
         if (password !== passwordConfirm) {
             return res.json({
                 message: "Password must be match password confirm"
             })
         }
-        password = await bcrypt.hashSync(password, 12)
-        passwordConfirm = password
+        password = await bcrypt.hash(password, 12)
         const user = await User.create({
             email,
-            password,
-            passwordConfirm
+            password
         })
-        console.log(user)
         const access_token = await genToken(user.id)
         return res.json({
             access_token
@@ -53,11 +56,6 @@ route.post('/login', async (req, res) => {
 route.patch('/changePassword/:token', async (req, res) => {
     try {
         let token = req.params.token
-        if (!token) {
-            return res.status(400).json({
-                mess: "Please login"
-            })
-        }
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         const user = await User.findById(decoded.id)
         if (!user) {
@@ -80,6 +78,11 @@ route.patch('/changePassword/:token', async (req, res) => {
 route.post('/fogotpassword', async (req, res) => {
     const email = req.body.email
     const user = await User.findOne({ email })
+    if (!user) {
+        res.status(400).json({
+            status: "User doesn't exist"
+        })
+    }
     const access_token = genToken(user.id)
     let transporter = nodemailer.createTransport({
         service: 'gmail',

@@ -8,7 +8,7 @@ const DB = process.env.DATABASE
 
 http.createServer(app)
 mongoose.connect(
-    'mongodb://localhost:27017/lecture10',
+    DB,
     { useNewUrlParser: true, useUnifiedTopology: true },
     () => {
         console.log("Connected to MongoDB");
@@ -18,7 +18,7 @@ mongoose.connect(
 app.use(express.json())
 app.use('/api/users', route)
 
-app.listen(3000, (req, res) => {
+app.listen(3000, () => {
     console.log('Running')
 })
 
