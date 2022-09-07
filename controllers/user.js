@@ -41,15 +41,20 @@ const changePassword = async (req, res) => {
       .status(StatusCodes.CONFLICT)
       .json({ message: "password is not compare with re_password" });
   }
-  let userUpdate = await User.findOneAndUpdate(
-    { _id: id },
-    { password: password }
-  );
-  if (userUpdate) {
-    return res
-      .status(StatusCodes.OK)
-      .json({ message: "update password success" });
+  try {
+    let userUpdate = await User.findOneAndUpdate(
+      { _id: id },
+      { password: password }
+    );
+    if (userUpdate) {
+      return res
+        .status(StatusCodes.OK)
+        .json({ message: "update password success" });
+    }
+  } catch (error) {
+    throw Error("update password fail");
   }
+
   return res
     .status(StatusCodes.BAD_REQUEST)
     .json({ message: StatusCodes.BAD_REQUEST });

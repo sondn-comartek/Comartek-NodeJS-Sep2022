@@ -7,10 +7,10 @@ POST {{ENDPOINT}}/add/user
 Content-Type: application/json
 
 {
-    "email": "nguyenling@gmail.com",
+    "email": "nguyenlingg@gmail.com",
     "username": "nguyenling",
-    "password": "root",
-    "re_password": "root"
+    "password": "rootrootroot",
+    "re_password": "rootrootroot"
 }
 ###
 POST {{ENDPOINT}}/login
