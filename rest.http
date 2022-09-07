@@ -1,0 +1,37 @@
+POST http://localhost:3000/auth/register 
+content-type: application/json
+
+{
+    "email" : "wuetoix3333@gmail.com",
+    "password" : "123456789aA@@"
+}
+###
+
+POST http://localhost:3000/auth/login 
+content-type: application/json
+
+{
+    "email" : "wuetoix3333@gmail.com",
+    "password" : "123456789aA@@"
+}
+###
+
+POST http://localhost:3000/auth/forgotPwd
+content-type: application/json
+
+{
+    "email" : "wuetoix3333@gmail.com"
+}
+###
+
+GET http://localhost:3000/auth/resetPwd
+    ?secret=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjUyNjU1MiwiZXhwIjoxNjYyNTM3MzUyfQ.s5fItJv9FMpEI9xuMseYIFQzd059zC8kF02q1lW14eY
+
+###
+PATCH  http://localhost:3000/auth/updatePwd
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjUyNjU1MiwiZXhwIjoxNjYyNTM3MzUyfQ.s5fItJv9FMpEI9xuMseYIFQzd059zC8kF02q1lW14eY
+
+{
+    "password" : "123456789aA@@" 
+}
