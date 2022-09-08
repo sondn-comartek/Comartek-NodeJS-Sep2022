@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="root">
+      <ul>
+        <li>
+          <b>Day remaining to Christmas:</b> <span id="day"><%= day %></span>
+        </li>
+        <li>
+          <b>Seconds remaining to Christmas:</b>
+          <span id="seconds"> <%= seconds %></span>
+        </li>
+      </ul>
+    </div>
+    <script>
+      // update
+      setInterval(() => {
+        fetch("api/v1/christmas")
+          .then((res) => res.json())
+          .then((result) => {
+            let { day, seconds } = result["data"];
+            $("#day").html(day);
+            $("#seconds").html(seconds);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 1000);
+    </script>
+  </body>
+</html>
