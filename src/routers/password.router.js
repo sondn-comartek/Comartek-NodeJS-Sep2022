@@ -9,7 +9,7 @@ const Messages = {
   PasswordUpdateSuccess: "Thay đổi mật khẩu thành công",
 };
 
-passwordRouter.post("/make-forgot-request", async (req, res) => {
+passwordRouter.post("/forgot", async (req, res) => {
   const { email } = req.body;
 
   try {
