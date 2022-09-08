@@ -2,7 +2,7 @@ import { encryptPwd, decodePwd } from "../services/encrypted.service.js";
 import { validateUser } from "../services/validator.service.js";
 import { generateTokens, verifyToken } from "../services/token.service.js";
 import { sendMail } from "../services/mailer.service.js";
-import { getUsers, storeUser, updateUser } from "../utils/user.util.js";
+import { getUsers, storeUser, updateUser } from "../repos/user.repo.js";
 
 const hostUrl = process.env.URL_HOST;
 
