@@ -186,14 +186,14 @@
 			"name": "login",
 			"item": [
 				{
-					"name": "login_valid_user",
+					"name": "login_invalid_user",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"email\", \"wuetoix3333@gmail.com\");",
-									"pm.environment.set(\"password\", \"123456789aA@@\");"
+									"pm.environment.set(\"email\", \"invalid@gmail.com\");",
+									"pm.environment.set(\"password\", \"123invalidaA@@\");"
 								],
 								"type": "text/javascript"
 							}
@@ -202,10 +202,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"login_valid_user\", function () {",
+									"pm.test(\"login_invalid_user\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"    pm.response.to.have.status(200);",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"    pm.response.to.have.status(401);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -243,14 +243,14 @@
 					"response": []
 				},
 				{
-					"name": "login_invalid_user",
+					"name": "login_valid_user",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"email\", \"invalid@gmail.com\");",
-									"pm.environment.set(\"password\", \"123invalidaA@@\");"
+									"pm.environment.set(\"email\", \"wuetoix3333@gmail.com\");",
+									"pm.environment.set(\"password\", \"123456789aA@@\");"
 								],
 								"type": "text/javascript"
 							}
@@ -259,10 +259,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"login_invalid_user\", function () {",
+									"pm.test(\"login_valid_user\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"    pm.response.to.have.status(401);",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"    pm.response.to.have.status(200);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -413,6 +413,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"// get token in email and paste here , if the token will expire after 3h .if expire , test case will be fail",
 									"pm.environment.set(\"forgotPwdToken\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRvaXgzMzMzQGdtYWlsLmNvbSIsImlhdCI6MTY2MjY0MzY5MywiZXhwIjoxNjYyOTAyODkzfQ._DnXx4grhF-0OYv8l3MjqFhh2uMNz-NC4JNxhoHDfrE\");"
 								],
 								"type": "text/javascript"
@@ -455,13 +456,13 @@
 					"response": []
 				},
 				{
-					"name": "update_password",
+					"name": "update_invalid_password",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"password\", \"123456789aA@@@\");"
+									"pm.environment.set(\"password\", \"123456789\");"
 								],
 								"type": "text/javascript"
 							}
@@ -470,10 +471,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"update_valid_password\", function () {",
+									"pm.test(\"update_invalid_password\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"    pm.response.to.have.status(201);",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"    pm.response.to.have.status(403);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -512,13 +513,13 @@
 					"response": []
 				},
 				{
-					"name": "update_invalid_password",
+					"name": "update_password",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"password\", \"123456789\");"
+									"pm.environment.set(\"password\", \"123456789aA@@@\");"
 								],
 								"type": "text/javascript"
 							}
@@ -527,10 +528,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"update_invalid_password\", function () {",
+									"pm.test(\"update_valid_password\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"    pm.response.to.have.status(403);",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"    pm.response.to.have.status(201);",
 									"});"
 								],
 								"type": "text/javascript"
