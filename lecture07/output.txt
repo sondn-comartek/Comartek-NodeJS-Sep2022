@@ -1,0 +1,10 @@
+===OUTPUT===
+Name: demo.txt
+Content: DEMO
+======
+Name: demo2.txt
+Content: DEMO2
+======
+Name: demo3.txt
+Content: DEMO3
+======
