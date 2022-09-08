@@ -41,7 +41,7 @@ const login = async (req, res, next) => {
     const users = await getUsers();
     const userIsExisting = users.filter( user => user.email === email)[0];
     // if user isn't exist in db  in db , fire error 
-    if (!userIsExisting) throw new Error(" email incorrect ");
+    if (!userIsExisting) throw new Error("email incorrect");
     // otherwise decode the password of client send to server and compare with the password of user 
     const result = await decodePwd(password, userIsExisting.password);
     // if not true , fire error
@@ -64,7 +64,7 @@ const login = async (req, res, next) => {
   } catch (err) {
     next({
       err,
-      status: 403,
+      status: 401,
     });
   }
 };

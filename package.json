@@ -2,11 +2,11 @@
   "name": "comartek-nodejs-sep2022",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/sever.js",
+  "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "start": "npm run sever",
-    "sever": "nodemon sever.js",
+    "start": "npm run server",
+    "server": "nodemon server.js --ignore users.json ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
