@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather</title>
+  </head>
+  <body>
+    <div class="root">
+      <ol>
+        <li>City name: <%= name %></li>
+        <li>Country code: <%= country_code %></li>
+        <li>Date time:<%= date_time %></li>
+        <li>
+          Weather forecast:
+          <ul>
+            <li>Description: <%= weather['description'] %></li>
+            <li>Minimum temperature: <%= weather['temp_min'] %></li>
+            <li>Maximum temperature: <%= weather['temp_max'] %></li>
+            <li>Humidity: <%= weather['humidity'] %></li>
+            <li>Wind speed: <%= weather['wind'] %></li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>

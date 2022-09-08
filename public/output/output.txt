@@ -1,0 +1,9 @@
+name: input.txt 
+ content: this content of input file
+======
+name: input1.txt 
+ content: this content of input 1
+======
+name: input3.txt 
+ content: it's content of file3
+======

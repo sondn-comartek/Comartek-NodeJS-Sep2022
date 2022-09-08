@@ -1,0 +1,22 @@
+{
+  "name": "Comartek-NodeJS-Sep2022",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022.git",
+  "author": "nguyenling <linhnv@comartek.com>",
+  "scripts": {
+    "start": "nodemon index.js",
+    "trans": "node ./src/controllers/trans_content.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
