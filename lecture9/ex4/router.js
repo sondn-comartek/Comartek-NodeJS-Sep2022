@@ -2,7 +2,7 @@ const http = require('http')
 function router(url) {
     http.createServer((req, res) => {
         if (req.url === url) {
-            res.write(`<h1>${url}</h1>`)
+            res.write(`<h1>${__dirname + '/tmp.json'} </h1>`)
         }
         else {
             res.write(`<h1>404 Not found</h1>`)

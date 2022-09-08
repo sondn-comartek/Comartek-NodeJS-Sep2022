@@ -30,7 +30,7 @@ route.post('/register',
                 })
             }
             if (password !== passwordConfirm) {
-                return res.json({
+                return res.status(400).json({
                     message: "Password must be match password confirm"
                 })
             }
@@ -135,5 +135,12 @@ route.post('/fogotpassword',
             status: "Success"
         })
     })
+
+pm.environment.set("access_token", pm.response.json().access_token);
+pm.test("Your test name", function () {
+    var access_token = pm.response.json();
+    pm.expect(typeOf, pm.response.json() === 'string').to.be.true;
+});
+
 
 module.exports = route
