@@ -9,6 +9,10 @@ class AccountController {
     async register(req, res, next) {
         try {
             const { name, phone, email, password, passwordConfirm, city } = req.body;
+            const results = await User.findOne({ email });
+            if (results) {
+                return res.status(400).json({ message: "Email is used, choose another email to register" });
+            }
             if (!isMatchPassword(password, passwordConfirm)) {
                 res.status(400).json({ message: "New password is not match" });
             } else {

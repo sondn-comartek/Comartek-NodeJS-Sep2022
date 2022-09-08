@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "45f62c20-441e-4ae1-a424-9b850a1a4c9a",
+		"name": "API Test For Login/Register",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15506774"
+	},
+	"item": [
+		{
+			"name": "Register request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.test(\"API Test For Register\", () => {",
+							"  pm.response.to.have.status(200);",
+							"  pm.expect(jsonData).to.be.an(\"object\");",
+							"  pm.expect(jsonData._id).to.be.a(\"string\");",
+							"  pm.expect(jsonData.name).to.be.a(\"string\");",
+							"  pm.expect(jsonData.phone).to.be.a(\"string\").to.have.lengthOf(10);",
+							"  pm.expect(jsonData.email).to.be.a(\"string\");",
+							"  pm.expect(jsonData.password).to.be.a(\"string\");",
+							"  pm.expect(jsonData.city).to.be.a(\"string\");",
+							"  pm.expect(jsonData.createdTime).to.be.a(\"string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * max);",
+							"}",
+							"",
+							"const name = pm.environment.get(\"name\");",
+							"const randomNumber = pm.environment.get(\"randomNumber\");",
+							"let newRandomNumber = getRandomInt(50);",
+							"while (newRandomNumber == randomNumber) {",
+							"    newRandomNumber = getRandomInt(50)",
+							"}",
+							"const emailWithRandomNum = name + newRandomNumber + \"@gmail.com\";",
+							"pm.environment.set(\"emailRegister\", emailWithRandomNum);",
+							"pm.environment.set(\"randomNumber\", newRandomNumber);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{name}}\",\n    \"phone\": \"{{phone}}\",\n    \"email\": \"{{emailRegister}}\",\n    \"password\": \"{{password}}\",\n    \"passwordConfirm\": \"{{passwordConfirm}}\",\n    \"city\": \"{{city}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"API Test For Login\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.expect(jsonData.token).to.be.a(\"string\");",
+							"});",
+							"",
+							"pm.environment.set(\"token\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change password request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.test(\"API Test For Changing Password\", () => {",
+							"  pm.response.to.have.status(200);",
+							"  pm.expect(jsonData).to.be.an(\"object\");",
+							"  pm.expect(jsonData.message).to.eql(\"Change password successfully\");",
+							"});",
+							"// const oldPassword = pm.environment.get(\"oldPassword\");",
+							"// const newPassword = pm.environment.get(\"newPassword\");",
+							"// pm.environment.set(\"oldPassword\", newPassword);",
+							"// pm.environment.set(\"newPassword\", oldPassword);",
+							"// pm.environment.set(\"confirmNewPassword\", oldPassword);",
+							"",
+							"// postman.setNextRequest(\"Change password request\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"{{password}}\",\n    \"newPassword\": \"{{newPassword}}\",\n    \"confirmNewPassword\": \"{{confirmNewPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/change-password",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot password request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"API Test For Forgoting Password\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"  pm.expect(jsonData.message).to.eql(\"The reset link has been sent to you\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/forgot-password",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
