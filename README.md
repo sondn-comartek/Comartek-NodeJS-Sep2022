@@ -4,13 +4,18 @@ npm start
 
 #
 
-router
-/
+router: /
+
+#
+
 display weather
 
 #
 
-/convert
+router: /convert
+
+#
+
 convert kg to lb
 
 # write file from files in input folder to output.txt
