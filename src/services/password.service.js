@@ -32,8 +32,8 @@ const PasswordService = {
       if (!user) {
         return { error: Errors.NotRegisterdEmail };
       }
-      const updated = await UserRepository.updatePassword(email, newPassword);
-      return { updated };
+      await UserRepository.updatePassword(email, newPassword);
+      return { success: true };
     } catch (error) {
       throw error;
     }
