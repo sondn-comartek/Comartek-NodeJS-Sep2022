@@ -1,0 +1,13 @@
+
+=============OUTPUT==============
+ name: file1.txt
+ content: this is a file 1
+=============OUTPUT==============
+ name: file2.txt
+ content: this this a file 2
+=============OUTPUT==============
+ name: file3.txt
+ content: this is a file 3
+=============OUTPUT==============
+ name: insideTuan.txt
+ content: tuan.txt
