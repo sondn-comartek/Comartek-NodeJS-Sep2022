@@ -20,7 +20,10 @@ const AuthService = {
       };
     }
 
-    await EmailValidator.validateAsync({ email });
+    const emailValidatorInfo = EmailValidator.validate({ email });
+    if (emailValidatorInfo?.error) {
+      return { error: emailValidatorInfo?.error?.details[0]?.message };
+    }
 
     if (!(await isMatchingPassword(password, confirmPassword))) {
       return {
@@ -28,7 +31,10 @@ const AuthService = {
       };
     }
 
-    await PasswordValidator.validateAsync({ password });
+    const passwordValidatorInfo = PasswordValidator.validate({ password });
+    if (passwordValidatorInfo?.error) {
+      return { error: passwordValidatorInfo?.error?.details[0]?.message };
+    }
 
     if (await UserRepository.getUserByEmail(email)) {
       return {

@@ -25,7 +25,10 @@ const PasswordService = {
   },
 
   updatePassword: async (email, newPassword) => {
-    await PasswordValidator.validateAsync({ password: newPassword });
+    const passwordValidatorInfo = PasswordValidator.validate({ password });
+    if (passwordValidatorInfo?.error) {
+      return { error: passwordValidatorInfo?.error?.details[0]?.message };
+    }
 
     try {
       const user = await UserRepository.getUserByEmail(email);
