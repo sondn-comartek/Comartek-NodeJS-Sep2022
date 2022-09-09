@@ -9,7 +9,11 @@ const auth=async (req,res,next)=>{
     if(!authHeader||!String(authHeader).startsWith("Bearer "))
         throw new customErrorAPI(401,"Authentication invalid")
     const token=authHeader.split(' ')[1]
-    const decoded=await jwt.verify(token,process.env.JWT)
+    try{
+    var decoded=await jwt.verify(token,process.env.JWT)
+    }catch(err){
+        throw new customErrorAPI(401,"Authentication invalid")
+    }
     const {email,time,action}=decoded
     
     if (req.option)
