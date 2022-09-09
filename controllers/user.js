@@ -11,15 +11,20 @@ const register = async (req, res) => {
         username: username,
         password: password,
       });
-      return res.status(StatusCodes.CREATED).json({ message: created });
+      return res
+        .status(StatusCodes.CREATED)
+        .json({ message: { status: ReasonPhrases.CREATED, user: created } });
     } catch (error) {
       return res.status(StatusCodes.CONFLICT).json({
-        message: { message: ReasonPhrases.CONFLICT, error: error },
+        message: { status: ReasonPhrases.CONFLICT, error: error },
       });
     }
   }
   return res.status(StatusCodes.CONFLICT).json({
-    message: "password is not match re_password",
+    message: {
+      status: ReasonPhrases.CONFLICT,
+      error: "Something wrong!",
+    },
   });
 };
 const login = async (req, res) => {
@@ -28,28 +33,36 @@ const login = async (req, res) => {
   let isCompare = await userResult.comparePassword(password);
   if (isCompare) {
     let token = userResult.createJWT();
-    return res.status(StatusCodes.OK).json({ message: { token: token } });
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: { status: ReasonPhrases.OK, token: token } });
   }
-  res
-    .status(StatusCodes.UNAUTHORIZED)
-    .json({ message: ReasonPhrases.UNAUTHORIZED });
+  res.status(StatusCodes.UNAUTHORIZED).json({
+    message: {
+      status: ReasonPhrases.UNAUTHORIZED,
+      error: "Can not compare password",
+    },
+  });
 };
 const changePassword = async (req, res) => {
   let { password, re_password, id } = res.locals.user;
   if (password != re_password) {
-    res
-      .status(StatusCodes.CONFLICT)
-      .json({ message: "password is not compare with re_password" });
+    return res.status(StatusCodes.CONFLICT).json({
+      message: {
+        status: ReasonPhrases.CONFLICT,
+        error: "Not compare password",
+      },
+    });
   }
   try {
     let userUpdate = await User.findOneAndUpdate(
       { _id: id },
       { password: password }
-    );
+    ).select("_id username email");
     if (userUpdate) {
       return res
         .status(StatusCodes.OK)
-        .json({ message: "update password success" });
+        .json({ message: { status: ReasonPhrases.OK, user: userUpdate } });
     }
   } catch (error) {
     throw Error("update password fail");
@@ -121,8 +134,10 @@ const forgotPassword = async (req, res) => {
     await sendMailer(userByEmail.email, token);
     return res
       .status(StatusCodes.OK)
-      .json({ data: { login: "sending change password" } });
+      .json({ data: { status: ReasonPhrases.OK } });
   }
-  res.json({ status: "fail", message: "forgot password fail" });
+  res
+    .status(StatusCodes.CONFLICT)
+    .json({ status: ReasonPhrases.CONFLICT, message: "forgot password fail" });
 };
 module.exports = { register, login, forgotPassword, changePassword };
