@@ -9,23 +9,27 @@ import { decodePwd } from "../helpers/encrypted.helper.js";
 
 
 const errors = {
-  userIncorrect: "Email or password incorrect !",
+  infoUserIncorrect: "Email or password incorrect !",
 };
 
+const findUser = async (email) => {
+  const users = await getUsers();
+  const user = users.filter( (user) => user.email === email)[0];
+  if (!user) throw new Error(errors.infoUserIncorrect);
+  return user ;
+}
 
 const loginService = async (userData) => {
   try {
     const { email } = await validateEmail(userData.email)
     const { password } = await validatePassword(userData.password )
-    const users = await getUsers();
-    const user = users.filter( (user) => user.email === email)[0];
-    if (!user) throw new Error(errors.userIncorrect);
-    const result = await decodePwd(password, user.password);
-    if (!result) throw new Error(errors.userIncorrect);
+    const user = await findUser(email)
+    const isPasswordCorrect = await decodePwd(password, user.password);
+    if (!isPasswordCorrect) throw new Error(errors.infoUserIncorrect);
     const accessToken = generateToken({ email: user.email }).accessToken();
     const refreshToken = generateToken({ email: user.email }).refreshToken();
     await updateUser(user, {
-      ...user,
+      ...user ,
       refreshToken: refreshToken,
     });
     return { accessToken, refreshToken };

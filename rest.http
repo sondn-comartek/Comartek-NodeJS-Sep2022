@@ -31,5 +31,5 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ind1ZXRva
 
 {
     "currentPwd" : "123456789aA@@@"  ,
-    "newPwd" : "123456789aA@@" 
+    "newPwd" : "123456789aA@@@@" 
 }
