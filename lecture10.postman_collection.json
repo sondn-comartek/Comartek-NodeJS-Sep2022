@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "679cdf17-e3f7-4920-84f2-89a61e6feddd",
+		"name": "lecture10",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Register success\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.rs.acknowledged).to.eql(true);",
+							"});",
+							"pm.test(\"duplicate email\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"email was exist\");",
+							"});",
+							"pm.test(\"retype password not correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"repeat password incorrect\");",
+							"});",
+							"pm.test(\"not is email\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"please input email correct\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"tuantesst12.com\",\n    \"pass\":\"123456789a\",\n    \"repass\":\"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"tokenShort\",jsonData.tokenShort);",
+							"    pm.collectionVariables.set(\"tokenLong\", jsonData.tokenLong);",
+							"});",
+							"pm.test(\"Email is not in database\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"Email is not in database\");",
+							"});",
+							"pm.test(\"Password is incorrect\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"Password is incorrect\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"minhtuan25902@gmail.com\",\n    \"pass\":\"testtesttest\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changePass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"update password complete\");",
+							"});",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"Authentication invalid\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPass\":\"testtesttest\",\n    \"newPass\":\"testtesttest\",\n    \"reNewPass\":\"testtesttest\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/updateDatePass",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"updateDatePass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"minhtuan25902@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/forgotPass",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"forgotPass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgot and change",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:3000/api/v1",
+			"type": "default"
+		},
+		{
+			"key": "tokenShort",
+			"value": ""
+		},
+		{
+			"key": "tokenLong",
+			"value": ""
+		}
+	]
+}
