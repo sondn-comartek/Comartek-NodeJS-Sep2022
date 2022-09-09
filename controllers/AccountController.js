@@ -14,7 +14,7 @@ class AccountController {
                 return res.status(400).json({ message: "Email is used, choose another email to register" });
             }
             if (!isMatchPassword(password, passwordConfirm)) {
-                res.status(400).json({ message: "New password is not match" });
+                res.status(400).json({ message: "Confirm password is not match" });
             } else {
                 const hashedPassword = await bcrypt.hash(password, 8);
                 // 8: The number of hashing password
@@ -90,7 +90,7 @@ class AccountController {
                     res.status(400).json({ message: "Old password is incorrect" });
                 } else {
                     if (!isMatchPassword(newPassword, confirmNewPassword)) {
-                        res.status(400).json({ message: "New password is not match" });
+                        res.status(400).json({ message: "Confirm new password is not match" });
                     } else {
                         const hashedNewPassword = await bcrypt.hash(newPassword, 8);
                         await User.where({ _id: userId }).updateOne({ password: hashedNewPassword });
