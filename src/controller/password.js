@@ -1,11 +1,11 @@
 const express = require('express')
-const jwt = require('jsonwebtoken')
-const path = require('path');
-const bcrypt = require('bcrypt')
+const jwt     = require('jsonwebtoken')
+const path    = require('path');
+const bcrypt  = require('bcrypt')
 
-const UserModel = require('../model/user')
+const UserModel   = require('../model/user')
 const EmailSender = require('../config/emailSender')
-const router = express.Router()
+const router      = express.Router()
 
 
 router.post('/password/reset', async (req, res) => {
