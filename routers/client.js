@@ -26,9 +26,12 @@ router.post(
   handleValidate,
   login
 );
-router.get("/temp/:token", (req, res) => {
-  res.json(req.params.token);
-});
+router
+  .route("/temp/:token")
+  .get((req, res) => {
+    res.send(req.params.token);
+  })
+  .put(auth, changePassword);
 router.post("/forgot", forgotPassword);
 router.put("/change", auth, changePassword);
 module.exports = router;

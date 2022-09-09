@@ -59,6 +59,7 @@ const changePassword = async (req, res) => {
     .status(StatusCodes.BAD_REQUEST)
     .json({ message: StatusCodes.BAD_REQUEST });
 };
+
 const sendMailer = async (target, message) => {
   let testAccount = nodemailer.createTestAccount();
   let transporter = nodemailer.createTransport({
@@ -68,11 +69,14 @@ const sendMailer = async (target, message) => {
     auth: {
       user: (await testAccount).user, // generated ethereal user
       pass: (await testAccount).pass, // generated ethereal password
+      // user: "nguyenlinh.home@gmail.com",
+      // pass: "tehqketlptjaltsn",
     },
   });
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: (await testAccount).user, // sender address
+    // from: "nguyenlinh.home@gmail.com",
     to: target, // list of receivers
     subject: "Hello Guy", // Subject line
     text: `token valid ${message}`, // plain text body
@@ -85,6 +89,7 @@ const sendMailer = async (target, message) => {
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 };
+
 const forgotPassword = async (req, res) => {
   let { email } = req.body;
   const makePass = (length) => {
@@ -97,16 +102,15 @@ const forgotPassword = async (req, res) => {
     }
     return result;
   };
-  let newPass = makePass(8);
-  let userByEmail = await User.findOneAndUpdate(
-    { email: email },
-    { password: newPass }
+  const newPass = makePass(8);
+  const userByEmail = await User.findOne({ email: email }).select(
+    "_id username email"
   );
   if (userByEmail) {
     let token = jwt.sign(
       {
-        id: userByEmail["_id"],
-        username: userByEmail["username"],
+        id: userByEmail?._id,
+        username: userByEmail?.username,
         action: "forgot",
       },
       process.env.KEY,
@@ -115,10 +119,9 @@ const forgotPassword = async (req, res) => {
       }
     );
     await sendMailer(userByEmail.email, token);
-    return res.json({
-      status: "success",
-      message: { message: "update password success", token: token },
-    });
+    return res
+      .status(StatusCodes.OK)
+      .json({ data: { login: "sending change password" } });
   }
   res.json({ status: "fail", message: "forgot password fail" });
 };
