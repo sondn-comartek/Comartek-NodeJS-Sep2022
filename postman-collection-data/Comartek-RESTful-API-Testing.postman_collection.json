@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "562e476b-92e6-4ad0-a2e8-1792b182b31f",
+		"name": "Comartek-RESTful-API-Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23234120"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(pm.response.json());\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login successfully\", function () {\r",
+									"    const resJson = pm.response.json();\r",
+									"    const results = resJson?.results;\r",
+									"    pm.expect(results).to.has.that.all.keys('user', 'token')\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(pm.response.json());\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Register successfully\", function () {\r",
+									"    const resJson = pm.response.json();\r",
+									"    const results = resJson?.results;\r",
+									"    pm.expect(results).to.have.property('user')\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"name\",\r\n    \"email\": \"new_email_here@gmail.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login fail",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// const body = JSON.parse(pm.request.body.raw);\r",
+									"// const {email, password} = body;\r",
+									"\r",
+									"// const reponse = pm.response.json();\r",
+									"// const results = response?.results;\r",
+									"\r",
+									"// const incorrectPassword = pm.collectionVariables.get(\"incorrectPassword\");\r",
+									"\r",
+									"// if (password === incorrectPassword || ) {\r",
+									"//     pm.test(\"Incorrect password\", function () {\r",
+									"//         const resJson = pm.response.json();\r",
+									"//         pm.expect(resJson).to.have.property(\"error\")\r",
+									"//     })\r",
+									"// }\r",
+									"\r",
+									"\r",
+									"pm.test(\"Login failed\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const resJson = pm.response.json();\r",
+									"    pm.expect(resJson).to.have.property(\"error\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{incorrectPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// const body = JSON.parse(pm.request.body.raw);\r",
+									"// const {email, password, confirmPassword} = body;\r",
+									"\r",
+									"// if (email === pm.collectionVariables.get(\"email\")) {\r",
+									"//     pm.test(\"Dupplicate email\", function () {\r",
+									"//         pm.expect(pm.response.json()).have.property(\"error\")\r",
+									"//     })\r",
+									"// }\r",
+									"\r",
+									"// if (password !== confirmPassword) {\r",
+									"//     pm.test(\"Password and confirm password not matches\", function () {\r",
+									"//         pm.expect(pm.response.json()).have.property(\"error\")\r",
+									"//     })\r",
+									"// }\r",
+									"\r",
+									"pm.test(\"Register failed\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const resJson = pm.response.json();\r",
+									"    pm.expect(resJson).to.have.property(\"error\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"testName\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reset Password",
+			"item": [
+				{
+					"name": "Create request success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(pm.response.json());\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Send token to Email success\", function () {\r",
+									"    const resJson = pm.response.json();\r",
+									"    const results = resJson?.results;\r",
+									"    pm.expect(results).to.have.property('success')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/password/forgot",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"password",
+								"forgot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(pm.response.json());\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Update password success\", function () {\r",
+									"    const resJson = pm.response.json();\r",
+									"    const results = resJson?.results;\r",
+									"    pm.expect(results).to.have.property('success')\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"token\": \"token_here\",\r\n    \"newPassword\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/password/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"password",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create request fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create forgot password request failed\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const resJson = pm.response.json();\r",
+									"    pm.expect(resJson).to.have.property(\"error\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{invalidEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/password/forgot",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"password",
+								"forgot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update password failed\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const resJson = pm.response.json();\r",
+									"    pm.expect(resJson).to.have.property(\"error\")\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"token_here\",\r\n    \"email\": \"{{email}}\",\r\n    \"newPassword\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/password/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"password",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "tuantuan922001@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "password",
+			"type": "string"
+		},
+		{
+			"key": "newPassword",
+			"value": "updated_password",
+			"type": "string"
+		},
+		{
+			"key": "invalidEmail",
+			"value": "invalidemail.com",
+			"type": "string"
+		},
+		{
+			"key": "incorrectPassword",
+			"value": "incorrectpassword",
+			"type": "string"
+		},
+		{
+			"key": "confirmPassword",
+			"value": "password",
+			"type": "string"
+		}
+	]
+}
