@@ -2,37 +2,36 @@ import userService from "../services/userService";
 
 const Joi = require("joi");
 
-const schema = Joi.object({
-  username: Joi.string().alphanum().min(3).max(30),
-
-  password: Joi.string(),
-
-  passwordConfirm: Joi.ref("password"),
-
-  token: Joi.string(),
-
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ["com", "net"] },
-  }),
-});
-
 const handleRegister = async (req, res) => {
   const { email, password, username, passwordConfirm } = req.body;
 
-  if (!email || !password || !username || !passwordConfirm) {
-    return res.status(422).json({
-      errCode: 1,
-      message: "Please enter all required information",
-    });
-  }
+  const schemaRegister = Joi.object({
+    username: Joi.string().min(3).max(30).required(),
+
+    password: Joi.string().required(),
+
+    passwordConfirm: Joi.ref("password"),
+
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required(),
+  });
 
   try {
-    await schema.validateAsync({ email, password, username, passwordConfirm });
+    await schemaRegister.validateAsync({
+      email,
+      password,
+      username,
+      passwordConfirm,
+    });
   } catch (error) {
+    console.log(error.message);
     return res.status(422).json({
       errCode: 1,
-      message: "Please enter information correctly",
+      errMessage: `Invalid input: ${error.message}`,
     });
   }
 
@@ -48,19 +47,24 @@ const handleRegister = async (req, res) => {
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(422).json({
-      errCode: 1,
-      message: "Missing email or password",
-    });
-  }
+  const schemaLogin = Joi.object({
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required(),
+
+    password: Joi.string().required(),
+  });
 
   try {
-    await schema.validateAsync({ email, password });
+    await schemaLogin.validateAsync({ email, password });
   } catch (error) {
+    console.log(error.message);
     return res.status(422).json({
       errCode: 1,
-      message: "Please enter email or password correctly",
+      errMessage: `Invalid input: ${error.message}`,
     });
   }
 
@@ -71,19 +75,22 @@ const handleLogin = async (req, res) => {
 const handleForgotPassword = async (req, res) => {
   const email = req.body.email;
 
-  if (!email) {
-    return res.status(422).json({
-      errCode: 1,
-      message: "Missing email",
-    });
-  }
+  const schemaForgotPassword = Joi.object({
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required(),
+  });
 
   try {
-    await schema.validateAsync({ email });
+    await schemaForgotPassword.validateAsync({ email });
   } catch (error) {
+    console.log(error.message);
     return res.status(422).json({
       errCode: 1,
-      message: "Please enter email correctly",
+      errMessage: `Invalid input: ${error.message}`,
     });
   }
 
@@ -94,16 +101,22 @@ const handleForgotPassword = async (req, res) => {
 const handleResetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
 
-  if (!token) {
-    return res.status(403).json({
-      errCode: 1,
-      message: "Missing token",
+  const schemaResetPassword = Joi.object({
+    token: Joi.string().required(),
+
+    newPassword: Joi.string().required(),
+  });
+
+  try {
+    await schemaResetPassword.validateAsync({
+      token,
+      newPassword,
     });
-  }
-  if (!newPassword) {
+  } catch (error) {
+    console.log(error.message);
     return res.status(422).json({
       errCode: 1,
-      message: "Missing new password",
+      errMessage: `Invalid input: ${error.message}`,
     });
   }
 

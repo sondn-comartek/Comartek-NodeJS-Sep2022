@@ -30,7 +30,7 @@ const checkUserEmail = async (email) => {
   }
 };
 
-const createNewUser = async (email, password, username, passwordConfirm) => {
+const createNewUser = async (email, password, username) => {
   try {
     // Check email is exist??
     const isMailExist = await checkUserEmail(email);
@@ -40,13 +40,7 @@ const createNewUser = async (email, password, username, passwordConfirm) => {
         errMessage: "Your email address is already",
       };
     }
-    // Check if the user comfirm password correctly
-    if (password !== passwordConfirm) {
-      return {
-        errCode: 1,
-        errMessage: "Please cofirm your password again",
-      };
-    }
+
     // Create a new user
     const hashPasswordFromBcrypt = await hashUserPassword(password);
     await db.User.create({
@@ -84,12 +78,6 @@ const handleLogin = async (email, password) => {
       raw: true,
       attributes: ["email", "password"],
     });
-    if (!user) {
-      return {
-        errCode: 1,
-        errMessage: `User is not found`,
-      };
-    }
 
     const checkPassword = await bcrypt.compareSync(password, user.password);
     if (checkPassword) {
@@ -159,6 +147,14 @@ const sendMail = async (email, token) => {
 
 const forgotPassword = async (email) => {
   try {
+    const isEmailExist = await checkUserEmail(email);
+    if (!isEmailExist) {
+      return {
+        errCode: 1,
+        errMessage: `Your email isn't exist in system`,
+      };
+    }
+
     const token = await createToken(email);
 
     await sendMail(email, token);
@@ -168,7 +164,11 @@ const forgotPassword = async (email) => {
       token,
     };
   } catch (e) {
-    return e;
+    console.log(e);
+    return {
+      errCode: 1,
+      message: `Send email failed`,
+    };
   }
 };
 
