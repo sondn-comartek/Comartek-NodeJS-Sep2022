@@ -1,0 +1,33 @@
+{
+  "name": "comartek-nodejs-sep2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run server",
+    "server": "nodemon server.js --ignore users.json ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022/issues"
+  },
+  "homepage": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "fs-extra": "^10.1.0",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.7.8",
+    "nodemon": "^2.0.19"
+  }
+}
