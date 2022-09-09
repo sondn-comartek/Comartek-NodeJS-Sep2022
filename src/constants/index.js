@@ -3,7 +3,7 @@ require("dotenv").config();
 const CONSTANTS = {
   Port: process.env.PORT || 8000,
   MongoUrl: process.env.MONGO_URL,
-  BcryptSalt: process.env.BCRYPT_SALT,
+  BcryptSalt: parseInt(process.env.BCRYPT_SALT),
   JwtSecret: process.env.JWT_SECRET || "YOUR_SECRET_HERE",
   JwtExpirationTime: process.env.JWT_EXPIRATION_TIME,
   NodemailerTransportOptions: {

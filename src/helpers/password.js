@@ -5,11 +5,11 @@ async function isMatchingPassword(password, confirmPassword) {
   return password === confirmPassword;
 }
 
-function encryptPassword(password) {
+async function encryptPassword(password) {
   return bcrypt.hashSync(password, CONSTANTS.BcryptSalt);
 }
 
-function comparePassword(password, hashedPassword) {
+async function comparePassword(password, hashedPassword) {
   return bcrypt.compareSync(password, hashedPassword);
 }
 

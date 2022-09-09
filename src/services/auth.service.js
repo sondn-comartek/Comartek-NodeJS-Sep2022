@@ -1,4 +1,8 @@
-const { isMatchingPassword } = require("../helpers/password");
+const {
+  isMatchingPassword,
+  encryptPassword,
+  comparePassword,
+} = require("../helpers/password");
 const { createToken } = require("../helpers/token");
 const UserRepository = require("../repositories/user.repo");
 const EmailValidator = require("../validator/email");
@@ -43,8 +47,8 @@ const AuthService = {
     }
 
     try {
-      // const hashedPassword = await encryptPassword(password);
-      const newUser = await UserRepository.create(name, email, password);
+      const hashedPassword = await encryptPassword(password);
+      const newUser = await UserRepository.create(name, email, hashedPassword);
       return { user: newUser };
     } catch (error) {
       throw error;
@@ -55,10 +59,7 @@ const AuthService = {
     try {
       const user = await UserRepository.getUserByEmail(email);
       if (user) {
-        if (
-          // await comparePassword(password, user.password)
-          password === user.password
-        ) {
+        if (await comparePassword(password, user.password)) {
           const token = createToken({ id: user._id });
           return { token, user };
         }
