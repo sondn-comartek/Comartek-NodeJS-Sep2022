@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 const __dirname = path.resolve();
-const userStoragePath = __dirname + "/src/databases/users.json";
+const userStoragePath = __dirname + "/src/databases/user.json";
 
 const getUsers = async () => {
     try {

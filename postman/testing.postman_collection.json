@@ -55,11 +55,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/register",
+							"raw": "{{base_url}}/auth/register",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -112,11 +113,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/register",
+							"raw": "{{base_url}}/auth/register",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -169,11 +171,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/register",
+							"raw": "{{base_url}}/auth/register",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -231,11 +234,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/login",
+							"raw": "{{base_url}}/auth/login",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"auth",
 								"login"
 							]
 						}
@@ -288,11 +292,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/login",
+							"raw": "{{base_url}}/auth/login",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"auth",
 								"login"
 							]
 						}
@@ -344,12 +349,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/forgotPwd",
+							"raw": "{{base_url}}/password/forgot",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"forgotPwd"
+								"password",
+								"forgot"
 							]
 						}
 					},
@@ -395,19 +401,70 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/forgotPwd",
+							"raw": "{{base_url}}/password/forgot",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"forgotPwd"
+								"password",
+								"forgot"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "reset_password",
+					"name": "reset_password_fail",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// get token in email and paste here , if the token will expire after 3h .if expire , test case will be fail",
+									"pm.environment.set(\"forgotPwdToken\", \"invalidtoken\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"reset_password_fail\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"forgotPwdToken\", jsonData.forgotPwdToken);",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/password/reset?secret={{forgotPwdToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"password",
+								"reset"
+							],
+							"query": [
+								{
+									"key": "secret",
+									"value": "{{forgotPwdToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset_password_success",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -438,12 +495,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/resetPwd?secret={{forgotPwdToken}}",
+							"raw": "{{base_url}}/password/reset?secret={{forgotPwdToken}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"resetPwd"
+								"password",
+								"reset"
 							],
 							"query": [
 								{
@@ -454,15 +512,21 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "update_password",
+			"item": [
 				{
-					"name": "update_invalid_password",
+					"name": "update_pwd_samePwd",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"password\", \"123456789\");"
+									"pm.environment.set(\"currentPwd\", \"123456789@@\");",
+									"pm.environment.set(\"newPwd\", \"123456789@@\");"
 								],
 								"type": "text/javascript"
 							}
@@ -494,32 +558,167 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "password",
-									"value": "{{password}}",
+									"key": "currentPwd",
+									"value": "{{currentPwd}}",
+									"type": "text"
+								},
+								{
+									"key": "newPwd",
+									"value": "{{newPwd}}",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/updatePwd",
+							"raw": "{{base_url}}/password/update",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"updatePwd"
+								"password",
+								"update"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "update_password",
+					"name": "update_pwd_invalid_currentPwd",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"password\", \"123456789aA@@@\");"
+									"pm.environment.set(\"currentPwd\", \"invalid current password\");",
+									"pm.environment.set(\"newPwd\", \"0348513527aA@@\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"update_invalid_password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{forgotPwdToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "currentPwd",
+									"value": "{{currentPwd}}",
+									"type": "text"
+								},
+								{
+									"key": "newPwd",
+									"value": "{{newPwd}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/password/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"password",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_pwd_invalid_newPwd",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"currentPwd\", \"0348513527aA@@\");",
+									"pm.environment.set(\"newPwd\", \"invalid new password\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"update_invalid_password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{forgotPwdToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "currentPwd",
+									"value": "{{currentPwd}}",
+									"type": "text"
+								},
+								{
+									"key": "newPwd",
+									"value": "{{newPwd}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/password/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"password",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_pwd_success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"currentPwd\", \"123456789aA@@\");",
+									"pm.environment.set(\"newPwd\", \"123456789aA@@@\");"
 								],
 								"type": "text/javascript"
 							}
@@ -551,19 +750,25 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "password",
-									"value": "{{password}}",
+									"key": "currentPwd",
+									"value": "{{currentPwd}}",
+									"type": "text"
+								},
+								{
+									"key": "newPwd",
+									"value": "{{newPwd}}",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/updatePwd",
+							"raw": "{{base_url}}/password/update",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"updatePwd"
+								"password",
+								"update"
 							]
 						}
 					},
