@@ -11,7 +11,7 @@ const errorHandle=require(`./middleware/errorHandle`)
 const xss=require(`xss-clean`)
 const helmet=require(`helmet`)
 const cors=require(`cors`)
-//const rateLimiter=require(`express-rate-limit`)
+const rateLimiter=require(`express-rate-limit`)
 
 
 
