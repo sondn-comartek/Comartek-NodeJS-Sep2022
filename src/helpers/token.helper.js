@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken" ;
-import dotenv from "dotenv";
-dotenv.config();
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ;
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET ;
-const forgotPwdTokenSecret = process.env.FORGOT_PWD_TOKEN_SECRET ;
+import constants from "../utils /constants.js";
 
-const generateTokens = ( payload ) => {
+const accessTokenSecret = constants.accessTokenSecret ;
+const refreshTokenSecret = constants.refreshTokenSecret ;
+const forgotPwdTokenSecret = constants.forgotTokenSecret ;
+
+const generateToken = ( payload ) => {
     return {
         accessToken(){
             return jwt.sign( payload , accessTokenSecret , {
@@ -25,6 +25,7 @@ const generateTokens = ( payload ) => {
         }
     }
 }
+
 const verifyToken = (token , type ) => {
     return {
         accessToken(){
@@ -38,4 +39,4 @@ const verifyToken = (token , type ) => {
         }
     }
 }
-export { generateTokens , verifyToken}
+export { generateToken , verifyToken}
