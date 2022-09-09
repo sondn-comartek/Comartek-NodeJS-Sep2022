@@ -17,7 +17,7 @@ const errors = {
 
 const forgotPwdService = async (emailUnvalidate) => {
     try {
-      const { email } = await validateEmail.validateAsync({ email : emailUnvalidate})
+      const { email } = await validateEmail(emailUnvalidate)
       const users = await getUsers() ;
       const user = users.some( user => user.email === email);
       if (!user) throw new Error( email + " " + errors.userNotExisted)
@@ -52,7 +52,7 @@ const forgotPwdService = async (emailUnvalidate) => {
       const user = users.filter( user => user.email === email)[0];
       const isIncorrectPwd = await decodePwd(currentPwd , user.password)
       if(!isIncorrectPwd) throw new Error(errors.curentPwdIncorrect) 
-      const { password } = await validatePassword.validateAsync({password : newPwd })
+      const { password } =  await validatePassword(newPwd)
       const encryptedPwd = await encryptPwd(password);
       const newUser = JSON.parse(JSON.stringify(user));
       newUser.password = encryptedPwd;

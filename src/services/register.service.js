@@ -13,8 +13,8 @@ const errors = {
 
 const registerService = async (userData) => {
   try {
-    const { email } = await validateEmail.validateAsync( {email : userData.email });
-    const  { password } = await validatePassword.validateAsync({ password : userData.password });
+    const { email } = await validateEmail(userData.email)
+    const { password } = await validatePassword(userData.password )
     const users = await getUsers();
     const user = users.some((user) => user.email === email);
     if (user) throw new Error(errors.userExisted);
