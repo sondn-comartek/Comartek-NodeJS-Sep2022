@@ -6,6 +6,14 @@ async function isMatchingPassword(password, confirmPassword) {
 }
 
 async function encryptPassword(password) {
+  if (!password instanceof String) {
+    throw new Error("Input password not a String");
+  }
+
+  if (password.length === 0) {
+    throw new Error("Empty String error");
+  }
+
   return bcrypt.hashSync(password, CONSTANTS.BcryptSalt);
 }
 
