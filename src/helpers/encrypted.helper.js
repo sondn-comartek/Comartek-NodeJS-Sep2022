@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt" ;
 
-import constants from "../utils /constants.js";
+import constants from "../utils/constants.js";
 
 const saltRound = constants.saltRound
 
@@ -9,8 +9,8 @@ const encryptPwd = async (password) => {
     return await bcrypt.hash( password , salt) ;
 }
 
-const decodePwd = async (unencryptPwd , pwdEncrypted) => {
-    return await bcrypt.compare( unencryptPwd ,pwdEncrypted) ;
- }
+const comparePwd = async ( UnencryptPwd , pwdEncrypted) => {
+    return await bcrypt.compare( UnencryptPwd ,pwdEncrypted) ;
+}
 
-export  { encryptPwd , decodePwd }
+export  { encryptPwd , comparePwd }

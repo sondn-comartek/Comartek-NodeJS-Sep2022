@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import constants from "../utils/constants.js";
+
 dotenv.config();
 
-const mailerUser = process.env.MAILER_USER;
-const mailerPwd = process.env.MAILER_PASSWORD;
+const mailerUser = constants.mailerUser ;
+const mailerPwd = constants.mailerPwd ;
 
 const createTransporter = async () => {
   return nodemailer.createTransport({

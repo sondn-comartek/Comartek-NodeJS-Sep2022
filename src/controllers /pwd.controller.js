@@ -1,16 +1,8 @@
 import { forgotPwdService , resetPwdService , updatePwdService } from "../services/password.service.js";
-import constants from "../utils /constants.js";
+import constants from "../utils/constants.js";
+import messages from "../utils/messages.js"
 
 const hostUrl = constants.hostUrl ;
-
-const messages = {
-  forgotPwdSuccess :  "Forgot password successfully!" ,
-  forgotPwdFail :  "Forgot password failed!",
-  resetPwdSuccess : "Reset password successfully!" ,
-  resetPwdFail : "Reset password failed!" ,
-  updatePwdSucess : "Updated password successfully!",
-  updatePwdFail : "Updated password failed!"
-}
 
 const forgotPwd = async (req, res, next) => {
     try {
@@ -30,12 +22,12 @@ const forgotPwd = async (req, res, next) => {
   
   const resetPwd = async (req, res, next) => {
     try {
-      const { email , forgotPwdToken } = await resetPwdService(req.query.secret)
+      const { email , accessToken } = await resetPwdService(req.query.secret)
       res.status(200).json({
         success: true,
         email : email , 
         messages : messages.resetPwdSuccess ,
-        forgotPwdToken: forgotPwdToken,
+        accessToken: accessToken,
         url: `${hostUrl}/password/update`,
       });
     } catch (err) {

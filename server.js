@@ -2,7 +2,7 @@ import http from "node:http"
 
 import app from './src/app.js'
 
-import constants from "./src/utils /constants.js"
+import constants from "./src/utils/constants.js"
 
 const server = http.createServer(app)
 

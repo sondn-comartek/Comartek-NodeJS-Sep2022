@@ -2,12 +2,7 @@ import { registerService } from "../services/register.service.js";
 
 import { loginService } from "../services/login.service.js";
 
-const messages = {
-  registerSuccess: "Register successfully!",
-  registerFail: "Register failed!",
-  loginSuccess: "Login successfully!",
-  loginFail: "login failed",
-};
+import messages from "../utils/messages.js"
 
 const register = async (req, res, next) => {
   try {

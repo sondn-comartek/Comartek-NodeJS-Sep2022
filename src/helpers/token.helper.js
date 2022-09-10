@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken" ;
 
-import constants from "../utils /constants.js";
+import constants from "../utils/constants.js";
 
 const accessTokenSecret = constants.accessTokenSecret ;
 const refreshTokenSecret = constants.refreshTokenSecret ;
-const forgotPwdTokenSecret = constants.forgotTokenSecret ;
 
 const generateToken = ( payload ) => {
     return {
@@ -18,11 +17,6 @@ const generateToken = ( payload ) => {
                 expiresIn : "7d"
             })
         } ,
-        forgotPwdToken(){
-            return jwt.sign( payload , forgotPwdTokenSecret , {
-                expiresIn : "3d"
-            })
-        }
     }
 }
 
@@ -34,9 +28,6 @@ const verifyToken = (token , type ) => {
         refreshToken(){
             return jwt.verify( token , refreshTokenSecret )
         } ,
-        forgotPwdToken(){
-            return jwt.verify( token , forgotPwdTokenSecret )
-        }
     }
 }
 export { generateToken , verifyToken}
