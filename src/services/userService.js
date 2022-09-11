@@ -213,6 +213,8 @@ const resetPassword = async (token, newPassword) => {
 };
 
 module.exports = {
+  hashUserPassword,
+  checkUserEmail,
   createNewUser,
   handleLogin,
   forgotPassword,
