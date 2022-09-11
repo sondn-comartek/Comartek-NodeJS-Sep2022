@@ -3,7 +3,8 @@ const errors = {
     userNotExisted : 'User have not registed yet!' ,
     curentPwdIncorrect : "Current password is incorrect!" ,
     passwordsIsSame : 'New password must not be same current password!',
-    userExisted: "User have been existed !",
+    userExisted: "User have been existed!",
+    userNotFound : "Can't not found user!" ,
   };
 
 export default errors  

@@ -8,7 +8,9 @@ const messages = {
     resetPwdSuccess : "Reset password successfully!" ,
     resetPwdFail : "Reset password failed!" ,
     updatePwdSucess : "Updated password successfully!",
-    updatePwdFail : "Updated password failed!"
+    updatePwdFail : "Updated password failed!" ,
+    somethingFail : "oops, something wrong here!" ,
+    somethingSuccess : "sucessfully!"
   };
-  
+
 export default messages

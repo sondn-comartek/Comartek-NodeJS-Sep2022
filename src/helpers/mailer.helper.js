@@ -8,7 +8,7 @@ const mailerUser = constants.mailerUser ;
 const mailerPwd = constants.mailerPwd ;
 
 const createTransporter = async () => {
-  return nodemailer.createTransport({
+  return  nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: mailerUser,

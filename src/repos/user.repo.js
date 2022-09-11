@@ -39,7 +39,7 @@ const getUsers = async () => {
       let error = null
       const users = await getUsers();
       const user = users.filter( (user) => user.email === email)[0];
-      if(!user) error = errors.userNotExisted ;
+      if(!user) error = errors.userNotFound ;
       return { user , error } ;
     } catch(err) {
       throw err;

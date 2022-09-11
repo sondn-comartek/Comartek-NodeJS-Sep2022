@@ -22,7 +22,6 @@ const modifyUserPwd = (user, password) => {
   return user;
 };
 
-
 const checkIsSamePwd = (currentPwd, newPwd) => {
   if (currentPwd === newPwd) throw errors.passwordsIsSame;
 };
