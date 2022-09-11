@@ -2,6 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const nodemailer = require("nodemailer");
+const { signPasswordRandom } = require("../services/userServices");
 const register = async (req, res) => {
   let { email, username, password, re_password } = req.body;
   if (password == re_password) {
@@ -105,17 +106,7 @@ const sendMailer = async (target, message) => {
 
 const forgotPassword = async (req, res) => {
   let { email } = req.body;
-  const makePass = (length) => {
-    let result = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
-  const newPass = makePass(8);
+  const passwordRand = signPasswordRandom(8);
   const userByEmail = await User.findOne({ email: email }).select(
     "_id username email"
   );

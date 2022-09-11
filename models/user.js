@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const {
+  hashPassword,
+  comparePassword,
+  signToken,
+} = require("../services/userServices");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -17,28 +20,18 @@ const userSchema = new mongoose.Schema({
   },
 });
 userSchema.pre("save", async function () {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await hashPassword(this.password);
 });
 userSchema.pre("findOneAndUpdate", async function () {
-  let data = this.getUpdate();
-  const salt = await bcrypt.genSalt();
-  data.password = await bcrypt.hash(data.password, salt);
+  const data = this.getUpdate();
+  data.password = await hashPassword(data.password);
 });
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  let isMatch = await bcrypt.compare(candidatePassword, this.password);
+  const isMatch = await comparePassword(candidatePassword, this.password);
   return isMatch;
 };
-userSchema.methods.createJWT = function () {
-  return jwt.sign(
-    {
-      id: this._id,
-      username: this.username,
-    },
-    process.env.KEY,
-    {
-      expiresIn: process.env.EXPIRESIN,
-    }
-  );
-};
+userSchema.methods.createJWT = signToken({
+  id: this._id,
+  username: this.username,
+});
 module.exports = mongoose.model("User", userSchema);

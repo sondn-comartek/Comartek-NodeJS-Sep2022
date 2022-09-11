@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "jest"
   },
   "repository": "https://github.com/sondn-comartek/Comartek-NodeJS-Sep2022.git",
   "author": "nguyenling <linhnv@comartek.com>",
@@ -20,6 +21,7 @@
     "nodemailer": "^6.7.8"
   },
   "devDependencies": {
+    "jest": "^29.0.2",
     "nodemon": "^2.0.19"
   }
 }
