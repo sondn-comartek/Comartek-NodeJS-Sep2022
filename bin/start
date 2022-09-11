@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { Server } = require('socket.io');
 
 /**
  * Module dependencies.
@@ -41,6 +42,8 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
+const io = new Server(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -86,4 +89,18 @@ server.on('listening', () => {
     ? `pipe ${addr}`
     : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
+});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('chat', (msg) => {
+    console.log('message: ' + msg);
+
+    io.emit('chat', msg);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
