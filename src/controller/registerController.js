@@ -1,15 +1,15 @@
 const express = require("express")
 const bcrypt = require('bcrypt');
 
-const UserModel = require('../model/user')
+const UserModel = require('../model/user');
+const registerService = require("../service/registerService");
+const EmailExisted = require("../exception/emailexisted");
 
 const router = express.Router()
 
 router.post('/register', async (req, res, next) => {
   try {
-  console.log(req.body)
-  const email = req.body.email
-  const password = req.body.password
+  const {email, password} = req.body
   
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
@@ -19,23 +19,14 @@ router.post('/register', async (req, res, next) => {
   if(!passwordRegex.test(password))
     return res.status(400).json({message: "Invalid password"})
   
-  const usersMatchEmail = await UserModel.findAll({
-    where: {
-      email: email,
-    }
-  })
-  if(usersMatchEmail.length != 0) 
-    return res.status(400).json({message: "Email existed"})
-  const hashedPassword = await bcrypt.hash(password, 10)
-  
-  await UserModel.create({
-    email: email,
-    password: hashedPassword
-  })
-
+  const isRegisterSucess = await registerService(email, password)
+  if(!isRegisterSucess) {
+    return res.status(400).json({message: 'Creating account faield'})
+  }
   return res.status(200).json({message: 'Creating account sucess'})
   } catch(err) {
-    console.log(err)
+    if(err instanceof EmailExisted) 
+      return res.status(400).json({message: "Email existed"})
     return res.status(500).json({message: "Server Err"})
   } 
 })

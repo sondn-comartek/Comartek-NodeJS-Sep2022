@@ -52,7 +52,6 @@ test('Login service fail(invalid email): expect throw invaliddata exception', as
       
   }
   catch (err) {
-    console.log(err)
     expect((err instanceof InvalidData === true)).toEqual(true)
   }
 })
@@ -79,7 +78,6 @@ test('Login service fail(invalid password): expect throw invaliddata exception',
       
   }
   catch (err) {
-    console.log(err)
     expect((err instanceof InvalidData === true)).toEqual(true)
   }
 })
