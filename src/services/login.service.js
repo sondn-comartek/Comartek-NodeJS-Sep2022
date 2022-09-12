@@ -5,9 +5,9 @@ import { updateUser , findUserByEmail } from "../repos/user.repo.js"
 
 import { generateToken } from "../helpers/token.helper.js";
 
-import { comparePwd } from "../helpers/encrypted.helper.js";
+import { comparePwd } from "../helpers/encrypt.helper.js";
 
-import errors from "../utils/errors.js";
+import { errors } from "../utils/constants.js"
 
 
 const loginService = async (userData) => {

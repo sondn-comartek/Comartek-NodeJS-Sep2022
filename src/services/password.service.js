@@ -3,27 +3,41 @@ import { updateUser, findUserByEmail } from "../repos/user.repo.js";
 import { validatePassword , validateEmail } from "../helpers/validator.helper.js";
 import { generateToken , verifyToken } from "../helpers/token.helper.js";
 import { sendMail } from "../helpers/mailer.helper.js";
-import { comparePwd , encryptPwd } from "../helpers/encrypted.helper.js";
-import constants from "../utils/constants.js";
-import errors from "../utils/errors.js";
+import { comparePwd , encryptPwd } from "../helpers/encrypt.helper.js";
+import { errors , env } from "../utils/constants.js"
 import deepCloneObj from "../utils/deepCloneObj.js";
 import getTokenInAuthHeader from "../utils/getTokenInAuthHeader.js"
 
-const hostUrl = constants.hostUrl
 
-const isCorrectPwd = async (currentPwdUnencrypted , currentPwdEncrypted ) => {
-  const correct = await comparePwd(currentPwdUnencrypted,currentPwdEncrypted);
-  if (!correct) throw new Error(errors.curentPwdIncorrect);
+const checkPwdIsCorrect = async (currentPwdUnencrypted , currentPwdEncrypted ) => {
+  try{
+    const result = currentPwdUnencrypted && currentPwdEncrypted && await comparePwd(currentPwdUnencrypted,currentPwdEncrypted);
+    if (!result) throw new Error(errors.curentPwdIncorrect);
+    return result;
+  }catch(err){
+    throw err;
+  }
 }
 
-const modifyUserPwd = (user, password) => {
-  const cloneUser = deepCloneObj(user) ;
-  cloneUser.password = password;
+const modifyUserPwd = ( user, password ) => {
+  if(
+    !user ||
+    !password ||
+    typeof user !== 'object' ||
+    typeof password !== 'string' ||
+    user.constructor !== Object
+  ) throw new Error(errors.inputInvalid)
+  const cloneUser = deepCloneObj(user);
+  cloneUser.password??='undifined'
+  cloneUser.password=password;
   return user;
 };
 
-const checkIsSamePwd = (currentPwd, newPwd) => {
-  if (currentPwd === newPwd) throw errors.passwordsIsSame;
+const checkPwdIsSame = (currentPwd, newPwd) => {
+  if (typeof currentPwd !=='string' || typeof newPwd !== 'string') {
+    throw new Error(errors.inputInvalid) 
+  } else if (currentPwd === newPwd) throw new Error(errors.passwordsIsSame)
+  return;
 };
 
 const forgotPwdService = async (emailUnvalidate) => {
@@ -35,7 +49,7 @@ const forgotPwdService = async (emailUnvalidate) => {
     await sendMail({
       to: email,
       subject: "RESET PASSWORD USER",
-      text: `${hostUrl}/password/reset?secret=${accessToken}`,
+      text: `${env.hostUrl}/password/reset?secret=${accessToken}`,
     });
     return;
   } catch (err) {
@@ -44,6 +58,7 @@ const forgotPwdService = async (emailUnvalidate) => {
 };
 
 const resetPwdService = async (accessToken) => {
+  if(!accessToken) throw new Error(errors.inputIsNull)
   try {
     const { email } = verifyToken(accessToken).accessToken()
     return { email, accessToken };
@@ -53,14 +68,15 @@ const resetPwdService = async (accessToken) => {
 };
 
 const updatePwdService = async (authHeader, passwords) => {
+  if(!authHeader || !passwords) throw new Error(errors.inputIsNull)
   const { currentPwd , newPwd } = passwords;
   try {
-    checkIsSamePwd( currentPwd , newPwd);
+    checkPwdIsSame( currentPwd , newPwd);
     const accessToken = getTokenInAuthHeader(authHeader);
     const { email } = verifyToken(accessToken).accessToken();
     const { user , error } = await findUserByEmail(email);
     if(error) throw new Error(errors.userNotExisted)
-    await isCorrectPwd( currentPwd , user.password );
+    await checkPwdIsCorrect( currentPwd , user.password );
     const { password } = await validatePassword(newPwd);
     const encryptedPwd = await encryptPwd(password);
     const newUser = modifyUserPwd(user, encryptedPwd);
@@ -70,4 +86,4 @@ const updatePwdService = async (authHeader, passwords) => {
   }
 };
   
-  export { forgotPwdService , resetPwdService , updatePwdService };
+  export { forgotPwdService , resetPwdService , updatePwdService , checkPwdIsCorrect , modifyUserPwd , checkPwdIsSame };

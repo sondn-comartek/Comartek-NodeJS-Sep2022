@@ -1,19 +1,16 @@
 import jwt from "jsonwebtoken" ;
 
-import constants from "../utils/constants.js";
-
-const accessTokenSecret = constants.accessTokenSecret ;
-const refreshTokenSecret = constants.refreshTokenSecret ;
+import { errors , env} from "../utils/constants.js";
 
 const generateToken = ( payload ) => {
     return {
         accessToken(){
-            return jwt.sign( payload , accessTokenSecret , {
+            return jwt.sign( payload , env.accessTokenSecret , {
                 expiresIn : "3d"
             })
         } ,
         refreshToken(){
-            return jwt.sign( payload , refreshTokenSecret , {
+            return jwt.sign( payload , env.refreshTokenSecret , {
                 expiresIn : "7d"
             })
         } ,
@@ -23,10 +20,10 @@ const generateToken = ( payload ) => {
 const verifyToken = (token , type ) => {
     return {
         accessToken(){
-            return jwt.verify( token , accessTokenSecret )
+            return jwt.verify( token , env.accessTokenSecret )
         } ,
         refreshToken(){
-            return jwt.verify( token , refreshTokenSecret )
+            return jwt.verify( token , env.refreshTokenSecret )
         } ,
     }
 }

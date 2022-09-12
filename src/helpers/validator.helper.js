@@ -11,11 +11,11 @@ const validateEmail = async (email) => {
     }).validateAsync({
         email : email ,
     })
-} 
+}
 const validatePassword = async (password) => {
     return Joi.object({
         password: Joi.string()
-        .pattern(new RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/))
+        .pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))
         .required()
         .messages({
             'string.pattern.base' : 'Password minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character' ,

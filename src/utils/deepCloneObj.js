@@ -1,5 +1,4 @@
-const deepCloneObj = (obj) => {
-    const cloneObj = JSON.parse(JSON.stringify(obj));
-    return cloneObj ;
-  };
+const deepCloneObj = (obj={}) => {
+    return obj && typeof obj === 'object' && obj.constructor === Object && JSON.parse(JSON.stringify(obj));
+};
 export default deepCloneObj;  

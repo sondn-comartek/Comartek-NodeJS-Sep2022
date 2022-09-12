@@ -1,8 +1,6 @@
 import { forgotPwdService , resetPwdService , updatePwdService } from "../services/password.service.js";
-import constants from "../utils/constants.js";
-import messages from "../utils/messages.js"
+import { messages , env } from "../utils/constants.js"
 
-const hostUrl = constants.hostUrl ;
 
 const forgotPwd = async (req, res, next) => {
     try {
@@ -28,7 +26,7 @@ const forgotPwd = async (req, res, next) => {
         email : email , 
         messages : messages.resetPwdSuccess ,
         accessToken: accessToken,
-        url: `${hostUrl}/password/update`,
+        url: `${env.hostUrl}/password/update`,
       });
     } catch (err) {
       next({

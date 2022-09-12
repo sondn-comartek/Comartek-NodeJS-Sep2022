@@ -1,11 +1,10 @@
 import bcrypt from "bcrypt" ;
 
-import constants from "../utils/constants.js";
+import { errors , env } from "../utils/constants.js";
 
-const saltRound = constants.saltRound
 
 const encryptPwd = async (password) => {
-    const salt = await bcrypt.genSalt(saltRound)
+    const salt = await bcrypt.genSalt(env.saltRound)
     return await bcrypt.hash( password , salt) ;
 }
 

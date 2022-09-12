@@ -2,7 +2,7 @@ import { registerService } from "../services/register.service.js";
 
 import { loginService } from "../services/login.service.js";
 
-import messages from "../utils/messages.js"
+import { messages } from "../utils/constants.js"
 
 const register = async (req, res, next) => {
   try {

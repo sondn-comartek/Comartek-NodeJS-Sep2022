@@ -3,9 +3,9 @@ import { validateEmail , validatePassword } from "../helpers/validator.helper.js
 
 import { findUserByEmail, storeUser } from "../repos/user.repo.js";
 
-import { encryptPwd } from "../helpers/encrypted.helper.js";
+import { encryptPwd } from "../helpers/encrypt.helper.js";
 
-import errors from "../utils/errors.js";
+import { errors } from "../utils/constants.js"
 
 const registerService = async (userData) => {
   try {

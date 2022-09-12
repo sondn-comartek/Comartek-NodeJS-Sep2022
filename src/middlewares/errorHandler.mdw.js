@@ -1,4 +1,4 @@
-import messages from "../utils/messages.js";
+import { messages } from "../utils/constants.js";
 export default function errorHandler(error, req, res, next){
   console.log(error);
   const errDeltail = error.err.toString();

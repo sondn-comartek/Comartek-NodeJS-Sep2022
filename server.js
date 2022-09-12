@@ -1,12 +1,16 @@
-import http from "node:http"
+import http from "node:http";
 
-import app from './src/app.js'
+import app from './src/app.js';
 
-import constants from "./src/utils/constants.js"
+import connectDb from "./src/databases/index.js";
 
-const server = http.createServer(app)
+import { env } from "./src/utils/constants.js";
 
-const PORT = constants.port || 8000;
+const server = http.createServer(app);
+
+const PORT = env.port || 8000;
+
+connectDb();
 
 server.listen( PORT, () => {
   
