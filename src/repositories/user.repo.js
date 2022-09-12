@@ -5,13 +5,17 @@ const UserRepository = {
     return await User.create({ name, email, password });
   },
 
+  getUserById: async (userId) => {
+    return await User.findById(userId);
+  },
+
   getUserByEmail: async (email) => {
     return await User.findOne({ email });
   },
 
-  updatePassword: async (email, newPassword) => {
-    return await User.findOneAndUpdate(
-      { email },
+  updatePassword: async (userId, newPassword) => {
+    return await User.updateOne(
+      { _id: userId },
       { $set: { password: newPassword } },
       { new: true }
     );

@@ -2,9 +2,10 @@ const { sendOtpToEmail } = require("../helpers/email");
 const { createToken } = require("../helpers/token");
 const UserRepository = require("../repositories/user.repo");
 const PasswordValidator = require("../validator/password");
+const { encryptPassword } = require("../helpers/password");
 
 const Errors = {
-  NotRegisterdEmail: "Email không tồn tại",
+  UserNotFound: "User không tồn tại",
 };
 
 const PasswordService = {
@@ -12,7 +13,7 @@ const PasswordService = {
     try {
       const user = await UserRepository.getUserByEmail(email);
       if (user) {
-        const token = createToken({ email });
+        const token = createToken({ userId: user._id });
         await sendOtpToEmail(email, token);
         return {
           success: true,
@@ -24,18 +25,17 @@ const PasswordService = {
     }
   },
 
-  updatePassword: async (email, newPassword) => {
-    const passwordValidatorInfo = PasswordValidator.validate({ password });
+  updatePassword: async (userId, newPassword) => {
+    const passwordValidatorInfo = PasswordValidator.validate({
+      password: newPassword,
+    });
     if (passwordValidatorInfo?.error) {
       return { error: passwordValidatorInfo?.error?.details[0]?.message };
     }
 
     try {
-      const user = await UserRepository.getUserByEmail(email);
-      if (!user) {
-        return { error: Errors.NotRegisterdEmail };
-      }
-      await UserRepository.updatePassword(email, newPassword);
+      const hashedPassword = await encryptPassword(newPassword);
+      await UserRepository.updatePassword(userId, hashedPassword);
       return { success: true };
     } catch (error) {
       throw error;

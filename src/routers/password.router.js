@@ -29,10 +29,11 @@ passwordRouter.post("/forgot", async (req, res) => {
 });
 
 passwordRouter.post("/update", verifyToken, async (req, res) => {
-  const { email, newPassword } = req.body;
+  const { newPassword } = req.body;
+  const userId = req.userId;
 
   try {
-    const results = await PasswordService.updatePassword(email, newPassword);
+    const results = await PasswordService.updatePassword(userId, newPassword);
 
     if (results.error) {
       return res.status(400).json({ error: results.error });
