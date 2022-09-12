@@ -10,7 +10,7 @@ const hashUserPassword = async (password) => {
     const hashPassword = await bcrypt.hashSync(password, salt);
     return hashPassword;
   } catch (e) {
-    return e;
+    throw e;
   }
 };
 
@@ -26,7 +26,7 @@ const checkUserEmail = async (email) => {
       return false;
     }
   } catch (e) {
-    return e;
+    throw e;
   }
 };
 
@@ -63,6 +63,14 @@ const createToken = (email) => {
   });
 };
 
+const checkPassword = async (password, userPassword) => {
+  try {
+    return await bcrypt.compareSync(password, userPassword);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const handleLogin = async (email, password) => {
   try {
     const isEmailExist = await checkUserEmail(email);
@@ -79,8 +87,9 @@ const handleLogin = async (email, password) => {
       attributes: ["email", "password"],
     });
 
-    const checkPassword = await bcrypt.compareSync(password, user.password);
-    if (checkPassword) {
+    const checkedPassword = await checkPassword(password, user.password);
+    // console.log("checkedPassword >>>>", checkedPassword);
+    if (checkedPassword) {
       const token = await createToken(user.email);
       return {
         errCode: 0,
@@ -172,49 +181,62 @@ const forgotPassword = async (email) => {
   }
 };
 
-const resetPassword = async (token, newPassword) => {
-  return new Promise((resolve, reject) => {
-    try {
-      jwt.verify(token, process.env.TOKEN_SECRET, async (err, decoded) => {
-        if (err) {
-          resolve({
-            errCode: 1,
-            errMessage: `Failed to authenticate token`,
-          });
-        } else {
-          const email = decoded.email;
-          const user = await db.User.findOne({
-            where: { email },
-            raw: false,
-          });
-
-          if (user) {
-            const hashPassword = await hashUserPassword(newPassword);
-
-            user.password = hashPassword;
-
-            await user.save();
-            resolve({
-              errCode: 0,
-              message: `Reset password for user successfully`,
-            });
-          } else {
-            resolve({
-              errCode: 1,
-              errMessage: `User not found`,
-            });
-          }
-        }
-      });
-    } catch (e) {
-      reject(e);
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return;
+    } else {
+      // console.log("decoded token: " + decoded.email);
+      return decoded.email;
     }
   });
 };
 
+const resetPassword = async (token, newPassword) => {
+  try {
+    const email = await verifyToken(token);
+    // console.log("email >>", email);
+    if (email === undefined) {
+      return {
+        errCode: 1,
+        errMessage: `Failed to authenticate token`,
+      };
+    }
+
+    const user = await db.User.findOne({
+      where: { email },
+      raw: false,
+    });
+
+    if (user) {
+      const hashPassword = await hashUserPassword(newPassword);
+
+      user.password = hashPassword;
+
+      await user.save();
+      return {
+        errCode: 0,
+        message: `Reset password for user successfully`,
+      };
+    } else {
+      return {
+        errCode: 1,
+        errMessage: `User not found`,
+      };
+    }
+  } catch (e) {
+    throw e;
+  }
+};
+
 module.exports = {
+  hashUserPassword,
+  checkUserEmail,
   createNewUser,
+  createToken,
+  checkPassword,
   handleLogin,
   forgotPassword,
+  verifyToken,
   resetPassword,
 };
