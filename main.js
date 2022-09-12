@@ -5,7 +5,7 @@ const bootstrap = async () => {
   const express = require('express')
   const registerRouter = require('./src/controller/registerController') 
   const loginRouter = require('./src/controller/loginController')
-  const passwordRouter = require('./src/controller/passwordController')
+  const passwordRouter = require('./src/controller/resetPasswordUIController')
   const requireResetPassword = require('./src/controller/requireResetPasswordController')
   const resetPassword = require('./src/controller/resetPasswordController')
 

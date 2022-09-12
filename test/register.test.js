@@ -31,7 +31,6 @@ test('Register service scucess: ', async () => {
     expect(true).toEqual(true)
   }
   catch (err) {
-    console.log(err)
     expect(true).toEqual(false)
   }
 })

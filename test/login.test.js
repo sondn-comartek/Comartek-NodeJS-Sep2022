@@ -38,7 +38,6 @@ test('Login service success: expect output is jwt string', async () => {
 
 test('Login service fail(invalid email): expect throw invaliddata exception', async () => {
   try {
-    const exampleOutput = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiZHVvbmd2YW5naWFuZ2hoYmcxNTJAZ21haWwuY29tIn0sImlhdCI6MTY2Mjk1MTYyNywiZXhwIjoxNjYzMjEwODI3fQ.IGVwlnGpRqn9psvYzmZZR_43upRtlEATKHFeKpIvEns'
 
     process.env.JWT_KEY = "giangdv@comartek.com"
     const email = 'duongvangianghhbg152@gmail.com', password = 'G123456'

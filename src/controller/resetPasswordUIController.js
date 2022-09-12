@@ -4,10 +4,6 @@ const path    = require('path');
 
 const UserModel   = require('../model/user')
 const router      = express.Router()
-
-
-
-
 router.get('/password/reset/:resetToken', async (req, res, next) => {
   try {
     const token = req.params.resetToken
