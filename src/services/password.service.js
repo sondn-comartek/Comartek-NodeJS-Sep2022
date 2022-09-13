@@ -27,10 +27,9 @@ const modifyUserPwd = ( user, password ) => {
     typeof password !== 'string' ||
     user.constructor !== Object
   ) throw new Error(errors.inputInvalid)
-  const cloneUser = deepCloneObj(user);
-  cloneUser.password??='undifined'
-  cloneUser.password=password;
-  return user;
+  const newUser = deepCloneObj(user);
+  newUser.password=password ;
+  return newUser ;
 };
 
 const checkPwdIsSame = (currentPwd, newPwd) => {
@@ -67,13 +66,10 @@ const resetPwdService = async (accessToken) => {
   }
 };
 
-const updatePwdService = async (authHeader, passwords) => {
-  if(!authHeader || !passwords) throw new Error(errors.inputIsNull)
+const updatePwdService = async (email , passwords) => {
+  if(!passwords) throw new Error(errors.inputIsNull)
   const { currentPwd , newPwd } = passwords;
   try {
-    checkPwdIsSame( currentPwd , newPwd);
-    const accessToken = getTokenInAuthHeader(authHeader);
-    const { email } = verifyToken(accessToken).accessToken();
     const { user , error } = await findUserByEmail(email);
     if(error) throw new Error(errors.userNotExisted)
     await checkPwdIsCorrect( currentPwd , user.password );

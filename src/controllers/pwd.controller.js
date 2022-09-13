@@ -39,7 +39,7 @@ const forgotPwd = async (req, res, next) => {
   
   const updatePwd = async (req, res, next) => {
     try {
-      await updatePwdService( req.headers.authorization , req.body )
+      await updatePwdService( req.user , req.body)
       return res.status(201).json({
         success: true,
         message: messages.updatePwdSucess,

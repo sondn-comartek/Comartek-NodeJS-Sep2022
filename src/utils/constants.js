@@ -22,7 +22,8 @@ const errors = {
   userExisted: "User have been existed!",
   userNotFound: "Can not found user!",
   inputInvalid : "Invalid input!" ,
-  inputIsNull : "Input is null!"
+  inputIsNull : "Input is null!" ,
+  conversationNotFound : "Conversation can not found!"
 };
 
 const messages = {
@@ -36,8 +37,9 @@ const messages = {
   resetPwdFail: "Reset password failed!",
   updatePwdSucess: "Updated password successfully!",
   updatePwdFail: "Updated password failed!",
-  somethingFail: "oops, something wrong here!",
-  somethingSuccess: "sucessfully!",
+  somethingFail: "Oops, something wrong here!",
+  somethingSuccess: "Sucessfully!",
+  createConversationSuccess : "Create success conversation!"
 };
 
 export { env, errors, messages };
