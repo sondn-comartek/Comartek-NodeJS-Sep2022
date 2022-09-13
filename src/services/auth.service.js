@@ -60,7 +60,7 @@ const AuthService = {
       const user = await UserRepository.getUserByEmail(email);
       if (user) {
         if (await comparePassword(password, user.password)) {
-          const token = createToken({ id: user._id });
+          const token = createToken({ userId: user._id });
           return { token, user };
         }
         return {
