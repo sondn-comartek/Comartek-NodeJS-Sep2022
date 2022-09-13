@@ -44,7 +44,7 @@ exports.signup = async (req, res) => {
                 message: "Password must be match password confirm"
             })
         }
-        await this.hashPassword(password)
+        password = await bcrypt.hash(password, 12)
         const user = await User.create({
             email,
             password
@@ -65,8 +65,9 @@ exports.login = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const user = this.checkUserEmail(email)
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        const user = await this.checkUserEmail(email)
+        const check = await bcrypt.compare(password, user.password)
+        if (!user || !(check)) {
             return res.status(400).json({
                 error: "Invalid email or password"
             })
