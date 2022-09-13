@@ -31,6 +31,7 @@
     "mongodb": "^4.9.1",
     "node-mailjet": "^5.1.1",
     "nodemailer": "^6.7.8",
+    "socket.io": "^4.5.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {

@@ -36,7 +36,7 @@ const login=async (req,res,next)=>{
     console.log({msg:`${email} has login`,tokenLong,tokenShort})
 }
 const forgotPass=async (req,res,next)=>{
-    const {email}=req.user
+     const {email}=req.user
     const db=(await connectDB).db("app")
     const collection=db.collection("account")
     const rs=await collection.findOne({email})
@@ -64,7 +64,15 @@ const updatePass=async (req,res,next)=>{
     console.log(rs)
     res.status(200).json({msg:"update password complete"})
 }   
+const chat=(req,res,next)=>{
+
+}
+const getAllClientConnect=(req,res,next)=>{
+
+} 
 module.exports={
+    chat,
+    getAllClientConnect,
     register,
     login,
     forgotPass,
