@@ -2,9 +2,10 @@ const app = require('express')()
 const express = require('express')
 const http = require('http')
 const route = require('./src/controller/controller')
-const dotevn = require('dotenv').config()
+require('dotenv').config()
 const mongoose = require('mongoose')
 const DB = process.env.DATABASE
+
 
 http.createServer(app)
 mongoose.connect(
