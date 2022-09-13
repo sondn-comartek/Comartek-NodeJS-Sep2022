@@ -20,13 +20,11 @@ test('Require reset password: scuccess', async () => {
     process.env.SERVER_HOST = "http://localhost:3000"
     const emailSender = require('../src/config/emailSender')
     emailSender.mockResolvedValue(1)
-    UserModel.findAll = async (data) =>
+    UserModel.find = async (data) =>
       [
         {
-          dataValues: {
             email: 'duongvangianghhbg152@gmail.com',
             password: "hashedPassword"
-          }
         }
       ]
     process.env.JWT_KEY = "giangdv@comartek.com"

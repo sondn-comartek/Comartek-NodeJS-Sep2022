@@ -18,7 +18,7 @@ test('Register service scucess: ', async () => {
     process.env.JWT_KEY = "giangdv@comartek.com"
 
 
-    UserModel.findAll = async (data) =>
+    UserModel.find = async (data) =>
       [
       ]
     UserModel.create = async (data) => {

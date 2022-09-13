@@ -8,12 +8,10 @@ const InvalidData = require('../exception/invaiddata')
 
 module.exports = async (email, password) => {
   const secretKey = process.env.JWT_KEY
-  const usersMatchEmail = await UserModel.findAll({
-    where: {
-      email: email,
-    }
-  }).
-  then(raw => raw[0]?.dataValues)
+  const usersMatchEmail = await UserModel.find({
+      email: email
+  })
+  .then(raw => raw[0])
   if (!usersMatchEmail)
     throw new InvalidData()
   const hashedPassword = usersMatchEmail.password

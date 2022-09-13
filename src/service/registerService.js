@@ -3,10 +3,8 @@ const EmailExisted = require('../exception/emailexisted');
 
 const UserModel = require('../model/user')
 module.exports = async (email, password) => {
-  const usersMatchEmail = await UserModel.findAll({
-    where: {
-      email: email,
-    }
+  const usersMatchEmail = await UserModel.find({
+    email: email
   })
   if(usersMatchEmail.length != 0) 
     throw new EmailExisted()

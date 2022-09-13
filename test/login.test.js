@@ -17,13 +17,11 @@ test('Login service success: expect output is jwt string', async () => {
     process.env.JWT_KEY = "giangdv@comartek.com"
     const email = 'duongvangianghhbg152@gmail.com', password = 'G123456'
     const hashedPassword = await bcrypt.hash(password, 10)
-    UserModel.findAll = async (data) =>
+    UserModel.find = async (data) =>
       [
         {
-          dataValues: {
             email: email,
             password: hashedPassword
-          }
         }
       ]
 
@@ -32,6 +30,7 @@ test('Login service success: expect output is jwt string', async () => {
     expect(jwt.length).toEqual(exampleOutput.length)
   }
   catch (err) {
+    console.log(err)
     expect(true).toEqual(false)
   }
 })
@@ -41,7 +40,7 @@ test('Login service fail(invalid email): expect throw invaliddata exception', as
 
     process.env.JWT_KEY = "giangdv@comartek.com"
     const email = 'duongvangianghhbg152@gmail.com', password = 'G123456'
-    UserModel.findAll = async (data) =>
+    UserModel.find = async (data) =>
       [
       ]
 
@@ -61,13 +60,11 @@ test('Login service fail(invalid password): expect throw invaliddata exception',
     process.env.JWT_KEY = "giangdv@comartek.com"
     const email = 'duongvangianghhbg152@gmail.com', password = 'G123456'
     const hashedPassword = await bcrypt.hash(password, 10)
-    UserModel.findAll = async (data) =>
+    UserModel.find = async (data) =>
       [
         {
-          dataValues: {
             email: email,
             password: hashedPassword
-          }
         }
       ]
 

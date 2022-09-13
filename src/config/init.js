@@ -1,6 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv')
 const db = require('./sequelize')
+const mongoose = require('mongoose');
+
 
 const init = async () => {
   // init config varibles
@@ -18,12 +20,12 @@ const init = async () => {
       }
     },
   );
-  db.init(sequelize)
-  await sequelize.authenticate().then(() => {
-    console.log('Connection to Database has been established successfully.');
-  }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
-  });
+  await mongoose.connect('mongodb://localhost:27017/test');
+  if(mongoose.connection.readyState) 
+    console.log('connected to mongo database')
+  else 
+    console.log('fail to connect with mongo db')
+
 }
 
 module.exports = init

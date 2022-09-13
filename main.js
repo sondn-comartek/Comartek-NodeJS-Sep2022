@@ -1,4 +1,5 @@
 const init = require('./src/config/init')
+const socketioChatController = require('./src/controller/socketioChatController')
 const bootstrap = async () => {
   await init()
 
@@ -8,11 +9,18 @@ const bootstrap = async () => {
   const passwordRouter = require('./src/controller/resetPasswordUIController')
   const requireResetPassword = require('./src/controller/requireResetPasswordController')
   const resetPassword = require('./src/controller/resetPasswordController')
-
+  const socketioauth = require('./src/auth/socketioauth')
+  const socketioCon     = require('./src/controller/socketioChatController')
 
   const app = express()
+  const http = require('http')
+  const server = http.createServer(app)
+  const {Server} = require("socket.io")
+  const io = new Server(server);
   const port = process.env.port || 3000
   
+
+
   app.use(express.urlencoded({extended: true}))
   app.use(express.json())
   app.use(express.static('public'))
@@ -22,7 +30,13 @@ const bootstrap = async () => {
   app.use(requireResetPassword)
   app.use(resetPassword)
 
-  app.listen(port, () => {
+  
+
+  io.use(socketioauth);
+  
+  io.on('connection', socketioChatController )
+  
+  server.listen(port, () => {
     console.log(`Server runing on ${port}`)
   })
 }

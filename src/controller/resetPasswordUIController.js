@@ -15,12 +15,10 @@ router.get('/password/reset/:resetToken', async (req, res, next) => {
       return res.status(401).body("<H1>JWT Expired</H1>")
 
     const email = decode.data.email
-    const usersMatchEmail = await UserModel.findAll({
-      where: {
+    const usersMatchEmail = await UserModel.find({
         email: email,
-      }
     })
-    const userUpdatedAt = new Date(usersMatchEmail[0].dataValues.updatedAt)
+    const userUpdatedAt = new Date(usersMatchEmail[0].updatedAt)
     const requestDate = new Date(decode.data.requestDate)
     if (requestDate < userUpdatedAt)
       return res.status(401).send("<H1>JWT Expired</H1>")

@@ -8,8 +8,8 @@ const router      = express.Router()
 
 router.put('/password/reset', async (req, res, next) => {
   try {
-    const token = req.body.token
-    const password = req.body.password
+    const {token, password} = req.body
+    
     const secretKey = process.env.JWT_KEY
 
     const decode = jwt.verify(token, secretKey)
@@ -18,14 +18,11 @@ router.put('/password/reset', async (req, res, next) => {
     }
 
     const email = decode.data.email
-    const usersMatchEmail = await UserModel.findAll({
-      where: {
+    const usersMatchEmail = await UserModel.find({
         email: email,
-      }
     })
-
-    const userUpdatedAt = new Date(usersMatchEmail[0].dataValues.updatedAt)
-    const userID = usersMatchEmail[0].dataValues.id
+    const userUpdatedAt = new Date(usersMatchEmail[0].updatedAt)
+    const userID = usersMatchEmail[0].id
     const requestDate = new Date(decode.data.requestDate)
 
     if (requestDate < userUpdatedAt)
@@ -40,7 +37,8 @@ router.put('/password/reset', async (req, res, next) => {
       })
     return res.status(200).json({message: "update password sucess"})
   } catch (err) {
-    console.log(err)
+    if(err instanceof jwt.JsonWebTokenError) 
+      return res.status(400).json({message: "jwt err"})
     return res.status(500).json({ message: "Server Err" })
   }
 

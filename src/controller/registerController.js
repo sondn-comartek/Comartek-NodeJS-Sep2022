@@ -1,7 +1,4 @@
 const express = require("express")
-const bcrypt = require('bcrypt');
-
-const UserModel = require('../model/user');
 const registerService = require("../service/registerService");
 const EmailExisted = require("../exception/emailexisted");
 

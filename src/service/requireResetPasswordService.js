@@ -7,10 +7,8 @@ const InvalidData = require('../exception/invaiddata')
 
 
 module.exports = async (email) => {
-  const usersMatchEmail = await UserModel.findAll({
-    where: {
+  const usersMatchEmail = await UserModel.find({
       email: email,
-    }
   })
   if (usersMatchEmail.length === 0)
     throw new InvalidData()
