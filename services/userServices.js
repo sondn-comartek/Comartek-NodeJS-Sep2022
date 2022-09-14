@@ -25,9 +25,14 @@ const signPasswordRandom = (length) => {
   }
   return result;
 };
+const verifyToken = (token) => {
+  const verifyInfo = jwt.verify(token, process.env.KEY);
+  return verifyInfo;
+};
 module.exports = {
   hashPassword,
   comparePassword,
   signToken,
   signPasswordRandom,
+  verifyToken,
 };

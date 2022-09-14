@@ -30,8 +30,10 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   const isMatch = await comparePassword(candidatePassword, this.password);
   return isMatch;
 };
-userSchema.methods.createJWT = signToken({
-  id: this._id,
-  username: this.username,
-});
+userSchema.methods.createJWT = function () {
+  return signToken({
+    id: this._id,
+    username: this.username,
+  });
+};
 module.exports = mongoose.model("User", userSchema);
