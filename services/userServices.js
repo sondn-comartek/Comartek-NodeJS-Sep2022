@@ -15,7 +15,7 @@ const signToken = (info) => {
   const token = jwt.sign(info, key, { expiresIn: expiresIn });
   return token;
 };
-const signPasswordRandom = (length) => {
+const signStringRandom = (length) => {
   let result = "";
   let characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -29,10 +29,11 @@ const verifyToken = (token) => {
   const verifyInfo = jwt.verify(token, process.env.KEY);
   return verifyInfo;
 };
+
 module.exports = {
   hashPassword,
   comparePassword,
   signToken,
-  signPasswordRandom,
+  signStringRandom,
   verifyToken,
 };

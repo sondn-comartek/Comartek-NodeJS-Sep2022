@@ -5,6 +5,7 @@ const {
   login,
   forgotPassword,
   changePassword,
+  makeRoomChat,
 } = require("../controllers/user");
 const auth = require("../middleware/auth");
 const { handleValidate } = require("../middleware/handleError");
@@ -34,4 +35,5 @@ router
   .put(auth, changePassword);
 router.post("/forgot", forgotPassword);
 router.put("/change", auth, changePassword);
+router.get("/make/room", auth, makeRoomChat);
 module.exports = router;

@@ -10,16 +10,19 @@ const httpServer = require("http").createServer(app);
 const io = new Server(httpServer);
 
 io.use((socket, next) => {
-  const token = socket.handshake.headers.auth;
+  const token = socket.handshake.headers.token;
   if (token) {
+    let roomIF = verifyToken(token);
+    socket.decode = roomIF;
     next();
   } else {
     throw Error("unauthorized");
   }
-});
-io.on("connection", (socket) => {
+}).on("connection", (socket) => {
+  const roomID = socket.decode?.room_id;
+  socket.join(roomID);
   socket.on("chatting", (msg) => {
-    io.emit("chatting", msg);
+    io.to(roomID).emit("chatting", msg);
   });
 });
 app.use(bodyParser.json());

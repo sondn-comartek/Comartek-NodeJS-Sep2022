@@ -31,7 +31,7 @@
 							"   const result = pm.response.json()",
 							"   pm.expect(result?.messsage?.status).is.a('string')",
 							"   pm.expect(result?.message?.token).is.a('string')",
-							"})",
+							"// })",
 							"pm.test(\"login test format response error 401\", function(){",
 							"   const result = pm.response.json()",
 							"   pm.expect(pm.response.code).to.eql(401)",
@@ -47,7 +47,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"nguyenlinggfxxxfgg@gmail.com\",\n    \"password\": \"12345678x\"\n}",
+					"raw": "{\n    \"email\": \"nguyenling@gmail.com\",\n    \"password\": \"rootrootroot\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -55,9 +55,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/login",
+					"raw": "{{baseUrl_api}}/login",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl_api}}"
 					],
 					"path": [
 						"login"
@@ -73,18 +73,18 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"register test status response\", function(){",
-							"    pm.expect(pm.response.code).to.be.oneOf([200,201, 401])",
-							"})",
-							"pm.test(\"register test fomat response when success\", function(){",
-							"    const result = pm.response.json()",
-							"    pm.expect(result?.message?.status).to.eql(\"Created\")",
-							"    pm.expect(result?.message?.user).to.be.an('object')",
-							"})",
-							"pm.test(\"register test fomat response when error\", function(){",
-							"    const result = pm.response.json()",
-							"    pm.expect(result?.message?.status).to.eql(\"Conflict\")",
-							"})"
+							"// pm.test(\"register test status response\", function(){",
+							"//     pm.expect(pm.response.code).to.be.oneOf([200,201, 401])",
+							"// })",
+							"// pm.test(\"register test fomat response when success\", function(){",
+							"//     const result = pm.response.json()",
+							"//     pm.expect(result?.message?.status).to.eql(\"Created\")",
+							"//     pm.expect(result?.message?.user).to.be.an('object')",
+							"// })",
+							"// pm.test(\"register test fomat response when error\", function(){",
+							"//     const result = pm.response.json()",
+							"//     pm.expect(result?.message?.status).to.eql(\"Conflict\")",
+							"// })"
 						],
 						"type": "text/javascript"
 					}
@@ -95,7 +95,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"nguyenling02@gmail.com\",\n    \"username\": \"nguyenling\",\n    \"password\": \"rootrootroot\",\n    \"re_password\": \"rootrootroot\"\n}",
+					"raw": "{\n    \"email\": \"nguyenling@gmail.com\",\n    \"username\": \"nguyenling\",\n    \"password\": \"rootrootroot\",\n    \"re_password\": \"rootrootroot\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -103,9 +103,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/add/user",
+					"raw": "{{baseUrl_api}}/add/user",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl_api}}"
 					],
 					"path": [
 						"add",
@@ -151,9 +151,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/forgot",
+					"raw": "{{baseUrl_api}}/forgot",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl_api}}"
 					],
 					"path": [
 						"forgot"
@@ -210,9 +210,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/change",
+					"raw": "{{baseUrl_api}}/change",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl_api}}"
 					],
 					"path": [
 						"change"
@@ -250,13 +250,70 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/temp/{{token_forgot}}",
+					"raw": "{{baseUrl_api}}/temp/{{token_forgot}}",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl_api}}"
 					],
 					"path": [
 						"temp",
 						"{{token_forgot}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make room chat",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.test(\"login test status response\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401])",
+							"    const token = pm.response.json()",
+							"    pm.environment.set(\"token_booking_room\", token?.message?.token)",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response test\", function(){ ",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401])",
+							"    const token = pm.response.json()?.room?.token",
+							"    pm.environment.set('token_booking_room', token)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_login}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl_api}}/make/room",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"make",
+						"room"
 					]
 				}
 			},

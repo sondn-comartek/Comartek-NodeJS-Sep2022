@@ -2,7 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const nodemailer = require("nodemailer");
-const { signPasswordRandom } = require("../services/userServices");
+const { signStringRandom, signToken } = require("../services/userServices");
 const register = async (req, res) => {
   let { email, username, password, re_password } = req.body;
   if (password == re_password) {
@@ -106,7 +106,6 @@ const sendMailer = async (target, message) => {
 
 const forgotPassword = async (req, res) => {
   let { email } = req.body;
-  const passwordRand = signPasswordRandom(8);
   const userByEmail = await User.findOne({ email: email }).select(
     "_id username email"
   );
@@ -131,4 +130,26 @@ const forgotPassword = async (req, res) => {
     .status(StatusCodes.CONFLICT)
     .json({ status: ReasonPhrases.CONFLICT, message: "forgot password fail" });
 };
-module.exports = { register, login, forgotPassword, changePassword };
+const makeRoomChat = (req, res) => {
+  let chairManID = res.locals.user;
+  const roomID = signStringRandom(8);
+  const roomInfo = {
+    chair_man: chairManID,
+    room_id: roomID,
+  };
+  try {
+    const roomToken = signToken(roomInfo);
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "make room success", room: { token: roomToken } });
+  } catch (error) {
+    res.status(StatusCodes.CONFLICT).json("oop something wrong");
+  }
+};
+module.exports = {
+  register,
+  login,
+  forgotPassword,
+  changePassword,
+  makeRoomChat,
+};
