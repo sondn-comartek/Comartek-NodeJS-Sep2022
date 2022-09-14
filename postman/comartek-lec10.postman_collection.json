@@ -1,0 +1,512 @@
+{
+	"info": {
+		"_postman_id": "a24e7f34-b8be-4791-a5a3-ec6cc1adcfc2",
+		"name": "comartek-lec10",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16033304"
+	},
+	"item": [
+		{
+			"name": "register",
+			"item": [
+				{
+					"name": "register-success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const message = pm.response.json().message;\r",
+									"\r",
+									"pm.test(\"Error code response equal 0\", function () {\r",
+									"    pm.expect(errCode).to.eql(0);\r",
+									"});\r",
+									"pm.test(\"Create new user successfully\", function () {\r",
+									"    pm.expect(message).to.include(\"Create new user successfully\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomEmail = pm.variables.replaceIn('{{$randomEmail}}');\r",
+									"const randomPassword = pm.variables.replaceIn('{{$randomPassword}}');\r",
+									"const randomUserName = pm.variables.replaceIn('{{$randomUserName}}');\r",
+									"\r",
+									"pm.environment.set(\"randomEmail\", randomEmail);\r",
+									"pm.environment.set(\"randomPassword\", randomPassword);\r",
+									"pm.environment.set(\"randomUserName\", randomUserName);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"password\": \"{{randomPassword}}\",\r\n    \"username\": \"{{randomUserName}}\",\r\n    \"passwordConfirm\": \"{{randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/register",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register-email-existed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const errMessage = pm.response.json().errMessage;\r",
+									"\r",
+									"pm.test(\"Error code response equal 1\", function () {\r",
+									"    pm.expect(errCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email is existed\", function () {\r",
+									"    pm.expect(errMessage).to.include(\"Your email address is already\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email7@gmail.com\",\r\n    \"password\": \"TawKKO4mC4R_6UL\",\r\n    \"username\": \"Kaylie61\",\r\n    \"passwordConfirm\": \"TawKKO4mC4R_6UL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/register",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "login-success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const message = pm.response.json().message;\r",
+									"\r",
+									"const token = pm.response.json().token;\r",
+									"\r",
+									"pm.test(\"Token received successfully\", function () {\r",
+									"    pm.expect(token).to.be.a('string');\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"token\", token);\r",
+									"\r",
+									"pm.test(\"Error code response equal 0\", function () {\r",
+									"    pm.expect(errCode).to.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login successfully\", function () {\r",
+									"    pm.expect(message).to.include(\"Login successfully\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email7@gmail.com\",\r\n    \"password\": \"7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/login",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-email-is-not-exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const errMessage = pm.response.json().errMessage;\r",
+									"\r",
+									"pm.test(\"Error code response equal 1\", function () {\r",
+									"    pm.expect(errCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email is not exist in system\", function () {\r",
+									"    pm.expect(errMessage).to.include(\"Your email isn't exist in system\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"emailnotexist@gmail.com\",\r\n    \"password\": \"7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/login",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-wrong-password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const errMessage = pm.response.json().errMessage;\r",
+									"\r",
+									"pm.test(\"Error code response equal 1\", function () {\r",
+									"    pm.expect(errCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Wrong password\", function () {\r",
+									"    pm.expect(errMessage).to.include(\"Wrong password\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email7@gmail.com\",\r\n    \"password\": \"wrongPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/login",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "forgot-password",
+			"item": [
+				{
+					"name": "forgot-password-success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const message = pm.response.json().message;\r",
+									"const tokenResetPassword = pm.response.json().token;\r",
+									"\r",
+									"pm.test(\"Token received  successfully\", function () {\r",
+									"    pm.expect(tokenResetPassword).to.be.a('string');\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"tokenResetPassword\", tokenResetPassword);\r",
+									"\r",
+									"pm.test(\"Error code response equal 0\", function () {\r",
+									"    pm.expect(errCode).to.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Send email successfully\", function () {\r",
+									"    pm.expect(message).to.include(\"Send email successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email1@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/forgot-password",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password-email-not-exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const errMessage = pm.response.json().errMessage;\r",
+									"\r",
+									"pm.test(\"Error code response equal 1\", function () {\r",
+									"    pm.expect(errCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email is not exist in system\", function () {\r",
+									"    pm.expect(errMessage).to.include(\"Your email isn't exist in system\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"emailnotexist@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/forgot-password",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reset-password",
+			"item": [
+				{
+					"name": "reset-password-success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const message = pm.response.json().message;\r",
+									"\r",
+									"pm.test(\"Error code response equal 0\", function () {\r",
+									"    pm.expect(errCode).to.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Reset password for user successfully\", function () {\r",
+									"    pm.expect(message).to.include(\"Reset password for user successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"{{tokenResetPassword}}\",\r\n    \"newPassword\": \"{{randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/reset-password",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password-failed-auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const errCode = pm.response.json().errCode;\r",
+									"const errMessage = pm.response.json().errMessage;\r",
+									"\r",
+									"pm.test(\"Error code response equal 1\", function () {\r",
+									"    pm.expect(errCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Failed to authenticate token\", function () {\r",
+									"    pm.expect(errMessage).to.include(\"Failed to authenticate token\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"wrongToken\",\r\n    \"newPassword\": \"{{randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/reset-password",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
