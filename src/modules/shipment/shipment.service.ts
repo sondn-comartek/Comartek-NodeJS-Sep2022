@@ -7,7 +7,7 @@ import { Shipment } from './interfaces/shipment.interface';
 import { DataQuote } from './dto/get-quote.dto';
 import { GetShipmentDto } from './dto/get-shipment.dto'
 import { CreateShipmentDto } from './dto/create-shipment.dto';;
-import RandomTenNumber from 'src/ultils/random-ten-number.ultil';
+import RandomTenNumber from 'src/ultils/random-number.ultil';
 import * as Convert from 'convert-units';
 import { DeteleShipmentDto } from './dto/delete-shipment.dto';
 
