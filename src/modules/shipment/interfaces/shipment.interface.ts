@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Unit } from 'convert-units';
 
 export interface Shipment extends Document {
     ref: string ,
@@ -33,11 +34,11 @@ export interface Shipment extends Document {
             height: number,
             width: number,
             length: number,
-            unit: string
+            unit: Unit
         },
         grossWeight: {
             amount: number,
-            unit: string
+            unit: Unit
         }
     },
     cost : number  ,

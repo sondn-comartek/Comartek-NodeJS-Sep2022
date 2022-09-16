@@ -7,7 +7,7 @@ import { Shipment } from './interfaces/shipment.interface';
 import { DataQuote } from './dto/get-quote.dto';
 import { GetShipmentDto } from './dto/get-shipment.dto'
 import { CreateShipmentDto } from './dto/create-shipment.dto';;
-import RandomTenNumber from 'src/ultils/random-number.ultil';
+import RandomTenNumber from 'src/ultils/gen-random-number.ultil';
 import * as Convert from 'convert-units';
 import { DeteleShipmentDto } from './dto/delete-shipment.dto';
 
@@ -44,23 +44,17 @@ export class ShipmentService {
   }
 
   async GetQuote(DataQuote: DataQuote): Promise<Quote> {
-    const Amount: number = DataQuote.package?.grossWeight?.amount;
-    const WeightByGam: number = Convert(Amount).from('kg').to('g');
-    const Rates = await this.RateModel.find({}).lean()
-    let Price: number;
-    const RatesHaveWeightLowerMap: Object = {}
-    const WeightsLowerMap: number[] = []
-    for (let i = 0; i < Rates.length; i++) {
-      if (Rates[i].weight <= WeightByGam) {
-        const key: string = Rates[i].weight.toString()
-        RatesHaveWeightLowerMap[key] = i;
-        WeightsLowerMap.push(Rates[i].weight)
-      }
-    }
-    if (Object.keys(RatesHaveWeightLowerMap).length === 0) return await this.StoreQuote(12.43)
-    const index: number = RatesHaveWeightLowerMap[Math.max(...WeightsLowerMap)]
-    Price = Rates[index]?.price;
-    return await this.StoreQuote(Price);
+    const Amount = DataQuote.package?.grossWeight?.amount;
+    const Unit = DataQuote.package?.grossWeight?.unit;
+    const WeightByGam: number = Convert(Amount).from(Unit).to('g');
+    const Rates = await this.RateModel
+      .find({
+        weight: { $lte: WeightByGam } })
+      .lean()
+      .sort( { price : 1 })
+    if (Rates.length === 0) return await this.StoreQuote(12.43)
+    const Price = Rates[Rates.length - 1].price
+    return await this.StoreQuote(Price) ;
   }
 
   async CreateShipment(CreateShipmentDto: CreateShipmentDto): Promise<Object> {
@@ -76,7 +70,7 @@ export class ShipmentService {
     return Shipment
   }
 
-  async DeleteShipment(DeteleShipmentDto: DeteleShipmentDto) {
+  async DeleteShipment(DeteleShipmentDto: DeteleShipmentDto): Promise<Object> {
     const Shipment: Shipment = await this.ShipmentModel.findOneAndDelete(DeteleShipmentDto)
     if (!Shipment) return {
       status : 'NOT OK' ,

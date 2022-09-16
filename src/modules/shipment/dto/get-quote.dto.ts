@@ -10,6 +10,8 @@ import {
 
 import { Type } from 'class-transformer'
 
+import { Unit } from 'convert-units';
+
 export class OriginContact {
     @IsString()
     @IsNotEmpty()
@@ -72,7 +74,7 @@ export class PackageDimensions{
     length : number 
     @IsString()
     @IsNotEmpty()
-    unit : string
+    unit : Unit
 }
 
 export class PackageGrossWeight{
@@ -81,7 +83,7 @@ export class PackageGrossWeight{
     amount : number 
     @IsString()
     @IsNotEmpty()
-    unit : string
+    unit : Unit
 }
 
 export class Origin {
