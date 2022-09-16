@@ -8,6 +8,7 @@ import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { Quote, QuoteDocument } from '../quote/entities/quote.entity';
 @Injectable()
 export class ShipmentService {
   constructor(
@@ -91,7 +92,26 @@ export class ShipmentService {
     return `This action updates a #${id} shipment`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shipment`;
+  async remove(ref: string) {
+    try {
+      const deletedShipment = await this.shipmentModel.deleteOne({ ref: ref });
+      let deleteCounter = deletedShipment?.deletedCount;
+      if (deleteCounter > 0) {
+        return {
+          data: {
+            status: 'OK',
+            message: 'delete shipment success',
+          },
+        };
+      }
+      return {
+        data: {
+          status: 'NOK',
+          message: 'shipment not found',
+        },
+      };
+    } catch (error) {
+      throw Error(error);
+    }
   }
 }

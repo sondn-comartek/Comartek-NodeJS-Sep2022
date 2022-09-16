@@ -27,8 +27,8 @@ export class ShipmentController {
     return this.shipmentService.update(+id, updateShipmentDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shipmentService.remove(+id);
+  @Delete(':ref')
+  remove(@Param('ref') ref: string) {
+    return this.shipmentService.remove(ref);
   }
 }

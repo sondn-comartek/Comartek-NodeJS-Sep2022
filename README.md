@@ -1,9 +1,19 @@
 ###logistics shipment
 <br/>
-#quote
+#quote: create quote and return price for package
 <br/>
-/quote
+POST /quote
 <br/>
 #shipment
 <br/>
-/shipment
+crate shipment
+<br/>
+POST: /shipment
+<br/>
+info of shipment by ref code
+<br/>
+GET: /shipment/:ref
+<br/>
+delete shipment
+<br/>
+DELETE: /shipment/:ref
