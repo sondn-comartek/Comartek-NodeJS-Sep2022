@@ -14,7 +14,7 @@ export class AuthController {
     const data = await this.authService.login(createLoginRequestDto);
 
     if (data.hasOwnProperty("error")) {
-      statusCode = HttpStatus.BAD_GATEWAY;
+      statusCode = HttpStatus.BAD_REQUEST;
     } else {
       statusCode = HttpStatus.OK;
     }
@@ -28,7 +28,7 @@ export class AuthController {
     const data = await this.authService.register(createRegisterRequestDto);
 
     if (data.hasOwnProperty("error")) {
-      statusCode = HttpStatus.BAD_GATEWAY;
+      statusCode = HttpStatus.BAD_REQUEST;
     } else {
       statusCode = HttpStatus.OK;
     }

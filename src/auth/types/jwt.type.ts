@@ -1,3 +1,3 @@
 export type JWT = {
-    token: string
+    token: string;
 }

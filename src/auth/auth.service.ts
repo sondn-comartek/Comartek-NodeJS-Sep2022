@@ -5,10 +5,13 @@ import { CreateLoginRequestDto } from './dto/create-login-request.dto';
 import { CreateRegisterRequestDto } from './dto/create-register-request.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from "bcrypt"
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private readonly userEntity: Model<User>) { }
+  constructor(
+    @InjectModel(User.name) private readonly userEntity: Model<User>,
+    private readonly jwtService: JwtService) { }
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
     const { email, password } = createLoginRequestDto;
