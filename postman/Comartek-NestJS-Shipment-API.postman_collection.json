@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "013d093e-9159-453a-b151-c652d1ae522e",
+		"name": "Comartek-NestJS-Shipment-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23234120"
+	},
+	"item": [
+		{
+			"name": "Quote",
+			"item": [
+				{
+					"name": "Get quote success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resBodyJsonData = pm.response.json()?.data\r",
+									"const resCode = pm.response.code\r",
+									"const resStatus = pm.response.status\r",
+									"\r",
+									"pm.test(\"Response data is an object with 2 properties: id && amount\", () => {\r",
+									"    pm.expect(resBodyJsonData).to.have.property(\"id\")\r",
+									"    pm.expect(resBodyJsonData).to.have.property(\"amount\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Code is 200\", () => {\r",
+									"    pm.expect(resCode).to.be.equal(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status is OK\", () => {\r",
+									"    pm.expect(resStatus).to.be.equal(\"OK\")\r",
+									"})\r",
+									"\r",
+									"const quoteId = resBodyJsonData?.id\r",
+									"pm.collectionVariables.set(\"ref\", quoteId)\r",
+									"\r",
+									"postman.setNextRequest(\"Create shipment success\")\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{validCreateQuoteInput}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/quotes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get quote fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resCode = pm.response.code\r",
+									"const resStatus = pm.response.status\r",
+									"\r",
+									"pm.test(\"Code is 400\", () => {\r",
+									"    pm.expect(resCode).to.be.equal(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status is Bad Request\", () => {\r",
+									"    pm.expect(resStatus).to.be.equal(\"Bad Request\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{invalidCreateQuoteInput}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/quotes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shipment",
+			"item": [
+				{
+					"name": "Create shipment success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resBodyJsonData = pm.response.json()?.data\r",
+									"const resCode = pm.response.code\r",
+									"const resStatus = pm.response.status\r",
+									"\r",
+									"pm.test(\"Response data is an object with 3 properties: ref && cost && createdAt\", () => {\r",
+									"    pm.expect(resBodyJsonData).to.have.property(\"ref\")\r",
+									"    pm.expect(resBodyJsonData).to.have.property(\"cost\")\r",
+									"    pm.expect(resBodyJsonData).to.have.property(\"createdAt\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Code is 200\", () => {\r",
+									"    pm.expect(resCode).to.be.equal(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status is OK\", () => {\r",
+									"    pm.expect(resStatus).to.be.equal(\"OK\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"ref\": \"0000000000\",\r\n    \"origin\": {\r\n        \"contact\": {\r\n            \"name\": \"La Redoute Contact\",\r\n            \"email\": \"laredoute@example.com\",\r\n            \"phone\": \"+84 355347788\"\r\n        },\r\n        \"address\": {\r\n            \"countryCode\": \"FR\",\r\n            \"locality\": \"Anzin\",\r\n            \"postalCode\": \"59410\",\r\n            \"addressLine\": \"Rue Jean Jaures\",\r\n            \"organisation\": false\r\n        }\r\n    },\r\n    \"destination\": {\r\n        \"contact\": {\r\n            \"name\": \"Marquise de Pompadour\",\r\n            \"email\": \"marquise-de-pompadour@example.com\",\r\n            \"phone\": \"+84 355347788\"\r\n        },\r\n        \"address\": {\r\n            \"countryCode\": \"FR\",\r\n            \"locality\": \"Marseille\",\r\n            \"postalCode\": \"13006\",\r\n            \"addressLine\": \"175 Rue de Rome\" ,\r\n            \"organisation\": false\r\n\t    }     \r\n    },\r\n   \"package\": {\r\n        \"dimensions\": {\r\n           \"height\": 10,\r\n           \"width\": 10,\r\n           \"length\": 10,\r\n           \"unit\": \"cm\"\t\r\n\t    },\r\n        \"grossWeight\": {\r\n        \"amount\": 14000,\r\n        \"unit\": \"g\"\r\n        }\r\n    }\r\n}\r\n  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/shipments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create shipment fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resCode = pm.response.code\r",
+									"const resStatus = pm.response.status\r",
+									"\r",
+									"pm.test(\"Code is 400\", () => {\r",
+									"    pm.expect(resCode).to.be.equal(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status is Bad Request\", () => {\r",
+									"    pm.expect(resStatus).to.be.equal(\"Bad Request\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{invalidCreateShipmentInput}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/shipments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get shipment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/shipments/:ref",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments",
+								":ref"
+							],
+							"variable": [
+								{
+									"key": "ref",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all shipment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/shipments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete shipment success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/shipments/:ref",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments",
+								":ref"
+							],
+							"variable": [
+								{
+									"key": "ref",
+									"value": "0000000000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete shipment fail",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/shipments/:ref",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipments",
+								":ref"
+							],
+							"variable": [
+								{
+									"key": "ref",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "validCreateQuoteInput",
+			"value": "  \n    \"origin\": {\n        \"contact\": {\n            \"name\": \"La Redoute Contact\",\n            \"email\": \"laredoute@example.com\",\n            \"phone\": \"+84 355347788\"\n        },\n        \"address\": {\n            \"countryCode\": \"FR\",\n            \"locality\": \"Anzin\",\n            \"postalCode\": \"59410\",\n            \"addressLine\": \"Rue Jean Jaures\",\n            \"organisation\": false\n        }\n    },\n    \"destination\": {\n        \"contact\": {\n            \"name\": \"Marquise de Pompadour\",\n            \"email\": \"marquise-de-pompadour@example.com\",\n            \"phone\": \"+84 355347788\"\n        },\n        \"address\": {\n            \"countryCode\": \"FR\",\n            \"locality\": \"Marseille\",\n            \"postalCode\": \"13006\",\n            \"addressLine\": \"175 Rue de Rome\" ,\n            \"organisation\": false\n\t    }     \n    },\n   \"package\": {\n        \"dimensions\": {\n           \"height\": 10,\n           \"width\": 10,\n           \"length\": 10,\n           \"unit\": \"cm\"\t\n\t    },\n        \"grossWeight\": {\n        \"amount\": 14000,\n        \"unit\": \"g\"\n        }\n    }\n}\n\n  ",
+			"type": "string"
+		},
+		{
+			"key": "invalidCreateQuoteInput",
+			"value": "{}",
+			"type": "string"
+		},
+		{
+			"key": "invalidCreateShipmentInput",
+			"value": "{}",
+			"type": "string"
+		},
+		{
+			"key": "validCreateShipmentInput",
+			"value": "{   \n    \"ref\": {{ref}},\n    \"origin\": {\n        \"contact\": {\n            \"name\": \"La Redoute Contact\",\n            \"email\": \"laredoute@example.com\",\n            \"phone\": \"+84 355347788\"\n        },\n        \"address\": {\n            \"countryCode\": \"FR\",\n            \"locality\": \"Anzin\",\n            \"postalCode\": \"59410\",\n            \"addressLine\": \"Rue Jean Jaures\",\n            \"organisation\": false\n        }\n    },\n    \"destination\": {\n        \"contact\": {\n            \"name\": \"Marquise de Pompadour\",\n            \"email\": \"marquise-de-pompadour@example.com\",\n            \"phone\": \"+84 355347788\"\n        },\n        \"address\": {\n            \"countryCode\": \"FR\",\n            \"locality\": \"Marseille\",\n            \"postalCode\": \"13006\",\n            \"addressLine\": \"175 Rue de Rome\" ,\n            \"organisation\": false\n\t    }     \n    },\n   \"package\": {\n        \"dimensions\": {\n           \"height\": 10,\n           \"width\": 10,\n           \"length\": 10,\n           \"unit\": \"cm\"\t\n\t    },\n        \"grossWeight\": {\n        \"amount\": 14000,\n        \"unit\": \"g\"\n        }\n    }\n}\n  ",
+			"type": "string"
+		},
+		{
+			"key": "ref",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
