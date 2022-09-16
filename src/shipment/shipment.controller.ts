@@ -17,9 +17,9 @@ export class ShipmentController {
     return this.shipmentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shipmentService.findOne(+id);
+  @Get(':ref')
+  findOne(@Param('ref') ref: string) {
+    return this.shipmentService.findOne(ref);
   }
 
   @Patch(':id')
