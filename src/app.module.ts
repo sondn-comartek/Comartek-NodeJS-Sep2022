@@ -1,0 +1,13 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ShipmentModule } from './shipment/shipment.module';
+import { QuoteModule } from './quote/quote.module';
+@Module({
+  imports: [ShipmentModule, ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URL), QuoteModule],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
