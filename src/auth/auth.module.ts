@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserEntity } from './entities/user.entity';
 import { PassportModule } from "@nestjs/passport"
 import { JwtModule } from "@nestjs/jwt"
-import { PasswordModule } from 'src/password/password.module';
-import { UserModule } from 'src/user/user.module';
+import { PasswordModule } from '../password/password.module';
+import { UserModule } from '../user/user.module';
+import { User, UserEntity } from '../common/entities/user.entity';
 
 @Module({
   imports: [
