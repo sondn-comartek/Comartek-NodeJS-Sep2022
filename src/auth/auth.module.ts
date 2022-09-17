@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserEntity } from './entities/user.entity';
 import { PassportModule } from "@nestjs/passport"
 import { JwtModule } from "@nestjs/jwt"
+import { PasswordModule } from 'src/password/password.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { JwtModule } from "@nestjs/jwt"
         expiresIn: process.env.JWT_EXPIRATION_TIME
       }
     }),
+    PasswordModule,
+    UserModule
   ],
   controllers: [AuthController],
   providers: [AuthService]

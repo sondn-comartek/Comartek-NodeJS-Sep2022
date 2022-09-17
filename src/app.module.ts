@@ -6,6 +6,8 @@ import { ShipmentModule } from "./shipment/shipment.module";
 import { QuoteModule } from "./quote/quote.module";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from './auth/auth.module';
+import { PasswordModule } from './password/password.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { AuthModule } from './auth/auth.module';
     QuoteModule,
     ShipmentModule,
     AuthModule,
+    PasswordModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
