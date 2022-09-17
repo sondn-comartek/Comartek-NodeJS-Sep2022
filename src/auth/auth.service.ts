@@ -5,6 +5,7 @@ import { JwtService } from "@nestjs/jwt";
 import { AuthErrorMessage } from "./constants";
 import { PasswordService } from "../password/password.service";
 import { UserService } from "../user/user.service";
+import { JWTPayload } from "./interfaces/jwt-payload.interface";
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,13 @@ export class AuthService {
       );
     }
 
-    return { data: { user } };
+    const jwtPayload: JWTPayload = {
+      email,
+      role: user.role,
+    };
+    const accessToken = await this.jwtService.signAsync(jwtPayload);
+
+    return { data: { user, accessToken } };
   }
 
   async register(

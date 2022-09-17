@@ -5,9 +5,9 @@ import { AppService } from "./app.service";
 import { ShipmentModule } from "./shipment/shipment.module";
 import { QuoteModule } from "./quote/quote.module";
 import { ConfigModule } from "@nestjs/config";
-import { AuthModule } from './auth/auth.module';
-import { PasswordModule } from './password/password.module';
-import { UserModule } from './user/user.module';
+import { AuthModule } from "./auth/auth.module";
+import { PasswordModule } from "./password/password.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -22,4 +22,4 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
