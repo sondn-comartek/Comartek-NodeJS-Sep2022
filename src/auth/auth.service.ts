@@ -2,10 +2,11 @@ import { HttpException, Injectable, HttpStatus } from "@nestjs/common";
 import { CreateLoginRequestDto } from "./dto/create-login-request.dto";
 import { CreateRegisterRequestDto } from "./dto/create-register-request.dto";
 import { JwtService } from "@nestjs/jwt";
-import { AuthErrorMessage } from "./constants";
+import { AuthErrorMessage, AuthSuccessMessage } from "./constants";
 import { PasswordService } from "../password/password.service";
 import { UserService } from "../user/user.service";
 import { JWTPayload, JWT } from "../common/interfaces";
+import { User } from "../common/entities";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
     const { email, password } = createLoginRequestDto;
-    const user = await this.userService.findUserByEmail(email);
+    const user: User = await this.userService.findUserByEmail(email);
 
     if (!user) {
       throw new HttpException(
@@ -26,10 +27,8 @@ export class AuthService {
       );
     }
 
-    const isCorrectPassword = await this.passwordService.comparePassword(
-      password,
-      user.password
-    );
+    const isCorrectPassword: boolean =
+      await this.passwordService.comparePassword(password, user.password);
 
     if (!isCorrectPassword) {
       throw new HttpException(
@@ -44,7 +43,13 @@ export class AuthService {
     };
     const accessToken = await this.jwtService.signAsync(jwtPayload);
 
-    return { data: { user, accessToken } };
+    return {
+      message: AuthSuccessMessage.LoginSuccess,
+      data: {
+        user,
+        accessToken,
+      },
+    };
   }
 
   async register(
@@ -53,7 +58,7 @@ export class AuthService {
     let { name, phoneNumber, email, password } = createRegisterRequestDto;
     email = email.toLocaleLowerCase();
 
-    const registeredEmail = await this.userService.findUserByEmail(email);
+    const registeredEmail: User = await this.userService.findUserByEmail(email);
     if (registeredEmail) {
       throw new HttpException(
         AuthErrorMessage.RegisteredEmail,
@@ -70,6 +75,9 @@ export class AuthService {
       password
     );
 
-    return { data: { user: newUser } };
+    return {
+      message: AuthSuccessMessage.RegisterSuccess,
+      data: { user: newUser },
+    };
   }
 }
