@@ -5,7 +5,7 @@ import { JwtService } from "@nestjs/jwt";
 import { AuthErrorMessage } from "./constants";
 import { PasswordService } from "../password/password.service";
 import { UserService } from "../user/user.service";
-import { JWTPayload } from "./interfaces/jwt-payload.interface";
+import { JWTPayload, JWT } from "../common/interfaces";
 
 @Injectable()
 export class AuthService {

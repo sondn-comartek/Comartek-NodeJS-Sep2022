@@ -1,8 +1,10 @@
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsObject, ValidateNested } from "class-validator";
-import { CreateDestinationDto } from "../../common/dto/create-destination.dto";
-import { CreateOriginDto } from "../../common/dto/create-origin.dto";
-import { CreatePackageDto } from "../../common/dto/create-package.dto";
+import {
+  CreateDestinationDto,
+  CreateOriginDto,
+  CreatePackageDto,
+} from "../../common/dto";
 
 export class CreateQuoteDto {
   @IsNotEmpty()

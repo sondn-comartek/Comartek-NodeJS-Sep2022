@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Rate } from "../common/entities/rate.entity";
-import { WeightUnitsEnum } from "../common/enums/weight-unit.enum";
+import { Rate } from "../common/entities";
+import { WeightUnitsEnum } from "../common/enums";
 import { generateQuoteId } from "./helpers/generate-quote-id";
 import { CreateQuoteDto } from "./dto/create-quote.dto";
 
@@ -10,7 +10,7 @@ import { CreateQuoteDto } from "./dto/create-quote.dto";
 export class QuoteService {
   constructor(
     @InjectModel(Rate.name) private readonly rateEntity: Model<Rate>
-  ) { }
+  ) {}
 
   async getQuote(createQuoteDto: CreateQuoteDto): Promise<Object> {
     // const ratesData = [

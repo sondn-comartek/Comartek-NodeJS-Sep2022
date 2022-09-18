@@ -8,8 +8,7 @@ import {
 } from "class-validator";
 
 import { CreateDestinationDto } from "../../common/dto/create-destination.dto";
-import { CreateOriginDto } from "../../common/dto/create-origin.dto";
-import { CreatePackageDto } from "../../common/dto/create-package.dto";
+import { CreateOriginDto, CreatePackageDto } from "../../common/dto";
 
 export class CreateShipmentDto {
   @IsNotEmpty()

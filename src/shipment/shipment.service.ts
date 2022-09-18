@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import { CreateShipmentDto } from "./dto/create-shipment.dto";
 import { Rate } from "../common/entities/rate.entity";
 import { Shipment } from "./entities/shipment.entity";
-import { WeightUnitsEnum } from "../common/enums/weight-unit.enum";
+import { WeightUnitsEnum } from "../common/enums";
 import { ShipmentErrorMessage } from "./constants";
 
 @Injectable()
