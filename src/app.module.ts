@@ -5,8 +5,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ShipmentModule } from './shipment/shipment.module';
 import { QuoteModule } from './quote/quote.module';
+import { UserModule } from './user/user.module';
 @Module({
-  imports: [ShipmentModule, ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URL), QuoteModule],
+  imports: [ShipmentModule, ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URL), QuoteModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

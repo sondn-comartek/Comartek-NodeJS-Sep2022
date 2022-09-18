@@ -5,7 +5,6 @@ import { CreateQuoteDto } from './dto/create-quote.dto';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
 import { Quote, QuoteDocument} from './entities/quote.entity';
 import { Rate, RateDocument } from './entities/rate.entity';
-import _ from "lodash"
 @Injectable()
 export class QuoteService {
   constructor(@InjectModel(Quote.name) private quoteModel: Model<QuoteDocument>, @InjectModel(Rate.name) private rateModel: Model<RateDocument>){}
