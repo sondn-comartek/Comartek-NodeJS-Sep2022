@@ -11,4 +11,4 @@ import { Rate, RateEntity } from "src/common/entities/rate.entity";
   controllers: [QuoteController],
   providers: [QuoteService],
 })
-export class QuoteModule { }
+export class QuoteModule {}

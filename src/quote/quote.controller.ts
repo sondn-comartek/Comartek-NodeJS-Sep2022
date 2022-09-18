@@ -5,7 +5,7 @@ import { QuoteService } from "./quote.service";
 
 @Controller("quotes")
 export class QuoteController {
-  constructor(private readonly quoteService: QuoteService) { }
+  constructor(private readonly quoteService: QuoteService) {}
 
   @Get()
   async getQuote(@Body() createQuoteDto: CreateQuoteDto) {

@@ -5,8 +5,8 @@ export const mockShipmentService = {
   create: jest.fn(),
   findAll: jest.fn(),
   findOneByRef: jest.fn(),
-  deleteByRef: jest.fn()
-}
+  deleteByRef: jest.fn(),
+};
 
 export const ShipmentServiceProvider = {
   provide: ShipmentService,

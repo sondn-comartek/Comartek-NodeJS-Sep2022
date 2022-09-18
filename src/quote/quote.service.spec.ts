@@ -3,12 +3,12 @@ import { QuoteService } from "./quote.service";
 
 const exampleGetQuoteResponse = {
   id: "0000000000",
-  amount: 100
-}
+  amount: 100,
+};
 
 export const mockQuoteService = {
-  getQuote: jest.fn()
-}
+  getQuote: jest.fn(),
+};
 
 export const QuoteServiceProvider = {
   provide: QuoteService,
@@ -31,12 +31,8 @@ describe("QuoteService", () => {
   });
 
   describe("getQuote()", () => {
-    it("it should be called", () => {
+    it("it should be called", () => {});
 
-    })
-
-    it("should return an object with 2 properties: id && amount", () => {
-
-    })
-  })
+    it("should return an object with 2 properties: id && amount", () => {});
+  });
 });

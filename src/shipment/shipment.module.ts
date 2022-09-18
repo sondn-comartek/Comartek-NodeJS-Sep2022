@@ -17,4 +17,4 @@ import { Rate, RateEntity } from "../common/entities/rate.entity";
   controllers: [ShipmentController, QuoteController],
   providers: [ShipmentService, QuoteService],
 })
-export class ShipmentModule { }
+export class ShipmentModule {}

@@ -1,1 +1,1 @@
-export class RoleGuard { }
+export class RoleGuard {}
