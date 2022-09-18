@@ -1,4 +1,4 @@
-const { generateOTP } = require("../src/helpers/otp");
+const { generateOTP } = require("../../src/helpers/otp");
 
 describe("generateOTP helper function", () => {
   test("should return a valid OTP with 6 characters length", async () => {

@@ -9,7 +9,8 @@ const MessageSchema = new Schema(
       required: true,
     },
     roomId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "chat_rooms",
       required: true,
     },
     content: {

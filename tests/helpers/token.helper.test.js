@@ -1,7 +1,7 @@
-const { createToken } = require("../src/helpers/token");
+const { createToken } = require("../../src/helpers/token");
 
 describe("createToken helper function", () => {
-  test("should return a token string", () => {
+  test("should return a JWT string", () => {
     const payload = {
       example: "example",
     };
@@ -10,5 +10,6 @@ describe("createToken helper function", () => {
 
     expect(typeof token).toBe(tokenTypeRequired);
     expect(token).not.toHaveLength(0);
+    expect(token.length).toBeGreaterThan(0);
   });
 });
