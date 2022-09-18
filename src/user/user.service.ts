@@ -29,7 +29,7 @@ export class UserService {
     return await this.userEntity.create({
       name,
       phoneNumber,
-      email,
+      email: email.toLowerCase(),
       password,
     });
   }

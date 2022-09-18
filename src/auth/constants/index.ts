@@ -8,3 +8,8 @@ export const AuthSuccessMessage = {
   LoginSuccess: "Login successfully",
   RegisterSuccess: "Register successfully",
 };
+
+export const AuthGuardTypes = {
+  JWT: "jwt",
+  Local: "local",
+};

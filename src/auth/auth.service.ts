@@ -18,8 +18,8 @@ export class AuthService {
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
     const { email, password } = createLoginRequestDto;
-    const user: User = await this.userService.findUserByEmail(email);
 
+    const user: User = await this.userService.findUserByEmail(email);
     if (!user) {
       throw new HttpException(
         AuthErrorMessage.NotRegisteredEmail,
@@ -29,7 +29,6 @@ export class AuthService {
 
     const isCorrectPassword: boolean =
       await this.passwordService.comparePassword(password, user.password);
-
     if (!isCorrectPassword) {
       throw new HttpException(
         AuthErrorMessage.WrongPassword,
@@ -41,6 +40,7 @@ export class AuthService {
       email,
       role: user.role,
     };
+
     const accessToken = await this.jwtService.signAsync(jwtPayload);
 
     return {
@@ -56,7 +56,6 @@ export class AuthService {
     createRegisterRequestDto: CreateRegisterRequestDto
   ): Promise<Object> {
     let { name, phoneNumber, email, password } = createRegisterRequestDto;
-    email = email.toLocaleLowerCase();
 
     const registeredEmail: User = await this.userService.findUserByEmail(email);
     if (registeredEmail) {
@@ -79,5 +78,22 @@ export class AuthService {
       message: AuthSuccessMessage.RegisterSuccess,
       data: { user: newUser },
     };
+  }
+
+  async validateUser(
+    createLoginRequestDto: CreateLoginRequestDto
+  ): Promise<any> {
+    const { email, password } = createLoginRequestDto;
+    const user: User = await this.userService.findUserByEmail(email);
+    const isCorrectPassword = await this.passwordService.comparePassword(
+      password,
+      user.password
+    );
+
+    if (user && isCorrectPassword) {
+      return user;
+    }
+
+    return null;
   }
 }
