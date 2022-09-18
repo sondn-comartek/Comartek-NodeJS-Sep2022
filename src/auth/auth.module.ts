@@ -10,6 +10,7 @@ import { User, UserEntity } from "../common/entities/user.entity";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({
+  exports: [],
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: User.name, schema: UserEntity }]),
