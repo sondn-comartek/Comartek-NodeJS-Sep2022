@@ -64,8 +64,8 @@ export class UserService {
       throw Error(error);
     }
   }
-  comparePassword(passwordLogger, candidatePassword): boolean {
-    const isMatch = compare(candidatePassword, passwordLogger);
+  async comparePassword(passwordLogger, candidatePassword): Promise<boolean> {
+    const isMatch = await compare(candidatePassword, passwordLogger);
     return isMatch;
   }
   async signToken(info, typeToken: string): Promise<string> {
@@ -78,8 +78,13 @@ export class UserService {
     );
     return token;
   }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(username: string, password: string) {
+    const user = await this.userModel.findOne({ username: username });
+    const isCompare = await this.comparePassword(user?.password, password);
+    if (isCompare) {
+      return user;
+    }
+    return null;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
