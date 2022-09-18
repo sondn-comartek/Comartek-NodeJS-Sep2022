@@ -18,9 +18,9 @@ export class AuthController {
     return await this.authService.register(createRegisterRequestDto);
   }
 
-  @Get("protected")
-  @UseGuards(LocalAuthGuard)
-  async example() {
-    return { message: "Example protected router" };
-  }
+  // @Get("protected")
+  // @UseGuards(LocalAuthGuard)
+  // async example() {
+  //   return { message: "Example protected router" };
+  // }
 }

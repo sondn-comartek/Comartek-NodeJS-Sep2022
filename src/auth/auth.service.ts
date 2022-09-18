@@ -80,20 +80,20 @@ export class AuthService {
     };
   }
 
-  async validateUser(
-    createLoginRequestDto: CreateLoginRequestDto
-  ): Promise<any> {
-    const { email, password } = createLoginRequestDto;
-    const user: User = await this.userService.findUserByEmail(email);
-    const isCorrectPassword = await this.passwordService.comparePassword(
-      password,
-      user.password
-    );
+  // async validateUser(
+  //   createLoginRequestDto: CreateLoginRequestDto
+  // ): Promise<any> {
+  //   const { email, password } = createLoginRequestDto;
+  //   const user: User = await this.userService.findUserByEmail(email);
+  //   const isCorrectPassword = await this.passwordService.comparePassword(
+  //     password,
+  //     user.password
+  //   );
 
-    if (user && isCorrectPassword) {
-      return user;
-    }
+  //   if (user && isCorrectPassword) {
+  //     return user;
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 }
