@@ -88,8 +88,32 @@ export class ShipmentService {
     }
   }
 
-  update(id: number, updateShipmentDto: UpdateShipmentDto) {
-    return `This action updates a #${id} shipment`;
+  async update(updateShipmentDto: UpdateShipmentDto) {
+    const { shipmentID, status } = updateShipmentDto;
+
+    try {
+      const shipmentUpdate = await this.shipmentModel.findByIdAndUpdate(
+        shipmentID,
+        { status: status },
+      );
+      if (typeof shipmentUpdate == 'object') {
+        return {
+          data: {
+            status: 'OK',
+            message: 'update success',
+            shipment: shipmentUpdate,
+          },
+        };
+      }
+      return {
+        data: {
+          status: 404,
+          message: 'update fail',
+        },
+      };
+    } catch (error) {
+      throw Error(error);
+    }
   }
 
   async remove(ref: string) {
