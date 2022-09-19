@@ -10,7 +10,7 @@ import { CreateQuoteDto } from "./dto/create-quote.dto";
 export class QuoteService {
   constructor(
     @InjectModel(Rate.name) private readonly rateEntity: Model<Rate>
-  ) { }
+  ) {}
 
   async getQuote(createQuoteDto: CreateQuoteDto): Promise<Object> {
     // const ratesData = [
@@ -55,10 +55,10 @@ export class QuoteService {
 
     const rates: Rate[] = await this.rateEntity.find(filter).sort({ price: 1 });
 
-    if (rates.length === 0) {
-      cost = 100;
-    } else {
+    if (rates[0].discount === 1) {
       cost = rates[0].price;
+    } else {
+      cost = rates[0].price - rates[0].price * rates[0].discount;
     }
 
     return {

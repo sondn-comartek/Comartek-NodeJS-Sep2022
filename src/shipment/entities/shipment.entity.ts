@@ -17,13 +17,13 @@ export class Shipment {
     type: String,
     enum: ShipmentStatus,
     required: true,
-    default: ShipmentStatus.Pending
+    default: ShipmentStatus.Pending,
   })
   status: string;
 
   @Prop({
     type: Number,
-    required: true
+    required: true,
   })
   cost: number;
 

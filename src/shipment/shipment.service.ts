@@ -1,36 +1,74 @@
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { CreateShipmentDto } from "./dto/create-shipment.dto";
 import { Rate } from "../common/entities/rate.entity";
 import { Shipment } from "./entities/shipment.entity";
 import { WeightUnitsEnum } from "../common/enums";
-import { CreateShipmentQueue, ShipmentErrorMessage } from "./constants";
-import { InjectQueue } from "@nestjs/bull/dist/decorators";
-import { Queue } from "bull";
+import { ShipmentErrorMessage } from "./constants";
 
 @Injectable()
 export class ShipmentService {
   constructor(
     @InjectModel(Shipment.name) private shipmentEntity: Model<Shipment>,
-    @InjectModel(Rate.name) private rateEntity: Model<Rate>,
-    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
-  ) { }
+    @InjectModel(Rate.name) private rateEntity: Model<Rate>
+  ) {}
 
-  async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
-    const ref = createShipmentDto.ref;
-    const filter = { ref };
+  // async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
+  //   const ref = createShipmentDto.ref;
+  //   const filter = { ref };
 
-    const existedRefNumber = await this.shipmentEntity.findOne(filter);
-    if (existedRefNumber) {
-      throw new HttpException(
-        ShipmentErrorMessage.ExistedRef(ref),
-        HttpStatus.BAD_REQUEST
-      );
-    }
+  //   const existedRefNumber = await this.shipmentEntity.findOne(filter);
+  //   if (existedRefNumber) {
+  //     throw new HttpException(
+  //       ShipmentErrorMessage.ExistedRef(ref),
+  //       HttpStatus.BAD_REQUEST
+  //     );
+  //   }
 
+  //   let cost: number;
+  //   let { amount, unit } = createShipmentDto.package.grossWeight;
+
+  //   if (unit === WeightUnitsEnum.Kilogram) {
+  //     amount *= 1000;
+  //   }
+
+  //   const rates: Rate[] = await this.rateEntity
+  //     .find({ weight: { $gte: amount } })
+  //     .sort({ price: 1 });
+
+  //   cost = rates[0].price;
+
+  //   // const shipment: Shipment = await this.shipmentEntity.create(
+  //   //   { ...createShipmentDto, cost }
+  //   // );
+
+  //   const shipment = { ...createShipmentDto, cost };
+
+  //   // const job = this.shipmentQueue.add(shipment)
+
+  //   return {
+  //     data: {
+  //       shipment: {
+  //         ref,
+  //         createdAt: new Date(),
+  //         cost,
+  //       },
+  //     },
+  //   };
+
+  // return {
+  //   data: {
+  //     shipment: {
+  //       ref,
+  //       createdAt: shipment.createdAt,
+  //       cost,
+  //     },
+  //   },
+  // };
+  // }
+
+  async calculateCost(amount: number, unit: string): Promise<number> {
     let cost: number;
-    let { amount, unit } = createShipmentDto.package.grossWeight;
 
     if (unit === WeightUnitsEnum.Kilogram) {
       amount *= 1000;
@@ -40,35 +78,28 @@ export class ShipmentService {
       .find({ weight: { $gte: amount } })
       .sort({ price: 1 });
 
-    cost = rates[0].price;
+    // Not discount
+    if (rates[0].discount === 1) {
+      cost = rates[0].price;
+    } else {
+      cost = rates[0].price - rates[0].price * rates[0].discount;
+    }
 
-    // const shipment: Shipment = await this.shipmentEntity.create(
-    //   { ...createShipmentDto, cost }
-    // );
+    return cost;
+  }
 
-    const shipment = { ...createShipmentDto, cost };
+  async validateShipmentData(ref: string) {
+    const filter = { ref };
 
-    // const job = this.shipmentQueue.add(shipment)
+    const exitedShipment = await this.shipmentEntity.findOne(filter);
+    if (exitedShipment) {
+      throw new HttpException(
+        ShipmentErrorMessage.ExistedRef(ref),
+        HttpStatus.BAD_REQUEST
+      );
+    }
 
-    return {
-      data: {
-        shipment: {
-          ref,
-          createdAt: new Date(),
-          cost,
-        },
-      },
-    };
-
-    // return {
-    //   data: {
-    //     shipment: {
-    //       ref,
-    //       createdAt: shipment.createdAt,
-    //       cost,
-    //     },
-    //   },
-    // };
+    return;
   }
 
   async findAll(): Promise<Object> {
@@ -110,18 +141,21 @@ export class ShipmentService {
   }
 
   async updateShipmentStatus(ref: string, status: string): Promise<Object> {
-    const filter = { ref }
-    const shipment = await this.shipmentEntity.findOne(filter)
+    const filter = { ref };
+    const shipment = await this.shipmentEntity.findOne(filter);
 
     if (!shipment) {
-      throw new HttpException(ShipmentErrorMessage.NotFound(ref), HttpStatus.NOT_FOUND)
+      throw new HttpException(
+        ShipmentErrorMessage.NotFound(ref),
+        HttpStatus.NOT_FOUND
+      );
     }
 
-    await this.shipmentEntity.updateOne(filter, { $set: { status } })
+    await this.shipmentEntity.updateOne(filter, { $set: { status } });
 
     return {
-      message: "Update thành công"
-    }
+      message: "Update thành công",
+    };
   }
 
   // async findOne(id: number) {

@@ -7,7 +7,7 @@ import { User } from "../common/entities";
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userEntity: Model<User>
-  ) { }
+  ) {}
 
   async findUserById(id: string): Promise<User | null> {
     return await this.userEntity.findById(id);

@@ -29,6 +29,13 @@ export class Rate {
     default: "USD",
   })
   montaryUnit: string;
+
+  @Prop({
+    type: Number,
+    required: true,
+    default: 1,
+  })
+  discount: number;
 }
 
 export const RateEntity = SchemaFactory.createForClass(Rate);

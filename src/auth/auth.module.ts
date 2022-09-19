@@ -8,8 +8,8 @@ import { PasswordModule } from "../password/password.module";
 import { UserModule } from "../user/user.module";
 import { User, UserEntity } from "../common/entities/user.entity";
 import { ConfigModule } from "@nestjs/config";
-import { LocalStrategy } from './strategies/local.strategy';
-import { JWTStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from "./strategies/local.strategy";
+import { JWTStrategy } from "./strategies/jwt.strategy";
 
 @Module({
   imports: [
@@ -28,4 +28,4 @@ import { JWTStrategy } from './strategies/jwt.strategy';
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JWTStrategy],
 })
-export class AuthModule { }
+export class AuthModule {}

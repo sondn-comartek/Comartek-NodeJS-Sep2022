@@ -9,17 +9,16 @@ import { AuthModule } from "./auth/auth.module";
 import { PasswordModule } from "./password/password.module";
 import { UserModule } from "./user/user.module";
 import { ScheduleModule } from "@nestjs/schedule";
-import { DiscountModule } from './discount/discount.module';
+import { DiscountModule } from "./discount/discount.module";
 import { BullModule } from "@nestjs/bull";
-import { CreateShipmentQueue } from './shipment/constants/index';
 
 @Module({
   imports: [
     BullModule.forRoot({
       redis: {
         host: "localhost",
-        port: 6379
-      }
+        port: 6379,
+      },
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URL),
@@ -34,4 +33,4 @@ import { CreateShipmentQueue } from './shipment/constants/index';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

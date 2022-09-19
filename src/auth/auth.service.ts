@@ -14,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly passwordService: PasswordService,
     private readonly userService: UserService
-  ) { }
+  ) {}
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
     const { email, password } = createLoginRequestDto;
@@ -42,7 +42,7 @@ export class AuthService {
     };
 
     const accessToken = await this.jwtService.signAsync(jwtPayload, {
-      expiresIn: 3600
+      expiresIn: 3600,
     });
 
     return {
@@ -81,21 +81,4 @@ export class AuthService {
       data: { user: newUser },
     };
   }
-
-  // async validateUser(
-  //   createLoginRequestDto: CreateLoginRequestDto
-  // ): Promise<any> {
-  //   const { email, password } = createLoginRequestDto;
-  //   const user: User = await this.userService.findUserByEmail(email);
-  //   const isCorrectPassword = await this.passwordService.comparePassword(
-  //     password,
-  //     user.password
-  //   );
-
-  //   if (user && isCorrectPassword) {
-  //     return user;
-  //   }
-
-  //   return null;
-  // }
 }

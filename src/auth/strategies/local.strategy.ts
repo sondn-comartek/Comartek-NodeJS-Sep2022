@@ -9,16 +9,16 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       usernameField: "email",
-      passwordField: "password"
+      passwordField: "password",
     });
   }
 
   async validate(email: string, password: string) {
     const createLoginRequestDto: CreateLoginRequestDto = {
       email,
-      password
-    }
+      password,
+    };
 
-    return await this.authService.login(createLoginRequestDto)
+    return await this.authService.login(createLoginRequestDto);
   }
 }

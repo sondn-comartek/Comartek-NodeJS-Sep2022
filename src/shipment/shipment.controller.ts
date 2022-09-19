@@ -5,25 +5,48 @@ import {
   Body,
   Param,
   Delete,
-  Put
+  Put,
 } from "@nestjs/common";
 import { ShipmentService } from "./shipment.service";
 import { CreateShipmentDto } from "./dto/create-shipment.dto";
 import { UseGuards } from "@nestjs/common/decorators";
 import { JWTAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
+import { UpdateShipmentStatusDto } from "./dto/update-shipment-status.dto";
 import { Roles } from "../auth/decorators/role.decorator";
 import { Role } from "../common/enums";
 import { RolesGuard } from "../auth/guards/role.guard";
+import { InjectQueue } from "@nestjs/bull";
+import { CreateShipmentQueue } from "./constants";
+import { Queue } from "bull";
 
 @Controller("shipments")
 export class ShipmentController {
-  constructor(private readonly shipmentService: ShipmentService) { }
+  constructor(
+    private readonly shipmentService: ShipmentService,
+    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
+  ) {}
 
   @UseGuards(JWTAuthGuard)
   @Post()
   async create(@Body() createShipmentDto: CreateShipmentDto) {
-    return await this.shipmentService.create(createShipmentDto);
+    const { ref } = createShipmentDto;
+    const { amount, unit } = createShipmentDto.package.grossWeight;
+
+    await this.shipmentService.validateShipmentData(ref);
+
+    const cost = await this.shipmentService.calculateCost(amount, unit);
+    const shipmentData = { ...createShipmentDto, cost };
+
+    await this.shipmentQueue.add("handleCreateShipment", shipmentData);
+
+    return {
+      message: "Your shipment is creating",
+      data: {
+        ref,
+        createdAt: new Date(),
+        cost,
+      },
+    };
   }
 
   @Get()
@@ -44,22 +67,13 @@ export class ShipmentController {
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @Put(":ref")
-  async updateShipmentStatus(@Param("ref") ref: string, @Body() updateShipmentStatusDto: UpdateShipmentStatusDto) {
-    return await this.shipmentService.updateShipmentStatus(ref, updateShipmentStatusDto.status)
+  async updateShipmentStatus(
+    @Param("ref") ref: string,
+    @Body() updateShipmentStatusDto: UpdateShipmentStatusDto
+  ) {
+    return await this.shipmentService.updateShipmentStatus(
+      ref,
+      updateShipmentStatusDto.status
+    );
   }
-
-  // @Get(':id')
-  // async findOne(@Param('id') id: string) {
-  //   return await this.shipmentService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // async update(@Param('id') id: string, @Body() updateShipmentDto: UpdateShipmentDto) {
-  //   return await this.shipmentService.update(+id, updateShipmentDto);
-  // }
-
-  // @Delete(':id')
-  // async remove(@Param('id') id: string) {
-  //   return await this.shipmentService.remove(+id);
-  // }
 }
