@@ -11,5 +11,7 @@ export class Shipment {
   cost: number;
   @Prop({ type: String, default: 'pending' })
   status: string;
+  @Prop({ type: Number })
+  serial: number;
 }
 export const ShipmentSchema = SchemaFactory.createForClass(Shipment);

@@ -14,15 +14,16 @@ import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { RolesGuard } from 'src/roles-guard';
 import { Roles } from 'src/roles.decorator';
 import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('shipment')
 export class ShipmentController {
   constructor(private readonly shipmentService: ShipmentService) {}
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Post()
-  create(@Body() createShipmentDto: CreateShipmentDto) {
-    return this.shipmentService.create(createShipmentDto);
+  async create(@Body() createShipmentDto: CreateShipmentDto) {
+    return await this.shipmentService.create(createShipmentDto);
   }
 
   @Get()

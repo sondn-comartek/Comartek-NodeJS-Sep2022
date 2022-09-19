@@ -1,33 +1,32 @@
-import {
-  Shipment,
-  ShipmentSchema,
-  ShipmentDocument,
-} from './entities/shipment.entity';
+import { Shipment, ShipmentDocument } from './entities/shipment.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Quote, QuoteDocument } from '../quote/entities/quote.entity';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 @Injectable()
 export class ShipmentService {
   constructor(
     @InjectModel(Shipment.name) private shipmentModel: Model<ShipmentDocument>,
+    @InjectQueue('serial') private serialQueue: Queue,
   ) {}
-  create(createShipmentDto: CreateShipmentDto) {
+  async create(createShipmentDto: CreateShipmentDto) {
     const { id: quoteID, price } = createShipmentDto?.data?.quote;
-    let refString = this.genRandString(10);
     try {
-      const shipmentMode = new this.shipmentModel({
+      let refString = this.genRandString(10);
+      await this.serialQueue.add('create_serial', {
         quote_id: quoteID,
         ref: refString,
         cost: price,
       });
-      const createdShipment = shipmentMode.save();
-      return createdShipment;
+      return {};
+      // const createdShipment = await this.shipmentModel.create({
+      //   );
+      // return createdShipment;
     } catch (error) {
-      console.log(error);
-      return 'oop something wrong';
+      throw Error(error);
     }
   }
   genRandString(length) {
