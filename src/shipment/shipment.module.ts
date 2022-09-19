@@ -8,9 +8,15 @@ import { QuoteService } from "../quote/quote.service";
 import { Rate, RateEntity } from "../common/entities/rate.entity";
 import { AuthModule } from '../auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { BullModule } from "@nestjs/bull/dist/bull.module";
+import { CreateShipmentQueue } from "./constants";
+import { ShipmentConsumer } from './shipment.consumer';
 
 @Module({
   imports: [
+    BullModule.registerQueue({
+      name: CreateShipmentQueue
+    }),
     AuthModule,
     MongooseModule.forFeature([
       { name: Shipment.name, schema: ShipmentEntity },
@@ -19,6 +25,6 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule,
   ],
   controllers: [ShipmentController, QuoteController],
-  providers: [ShipmentService, QuoteService],
+  providers: [ShipmentService, QuoteService, ShipmentConsumer],
 })
 export class ShipmentModule { }

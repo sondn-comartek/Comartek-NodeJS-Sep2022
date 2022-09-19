@@ -9,10 +9,18 @@ import { AuthModule } from "./auth/auth.module";
 import { PasswordModule } from "./password/password.module";
 import { UserModule } from "./user/user.module";
 import { ScheduleModule } from "@nestjs/schedule";
-import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
+import { DiscountModule } from './discount/discount.module';
+import { BullModule } from "@nestjs/bull";
+import { CreateShipmentQueue } from './shipment/constants/index';
 
 @Module({
   imports: [
+    BullModule.forRoot({
+      redis: {
+        host: "localhost",
+        port: 6379
+      }
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     ScheduleModule.forRoot(),
@@ -21,7 +29,7 @@ import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
     AuthModule,
     PasswordModule,
     UserModule,
-    TaskSchedulingModule,
+    DiscountModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -22,6 +22,12 @@ export class Shipment {
   status: string;
 
   @Prop({
+    type: Number,
+    required: true
+  })
+  cost: number;
+
+  @Prop({
     type: mongoose.Schema.Types.Mixed,
     reuqired: true,
   })

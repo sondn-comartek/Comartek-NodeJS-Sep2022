@@ -10,7 +10,7 @@ import { CreateQuoteDto } from "./dto/create-quote.dto";
 export class QuoteService {
   constructor(
     @InjectModel(Rate.name) private readonly rateEntity: Model<Rate>
-  ) {}
+  ) { }
 
   async getQuote(createQuoteDto: CreateQuoteDto): Promise<Object> {
     // const ratesData = [

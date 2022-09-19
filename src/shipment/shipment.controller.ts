@@ -12,9 +12,9 @@ import { CreateShipmentDto } from "./dto/create-shipment.dto";
 import { UseGuards } from "@nestjs/common/decorators";
 import { JWTAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
-import { Roles } from "src/auth/decorators/role.decorator";
-import { Role } from "src/common/enums";
-import { RolesGuard } from "src/auth/guards/role.guard";
+import { Roles } from "../auth/decorators/role.decorator";
+import { Role } from "../common/enums";
+import { RolesGuard } from "../auth/guards/role.guard";
 
 @Controller("shipments")
 export class ShipmentController {

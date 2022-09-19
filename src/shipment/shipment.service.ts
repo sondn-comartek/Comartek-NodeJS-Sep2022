@@ -5,14 +5,16 @@ import { CreateShipmentDto } from "./dto/create-shipment.dto";
 import { Rate } from "../common/entities/rate.entity";
 import { Shipment } from "./entities/shipment.entity";
 import { WeightUnitsEnum } from "../common/enums";
-import { ShipmentErrorMessage } from "./constants";
-import { ShipmentStatus } from "./enums/shipment-status.enum";
+import { CreateShipmentQueue, ShipmentErrorMessage } from "./constants";
+import { InjectQueue } from "@nestjs/bull/dist/decorators";
+import { Queue } from "bull";
 
 @Injectable()
 export class ShipmentService {
   constructor(
     @InjectModel(Shipment.name) private shipmentEntity: Model<Shipment>,
-    @InjectModel(Rate.name) private rateEntity: Model<Rate>
+    @InjectModel(Rate.name) private rateEntity: Model<Rate>,
+    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
   ) { }
 
   async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
@@ -27,10 +29,6 @@ export class ShipmentService {
       );
     }
 
-    const shipment: Shipment = await this.shipmentEntity.create(
-      createShipmentDto
-    );
-
     let cost: number;
     let { amount, unit } = createShipmentDto.package.grossWeight;
 
@@ -42,21 +40,35 @@ export class ShipmentService {
       .find({ weight: { $gte: amount } })
       .sort({ price: 1 });
 
-    if (rates.length === 0) {
-      cost = 100;
-    } else {
-      cost = rates[0].price;
-    }
+    cost = rates[0].price;
+
+    // const shipment: Shipment = await this.shipmentEntity.create(
+    //   { ...createShipmentDto, cost }
+    // );
+
+    const shipment = { ...createShipmentDto, cost };
+
+    // const job = this.shipmentQueue.add(shipment)
 
     return {
       data: {
         shipment: {
           ref,
-          createdAt: shipment.createdAt,
+          createdAt: new Date(),
           cost,
         },
       },
     };
+
+    // return {
+    //   data: {
+    //     shipment: {
+    //       ref,
+    //       createdAt: shipment.createdAt,
+    //       cost,
+    //     },
+    //   },
+    // };
   }
 
   async findAll(): Promise<Object> {
