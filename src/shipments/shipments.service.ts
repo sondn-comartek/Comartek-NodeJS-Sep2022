@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Shipment, ShipmentDocument } from './schemas/shipment.schema';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { Quote, QuoteDocument } from 'src/quotes/schemas/quote.schema';
+import { UpdateShipmentDto } from './dto/update-shipment.dto';
 
 @Injectable()
 export class ShipmentsService {
@@ -14,6 +15,9 @@ export class ShipmentsService {
   ) {}
 
   async create(createShipmentDto: CreateShipmentDto) {
+    const shipmentCount = await this.modelShipment.find();
+    const shipmentId = shipmentCount.length + 1;
+    console.log('shipmentId', shipmentId);
     const { data } = createShipmentDto;
 
     const quoteId = data.quote.id;
@@ -30,6 +34,7 @@ export class ShipmentsService {
 
     await new this.modelShipment({
       ...createShipmentDto,
+      shipmentId,
     }).save();
 
     return {
@@ -57,6 +62,16 @@ export class ShipmentsService {
             ref: '',
           },
         };
+  }
+
+  async update(id: string, updateShipmentDto: UpdateShipmentDto) {
+    const shipment = await this.modelShipment
+      .findByIdAndUpdate(id, updateShipmentDto, { new: true })
+      .exec();
+    if (!shipment) {
+      throw new NotFoundException();
+    }
+    return shipment;
   }
 
   async remove(ref: string) {

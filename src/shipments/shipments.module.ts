@@ -3,8 +3,8 @@ import { ShipmentsService } from './shipments.service';
 import { ShipmentsController } from './shipments.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Shipment, ShipmentSchema } from './schemas/shipment.schema';
-import { QuotesService } from 'src/quotes/quotes.service';
 import { QuotesModule } from 'src/quotes/quotes.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   controllers: [ShipmentsController],
@@ -14,6 +14,9 @@ import { QuotesModule } from 'src/quotes/quotes.module';
       { name: Shipment.name, schema: ShipmentSchema },
     ]),
     QuotesModule,
+    BullModule.registerQueue({
+      name: 'shipment',
+    }),
   ],
 })
 export class ShipmentsModule {}

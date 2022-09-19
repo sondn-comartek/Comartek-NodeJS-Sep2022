@@ -4,22 +4,35 @@ import {
   Post,
   Body,
   Patch,
+  Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { GetShipmentDto } from './dto/get-shipment.dto';
-// import { UpdateShipmentDto } from './dto/update-shipment.dto';
+import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { DeleteShipmentDto } from './dto/delete-shipment.dto';
+import { Role } from 'src/users/enums/role.enum';
+import { Roles } from 'src/users/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Controller('shipments')
 export class ShipmentsController {
-  constructor(private readonly shipmentsService: ShipmentsService) {}
+  constructor(
+    private readonly shipmentsService: ShipmentsService,
+    @InjectQueue('shipment') private readonly shipmentQueue: Queue,
+  ) {}
 
   @Post()
-  create(@Body() createShipmentDto: CreateShipmentDto) {
-    return this.shipmentsService.create(createShipmentDto);
+  async create(@Body() createShipmentDto: CreateShipmentDto) {
+    return await this.shipmentQueue.add('createShipment', {
+      createShipmentDto,
+    });
+    // return this.shipmentsService.create(createShipmentDto);
   }
 
   // @Get()
@@ -33,13 +46,15 @@ export class ShipmentsController {
     return this.shipmentsService.findOne(ref);
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateShipmentDto: UpdateShipmentDto,
-  // ) {
-  //   return this.shipmentsService.update(+id, updateShipmentDto);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  @Roles(Role.Admin)
+  update(
+    @Param('id') id: string,
+    @Body() updateShipmentDto: UpdateShipmentDto,
+  ) {
+    return this.shipmentsService.update(id, updateShipmentDto);
+  }
 
   @Delete()
   remove(@Body() deleteShipmentDto: DeleteShipmentDto) {
