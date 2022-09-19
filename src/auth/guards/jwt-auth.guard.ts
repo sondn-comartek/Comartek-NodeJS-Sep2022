@@ -1,4 +1,6 @@
+import { Injectable } from "@nestjs/common/decorators";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthGuardTypes } from "../constants";
 
-export class JWTAuthGuard extends AuthGuard(AuthGuardTypes.JWT) {}
+@Injectable()
+export class JWTAuthGuard extends AuthGuard(AuthGuardTypes.JWT) { }

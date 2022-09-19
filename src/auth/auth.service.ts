@@ -14,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly passwordService: PasswordService,
     private readonly userService: UserService
-  ) {}
+  ) { }
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
     const { email, password } = createLoginRequestDto;
@@ -41,7 +41,9 @@ export class AuthService {
       role: user.role,
     };
 
-    const accessToken = await this.jwtService.signAsync(jwtPayload);
+    const accessToken = await this.jwtService.signAsync(jwtPayload, {
+      expiresIn: 3600
+    });
 
     return {
       message: AuthSuccessMessage.LoginSuccess,

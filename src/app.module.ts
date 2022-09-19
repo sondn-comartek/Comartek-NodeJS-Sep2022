@@ -8,18 +8,22 @@ import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { PasswordModule } from "./password/password.module";
 import { UserModule } from "./user/user.module";
+import { ScheduleModule } from "@nestjs/schedule";
+import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URL),
+    ScheduleModule.forRoot(),
     QuoteModule,
     ShipmentModule,
     AuthModule,
     PasswordModule,
     UserModule,
+    TaskSchedulingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

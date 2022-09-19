@@ -5,17 +5,22 @@ import {
   Body,
   Param,
   Delete,
-  Res,
-  HttpStatus,
+  Put
 } from "@nestjs/common";
 import { ShipmentService } from "./shipment.service";
 import { CreateShipmentDto } from "./dto/create-shipment.dto";
-import { Response } from "express";
+import { UseGuards } from "@nestjs/common/decorators";
+import { JWTAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
+import { Roles } from "src/auth/decorators/role.decorator";
+import { Role } from "src/common/enums";
+import { RolesGuard } from "src/auth/guards/role.guard";
 
 @Controller("shipments")
 export class ShipmentController {
-  constructor(private readonly shipmentService: ShipmentService) {}
+  constructor(private readonly shipmentService: ShipmentService) { }
 
+  @UseGuards(JWTAuthGuard)
   @Post()
   async create(@Body() createShipmentDto: CreateShipmentDto) {
     return await this.shipmentService.create(createShipmentDto);
@@ -32,8 +37,15 @@ export class ShipmentController {
   }
 
   @Delete(":ref")
-  async deleteByRef(@Param("ref") ref: number) {
+  async deleteByRef(@Param("ref") ref: string) {
     return await this.shipmentService.deleteByRef(ref);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
+  @Put(":ref")
+  async updateShipmentStatus(@Param("ref") ref: string, @Body() updateShipmentStatusDto: UpdateShipmentStatusDto) {
+    return await this.shipmentService.updateShipmentStatus(ref, updateShipmentStatusDto.status)
   }
 
   // @Get(':id')

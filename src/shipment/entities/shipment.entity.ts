@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
+import { ShipmentStatus } from "../enums/shipment-status.enum";
 
 @Schema({
   collection: "shipments",
@@ -11,6 +12,14 @@ export class Shipment {
     unique: true,
   })
   ref: string;
+
+  @Prop({
+    type: String,
+    enum: ShipmentStatus,
+    required: true,
+    default: ShipmentStatus.Pending
+  })
+  status: string;
 
   @Prop({
     type: mongoose.Schema.Types.Mixed,

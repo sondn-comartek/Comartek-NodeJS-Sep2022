@@ -7,14 +7,14 @@ import { User } from "../common/entities";
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userEntity: Model<User>
-  ) {}
+  ) { }
 
   async findUserById(id: string): Promise<User | null> {
     return await this.userEntity.findById(id);
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
-    const filter = { email: email.toLocaleLowerCase() };
+    const filter = { email: email.toLowerCase() };
     return await this.userEntity.findOne(filter);
   }
 

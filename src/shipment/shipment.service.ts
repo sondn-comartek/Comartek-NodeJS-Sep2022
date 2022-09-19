@@ -6,13 +6,14 @@ import { Rate } from "../common/entities/rate.entity";
 import { Shipment } from "./entities/shipment.entity";
 import { WeightUnitsEnum } from "../common/enums";
 import { ShipmentErrorMessage } from "./constants";
+import { ShipmentStatus } from "./enums/shipment-status.enum";
 
 @Injectable()
 export class ShipmentService {
   constructor(
     @InjectModel(Shipment.name) private shipmentEntity: Model<Shipment>,
     @InjectModel(Rate.name) private rateEntity: Model<Rate>
-  ) {}
+  ) { }
 
   async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
     const ref = createShipmentDto.ref;
@@ -77,7 +78,7 @@ export class ShipmentService {
     return { data: { shipment } };
   }
 
-  async deleteByRef(ref: number): Promise<Object> {
+  async deleteByRef(ref: string): Promise<Object> {
     const filter = { ref };
     const shipment = await this.shipmentEntity.findOne(filter);
 
@@ -94,6 +95,21 @@ export class ShipmentService {
       status: "NOK",
       message: "Shipment not found",
     };
+  }
+
+  async updateShipmentStatus(ref: string, status: string): Promise<Object> {
+    const filter = { ref }
+    const shipment = await this.shipmentEntity.findOne(filter)
+
+    if (!shipment) {
+      throw new HttpException(ShipmentErrorMessage.NotFound(ref), HttpStatus.NOT_FOUND)
+    }
+
+    await this.shipmentEntity.updateOne(filter, { $set: { status } })
+
+    return {
+      message: "Update thành công"
+    }
   }
 
   // async findOne(id: number) {
