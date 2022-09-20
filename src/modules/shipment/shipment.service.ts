@@ -7,9 +7,9 @@ import { GetShipmentDto } from './dto'
 import { CreateShipmentDto } from './dto';
 import { DeteleShipmentDto } from './dto';
 import { GenRandomNumber } from 'src/ultils';
-import { ShipmentRepository } from './repositories/shipment.repository';
+import { ShipmentRepository } from './repositories';
 import { QuoteRepository } from './repositories';
-import { RateRepository } from './repositories/rate.repository';
+import { RateRepository } from './repositories';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 

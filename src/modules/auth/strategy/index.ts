@@ -1,1 +1,2 @@
-export * from './'
+export * from './jwt.strategy'
+export * from './role.strategy'

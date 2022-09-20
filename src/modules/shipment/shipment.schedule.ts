@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Cron , CronExpression} from "@nestjs/schedule"
 import { Discount } from "./constant";
 import { Rate } from "./interfaces";
-import { RateRepository } from "./repositories/rate.repository";
+import { RateRepository } from "./repositories";
 
 @Injectable()
 export class ShipmentSchedule{

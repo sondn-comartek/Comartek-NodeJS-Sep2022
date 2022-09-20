@@ -1,5 +1,5 @@
 import { Reflector } from "@nestjs/core";
-import { RoleStrategy } from "../strategy/role.strategy";
+import { RoleStrategy } from "../strategy";
 
 export class RoleGuards extends RoleStrategy{
     constructor(Reflector: Reflector){

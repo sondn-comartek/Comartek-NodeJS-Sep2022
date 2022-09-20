@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req } from '@nestjs/common';
 import { ShipmentService } from './shipment.service';
-import { CreateShipmentDto } from './dto/create-shipment.dto';
+import { CreateShipmentDto } from './dto';
 import { DataQuote } from './dto/get-quote.dto';
-import { GetShipmentDto } from './dto/get-shipment.dto'
-import { DeteleShipmentDto } from './dto/delete-shipment.dto';
+import { GetShipmentDto } from './dto'
+import { DeteleShipmentDto } from './dto';
 import { JwtGruad } from '../auth/guards';
 import { Request } from 'express'
-import { RoleGuards } from '../auth/guards/roles.guard';
+import { RoleGuards } from '../auth/guards';
 import { Roles } from '../auth/decorator';
 import { Role } from '../auth/constant';
 import { UpdateShipmentStatusDto } from './dto';
