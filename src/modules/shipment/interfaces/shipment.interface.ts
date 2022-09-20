@@ -43,6 +43,6 @@ export interface Shipment extends Document {
     },
     cost? : number  ,
     create_at? : Date ,
-    status? : 'pending' | 'confimed' | 'delivery' | 'completed' | 'failed',
+    status? : string ,
     number? : number 
 } 

@@ -7,9 +7,9 @@ import { QuoteSchema } from './entities/quote.entity';
 import { ShipmentSchema } from './entities/shipment.entity';
 import { QuoteRepository, ShipmentRepository } from './repositories';
 import { RateRepository } from './repositories/rate.repository';
-import { ReinventRateSchedule } from './schedule';
 import { BullModule } from '@nestjs/bull';
 import { ShipmentConsumer } from './shipment.consumer';
+import { ShipmentSchedule } from './shipment.schedule';
 
 @Module({
   imports:[
@@ -37,8 +37,8 @@ import { ShipmentConsumer } from './shipment.consumer';
     ShipmentRepository ,
     QuoteRepository ,
     RateRepository ,
-    ReinventRateSchedule  ,
-    ShipmentConsumer
+    ShipmentSchedule  ,
+    ShipmentConsumer 
   ]
 })
 export class ShipmentModule {}

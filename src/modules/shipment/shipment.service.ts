@@ -31,10 +31,12 @@ export class ShipmentService {
     const Amount = DataQuote.package?.grossWeight?.amount;
     const Unit = DataQuote.package?.grossWeight?.unit;
     const WeightByGam: number = Convert(Amount).from(Unit).to('g');
-    const Rates = await this.RateModel.find({
+    const Rates = await this.RateRepository.FindAll({
       weight : { $lte : WeightByGam }
-
-    }).sort( { price : -1 })
+    }, null, { sort: { price: -1 } })
+    // const Rates = await this.RateModel.find({
+    //     weight : { $lte : WeightByGam }
+    //   }, null, { sort: { price: -1 } } )
     if (Rates.length === 0) return await this.QuoteRepository.Create({
       amount : 12.43
     })
@@ -61,14 +63,16 @@ export class ShipmentService {
 
   async GetShipment(GetShipmentDto: GetShipmentDto): Promise<Shipment | any > {
     const Shipment = await this.ShipmentRepository.FindOne(GetShipmentDto, null, { lean: true })
-    if (!Shipment) return { ref: " " }
+    if (!Shipment) return { 
+      ref: "" 
+    }
     return Shipment
   }
 
   async DeleteShipment(DeteleShipmentDto: DeteleShipmentDto): Promise<Record < string , unknown > > {
     const Shipment = await this.ShipmentRepository.FindOneAndDelete(DeteleShipmentDto)
     if (!Shipment) return {
-      status : 'NOT OK' ,
+      status : 'NOT' ,
       message : "Shipment not found"
     }
     return {
@@ -80,8 +84,9 @@ export class ShipmentService {
   async UpdateShipment(UpdateShipmentStatusDto: UpdateShipmentStatusDto): Promise< Record<string,unknown> | any >{
     return await this.ShipmentRepository.FindOneAndUpdate({
       ref : UpdateShipmentStatusDto.ref 
-    } , { status : UpdateShipmentStatusDto.status } , { new : true })
+    },
+      {
+        status: UpdateShipmentStatusDto.status
+      }, { new: true })
   }
-
-  
 }

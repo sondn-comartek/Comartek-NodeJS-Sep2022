@@ -1,12 +1,12 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Cron , CronExpression} from "@nestjs/schedule"
-import { Discount } from "../constant";
-import { Rate } from "../interfaces";
-import { RateRepository } from "../repositories/rate.repository";
+import { Discount } from "./constant";
+import { Rate } from "./interfaces";
+import { RateRepository } from "./repositories/rate.repository";
 
 @Injectable()
-export class ReinventRateSchedule{
-    private logger = new Logger( ReinventRateSchedule.name )
+export class ShipmentSchedule{
+    private logger = new Logger( ShipmentSchedule.name )
     constructor(private readonly RateRepository: RateRepository){
     }
     async ReinventRateTask(volumn: number):Promise<any> {
@@ -20,14 +20,14 @@ export class ReinventRateSchedule{
     @Cron("0 0 12 * * 5", {
         name : 'decrease rate'
     })
-    DecreaseRate(){
+    DecreaseRate():Promise<Logger> | any {
         return this.ReinventRateTask(Discount.FIFTY_PERCENT)
     }
     
     @Cron("0 0 0 * * 6", {
         name : 'increase rate'
     })
-    IncreaseRate(){
+    IncreaseRate():Promise<Logger> | any{
         return this.ReinventRateTask(2) 
     }
 }
