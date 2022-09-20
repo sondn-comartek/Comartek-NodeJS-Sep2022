@@ -1,77 +1,72 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
-import { Quote } from '../shipment/interfaces/quote.interface'
-import { Rate } from '../shipment/interfaces/rate.interface'
-import { Shipment } from './interfaces/shipment.interface';
-import { DataQuote } from './dto/get-quote.dto';
-import { GetShipmentDto } from './dto/get-shipment.dto'
-import { CreateShipmentDto } from './dto/create-shipment.dto';;
-import RandomTenNumber from 'src/ultils/gen-random-number.ultil';
 import * as Convert from 'convert-units';
-import { DeteleShipmentDto } from './dto/delete-shipment.dto';
+import { Quote } from './interfaces'
+import { Rate } from './interfaces'
+import { Shipment } from './interfaces';
+import { DataQuote, UpdateShipmentStatusDto } from './dto';
+import { GetShipmentDto } from './dto'
+import { CreateShipmentDto } from './dto';
+import { DeteleShipmentDto } from './dto';
+import { GenRandomNumber } from 'src/ultils';
+import { ShipmentRepository } from './repositories/shipment.repository';
+import { QuoteRepository } from './repositories';
+import { RateRepository } from './repositories/rate.repository';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 
 @Injectable()
 export class ShipmentService {
   constructor(
-    @InjectModel('Rate')
-    private readonly RateModel: Model<Rate>,
-    @InjectModel('Quote')
-    private readonly QuoteModel: Model<Quote>,
-    @InjectModel('Shipment')
-    private readonly ShipmentModel: Model<Shipment>,
-  ) { }
-
-  async StoreQuote(amount: number): Promise<Quote> {
-    const NewQuote = new this.QuoteModel({
-      amount: amount
-    })
-    delete NewQuote.__v
-    await NewQuote.save()
-    return NewQuote;
-  }
-
-  async StoreShipment(ShipmentData: CreateShipmentDto, Cost: number): Promise<Shipment> {
-    const NewShipment = new this.ShipmentModel({
-      ref: RandomTenNumber(),
-      cost: Cost,
-      create_at: new Date(),
-      ...ShipmentData,
-    })
-    await NewShipment.save()
-    return NewShipment;
-  }
+    @InjectModel('Rate') private readonly RateModel: Model<Rate> ,
+    private readonly RateRepository: RateRepository ,
+    private readonly QuoteRepository: QuoteRepository ,
+    private readonly ShipmentRepository: ShipmentRepository ,
+    @InjectQueue('shipment') private readonly ShipmentQueue: Queue
+  ) {}
 
   async GetQuote(DataQuote: DataQuote): Promise<Quote> {
     const Amount = DataQuote.package?.grossWeight?.amount;
     const Unit = DataQuote.package?.grossWeight?.unit;
     const WeightByGam: number = Convert(Amount).from(Unit).to('g');
-    const Rates = await this.RateModel
-      .find({
-        weight: { $lte: WeightByGam } })
-      .lean()
-      .sort( { price : 1 })
-    if (Rates.length === 0) return await this.StoreQuote(12.43)
-    const Price = Rates[Rates.length - 1].price
-    return await this.StoreQuote(Price) ;
+    const Rates = await this.RateModel.find({
+      weight : { $lte : WeightByGam }
+
+    }).sort( { price : -1 })
+    if (Rates.length === 0) return await this.QuoteRepository.Create({
+      amount : 12.43
+    })
+    const Price = Rates[0].price
+    return await this.QuoteRepository.Create({
+      amount : Price
+    });
   }
 
-  async CreateShipment(CreateShipmentDto: CreateShipmentDto): Promise<Object> {
+  async CreateShipment(CreateShipmentDto: CreateShipmentDto): Promise< Record < string , unknown > > {
     const DataQuote: DataQuote = JSON.parse(JSON.stringify(CreateShipmentDto))
     const Quote = await this.GetQuote(DataQuote);
-    const { ref, cost, create_at } = await this.StoreShipment(CreateShipmentDto, Quote.amount);
-    return { ref, cost, create_at }
+    const job = await this.ShipmentQueue.add('create' , {
+      ...DataQuote,
+      cost: Quote.amount,
+      ref: GenRandomNumber(10)
+    })
+    return {
+        ref : job.data.ref ,
+        cost : job.data.cost ,
+        create_at : new Date(job.timestamp)
+     }
   }
 
-  async GetShipment(GetShipmentDto: GetShipmentDto): Promise<Shipment | Object> {
-    const Shipment: Shipment = await this.ShipmentModel.findOne(GetShipmentDto)
-    if (!Shipment) return { ref: "" }
+  async GetShipment(GetShipmentDto: GetShipmentDto): Promise<Shipment | any > {
+    const Shipment = await this.ShipmentRepository.FindOne(GetShipmentDto, null, { lean: true })
+    if (!Shipment) return { ref: " " }
     return Shipment
   }
 
-  async DeleteShipment(DeteleShipmentDto: DeteleShipmentDto): Promise<Object> {
-    const Shipment: Shipment = await this.ShipmentModel.findOneAndDelete(DeteleShipmentDto)
+  async DeleteShipment(DeteleShipmentDto: DeteleShipmentDto): Promise<Record < string , unknown > > {
+    const Shipment = await this.ShipmentRepository.FindOneAndDelete(DeteleShipmentDto)
     if (!Shipment) return {
       status : 'NOT OK' ,
       message : "Shipment not found"
@@ -82,4 +77,11 @@ export class ShipmentService {
     }
   }
 
+  async UpdateShipment(UpdateShipmentStatusDto: UpdateShipmentStatusDto): Promise< Record<string,unknown> | any >{
+    return await this.ShipmentRepository.FindOneAndUpdate({
+      ref : UpdateShipmentStatusDto.ref 
+    } , { status : UpdateShipmentStatusDto.status } , { new : true })
+  }
+
+  
 }

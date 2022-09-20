@@ -1,3 +1,3 @@
-export default function RandomTenNumber(){
-   return parseInt(( Math.random() + 1 ).toString().split('.')[1].slice(6))
+export function GenRandomNumber(count: number): number{
+   return parseInt(( Math.random() + 1 ).toString().split('.')[1].slice(16 - count))
 }

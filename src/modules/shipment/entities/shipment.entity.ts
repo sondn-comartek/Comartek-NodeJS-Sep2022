@@ -1,10 +1,10 @@
 import { Schema , Prop , SchemaFactory } from '@nestjs/mongoose' ;
 
-import { Document , Types } from 'mongoose' ;
+import { Document  } from 'mongoose' ;
 
 import { Type } from 'class-transformer' ;
 
-import { ValidateNested  , IsString , IsNumber  , IsDate } from 'class-validator';
+import { ValidateNested  , IsString , IsNumber  , IsDate, IsNotEmpty } from 'class-validator';
 
 import { Origin , Destination , Package } from '../dto/get-quote.dto' ;
 
@@ -33,10 +33,17 @@ export class Shipment extends Document {
     @Prop({isRequired : true })
     @IsNumber()
     cost : number
-    
+
     @IsDate()
     @Prop({isRequired : true })
-    create_at : Date
+    create_at : Date 
+
+    @IsString()
+    @Prop({default : 'pending'})
+    status : string 
+
+    @Prop()
+    number : number
 }
 
 export const ShipmentSchema = SchemaFactory.createForClass(Shipment) ;
