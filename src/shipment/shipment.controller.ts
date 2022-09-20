@@ -15,38 +15,40 @@ import { UpdateShipmentStatusDto } from "./dto/update-shipment-status.dto";
 import { Roles } from "../auth/decorators/role.decorator";
 import { Role } from "../common/enums";
 import { RolesGuard } from "../auth/guards/role.guard";
-import { InjectQueue } from "@nestjs/bull";
-import { CreateShipmentQueue } from "./constants";
-import { Queue } from "bull";
 
 @Controller("shipments")
 export class ShipmentController {
   constructor(
     private readonly shipmentService: ShipmentService,
-    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
-  ) {}
+  ) { }
+
+  // @UseGuards(JWTAuthGuard)
+  // @Post()
+  // async create(@Body() createShipmentDto: CreateShipmentDto) {
+  //   const { ref } = createShipmentDto;
+  //   const { amount, unit } = createShipmentDto.package.grossWeight;
+
+  //   await this.shipmentService.validateShipmentData(ref);
+
+  //   const cost = await this.shipmentService.calculateCost(amount, unit);
+  //   const shipmentData = { ...createShipmentDto, cost };
+
+  //   await this.shipmentQueue.add("handleCreateShipment", shipmentData);
+
+  //   return {
+  //     message: "Your shipment is creating...",
+  //     data: {
+  //       ref,
+  //       createdAt: new Date(),
+  //       cost,
+  //     },
+  //   };
+  // }
 
   @UseGuards(JWTAuthGuard)
   @Post()
   async create(@Body() createShipmentDto: CreateShipmentDto) {
-    const { ref } = createShipmentDto;
-    const { amount, unit } = createShipmentDto.package.grossWeight;
-
-    await this.shipmentService.validateShipmentData(ref);
-
-    const cost = await this.shipmentService.calculateCost(amount, unit);
-    const shipmentData = { ...createShipmentDto, cost };
-
-    await this.shipmentQueue.add("handleCreateShipment", shipmentData);
-
-    return {
-      message: "Your shipment is creating",
-      data: {
-        ref,
-        createdAt: new Date(),
-        cost,
-      },
-    };
+    return await this.shipmentService.create(createShipmentDto);
   }
 
   @Get()
