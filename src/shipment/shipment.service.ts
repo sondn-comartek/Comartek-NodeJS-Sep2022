@@ -29,8 +29,10 @@ export class ShipmentService {
       }
     }
 
-    // Count existed shipments
-    const count = await this.shipment.countDocuments();
+    // Get the number value for shipments
+    // Find the maximum number valhe of shipment in database
+    const lastestShipment = await this.shipment.findOne().sort('-number');
+    const numberOfNewShipment = lastestShipment.number + 1;
 
     // Getquote to check the change of rate
 
@@ -48,7 +50,7 @@ export class ShipmentService {
 
     const createShipment = {
       ref: reference_number,
-      number: count+1,
+      number: numberOfNewShipment,
       data: createShipmentDto.data,
       status: ShipmentStatus.PENDING,
       cost: price,
