@@ -16,6 +16,7 @@ import { PetModule } from './pet/pet.module';
 import { OrderModule } from './order/order.module';
 import { PhotoModule } from './photo/photo.module';
 import { CategoryModule } from './category/category.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CategoryModule } from './category/category.module';
     OrderModule,
     PhotoModule,
     CategoryModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
