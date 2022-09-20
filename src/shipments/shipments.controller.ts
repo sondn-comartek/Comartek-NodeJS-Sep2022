@@ -14,8 +14,8 @@ import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { GetShipmentDto } from './dto/get-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { DeleteShipmentDto } from './dto/delete-shipment.dto';
-import { Role } from 'src/users/enums/role.enum';
-import { Roles } from 'src/users/decorators/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -27,7 +27,9 @@ export class ShipmentsController {
     @InjectQueue('shipment') private readonly shipmentQueue: Queue,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
+  @Roles(Role.Customer)
   async create(@Body() createShipmentDto: CreateShipmentDto) {
     try {
       await this.shipmentQueue.add(
@@ -51,25 +53,34 @@ export class ShipmentsController {
   //   return this.shipmentsService.findAll();
   // }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findOne(@Body() getShipmentDto: GetShipmentDto) {
-    const { ref } = getShipmentDto.data;
-    return this.shipmentsService.findOne(ref);
+  async findOne(@Body() getShipmentDto: GetShipmentDto) {
+    try {
+      const { ref } = getShipmentDto.data;
+      return await this.shipmentsService.findOne(ref);
+    } catch (e) {
+      throw e;
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @Roles(Role.Admin)
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateShipmentDto: UpdateShipmentDto,
   ) {
-    return this.shipmentsService.update(id, updateShipmentDto);
+    try {
+      return await this.shipmentsService.update(id, updateShipmentDto);
+    } catch (e) {
+      throw e;
+    }
   }
 
   @Delete()
-  remove(@Body() deleteShipmentDto: DeleteShipmentDto) {
+  async remove(@Body() deleteShipmentDto: DeleteShipmentDto) {
     const { ref } = deleteShipmentDto.data;
-    return this.shipmentsService.remove(ref);
+    return await this.shipmentsService.remove(ref);
   }
 }

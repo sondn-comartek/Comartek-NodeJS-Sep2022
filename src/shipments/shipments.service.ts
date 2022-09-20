@@ -17,7 +17,6 @@ export class ShipmentsService {
   async create(createShipmentDto: CreateShipmentDto) {
     const shipmentCount = await this.modelShipment.find();
     const shipmentId = shipmentCount.length + 1;
-    console.log('shipmentId', shipmentId);
     const { data } = createShipmentDto;
 
     const quoteId = data.quote.id;

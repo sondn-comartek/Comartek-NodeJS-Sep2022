@@ -1,4 +1,4 @@
-import { Role } from '../enums/role.enum';
+import { Role } from '../../auth/enums/role.enum';
 
 export class User {
   email: string;

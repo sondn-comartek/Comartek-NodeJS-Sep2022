@@ -66,37 +66,6 @@ export class UsersService {
     }
   }
 
-  async login(loginUserDto: LoginUserDto) {
-    try {
-      const { email, password } = loginUserDto;
-      const isEmailExist = await this.checkEmailExist(email);
-      if (!isEmailExist) {
-        return {
-          errCode: 1,
-          errMessage: `Your email isn't exist in system`,
-        };
-      }
-
-      const user = await this.userModel.findOne({ email });
-
-      const checkedPassword = await this.checkPassword(password, user.password);
-      if (checkedPassword) {
-        return {
-          errCode: 0,
-          message: `Login successfully`,
-          user,
-        };
-      } else {
-        return {
-          errCode: 1,
-          errMessage: `Wrong password`,
-        };
-      }
-    } catch (e) {
-      return e;
-    }
-  }
-
   async validateUser(email: string, password: string) {
     try {
       const isEmailExist = await this.checkEmailExist(email);

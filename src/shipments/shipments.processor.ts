@@ -8,13 +8,13 @@ export class ShipmentConsumer {
 
   @OnGlobalQueueCompleted()
   async onGlobalCompleted(jobId: number, result: any) {
-    console.log('result: ' + result);
+    // console.log('result: ' + result);
     return result;
   }
 
   @Process('createShipment')
   async createShipment(job: Job) {
-    console.log('job data:', job.data.createShipmentDto);
+    // console.log('job data:', job.data.createShipmentDto);
     return await this.shipmentsService.create(job.data.createShipmentDto);
   }
 }
