@@ -6,9 +6,9 @@ import { Shipment } from "./entities/shipment.entity";
 import { WeightUnitsEnum } from "../common/enums";
 import { ShipmentErrorMessage } from "./constants";
 import { InjectQueue } from "@nestjs/bull";
-import { Queue } from 'bull';
-import { CreateShipmentQueue } from './constants/index';
-import { CreateShipmentDto } from './dto/create-shipment.dto';
+import { Queue } from "bull";
+import { CreateShipmentQueue } from "./constants/index";
+import { CreateShipmentDto } from "./dto/create-shipment.dto";
 
 @Injectable()
 export class ShipmentService {
@@ -16,7 +16,7 @@ export class ShipmentService {
     @InjectModel(Shipment.name) private shipmentEntity: Model<Shipment>,
     @InjectModel(Rate.name) private rateEntity: Model<Rate>,
     @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
-  ) { }
+  ) {}
 
   // async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
   //   const ref = createShipmentDto.ref;
@@ -87,9 +87,9 @@ export class ShipmentService {
       message: "Your shipment is creating...",
       data: {
         ref,
-        cost
-      }
-    }
+        cost,
+      },
+    };
   }
 
   async calculateCost(amount: number, unit: string): Promise<number> {

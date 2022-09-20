@@ -18,9 +18,7 @@ import { RolesGuard } from "../auth/guards/role.guard";
 
 @Controller("shipments")
 export class ShipmentController {
-  constructor(
-    private readonly shipmentService: ShipmentService,
-  ) { }
+  constructor(private readonly shipmentService: ShipmentService) {}
 
   // @UseGuards(JWTAuthGuard)
   // @Post()
