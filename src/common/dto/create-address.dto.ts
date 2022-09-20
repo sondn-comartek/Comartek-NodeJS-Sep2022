@@ -4,7 +4,7 @@ import {
   IsPostalCode,
   IsBoolean,
   IsISO31661Alpha2,
-} from "class-validator";
+} from 'class-validator';
 
 export class CreateAddressDto {
   @IsNotEmpty()
@@ -16,7 +16,7 @@ export class CreateAddressDto {
   readonly locality: string;
 
   @IsNotEmpty()
-  @IsPostalCode("any")
+  @IsPostalCode('any')
   readonly postalCode: string;
 
   @IsNotEmpty()

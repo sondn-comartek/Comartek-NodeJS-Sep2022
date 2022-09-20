@@ -1,4 +1,4 @@
 export enum WeightUnitsEnum {
-  Kilogram = "kg",
-  Gram = "g",
+  Kilogram = 'kg',
+  Gram = 'g',
 }

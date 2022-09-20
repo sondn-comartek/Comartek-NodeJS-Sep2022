@@ -1,8 +1,8 @@
-import { RateEntity } from "src/common/entities/rate.entity";
-import { Module } from "@nestjs/common";
-import { DiscountService } from "./discount.service";
-import { MongooseModule } from "@nestjs/mongoose";
-import { Rate } from "src/common/entities";
+import { RateEntity } from 'src/common/entities/rate.entity';
+import { Module } from '@nestjs/common';
+import { DiscountService } from './discount.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Rate } from 'src/common/entities';
 
 @Module({
   imports: [

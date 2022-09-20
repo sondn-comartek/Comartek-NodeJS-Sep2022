@@ -3,21 +3,21 @@ import {
   CanActivate,
   ExecutionContext,
   Body,
-} from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { Role } from "src/common/enums";
-import { JwtService } from "@nestjs/jwt";
-import { UnauthorizedException } from "@nestjs/common/exceptions";
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Role } from 'src/common/enums';
+import { JwtService } from '@nestjs/jwt';
+import { UnauthorizedException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>("roles", [
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -27,11 +27,11 @@ export class RolesGuard implements CanActivate {
 
     const authorizationHeader = context.switchToHttp().getRequest()
       .headers.authorization;
-    const token = authorizationHeader.split(" ")[1];
+    const token = authorizationHeader.split(' ')[1];
 
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: "jwt_secret_string",
+        secret: 'jwt_secret_string',
       });
 
       if (decoded?.error) {

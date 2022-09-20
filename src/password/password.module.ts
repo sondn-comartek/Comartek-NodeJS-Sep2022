@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { PasswordService } from "./password.service";
+import { Module } from '@nestjs/common';
+import { PasswordService } from './password.service';
 
 @Module({
   providers: [PasswordService],

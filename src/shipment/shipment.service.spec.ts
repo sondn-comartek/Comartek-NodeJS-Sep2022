@@ -1,5 +1,5 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { ShipmentService } from "./shipment.service";
+import { Test, TestingModule } from '@nestjs/testing';
+import { ShipmentService } from './shipment.service';
 
 export const mockShipmentService = {
   create: jest.fn(),
@@ -13,7 +13,7 @@ export const ShipmentServiceProvider = {
   useValue: mockShipmentService,
 };
 
-describe("ShipmentService", () => {
+describe('ShipmentService', () => {
   let service: ShipmentService;
 
   beforeEach(async () => {
@@ -24,7 +24,7 @@ describe("ShipmentService", () => {
     service = module.get<ShipmentService>(ShipmentService);
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 });

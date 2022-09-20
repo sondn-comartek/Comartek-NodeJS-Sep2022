@@ -5,16 +5,16 @@ import {
   IsString,
   MaxLength,
   MinLength,
-} from "class-validator";
+} from 'class-validator';
 
 export class CreateRegisterRequestDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(6, {
-    message: "Name must be at least 6 characters",
+    message: 'Name must be at least 6 characters',
   })
   @MaxLength(50, {
-    message: "Name can be up to 50 characters in length",
+    message: 'Name can be up to 50 characters in length',
   })
   name: string;
 
@@ -30,7 +30,7 @@ export class CreateRegisterRequestDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(6, {
-    message: "Password must be at least 6 characters",
+    message: 'Password must be at least 6 characters',
   })
   password: string;
 }

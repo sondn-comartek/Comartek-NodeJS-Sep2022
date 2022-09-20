@@ -1,7 +1,7 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsObject, ValidateNested } from "class-validator";
-import { CreateAddressDto } from "./create-address.dto";
-import { CreateContactDto } from "./create-contact.dto";
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsObject, ValidateNested } from 'class-validator';
+import { CreateAddressDto } from './create-address.dto';
+import { CreateContactDto } from './create-contact.dto';
 
 export class CreateOriginDto {
   @IsNotEmpty()

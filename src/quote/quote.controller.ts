@@ -1,9 +1,9 @@
-import { Controller, Get, Res } from "@nestjs/common";
-import { Body } from "@nestjs/common/decorators";
-import { CreateQuoteDto } from "./dto/create-quote.dto";
-import { QuoteService } from "./quote.service";
+import { Controller, Get, Res } from '@nestjs/common';
+import { Body } from '@nestjs/common/decorators';
+import { CreateQuoteDto } from './dto/create-quote.dto';
+import { QuoteService } from './quote.service';
 
-@Controller("quotes")
+@Controller('quotes')
 export class QuoteController {
   constructor(private readonly quoteService: QuoteService) {}
 

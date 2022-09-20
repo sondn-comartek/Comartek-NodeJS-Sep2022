@@ -1,7 +1,7 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
-  collection: "rates",
+  collection: 'rates',
 })
 export class Rate {
   @Prop({
@@ -13,7 +13,7 @@ export class Rate {
   @Prop({
     type: String,
     required: true,
-    default: "g",
+    default: 'g',
   })
   weightUnit: string;
 
@@ -26,7 +26,7 @@ export class Rate {
   @Prop({
     type: String,
     required: true,
-    default: "USD",
+    default: 'USD',
   })
   montaryUnit: string;
 

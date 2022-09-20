@@ -1,9 +1,9 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { ShipmentController } from "./shipment.controller";
-import { ShipmentService } from "./shipment.service";
-import { ShipmentServiceProvider } from "./shipment.service.spec";
+import { Test, TestingModule } from '@nestjs/testing';
+import { ShipmentController } from './shipment.controller';
+import { ShipmentService } from './shipment.service';
+import { ShipmentServiceProvider } from './shipment.service.spec';
 
-describe("ShipmentController", () => {
+describe('ShipmentController', () => {
   let controller: ShipmentController;
   let service: ShipmentService;
 
@@ -17,11 +17,11 @@ describe("ShipmentController", () => {
     service = await module.resolve(ShipmentService);
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 });

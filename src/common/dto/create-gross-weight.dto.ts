@@ -1,5 +1,5 @@
-import { IsEnum, IsNotEmpty, IsNumber, Min } from "class-validator";
-import { WeightUnitsEnum } from "../enums/weight-unit.enum";
+import { IsEnum, IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { WeightUnitsEnum } from '../enums/weight-unit.enum';
 
 export class CreateGrossWeightDto {
   @IsNotEmpty()

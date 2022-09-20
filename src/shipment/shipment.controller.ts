@@ -6,17 +6,17 @@ import {
   Param,
   Delete,
   Put,
-} from "@nestjs/common";
-import { ShipmentService } from "./shipment.service";
-import { CreateShipmentDto } from "./dto/create-shipment.dto";
-import { UseGuards } from "@nestjs/common/decorators";
-import { JWTAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { UpdateShipmentStatusDto } from "./dto/update-shipment-status.dto";
-import { Roles } from "../auth/decorators/role.decorator";
-import { Role } from "../common/enums";
-import { RolesGuard } from "../auth/guards/role.guard";
+} from '@nestjs/common';
+import { ShipmentService } from './shipment.service';
+import { CreateShipmentDto } from './dto/create-shipment.dto';
+import { UseGuards } from '@nestjs/common/decorators';
+import { JWTAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
+import { Roles } from '../auth/decorators/role.decorator';
+import { Role } from '../common/enums';
+import { RolesGuard } from '../auth/guards/role.guard';
 
-@Controller("shipments")
+@Controller('shipments')
 export class ShipmentController {
   constructor(private readonly shipmentService: ShipmentService) {}
 
@@ -54,26 +54,26 @@ export class ShipmentController {
     return await this.shipmentService.findAll();
   }
 
-  @Get(":ref")
-  async findOneByRef(@Param("ref") ref: string) {
+  @Get(':ref')
+  async findOneByRef(@Param('ref') ref: string) {
     return await this.shipmentService.findOneByRef(ref);
   }
 
-  @Delete(":ref")
-  async deleteByRef(@Param("ref") ref: string) {
+  @Delete(':ref')
+  async deleteByRef(@Param('ref') ref: string) {
     return await this.shipmentService.deleteByRef(ref);
   }
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
-  @Put(":ref")
+  @Put(':ref')
   async updateShipmentStatus(
-    @Param("ref") ref: string,
-    @Body() updateShipmentStatusDto: UpdateShipmentStatusDto
+    @Param('ref') ref: string,
+    @Body() updateShipmentStatusDto: UpdateShipmentStatusDto,
   ) {
     return await this.shipmentService.updateShipmentStatus(
       ref,
-      updateShipmentStatusDto.status
+      updateShipmentStatusDto.status,
     );
   }
 }

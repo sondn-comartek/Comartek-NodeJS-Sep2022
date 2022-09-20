@@ -1,19 +1,19 @@
-import { HttpException, Injectable, HttpStatus } from "@nestjs/common";
-import { CreateLoginRequestDto } from "./dto/create-login-request.dto";
-import { CreateRegisterRequestDto } from "./dto/create-register-request.dto";
-import { JwtService } from "@nestjs/jwt";
-import { AuthErrorMessage, AuthSuccessMessage } from "./constants";
-import { PasswordService } from "../password/password.service";
-import { UserService } from "../user/user.service";
-import { JWTPayload, JWT } from "../common/interfaces";
-import { User } from "../common/entities";
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { CreateLoginRequestDto } from './dto/create-login-request.dto';
+import { CreateRegisterRequestDto } from './dto/create-register-request.dto';
+import { JwtService } from '@nestjs/jwt';
+import { AuthErrorMessage, AuthSuccessMessage } from './constants';
+import { PasswordService } from '../password/password.service';
+import { UserService } from '../user/user.service';
+import { JWTPayload, JWT } from '../common/interfaces';
+import { User } from '../common/entities';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly passwordService: PasswordService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
   ) {}
 
   async login(createLoginRequestDto: CreateLoginRequestDto): Promise<Object> {
@@ -23,7 +23,7 @@ export class AuthService {
     if (!user) {
       throw new HttpException(
         AuthErrorMessage.NotRegisteredEmail,
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -32,7 +32,7 @@ export class AuthService {
     if (!isCorrectPassword) {
       throw new HttpException(
         AuthErrorMessage.WrongPassword,
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   async register(
-    createRegisterRequestDto: CreateRegisterRequestDto
+    createRegisterRequestDto: CreateRegisterRequestDto,
   ): Promise<Object> {
     let { name, phoneNumber, email, password } = createRegisterRequestDto;
 
@@ -63,7 +63,7 @@ export class AuthService {
     if (registeredEmail) {
       throw new HttpException(
         AuthErrorMessage.RegisteredEmail,
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -73,7 +73,7 @@ export class AuthService {
       name,
       phoneNumber,
       email,
-      password
+      password,
     );
 
     return {

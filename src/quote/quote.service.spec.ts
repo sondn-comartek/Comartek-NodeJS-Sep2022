@@ -1,8 +1,8 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { QuoteService } from "./quote.service";
+import { Test, TestingModule } from '@nestjs/testing';
+import { QuoteService } from './quote.service';
 
 const exampleGetQuoteResponse = {
-  id: "0000000000",
+  id: '0000000000',
   amount: 100,
 };
 
@@ -15,7 +15,7 @@ export const QuoteServiceProvider = {
   useValue: mockQuoteService,
 };
 
-describe("QuoteService", () => {
+describe('QuoteService', () => {
   let service: QuoteService;
 
   beforeEach(async () => {
@@ -26,13 +26,13 @@ describe("QuoteService", () => {
     service = module.get<QuoteService>(QuoteService);
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe("getQuote()", () => {
-    it("it should be called", () => {});
+  describe('getQuote()', () => {
+    it('it should be called', () => {});
 
-    it("should return an object with 2 properties: id && amount", () => {});
+    it('should return an object with 2 properties: id && amount', () => {});
   });
 });

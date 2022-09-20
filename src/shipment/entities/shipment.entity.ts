@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
-import { ShipmentStatus } from "../enums/shipment-status.enum";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { ShipmentStatus } from '../enums/shipment-status.enum';
 
 @Schema({
-  collection: "shipments",
+  collection: 'shipments',
 })
 export class Shipment {
   @Prop({

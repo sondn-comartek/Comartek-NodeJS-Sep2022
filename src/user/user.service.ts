@@ -1,12 +1,12 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { User } from "../common/entities";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from '../common/entities';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private readonly userEntity: Model<User>
+    @InjectModel(User.name) private readonly userEntity: Model<User>,
   ) {}
 
   async findUserById(id: string): Promise<User | null> {
@@ -22,7 +22,7 @@ export class UserService {
     name: string,
     phoneNumber: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<User> {
     email = email.toLowerCase();
 

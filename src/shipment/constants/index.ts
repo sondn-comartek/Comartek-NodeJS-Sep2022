@@ -4,4 +4,4 @@ export const ShipmentErrorMessage = {
   NotFound: (ref: string) => `Shipment with quote ID ${ref} does not exist`,
 };
 
-export const CreateShipmentQueue = "create-shipment-queue";
+export const CreateShipmentQueue = 'create-shipment-queue';

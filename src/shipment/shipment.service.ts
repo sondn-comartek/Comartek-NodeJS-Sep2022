@@ -1,21 +1,21 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Rate } from "../common/entities/rate.entity";
-import { Shipment } from "./entities/shipment.entity";
-import { WeightUnitsEnum } from "../common/enums";
-import { ShipmentErrorMessage } from "./constants";
-import { InjectQueue } from "@nestjs/bull";
-import { Queue } from "bull";
-import { CreateShipmentQueue } from "./constants/index";
-import { CreateShipmentDto } from "./dto/create-shipment.dto";
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Rate } from '../common/entities/rate.entity';
+import { Shipment } from './entities/shipment.entity';
+import { WeightUnitsEnum } from '../common/enums';
+import { ShipmentErrorMessage } from './constants';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { CreateShipmentQueue } from './constants/index';
+import { CreateShipmentDto } from './dto/create-shipment.dto';
 
 @Injectable()
 export class ShipmentService {
   constructor(
     @InjectModel(Shipment.name) private shipmentEntity: Model<Shipment>,
     @InjectModel(Rate.name) private rateEntity: Model<Rate>,
-    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue
+    @InjectQueue(CreateShipmentQueue) private shipmentQueue: Queue,
   ) {}
 
   // async create(createShipmentDto: CreateShipmentDto): Promise<Object> {
@@ -81,10 +81,10 @@ export class ShipmentService {
     const cost = await this.calculateCost(amount, unit);
     const createShipmentData = { ...createShipmentDto, cost };
 
-    await this.shipmentQueue.add("handleCreateShipment", createShipmentData);
+    await this.shipmentQueue.add('handleCreateShipment', createShipmentData);
 
     return {
-      message: "Your shipment is creating...",
+      message: 'Your shipment is creating...',
       data: {
         ref,
         cost,
@@ -120,7 +120,7 @@ export class ShipmentService {
     if (exitedShipment) {
       throw new HttpException(
         ShipmentErrorMessage.ExistedRef(ref),
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -139,7 +139,7 @@ export class ShipmentService {
     if (!shipment) {
       throw new HttpException(
         ShipmentErrorMessage.NotFound(ref),
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
@@ -154,14 +154,14 @@ export class ShipmentService {
       await this.shipmentEntity.deleteOne(filter);
 
       return {
-        status: "OK",
-        message: "Shipment has been deleted",
+        status: 'OK',
+        message: 'Shipment has been deleted',
       };
     }
 
     return {
-      status: "NOK",
-      message: "Shipment not found",
+      status: 'NOK',
+      message: 'Shipment not found',
     };
   }
 
@@ -172,14 +172,14 @@ export class ShipmentService {
     if (!shipment) {
       throw new HttpException(
         ShipmentErrorMessage.NotFound(ref),
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
     await this.shipmentEntity.updateOne(filter, { $set: { status } });
 
     return {
-      message: "Update thành công",
+      message: 'Update thành công',
     };
   }
 

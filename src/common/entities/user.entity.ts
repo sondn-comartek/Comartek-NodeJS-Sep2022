@@ -1,8 +1,8 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Role } from "../enums/role.enum";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Role } from '../enums/role.enum';
 
 @Schema({
-  collection: "users",
+  collection: 'users',
   timestamps: true,
 })
 export class User {
