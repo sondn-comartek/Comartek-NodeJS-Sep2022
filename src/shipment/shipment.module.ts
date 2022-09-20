@@ -13,9 +13,6 @@ import { Shipment, ShipmentSchema } from './entities/shipment.entity';
     ]),
     BullModule.registerQueue({
       name: 'serial',
-      // redis: {
-      //   port: 6380,
-      // }
     }),
   ],
   controllers: [ShipmentController],

@@ -16,18 +16,23 @@ export class ShipmentService {
     const { id: quoteID, price } = createShipmentDto?.data?.quote;
     try {
       let refString = this.genRandString(10);
-      await this.serialQueue.add('create_serial', {
+      const queueData = await this.serialQueue.add('create_serial', {
         quote_id: quoteID,
         ref: refString,
         cost: price,
       });
-      return {};
-      // const createdShipment = await this.shipmentModel.create({
-      //   );
-      // return createdShipment;
+      return queueData?.data;
     } catch (error) {
       throw Error(error);
     }
+  }
+  async createShipmentIntoDB(shipmentData) {
+    const createdShipment = await this.shipmentModel.create(shipmentData);
+    return createdShipment;
+  }
+  async counterShipment(): Promise<number> {
+    const total = await this.shipmentModel.countDocuments();
+    return total;
   }
   genRandString(length) {
     let result = '';
