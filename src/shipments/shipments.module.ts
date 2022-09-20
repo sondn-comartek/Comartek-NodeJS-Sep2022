@@ -5,10 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Shipment, ShipmentSchema } from './schemas/shipment.schema';
 import { QuotesModule } from 'src/quotes/quotes.module';
 import { BullModule } from '@nestjs/bull';
+import { ShipmentConsumer } from './shipments.processor';
 
 @Module({
   controllers: [ShipmentsController],
-  providers: [ShipmentsService],
+  providers: [ShipmentsService, ShipmentConsumer],
   imports: [
     MongooseModule.forFeature([
       { name: Shipment.name, schema: ShipmentSchema },

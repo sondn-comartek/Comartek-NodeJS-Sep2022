@@ -29,9 +29,20 @@ export class ShipmentsController {
 
   @Post()
   async create(@Body() createShipmentDto: CreateShipmentDto) {
-    return await this.shipmentQueue.add('createShipment', {
-      createShipmentDto,
-    });
+    try {
+      await this.shipmentQueue.add(
+        'createShipment',
+        {
+          createShipmentDto,
+        },
+        { delay: 3000 },
+      );
+
+      return `Creating new shipment...`;
+    } catch (e) {
+      throw e;
+    }
+
     // return this.shipmentsService.create(createShipmentDto);
   }
 
