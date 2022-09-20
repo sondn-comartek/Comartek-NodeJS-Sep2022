@@ -1,9 +1,6 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose'
+import { Injectable } from '@nestjs/common';
 import * as Convert from 'convert-units';
 import { Quote } from './interfaces'
-import { Rate } from './interfaces'
 import { Shipment } from './interfaces';
 import { DataQuote, UpdateShipmentStatusDto } from './dto';
 import { GetShipmentDto } from './dto'
@@ -20,7 +17,6 @@ import { Queue } from 'bull';
 @Injectable()
 export class ShipmentService {
   constructor(
-    @InjectModel('Rate') private readonly RateModel: Model<Rate> ,
     private readonly RateRepository: RateRepository ,
     private readonly QuoteRepository: QuoteRepository ,
     private readonly ShipmentRepository: ShipmentRepository ,
@@ -34,9 +30,6 @@ export class ShipmentService {
     const Rates = await this.RateRepository.FindAll({
       weight : { $lte : WeightByGam }
     }, null, { sort: { price: -1 } })
-    // const Rates = await this.RateModel.find({
-    //     weight : { $lte : WeightByGam }
-    //   }, null, { sort: { price: -1 } } )
     if (Rates.length === 0) return await this.QuoteRepository.Create({
       amount : 12.43
     })
@@ -57,7 +50,7 @@ export class ShipmentService {
     return {
         ref : job.data.ref ,
         cost : job.data.cost ,
-        create_at : new Date(job.timestamp)
+        created_at : new Date(job.timestamp)
      }
   }
 
@@ -82,11 +75,15 @@ export class ShipmentService {
   }
 
   async UpdateShipment(UpdateShipmentStatusDto: UpdateShipmentStatusDto): Promise< Record<string,unknown> | any >{
-    return await this.ShipmentRepository.FindOneAndUpdate({
-      ref : UpdateShipmentStatusDto.ref 
-    },
+    return await this.ShipmentRepository.FindOneAndUpdate(
       {
+      ref : UpdateShipmentStatusDto.ref 
+      }
+      , {
         status: UpdateShipmentStatusDto.status
-      }, { new: true })
+      } , 
+      { 
+        new: true
+      })
   }
 }

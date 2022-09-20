@@ -14,17 +14,21 @@ import { BullModule } from '@nestjs/bull';
     }) ,
     MongooseModule.forRootAsync({
       imports: [ConfigModule] ,
-      useFactory : (ConfigService : ConfigService) => ({
+      useFactory : (ConfigService: ConfigService) => ({
         uri : ConfigService.get<string>('MONGODB_URL'),
         useNewUrlParser : true ,
       }),
       inject : [ConfigService]
     }),
-    BullModule.forRoot({
-      redis : {
-        host : 'localhost',
-        port : 6379 
-      }
+    BullModule.forRootAsync({
+      imports : [ConfigModule] ,
+      useFactory: (ConfigService: ConfigService) => ({
+       redis : {
+        host : ConfigService.get('REDIS_HOST') ,
+        port : ConfigService.get('REDIS_PORT')
+       }
+      }),
+      inject : [ConfigService]
     }) ,
     ScheduleModule.forRoot() ,
     ShipmentModule , 

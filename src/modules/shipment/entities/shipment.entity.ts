@@ -9,7 +9,9 @@ import { ValidateNested  , IsString , IsNumber  , IsDate, IsNotEmpty } from 'cla
 import { Origin , Destination , Package } from '../dto/get-quote.dto' ;
 
 
-@Schema()
+@Schema({
+    timestamps : true
+})
 export class Shipment extends Document {
     @IsString()
     @Prop({ isRequired : true})
@@ -33,10 +35,6 @@ export class Shipment extends Document {
     @Prop({isRequired : true })
     @IsNumber()
     cost : number
-
-    @IsDate()
-    @Prop({isRequired : true })
-    create_at : Date 
 
     @IsString()
     @Prop({default : 'pending'})
