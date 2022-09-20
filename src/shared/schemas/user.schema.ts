@@ -5,6 +5,7 @@ import { UserRole, UserStatus } from '../enums';
 @Schema({
   collection: 'users',
   _id: false,
+  timestamps: true
 })
 export class User {
   @Prop({
