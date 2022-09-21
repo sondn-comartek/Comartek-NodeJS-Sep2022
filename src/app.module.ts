@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -18,9 +18,17 @@ import { PhotoModule } from './photo/photo.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EmailModule } from './email/email.module';
+import * as redisStore from "cache-manager-redis-store"
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
+    // MailerModule.forRoot({
+
+    // }),
+    // CacheModule.register({
+    //   store: redisStore,
+    // }),
     JwtModule.register({
       secret: Environments.JwtSecret,
     }),
@@ -45,4 +53,4 @@ import { EmailModule } from './email/email.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
