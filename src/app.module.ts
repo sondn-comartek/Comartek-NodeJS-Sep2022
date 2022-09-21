@@ -17,6 +17,7 @@ import { OrderModule } from './order/order.module';
 import { PhotoModule } from './photo/photo.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     PhotoModule,
     CategoryModule,
     CloudinaryModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -51,7 +51,7 @@ export class User {
   @Prop({
     type: UserStatus,
     required: true,
-    default: UserStatus.Active,
+    default: UserStatus.Inactive,
   })
   status: UserStatus;
 
