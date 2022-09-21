@@ -2,6 +2,6 @@ import { Module } from '@nestjs/common';
 import { OrderResolver } from './order.resolver';
 
 @Module({
-  providers: [OrderResolver]
+  providers: [OrderResolver],
 })
 export class OrderModule {}

@@ -6,27 +6,31 @@ import { CreateUserInput } from '../shared/inputs/create-user.input';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private readonly userSchema: Model<User>) { }
+  constructor(
+    @InjectModel(User.name) private readonly userSchema: Model<User>,
+  ) {}
 
-    async createNewUser(createUserInput: CreateUserInput) {
-        return await this.userSchema.create(createUserInput)
-    }
+  async createNewUser(createUserInput: CreateUserInput) {
+    return await this.userSchema.create(createUserInput);
+  }
 
-    async getUserById(id: string) {
-        return await this.userSchema.findOne({ id });
-    }
+  async getUserById(id: string) {
+    return await this.userSchema.findOne({ id });
+  }
 
-    async getUserByEmail(email: string) {
-        return await this.userSchema.findOne({ email: email.toLowerCase() })
-    }
+  async getUserByEmail(email: string) {
+    return await this.userSchema.findOne({ email: email.toLowerCase() });
+  }
 
-    async getUserByUserName(userName: string) {
-        return await this.userSchema.findOne({ userName: userName.toLowerCase() })
-    }
+  async getUserByUserName(userName: string) {
+    return await this.userSchema.findOne({ userName: userName.toLowerCase() });
+  }
 
-    async updateUserById(id: string) { }
+  async updateUserById(id: string, createUserInput: CreateUserInput) {
+    return;
+  }
 
-    async deleteUserById(id: string) {
-        await this.userSchema.deleteOne({ id })
-    }
+  async deleteUserById(id: string) {
+    await this.userSchema.deleteOne({ id });
+  }
 }

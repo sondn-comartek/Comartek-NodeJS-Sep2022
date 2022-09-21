@@ -1,10 +1,10 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
-    collection: "pets",
-    _id: false,
-    timestamps: true
+  collection: 'pets',
+  _id: false,
+  timestamps: true,
 })
-export class Pet { }
+export class Pet {}
 
-export const PetSchema = SchemaFactory.createForClass(Pet)
+export const PetSchema = SchemaFactory.createForClass(Pet);

@@ -13,63 +13,77 @@ import { SignInResponse } from '../shared/types/sign-in-response.type';
 
 @Injectable()
 export class AuthenticationService {
-    constructor(
-        private readonly userService: UserService,
-        private readonly passwordService: PasswordService,
-        private readonly jwtService: JwtService) { }
+  constructor(
+    private readonly userService: UserService,
+    private readonly passwordService: PasswordService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-    async signIn(signInInput: SignInInput) {
-        const { userName, password } = signInInput;
+  async signIn(signInInput: SignInInput) {
+    const { userName, password } = signInInput;
 
-        const user = await this.userService.getUserByUserName(userName);
-        if (!user) {
-            throw new AuthenticationError(AuthenticationErrorMessage.NotRegisteredUserName)
-        }
-
-        const isCorrectPassword = await this.passwordService.comparePassword(password, user.password);
-        if (!isCorrectPassword) {
-            throw new AuthenticationError(AuthenticationErrorMessage.WrongPassword)
-        }
-
-        const payload: JwtPayload = {
-            id: user.id,
-            email: user.email,
-            userName: user.userName,
-            role: user.role
-        }
-        const accessToken = this.jwtService.sign(payload, {
-            secret: Environments.JwtSecret,
-            expiresIn: "3600"
-        })
-        const refreshToken = this.jwtService.sign(payload, {
-            secret: Environments.JwtSecret,
-            expiresIn: "604800"
-        })
-        const signInResponse: SignInResponse = {
-            accessToken,
-            refreshToken
-        }
-
-        return signInResponse
+    const user = await this.userService.getUserByUserName(userName);
+    if (!user) {
+      throw new AuthenticationError(
+        AuthenticationErrorMessage.NotRegisteredUserName,
+      );
     }
 
-    async signUp(createUserInput: CreateUserInput): Promise<User> {
-        const { email, userName, password } = createUserInput;
-
-        const registeredUserName = await this.userService.getUserByUserName(userName);
-        if (registeredUserName) {
-            throw new AuthenticationError(AuthenticationErrorMessage.RegisteredUserName)
-        }
-
-        const registeredEmail = await this.userService.getUserByEmail(email);
-        if (registeredEmail) {
-            throw new AuthenticationError(AuthenticationErrorMessage.RegisteredEmail)
-        }
-
-        const hashedPassword = await this.passwordService.encryptPassword(password);
-        const newUserData = { ...createUserInput, userName: userName.toLowerCase(), password: hashedPassword };
-        const newUser = await this.userService.createNewUser(newUserData);
-
-        return newUser
+    const isCorrectPassword = await this.passwordService.comparePassword(
+      password,
+      user.password,
+    );
+    if (!isCorrectPassword) {
+      throw new AuthenticationError(AuthenticationErrorMessage.WrongPassword);
     }
+
+    const payload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+      userName: user.userName,
+      role: user.role,
+    };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: Environments.JwtSecret,
+      expiresIn: '3600',
+    });
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: Environments.JwtSecret,
+      expiresIn: '604800',
+    });
+    const signInResponse: SignInResponse = {
+      accessToken,
+      refreshToken,
+    };
+
+    return signInResponse;
+  }
+
+  async signUp(createUserInput: CreateUserInput): Promise<User> {
+    const { email, userName, password } = createUserInput;
+
+    const registeredUserName = await this.userService.getUserByUserName(
+      userName,
+    );
+    if (registeredUserName) {
+      throw new AuthenticationError(
+        AuthenticationErrorMessage.RegisteredUserName,
+      );
+    }
+
+    const registeredEmail = await this.userService.getUserByEmail(email);
+    if (registeredEmail) {
+      throw new AuthenticationError(AuthenticationErrorMessage.RegisteredEmail);
+    }
+
+    const hashedPassword = await this.passwordService.encryptPassword(password);
+    const newUserData = {
+      ...createUserInput,
+      userName: userName.toLowerCase(),
+      password: hashedPassword,
+    };
+    const newUser = await this.userService.createNewUser(newUserData);
+
+    return newUser;
+  }
 }

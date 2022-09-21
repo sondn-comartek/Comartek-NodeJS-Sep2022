@@ -12,8 +12,13 @@ import { User, UserSchema } from '../shared/schemas/user.schema';
   imports: [
     PasswordModule,
     UserModule,
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  providers: [AuthenticationResolver, AuthenticationService, JwtService, JWTStrategy],
+  providers: [
+    AuthenticationResolver,
+    AuthenticationService,
+    JwtService,
+    JWTStrategy,
+  ],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}
