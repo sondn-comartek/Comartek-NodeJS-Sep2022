@@ -2,6 +2,42 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: String!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+  status: String!
+  role: String!
+}
+
+type SignInResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
 type Query {
   hello: String!
+}
+
+type Mutation {
+  signUp(createUserInput: CreateUserInput!): User!
+  signIn(signInInput: SignInInput!): SignInResponse!
+}
+
+input CreateUserInput {
+  userName: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+}
+
+input SignInInput {
+  userName: String!
+  password: String!
 }

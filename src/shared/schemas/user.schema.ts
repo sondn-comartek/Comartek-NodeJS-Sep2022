@@ -1,21 +1,24 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import { v4 as uuidv4 } from "uuid"
 import { UserRole, UserStatus } from '../enums';
 
 @Schema({
   collection: 'users',
-  _id: false,
-  timestamps: true
+  timestamps: true,
 })
+@ObjectType()
 export class User {
+  @Field(() => String)
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     unique: true,
     required: true,
-    default: new mongoose.Types.ObjectId(),
+    default: () => uuidv4(),
   })
   id: string;
 
+  @Field(() => String)
   @Prop({
     type: String,
     unique: true,
@@ -23,18 +26,21 @@ export class User {
   })
   userName: string;
 
+  @Field(() => String)
   @Prop({
     type: String,
     required: true,
   })
   firstName: string;
 
+  @Field(() => String)
   @Prop({
     type: String,
     required: true,
   })
   lastName: string;
 
+  @Field(() => String)
   @Prop({
     type: String,
     unique: true,
@@ -42,21 +48,31 @@ export class User {
   })
   email: string;
 
+  @Field(() => String)
+  @Prop({
+    type: String,
+    required: true
+  })
+  password: string;
+
+  @Field(() => String)
   @Prop({
     type: String,
     required: true,
   })
   phone: string;
 
+  @Field(() => String)
   @Prop({
-    type: UserStatus,
+    type: String,
     required: true,
     default: UserStatus.Inactive,
   })
   status: UserStatus;
 
+  @Field(() => String)
   @Prop({
-    type: UserRole,
+    type: String,
     required: true,
     default: UserRole.User,
   })
