@@ -7,6 +7,6 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
   timestamps: true,
 })
 @ObjectType()
-export class Order { }
+export class Order {}
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

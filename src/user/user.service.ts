@@ -8,7 +8,7 @@ import { CreateUserInput } from '../shared/inputs/create-user.input';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
-  ) { }
+  ) {}
 
   async createNewUser(createUserInput: CreateUserInput): Promise<User> {
     return await this.userSchema.create(createUserInput);

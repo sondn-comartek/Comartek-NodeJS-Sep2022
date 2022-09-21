@@ -26,15 +26,16 @@ type Category {
 
 type Query {
   findCategoryByName(name: String!): Category!
-  findCategoryById(id: String!): Category!
   findAllCategory: [Category!]!
+  findCategoryById(id: String!): Category!
   hello: String!
 }
 
 type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategoryById(id: String!): String!
-  updateCategory(updateCategoryInput: CreateCategoryInput!): Category!
+  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
+  updateCategoryByName(name: String!, updateCategoryInput: CreateCategoryInput!): String!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
 }

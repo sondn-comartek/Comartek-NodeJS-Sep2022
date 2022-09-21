@@ -15,15 +15,15 @@ export class Category {
     required: true,
     default: () => uuidv4(),
   })
-  id: string
+  id: string;
 
   @Field(() => String)
   @Prop({
     type: String,
     unique: true,
-    required: true
+    required: true,
   })
-  name: string
+  name: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

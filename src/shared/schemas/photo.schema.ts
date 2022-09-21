@@ -7,6 +7,6 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
   timestamps: true,
 })
 @ObjectType()
-export class Photo { }
+export class Photo {}
 
 export const PhotoSchema = SchemaFactory.createForClass(Photo);

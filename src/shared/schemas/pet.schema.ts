@@ -18,31 +18,31 @@ export class Pet {
     required: true,
     default: () => uuidv4(),
   })
-  id: string
+  id: string;
 
   @Field(() => [String])
   @Prop({
     type: [String],
     required: true,
-    ref: Category.name
+    ref: Category.name,
   })
-  categoriesId: [string]
+  categoriesId: [string];
 
   @Field(() => [String])
   @Prop({
     type: [String],
     required: true,
-    ref: Tag.name
+    ref: Tag.name,
   })
-  tagsId: string
+  tagsId: string;
 
   @Field(() => String)
   @Prop({
     type: String,
     reuqired: true,
-    default: PetStatus.Avalible
+    default: PetStatus.Avalible,
   })
-  status: PetStatus
+  status: PetStatus;
 }
 
 export const PetSchema = SchemaFactory.createForClass(Pet);

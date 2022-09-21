@@ -9,7 +9,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Resolver()
 export class AuthenticationResolver {
-  constructor(private readonly authenticationService: AuthenticationService) { }
+  constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Query(() => String)
   @UseGuards(JwtAuthGuard)

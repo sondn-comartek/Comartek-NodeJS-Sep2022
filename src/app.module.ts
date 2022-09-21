@@ -18,8 +18,9 @@ import { PhotoModule } from './photo/photo.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EmailModule } from './email/email.module';
-import * as redisStore from "cache-manager-redis-store"
+import * as redisStore from 'cache-manager-redis-store';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { CachingModule } from './caching/caching.module';
 
 @Module({
   imports: [
@@ -34,9 +35,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
     //     from: "nodemailer.demo.v1@gmail.com"
     //   }
     // }),
-    // CacheModule.register({
-    //   store: redisStore,
-    // }),
+    CacheModule.register({
+      store: redisStore,
+    }),
     JwtModule.register({
       secret: Environments.JwtSecret,
     }),
@@ -58,8 +59,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
     CategoryModule,
     CloudinaryModule,
     EmailModule,
+    CachingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
