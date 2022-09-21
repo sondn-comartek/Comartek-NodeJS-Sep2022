@@ -1,3 +1,4 @@
+import { ObjectType } from '@nestjs/graphql';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
@@ -5,6 +6,7 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
   _id: false,
   timestamps: true,
 })
-export class Photo {}
+@ObjectType()
+export class Photo { }
 
 export const PhotoSchema = SchemaFactory.createForClass(Photo);

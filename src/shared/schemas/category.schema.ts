@@ -1,10 +1,29 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 @Schema({
   collection: 'categories',
-  _id: false,
   timestamps: true,
 })
-export class Category {}
+@ObjectType()
+export class Category {
+  @Field(() => String)
+  @Prop({
+    type: String,
+    unique: true,
+    required: true,
+    default: () => uuidv4(),
+  })
+  id: string
+
+  @Field(() => String)
+  @Prop({
+    type: String,
+    unique: true,
+    required: true
+  })
+  name: string
+}
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

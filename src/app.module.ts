@@ -24,7 +24,15 @@ import { MailerModule } from '@nestjs-modules/mailer';
 @Module({
   imports: [
     // MailerModule.forRoot({
-
+    //   transports: {
+    //     auth: {
+    //       user: "nodemailer.demo.v1@gmail.com",
+    //       pass: ""
+    //     }
+    //   },
+    //   defaults: {
+    //     from: "nodemailer.demo.v1@gmail.com"
+    //   }
     // }),
     // CacheModule.register({
     //   store: redisStore,
@@ -34,10 +42,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
     }),
     MongooseModule.forRoot(Environments.MongoUrl),
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      plugins: [],
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
-      include: [AuthenticationModule],
+      include: [AuthenticationModule, CategoryModule],
     }),
     AuthenticationModule,
     AuthorizationModule,

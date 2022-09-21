@@ -8,27 +8,27 @@ import { CreateUserInput } from '../shared/inputs/create-user.input';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
-  ) {}
+  ) { }
 
-  async createNewUser(createUserInput: CreateUserInput) {
+  async createNewUser(createUserInput: CreateUserInput): Promise<User> {
     return await this.userSchema.create(createUserInput);
   }
 
-  async getUserById(id: string) {
+  async getUserById(id: string): Promise<User> {
     return await this.userSchema.findOne({ id });
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<User> {
     return await this.userSchema.findOne({ email: email.toLowerCase() });
   }
 
-  async getUserByUserName(userName: string) {
+  async getUserByUserName(userName: string): Promise<User> {
     return await this.userSchema.findOne({ userName: userName.toLowerCase() });
   }
 
-  async updateUserById(id: string, createUserInput: CreateUserInput) {
-    return;
-  }
+  // async updateUserById(id: string, updateUserInput: CreateUserInput) {
+  //   return;
+  // }
 
   async deleteUserById(id: string) {
     await this.userSchema.deleteOne({ id });

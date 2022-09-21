@@ -1,3 +1,4 @@
+import { ObjectType } from '@nestjs/graphql';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
@@ -5,6 +6,7 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
   _id: false,
   timestamps: true,
 })
-export class Order {}
+@ObjectType()
+export class Order { }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

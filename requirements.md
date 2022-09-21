@@ -23,7 +23,7 @@ Your API must expose endpoints that allow users to do the following:
   - Username
   - First name
   - Last name
-  - Email (must be in correct format)
+  - Email (must be in correct format)pet
   - Password (must have at least 8 characters, 1 capitalized letter & 1 special character)
   - Phone (must be in correct format)
   - User status (either `active` or `inactive`)
@@ -99,13 +99,13 @@ Your API must expose endpoints that allow users to do the following:
   - Expected shipping date
   - Order status. There are 3 statuses available:
 
-    + `placed`: order is created
-    + `approved`: order is approved by the store & received payments
-    + `delivered`: order is successfully shipped to the buyer
+    - `placed`: order is created
+    - `approved`: order is approved by the store & received payments
+    - `delivered`: order is successfully shipped to the buyer
 
 - API should return the order information, along with the money needed to pay for the shipment. Total money is calculated by the following formula:
 
-> Sum of the price of all the pets * (100% + Sales Tax)
+> Sum of the price of all the pets \* (100% + Sales Tax)
 
 ```text
 If the total amount of receipts including a 7% sales tax is $32,100, the true sales amount will be $30,000 ($32,100 divided by 1.07). The sales tax on the true sales will be 0.07 X $30,000 = $2,100. Our proof is $30,000 of sales + $2,100 of sales tax = $32,100.

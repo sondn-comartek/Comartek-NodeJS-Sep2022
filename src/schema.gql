@@ -19,13 +19,28 @@ type SignInResponse {
   refreshToken: String!
 }
 
+type Category {
+  id: String!
+  name: String!
+}
+
 type Query {
+  findCategoryByName(name: String!): Category!
+  findCategoryById(id: String!): Category!
+  findAllCategory: [Category!]!
   hello: String!
 }
 
 type Mutation {
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  deleteCategoryById(id: String!): String!
+  updateCategory(updateCategoryInput: CreateCategoryInput!): Category!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
+}
+
+input CreateCategoryInput {
+  name: String!
 }
 
 input CreateUserInput {
