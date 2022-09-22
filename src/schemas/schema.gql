@@ -1,0 +1,98 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateUserInput {
+  """email of  user"""
+  email: String!
+
+  """first name of user"""
+  first_name: String!
+
+  """last name of user"""
+  last_name: String!
+
+  """password of user"""
+  password: String!
+
+  """phone number of user"""
+  phone: String!
+
+  """status of user in system"""
+  status: UserStatus = inactive
+
+  """username of user"""
+  username: String!
+}
+
+input LoginUserInput {
+  """email of user"""
+  email: String!
+
+  """password of user"""
+  password: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  removeUser(id: Int!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  login(logger: LoginUserInput!): String!
+  user(id: Int!): User!
+  users: String!
+}
+
+input UpdateUserInput {
+  """email of  user"""
+  email: String
+
+  """first name of user"""
+  first_name: String
+  id: Int!
+
+  """last name of user"""
+  last_name: String
+
+  """password of user"""
+  password: String
+
+  """phone number of user"""
+  phone: String
+
+  """status of user in system"""
+  status: UserStatus = inactive
+
+  """username of user"""
+  username: String
+}
+
+type User {
+  """email of  user"""
+  email: String!
+
+  """first name of user"""
+  first_name: String!
+
+  """last name of user"""
+  last_name: String!
+
+  """password of user"""
+  password: String!
+
+  """phone number of user"""
+  phone: String!
+
+  """status of user in system"""
+  status: UserStatus!
+
+  """username of user"""
+  username: String!
+}
+
+enum UserStatus {
+  active
+  inactive
+}
