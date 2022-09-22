@@ -77,4 +77,4 @@ import { TagModule } from './tag/tag.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

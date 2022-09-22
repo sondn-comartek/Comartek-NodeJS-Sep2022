@@ -5,7 +5,7 @@ import { CategoryService } from './category.service';
 
 @Resolver()
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) { }
+  constructor(private readonly categoryService: CategoryService) {}
 
   @Query(() => [Category])
   async findAllCategory() {

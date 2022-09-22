@@ -5,7 +5,7 @@ import { UpdateUserInput } from '../shared/inputs/update-user.input';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Query(() => [User])
   async getAllUser() {
@@ -24,7 +24,7 @@ export class UserResolver {
     return await this.userService.deleteUserById(id);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => User)
   async updateUserById(
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateUserInput', type: () => UpdateUserInput })

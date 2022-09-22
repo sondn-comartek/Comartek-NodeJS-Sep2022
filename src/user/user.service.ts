@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../shared/schemas/user.schema';
@@ -11,10 +15,10 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     private readonly passwordService: PasswordService,
-  ) { }
+  ) {}
 
-  async getAllUser() {
-    return await this.userSchema.find();
+  async getAllUser(): Promise<User[]> {
+    return await this.userSchema.find({});
   }
 
   async createNewUser(createUserInput: CreateUserInput): Promise<User> {
@@ -33,37 +37,62 @@ export class UserService {
     return await this.userSchema.findOne({ userName: userName.toLowerCase() });
   }
 
-  async updateUserById(id: string, updateUserInput: UpdateUserInput) {
+  async updateUserById(
+    id: string,
+    updateUserInput: UpdateUserInput,
+  ): Promise<User> {
     let userName = updateUserInput?.userName;
     let email = updateUserInput?.email;
     let password = updateUserInput?.password;
 
     const user = await this.getUserById(id);
     if (!user) {
-      return `User không tồn tại`;
+      throw new NotFoundException('User không tồn tại');
     }
 
+    // if (userName) {
+    //   switch (userName === user.userName) {
+    //     case true:
+    //       break;
+
+    //     case false:
+    //       const existedUserName = await this.getUserByUserName(userName);
+    //       if (existedUserName) {
+    //         throw new ConflictException("Tên người dùng đã được sử dụng")
+    //       }
+    //       break
+
+    //     default:
+    //       break;
+    //   }
+    //   userName = userName.toLowerCase();
+    // }
+
     if (userName) {
-      const existedUserName = await this.getUserByUserName(userName);
-      if (existedUserName) {
-        return `Tên người dùng ${userName} đã được sử dụng`;
+      if (userName === user.userName) {
+      } else {
+        const existedUserName = await this.getUserByUserName(userName);
+        if (existedUserName) {
+          throw new ConflictException('Tên người dùng đã được sử dụng');
+        }
       }
-      userName = userName.toLowerCase()
+
+      userName = userName.toLowerCase();
     }
 
     if (email) {
       const registeredEmail = await this.getUserByEmail(email);
       if (registeredEmail) {
-        return `Email ${email} đã được sử dụng`;
+        throw new ConflictException('Email đã được sử dụng');
       }
-      email = email.toLowerCase()
+      email = email.toLowerCase();
     }
 
     if (password) {
-      password = await this.passwordService.encryptPassword(password)
+      password = await this.passwordService.encryptPassword(password);
     }
 
-    await this.userSchema.updateOne(
+    return await this.userSchema.findOneAndUpdate(
       { id },
       {
         $set: {
@@ -73,19 +102,18 @@ export class UserService {
           password,
         },
       },
+      {
+        new: true,
+      },
     );
-
-    return 'Update user thành công';
   }
 
-  async deleteUserById(id: string) {
+  async deleteUserById(id: string): Promise<User> {
     const user = await this.getUserById(id);
     if (!user) {
-      return `User không tồn tại`;
+      throw new NotFoundException('User không tồn tại');
     }
 
-    await this.userSchema.deleteOne({ id });
-
-    return `Xóa user thành công`;
+    return await this.userSchema.findOneAndRemove({ id }, { new: true });
   }
 }

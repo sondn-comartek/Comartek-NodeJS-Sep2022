@@ -43,7 +43,7 @@ type Query {
 type Mutation {
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
-  updateUserById(id: String!, updateUserInput: UpdateUserInput!): String!
+  updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategoryById(id: String!): Category!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
