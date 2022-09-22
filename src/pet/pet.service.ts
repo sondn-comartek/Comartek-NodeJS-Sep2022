@@ -10,7 +10,7 @@ export class PetService {
   constructor(@InjectModel(Pet.name) private petModel: Model<PetDocument>) {}
   async create(createPetInput: CreatePetInput) {
     try {
-      const petInfo = {petID: uuidV4(), ...createPetInput}
+      const petInfo = { petID: uuidV4(), ...createPetInput };
       return await this.petModel.create(petInfo);
     } catch (error) {
       throw new Error(error);
@@ -25,8 +25,15 @@ export class PetService {
     return allPetsOfStore;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pet`;
+  async findByFields(id: string, tags: string[], status: string) {
+    try {
+      const pets = await this.petModel.find({
+        $or: [{ petID: id }, { tags: tags }, { status: status }],
+      });
+      return pets;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   update(id: number, updatePetInput: UpdatePetInput) {

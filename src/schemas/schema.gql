@@ -81,7 +81,7 @@ type Pet {
 
 type Query {
   login(logger: LoginUserInput!): String!
-  pet(id: Int!): Pet!
+  pet(petID: String!, status: String!, tags: [String!]!): [Pet!]!
   pets: [Pet!]!
   user(id: String!): User!
   users: String!

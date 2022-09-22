@@ -18,9 +18,13 @@ export class PetResolver {
     return await this.petService.findAll();
   }
 
-  @Query(() => Pet, { name: 'pet' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.petService.findOne(id);
+  @Query(() => [Pet], { name: 'pet' })
+  async findOne(
+    @Args('petID', { type: () => String }) id: string,
+    @Args('tags', { type: () => [String] }) tags: string[],
+    @Args('status', { type: () => String }) status: string,
+  ) {
+    return await this.petService.findByFields(id, tags, status);
   }
 
   @Mutation(() => Pet)
