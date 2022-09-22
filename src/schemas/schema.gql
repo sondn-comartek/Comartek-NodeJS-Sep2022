@@ -2,6 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreatePetInput {
+  """pet of category"""
+  category: String!
+
+  """name of pet"""
+  name: String!
+
+  """photo url of pet"""
+  photo_urls: String!
+
+  """status of pet"""
+  status: String!
+
+  """pet have tags"""
+  tags: [String!]!
+}
+
 input CreateUserInput {
   """email of  user"""
   email: String!
@@ -34,15 +51,58 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createPet(createPetInput: CreatePetInput!): Pet!
   createUser(createUserInput: CreateUserInput!): User!
+  removePet(id: Int!): Pet!
   removeUser(id: Int!): User!
+  updatePet(updatePetInput: UpdatePetInput!): Pet!
   updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Pet {
+  """pet of category"""
+  category: String!
+
+  """name of pet"""
+  name: String!
+
+  """pet of category"""
+  petID: String!
+
+  """photo url of pet"""
+  photo_urls: String!
+
+  """status of pet"""
+  status: String!
+
+  """pet have tags"""
+  tags: [String!]!
 }
 
 type Query {
   login(logger: LoginUserInput!): String!
+  pet(id: Int!): Pet!
+  pets: [Pet!]!
   user(id: String!): User!
   users: String!
+}
+
+input UpdatePetInput {
+  """pet of category"""
+  category: String
+  id: Int!
+
+  """name of pet"""
+  name: String
+
+  """photo url of pet"""
+  photo_urls: String
+
+  """status of pet"""
+  status: String
+
+  """pet have tags"""
+  tags: [String!]
 }
 
 input UpdateUserInput {

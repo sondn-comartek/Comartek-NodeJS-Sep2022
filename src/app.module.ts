@@ -8,13 +8,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { PetModule } from './pet/pet.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      include:[UserModule, AuthModule],
+      include:[UserModule, AuthModule, PetModule],
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    PetModule,
   ],
   controllers: [AppController],
   providers: [AppService],
