@@ -45,6 +45,7 @@ type Query {
   findAllCategory: [Category!]!
   findCategoryById(id: String!): Category!
   findAllPet: String!
+  findPetById: String!
   hello: String!
 }
 

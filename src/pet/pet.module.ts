@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Pet, PetSchema } from '../shared/schemas/pet.schema';
 import { PhotoModule } from '../photo/photo.module';
 import { UploadModule } from '../upload/upload.module';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UploadModule } from '../upload/upload.module';
     ]),
     PhotoModule,
     UploadModule,
+    CategoryModule,
   ],
   providers: [PetService, PetResolver],
 })
