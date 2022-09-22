@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from '../shared/schemas/tag.schema';
 import { Model } from 'mongoose';
@@ -8,13 +8,24 @@ import { CreateTagInput } from '../shared/inputs/create-tag.input';
 export class TagService {
   constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) {}
 
-  async createTag(createTagInput: CreateTagInput) {}
+  async createTag(createTagInput: CreateTagInput) {
+    const { name } = createTagInput;
+    if (await this.getTagByName(name)) {
+      throw new ConflictException(`Tag ${name} đã tồn tại`);
+    }
 
-  async getTagById(id: string) {}
+    return await this.tagSchema.create(createTagInput);
+  }
 
-  async getTagByName(name: string) {}
+  async findAllTag(): Promise<Tag[]> {
+    return await this.tagSchema.find({});
+  }
 
-  async updateTagById(id: string, updateTagInput: CreateTagInput) {}
+  async getTagById(id: string): Promise<Tag> {
+    return await this.tagSchema.findOne({ id });
+  }
 
-  async deleteTagById(id: string) {}
+  async getTagByName(name: string): Promise<Tag> {
+    return await this.tagSchema.findOne({ name });
+  }
 }

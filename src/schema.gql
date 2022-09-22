@@ -24,6 +24,11 @@ type Category {
   name: String!
 }
 
+type Tag {
+  id: String!
+  name: String!
+}
+
 type Pet {
   id: String!
   categories: [String!]!
@@ -32,6 +37,7 @@ type Pet {
 }
 
 type Query {
+  findAllTag: [Tag!]!
   getAllUser: [User!]!
   getUserByUserName(userName: String!): User!
   findAllCategory: [Category!]!
@@ -41,6 +47,7 @@ type Query {
 }
 
 type Mutation {
+  createTag(createTagInput: CreateTagInput!): Tag!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
@@ -50,6 +57,10 @@ type Mutation {
   createPet: String!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
+}
+
+input CreateTagInput {
+  name: String!
 }
 
 input CreateActiveAccountRequestInput {
