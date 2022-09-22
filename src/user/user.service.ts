@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../shared/schemas/user.schema';
 import { CreateUserInput } from '../shared/inputs/create-user.input';
+import { UpdateUserInput } from '../shared/inputs/update-user.input';
 
 @Injectable()
 export class UserService {
@@ -26,11 +27,27 @@ export class UserService {
     return await this.userSchema.findOne({ userName: userName.toLowerCase() });
   }
 
-  // async updateUserById(id: string, updateUserInput: CreateUserInput) {
-  //   return;
-  // }
+  async updateUserById(id: string, updateUserInput: UpdateUserInput) {
+    const user = await this.getUserById(id);
+    if (!user) {
+      return `User with id ${id} does not exist`;
+    }
+
+    return await this.userSchema.updateOne(
+      { id },
+      { $set: updateUserInput },
+      { new: true },
+    );
+  }
 
   async deleteUserById(id: string) {
+    const user = await this.getUserById(id);
+    if (!user) {
+      return `User with id ${id} does not exist`;
+    }
+
     await this.userSchema.deleteOne({ id });
+
+    return `Delete user with id ${id} successfully`;
   }
 }

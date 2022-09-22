@@ -24,19 +24,22 @@ import { CachingModule } from './caching/caching.module';
 
 @Module({
   imports: [
-    // MailerModule.forRoot({
-    //   transports: {
-    //     auth: {
-    //       user: "nodemailer.demo.v1@gmail.com",
-    //       pass: ""
-    //     }
-    //   },
-    //   defaults: {
-    //     from: "nodemailer.demo.v1@gmail.com"
-    //   }
-    // }),
+    MailerModule.forRoot({
+      transports: {
+        auth: {
+          user: 'nodemailer.demo.v1@gmail.com',
+          pass: '',
+        },
+      },
+      defaults: {
+        from: 'nodemailer.demo.v1@gmail.com',
+      },
+    }),
     CacheModule.register({
+      isGlobal: true,
       store: redisStore,
+      host: 'localhost',
+      port: 6379,
     }),
     JwtModule.register({
       secret: Environments.JwtSecret,
@@ -47,7 +50,14 @@ import { CachingModule } from './caching/caching.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
-      include: [AuthenticationModule, CategoryModule],
+      include: [
+        AuthenticationModule,
+        CategoryModule,
+        EmailModule,
+        UserModule,
+        PetModule,
+        OrderModule,
+      ],
     }),
     AuthenticationModule,
     AuthorizationModule,

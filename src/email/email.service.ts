@@ -8,23 +8,28 @@ import { OtpService } from '../otp/otp.service';
 export class EmailService {
   constructor(
     private readonly otpService: OtpService,
-    // private readonly cachingService: CachingService,
+    private readonly cachingService: CachingService,
     private readonly userService: UserService,
   ) {}
 
   async sendOtpToEmail(
     createActiveAccountRequestInput: CreateActiveAccountRequestInput,
-  ): Promise<string> {
+  ) {
     const { email } = createActiveAccountRequestInput;
-
     const user = await this.userService.getUserByEmail(email);
-    if (user) {
-      const otp = await this.otpService.createNewOtp();
-      // Insert otp into Redis server { "email": "otp" }
-      // Send to email
-      return `An OTP is sent to ${email}. Please check!`;
+    if (!user) {
+      return 'Email không tồn tại';
     }
 
-    return `Email ${email} is not registered`;
+    const cachedValue = await this.cachingService.getValueByKey(email);
+    if (cachedValue) {
+      return 'Mã OTP đã được gửi đi trước đó. Vui lòng kiểm tra email';
+    }
+
+    const otp = await this.otpService.createNewOtp();
+
+    await this.cachingService.setValue(email, otp);
+
+    return 'Mã OTP đã được gử tới email';
   }
 }

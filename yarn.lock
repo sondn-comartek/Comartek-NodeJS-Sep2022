@@ -1174,7 +1174,15 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/cache-manager@^4.0.2":
+"@types/cache-manager-redis-store@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/cache-manager-redis-store/-/cache-manager-redis-store-2.0.1.tgz#42cf1400a6dbf42d06fbcbd82e04b0a44856e50a"
+  integrity sha512-8QuccvcPieh1xM/5kReE76SfdcIdEB0ePc+54ah/NBuK2eG+6O50SX4WKoJX81UxGdW3sh/WlDaDNqjnqxWNsA==
+  dependencies:
+    "@types/cache-manager" "*"
+    "@types/redis" "^2.8.0"
+
+"@types/cache-manager@*", "@types/cache-manager@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/cache-manager/-/cache-manager-4.0.2.tgz#5e76dd9e7881c23f332c2f48e5f326bd05ba9ac9"
   integrity sha512-fT5FMdzsiSX0AbgnS5gDvHl2Nco0h5zYyjwDQy4yPC7Ww6DeGMVKPRqIZtg9HOXDV2kkc18SL1B0N8f0BecrCA==
@@ -1386,6 +1394,13 @@
   version "1.2.4"
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.4.tgz"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
+
+"@types/redis@^2.8.0":
+  version "2.8.32"
+  resolved "https://registry.yarnpkg.com/@types/redis/-/redis-2.8.32.tgz#1d3430219afbee10f8cfa389dad2571a05ecfb11"
+  integrity sha512-7jkMKxcGq9p242exlbsVzuJb57KqHRhNl4dHoQu2Y5v9bCAbtIXXH0R3HleSQW4CTOqpHIYUW3t6tpUj4BVQ+w==
+  dependencies:
+    "@types/node" "*"
 
 "@types/serve-static@*":
   version "1.15.0"

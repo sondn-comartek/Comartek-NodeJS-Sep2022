@@ -25,19 +25,38 @@ type Category {
 }
 
 type Query {
+  getUserByUserName(userName: String!): User!
   findCategoryByName(name: String!): Category!
   findAllCategory: [Category!]!
   findCategoryById(id: String!): Category!
+  findAllPet: String!
   hello: String!
 }
 
 type Mutation {
+  sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
+  deleteUserById(id: String!): String!
+  updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategoryById(id: String!): String!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   updateCategoryByName(name: String!, updateCategoryInput: CreateCategoryInput!): String!
+  createPet: String!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
+}
+
+input CreateActiveAccountRequestInput {
+  email: String!
+}
+
+input UpdateUserInput {
+  userName: String
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phone: String
 }
 
 input CreateCategoryInput {
