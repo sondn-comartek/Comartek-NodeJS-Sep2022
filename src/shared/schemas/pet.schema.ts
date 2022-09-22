@@ -22,13 +22,21 @@ export class Pet {
   })
   id: string;
 
-  @Field(() => [String])
+  @Field(() => String)
+  @Prop({
+    type: String,
+    required: true,
+    unique: true,
+  })
+  name: string;
+
+  @Field(() => String)
   @Prop({
     type: mongoose.Types.ObjectId,
     required: true,
     ref: Category.name,
   })
-  categories: [Category];
+  category: Category;
 
   @Field(() => [String])
   @Prop({
@@ -43,7 +51,7 @@ export class Pet {
     type: mongoose.Types.ObjectId,
     required: true,
     ref: Photo.name,
-    default: ["1"] // default photo on DB
+    default: ['1'], // default photo on DB
   })
   photos: [Photo];
 

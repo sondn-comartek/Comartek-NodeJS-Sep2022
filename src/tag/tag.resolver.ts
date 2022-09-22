@@ -5,7 +5,7 @@ import { TagService } from './tag.service';
 
 @Resolver()
 export class TagResolver {
-  constructor(private readonly tagService: TagService) { }
+  constructor(private readonly tagService: TagService) {}
   @Query(() => [Tag])
   async findAllTag(): Promise<Tag[]> {
     return await this.tagService.findAllTag();

@@ -31,7 +31,8 @@ type Tag {
 
 type Pet {
   id: String!
-  categories: [String!]!
+  name: String!
+  category: String!
   tags: [String!]!
   photos: [String!]!
   status: String!
@@ -39,11 +40,11 @@ type Pet {
 
 type Query {
   findAllTag: [Tag!]!
-  getAllUser: [User!]!
-  getUserByUserName(userName: String!): User!
+  findAllUser: [User!]!
+  findUserByUserName(userName: String!): User!
   findAllCategory: [Category!]!
   findCategoryById(id: String!): Category!
-  findAllPet: [Pet!]!
+  findAllPet: String!
   hello: String!
 }
 
@@ -55,7 +56,7 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategoryById(id: String!): Category!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
-  createPet: String!
+  createPet(createPetInput: CreatePetInput!): Pet!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
 }
@@ -79,6 +80,12 @@ input UpdateUserInput {
 
 input CreateCategoryInput {
   name: String!
+}
+
+input CreatePetInput {
+  category: String!
+  name: String!
+  tags: [String!]!
 }
 
 input CreateUserInput {
