@@ -8,7 +8,7 @@ export class AuthService {
   async userLogin(logger): Promise<string> {
     const { email, password } = logger;
     try {
-      const existAccount = await this.userService.findByEmail(email);
+      const existAccount = await this.userService.findOne(email, 'email');
       const isCompare = await this.comparePassword(
         password,
         existAccount?.password,

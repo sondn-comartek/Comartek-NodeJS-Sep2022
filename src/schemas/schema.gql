@@ -41,7 +41,7 @@ type Mutation {
 
 type Query {
   login(logger: LoginUserInput!): String!
-  user(id: Int!): User!
+  user(id: String!): User!
   users: String!
 }
 

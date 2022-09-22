@@ -25,12 +25,9 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-  async findByEmail(email: String): Promise<any> {
+  async findOne(data: string, field: string) {
     try {
-      const user = await this.userModel.findOne({ email: email });
+      const user = await this.userModel.findOne({ field: data });
       if (user) {
         return user;
       }
@@ -39,7 +36,6 @@ export class UserService {
       throw new Error(error);
     }
   }
-
   update(id: number, updateUserInput: UpdateUserInput) {
     return `This action updates a #${id} user`;
   }
