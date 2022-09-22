@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input ApproveOrderInput {
+  id: String!
+  petsId: [String!]
+  status: String!
+}
+
 type Auth {
   access_token: String!
 }
@@ -9,6 +15,17 @@ type Auth {
 input CreateAuthInput {
   password: String!
   username: String!
+}
+
+input CreateOrderInput {
+  petsId: [String!]!
+}
+
+input CreatePetInput {
+  category: String!
+  name: String!
+  photoUrl: String!
+  tags: String!
 }
 
 input CreateUserInput {
@@ -20,22 +37,81 @@ input CreateUserInput {
   username: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
+  approveOrder(approveOrderInput: ApproveOrderInput!): Order!
   createAuth(createAuthInput: CreateAuthInput!): Auth!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  createPet(createPetInput: CreatePetInput!): Pet!
   createUser(createUserInput: CreateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeOrder(id: String!): Order!
+  removePet(id: String!): Pet!
+  removeUser(id: String!): User!
+  updateImagePet(updateImagePetInput: UpdateImagePetInput!): Pet!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+  updatePet(updatePetInput: UpdatePetInput!): Pet!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
+type Order {
+  id: String!
+  petsId: [String!]!
+  price: Float!
+  shipDate: DateTime!
+  status: String!
+}
+
+type Pet {
+  category: String!
+  id: String!
+  name: String!
+  photoUrl: String!
+  price: Float!
+  status: String!
+  tags: String!
+}
+
 type Query {
-  user(id: Int!): User!
-  users: [User!]!
+  findOrderById(id: String!): Order!
+  findPetById(id: String!): Pet!
+  findPetByStatus(status: String!): Pet!
+  findPetByTags(tags: String!): Pet!
+  pets: [Pet!]!
+  user(username: String!): User!
+}
+
+input UpdateImagePetInput {
+  category: String
+  id: String!
+  name: String
+  photoUrl: String!
+  price: Float!
+  status: String
+  tags: String
+}
+
+input UpdateOrderInput {
+  id: Int!
+  petsId: [String!]
+}
+
+input UpdatePetInput {
+  category: String
+  id: String!
+  name: String
+  photoUrl: String
+  status: String
+  tags: String
 }
 
 input UpdateUserInput {
   email: String
   firstName: String
-  id: Int!
+  id: String!
   lastName: String
   password: String
   phone: String
@@ -45,7 +121,7 @@ input UpdateUserInput {
 type User {
   email: String!
   firstName: String!
-  id: Int!
+  id: String!
   lastName: String!
   password: String!
   phone: String!

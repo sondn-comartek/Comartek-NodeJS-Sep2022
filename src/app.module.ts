@@ -7,6 +7,8 @@ import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { PetsModule } from './pets/pets.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    PetsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
