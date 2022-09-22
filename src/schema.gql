@@ -33,6 +33,7 @@ type Pet {
   id: String!
   categories: [String!]!
   tags: [String!]!
+  photos: [String!]!
   status: String!
 }
 

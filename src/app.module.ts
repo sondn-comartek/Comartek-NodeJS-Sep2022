@@ -22,9 +22,17 @@ import * as redisStore from 'cache-manager-redis-store';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CachingModule } from './caching/caching.module';
 import { TagModule } from './tag/tag.module';
+import { BullModule } from '@nestjs/bull';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
+    BullModule.forRoot({
+      redis: {
+        host: "localhost",
+        port: 6379
+      }
+    }),
     MailerModule.forRoot({
       transports: {
         auth: {
@@ -73,8 +81,9 @@ import { TagModule } from './tag/tag.module';
     EmailModule,
     CachingModule,
     TagModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
