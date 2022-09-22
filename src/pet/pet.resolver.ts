@@ -4,7 +4,7 @@ import { PetService } from './pet.service';
 
 @Resolver()
 export class PetResolver {
-  constructor(private readonly petService: PetService) { }
+  constructor(private readonly petService: PetService) {}
   @Query(() => [Pet])
   async findAllPet(): Promise<Pet[]> {
     return;
@@ -12,6 +12,6 @@ export class PetResolver {
 
   @Mutation(() => String)
   async createPet(): Promise<Pet> {
-    return
+    return;
   }
 }

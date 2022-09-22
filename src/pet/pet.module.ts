@@ -8,12 +8,15 @@ import { UploadModule } from '../upload/upload.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{
-      name: Pet.name, schema: PetSchema
-    }]),
+    MongooseModule.forFeature([
+      {
+        name: Pet.name,
+        schema: PetSchema,
+      },
+    ]),
     PhotoModule,
-    UploadModule
+    UploadModule,
   ],
   providers: [PetService, PetResolver],
 })
-export class PetModule { }
+export class PetModule {}

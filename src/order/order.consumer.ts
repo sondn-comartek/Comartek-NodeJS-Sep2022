@@ -1,4 +1,1 @@
-
-export class OrderConsumer {
-
-}
+export class OrderConsumer {}

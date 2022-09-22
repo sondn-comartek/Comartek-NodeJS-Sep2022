@@ -24,20 +24,23 @@ import { CachingModule } from './caching/caching.module';
 import { TagModule } from './tag/tag.module';
 import { BullModule } from '@nestjs/bull';
 import { UploadModule } from './upload/upload.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
+    MulterModule.register(),
     BullModule.forRoot({
       redis: {
-        host: "localhost",
-        port: 6379
-      }
+        host: 'localhost',
+        port: 6379,
+      },
     }),
     MailerModule.forRoot({
       transports: {
+        // service: "gmail",
         auth: {
           user: 'nodemailer.demo.v1@gmail.com',
-          pass: '',
+          pass: Environments.EmailPass,
         },
       },
       defaults: {
@@ -86,4 +89,4 @@ import { UploadModule } from './upload/upload.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

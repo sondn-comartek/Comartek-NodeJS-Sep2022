@@ -42,9 +42,10 @@ export class Pet {
   @Prop({
     type: mongoose.Types.ObjectId,
     required: true,
-    ref: Photo.name
+    ref: Photo.name,
+    default: ["1"] // default photo on DB
   })
-  photos: [Photo]
+  photos: [Photo];
 
   @Field(() => String)
   @Prop({

@@ -3,6 +3,6 @@ import { PhotoService } from './photo.service';
 
 @Module({
   providers: [PhotoService],
-  exports: [PhotoService]
+  exports: [PhotoService],
 })
-export class PhotoModule { }
+export class PhotoModule {}
