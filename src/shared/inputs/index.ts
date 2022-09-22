@@ -4,3 +4,4 @@ export * from './sign-in-input';
 export * from './create-category.input';
 export * from './update-user.input';
 export * from './update-password.input';
+export * from './create-tag.input';

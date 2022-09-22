@@ -19,22 +19,16 @@ export class CreateUserInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @MaxLength(30)
   readonly firstName: string;
 
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @MaxLength(30)
   readonly lastName: string;
 
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @MaxLength(30)
   readonly email: string;
 
   @Field(() => String)

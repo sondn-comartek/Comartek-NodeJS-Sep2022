@@ -21,6 +21,7 @@ import { EmailModule } from './email/email.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CachingModule } from './caching/caching.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { CachingModule } from './caching/caching.module';
         UserModule,
         PetModule,
         OrderModule,
+        TagModule,
       ],
     }),
     AuthenticationModule,
@@ -70,8 +72,9 @@ import { CachingModule } from './caching/caching.module';
     CloudinaryModule,
     EmailModule,
     CachingModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -5,14 +5,7 @@ import { CategoryService } from './category.service';
 
 @Resolver()
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
-
-  @Query(() => Category)
-  async findCategoryByName(
-    @Args({ name: 'name', type: () => String }) name: string,
-  ) {
-    return await this.categoryService.findCategoryByName(name);
-  }
+  constructor(private readonly categoryService: CategoryService) { }
 
   @Query(() => [Category])
   async findAllCategory() {
@@ -32,7 +25,7 @@ export class CategoryResolver {
     return await this.categoryService.createCategory(createCategoryInput);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Category)
   async deleteCategoryById(
     @Args({ name: 'id', type: () => String }) id: string,
   ) {
@@ -51,15 +44,22 @@ export class CategoryResolver {
     );
   }
 
-  @Mutation(() => String)
-  async updateCategoryByName(
-    @Args({ name: 'name', type: () => String }) name: string,
-    @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })
-    updateCategoryInput: CreateCategoryInput,
-  ) {
-    return await this.categoryService.updateCategoryByName(
-      name,
-      updateCategoryInput,
-    );
-  }
+  // @Query(() => Category)
+  // async findCategoryByName(
+  //   @Args({ name: 'name', type: () => String }) name: string,
+  // ) {
+  //   return await this.categoryService.findCategoryByName(name);
+  // }
+
+  // @Mutation(() => String)
+  // async updateCategoryByName(
+  //   @Args({ name: 'name', type: () => String }) name: string,
+  //   @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })
+  //   updateCategoryInput: CreateCategoryInput,
+  // ) {
+  //   return await this.categoryService.updateCategoryByName(
+  //     name,
+  //     updateCategoryInput,
+  //   );
+  // }
 }

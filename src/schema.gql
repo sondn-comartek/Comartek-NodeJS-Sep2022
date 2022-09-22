@@ -24,23 +24,29 @@ type Category {
   name: String!
 }
 
+type Pet {
+  id: String!
+  categories: [String!]!
+  tags: [String!]!
+  status: String!
+}
+
 type Query {
+  getAllUser: [User!]!
   getUserByUserName(userName: String!): User!
-  findCategoryByName(name: String!): Category!
   findAllCategory: [Category!]!
   findCategoryById(id: String!): Category!
-  findAllPet: String!
+  findAllPet: [Pet!]!
   hello: String!
 }
 
 type Mutation {
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
-  updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
+  updateUserById(id: String!, updateUserInput: UpdateUserInput!): String!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  deleteCategoryById(id: String!): String!
+  deleteCategoryById(id: String!): Category!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
-  updateCategoryByName(name: String!, updateCategoryInput: CreateCategoryInput!): String!
   createPet: String!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!

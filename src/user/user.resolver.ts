@@ -5,7 +5,12 @@ import { UpdateUserInput } from '../shared/inputs/update-user.input';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
+
+  @Query(() => [User])
+  async getAllUser() {
+    return await this.userService.getAllUser();
+  }
 
   @Query(() => User)
   async getUserByUserName(
@@ -19,12 +24,12 @@ export class UserResolver {
     return await this.userService.deleteUserById(id);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => String)
   async updateUserById(
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateUserInput', type: () => UpdateUserInput })
     updateUserInput: UpdateUserInput,
   ) {
-    return this.userService.updateUserById(id, updateUserInput);
+    return await this.userService.updateUserById(id, updateUserInput);
   }
 }

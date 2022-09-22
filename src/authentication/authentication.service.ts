@@ -1,5 +1,5 @@
 import { JwtPayload } from './../shared/interfaces/jwt-payload.interface';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, ConflictException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { PasswordService } from '../password/password.service';
 import { CreateUserInput } from '../shared/inputs/create-user.input';
@@ -10,6 +10,7 @@ import { SignInInput } from '../shared/inputs/sign-in-input';
 import { JwtService } from '@nestjs/jwt';
 import { Environments } from '../environments/index';
 import { SignInResponse } from '../shared/types/sign-in-response.type';
+import { } from "@nestjs/common"
 
 @Injectable()
 export class AuthenticationService {
@@ -17,14 +18,14 @@ export class AuthenticationService {
     private readonly userService: UserService,
     private readonly passwordService: PasswordService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signIn(signInInput: SignInInput) {
     const { userName, password } = signInInput;
 
     const user = await this.userService.getUserByUserName(userName);
     if (!user) {
-      throw new AuthenticationError(
+      throw new BadRequestException(
         AuthenticationErrorMessage.NotRegisteredUserName,
       );
     }
@@ -34,7 +35,7 @@ export class AuthenticationService {
       user.password,
     );
     if (!isCorrectPassword) {
-      throw new AuthenticationError(AuthenticationErrorMessage.WrongPassword);
+      throw new BadRequestException(AuthenticationErrorMessage.WrongPassword);
     }
 
     const payload: JwtPayload = {
@@ -66,14 +67,14 @@ export class AuthenticationService {
       userName,
     );
     if (registeredUserName) {
-      throw new AuthenticationError(
+      throw new ConflictException(
         AuthenticationErrorMessage.RegisteredUserName,
       );
     }
 
     const registeredEmail = await this.userService.getUserByEmail(email);
     if (registeredEmail) {
-      throw new AuthenticationError(AuthenticationErrorMessage.RegisteredEmail);
+      throw new ConflictException(AuthenticationErrorMessage.RegisteredEmail);
     }
 
     const hashedPassword = await this.passwordService.encryptPassword(password);

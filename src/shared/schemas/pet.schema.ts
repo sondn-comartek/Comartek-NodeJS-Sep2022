@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Category } from './category.schema';
 import { Tag } from './tag.schema';
 import { PetStatus } from '../enums/pet-status.enum';
+import mongoose from 'mongoose';
 
 @Schema({
   collection: 'pets',
@@ -22,19 +23,19 @@ export class Pet {
 
   @Field(() => [String])
   @Prop({
-    type: [String],
+    type: mongoose.Types.ObjectId,
     required: true,
     ref: Category.name,
   })
-  categoriesId: [string];
+  categories: [Category];
 
   @Field(() => [String])
   @Prop({
-    type: [String],
+    type: mongoose.Types.ObjectId,
     required: true,
     ref: Tag.name,
   })
-  tagsId: string;
+  tags: [Tag];
 
   @Field(() => String)
   @Prop({
