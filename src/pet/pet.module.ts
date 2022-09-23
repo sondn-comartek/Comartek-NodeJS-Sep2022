@@ -9,6 +9,7 @@ import { CategoryModule } from 'src/category/category.module';
 import { TagModule } from '../tag/tag.module';
 import { Category, CategorySchema } from '../shared/schemas/category.schema';
 import { Tag, TagSchema } from 'src/shared/schemas';
+import { CachingModule } from '../caching/caching.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { Tag, TagSchema } from 'src/shared/schemas';
     UploadModule,
     CategoryModule,
     TagModule,
+    CachingModule,
   ],
   providers: [PetService, PetResolver],
 })

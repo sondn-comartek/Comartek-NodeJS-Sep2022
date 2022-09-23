@@ -25,6 +25,7 @@ import { TagModule } from './tag/tag.module';
 import { BullModule } from '@nestjs/bull';
 import { UploadModule } from './upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { MulterModule } from '@nestjs/platform-express';
     CachingModule,
     TagModule,
     UploadModule,
+    TaskSchedulingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

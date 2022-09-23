@@ -9,7 +9,7 @@ export class CachingService {
     await this.cacheManager.set(key, value, { ttl: 1000 });
   }
 
-  async getValueByKey(key: string) {
+  async getValueByKey(key: string): Promise<string> {
     return await this.cacheManager.get(key);
   }
 

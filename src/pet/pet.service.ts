@@ -16,6 +16,7 @@ import { CategoryResponseType } from 'src/shared/types/category-response.type';
 import { TagResponseType } from 'src/shared/types/tag-response.type';
 import { Category } from '../shared/schemas/category.schema';
 import { UpdatePetInput } from '../shared/inputs/update-pet.input';
+import { CachingService } from '../caching/caching.service';
 
 @Injectable()
 export class PetService {
@@ -29,6 +30,7 @@ export class PetService {
     private readonly uploadService: UploadService,
     private readonly categoryService: CategoryService,
     private readonly tagService: TagService,
+    private readonly cachingService: CachingService,
   ) {}
 
   async findPetByName(name: string) {
@@ -36,6 +38,11 @@ export class PetService {
   }
 
   async findAllPet() {
+    // const cachedPets = await this.cachingService.getValueByKey('all-pet');
+    // if (cachedPets) {
+    //   return JSON.parse(cachedPets)
+    // }
+
     const pets = await this.petSchema.find({});
 
     const petsResponse = pets.map(async (pet) => {
@@ -65,10 +72,19 @@ export class PetService {
       );
     });
 
+    // console.log(petsResponse)
+
+    // await this.cachingService.setValue("all-pet", JSON.stringify(petsResponse));
+
     return petsResponse;
   }
 
   async findPetById(id: string): Promise<PetResponseType> {
+    const cachedPet = await this.cachingService.getValueByKey(id);
+    if (cachedPet) {
+      return JSON.parse(cachedPet);
+    }
+
     const pet = await this.petSchema.findById(id);
     if (!pet) {
       throw new NotFoundException('Pet không tồn tại');
@@ -85,7 +101,7 @@ export class PetService {
       return new TagResponseType(tag._id.toString(), tag.name);
     });
 
-    return new PetResponseType(
+    const petResponse = new PetResponseType(
       pet._id.toString(),
       pet.name,
       pet.price,
@@ -94,6 +110,10 @@ export class PetService {
       [],
       pet.status,
     );
+
+    await this.cachingService.setValue(id, JSON.stringify(petResponse));
+
+    return petResponse;
   }
 
   async createPet(createPetInput: CreatePetInput): Promise<PetResponseType> {
