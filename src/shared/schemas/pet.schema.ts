@@ -34,7 +34,7 @@ export class Pet {
   @Prop({
     type: Category,
     required: true,
-    unique: true
+    unique: false
   })
   category: Category;
 
@@ -42,6 +42,7 @@ export class Pet {
   @Prop({
     type: Array,
     required: true,
+    unique: false
   })
   tags: [Tag];
 

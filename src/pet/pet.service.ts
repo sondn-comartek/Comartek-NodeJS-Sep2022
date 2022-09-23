@@ -22,6 +22,10 @@ export class PetService {
     return await this.petSchema.findOne({ name });
   }
 
+  async findAllPet(): Promise<Pet[]> {
+    return await this.petSchema.find()
+  }
+
   // async findPetBy(id: string): Promise<Pet> {
   //   return await (await this.petSchema.findOne({ id })).populated('category');
   // }

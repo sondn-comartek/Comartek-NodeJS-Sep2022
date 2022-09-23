@@ -5,11 +5,11 @@ import { PetService } from './pet.service';
 
 @Resolver()
 export class PetResolver {
-  constructor(private readonly petService: PetService) {}
+  constructor(private readonly petService: PetService) { }
 
-  @Query(() => String)
-  async findAllPet(): Promise<string> {
-    return 'findAllPet';
+  @Query(() => [Pet])
+  async findAllPet(): Promise<Pet[]> {
+    return await this.petService.findAllPet();
   }
 
   @Query(() => String)
