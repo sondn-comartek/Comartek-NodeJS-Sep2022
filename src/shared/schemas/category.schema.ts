@@ -1,23 +1,24 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+// import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { v4 as uuidv4 } from 'uuid';
+import { CategoryResponseType } from '../types/category-response.type';
+// import { v4 as uuidv4 } from 'uuid';
 
 @Schema({
   collection: 'categories',
   timestamps: true,
 })
-@ObjectType()
+// @ObjectType()
 export class Category {
-  @Field(() => String)
-  @Prop({
-    type: String,
-    unique: true,
-    required: true,
-    default: () => uuidv4(),
-  })
-  id: string;
+  // @Field(() => String)
+  // @Prop({
+  //   type: String,
+  //   unique: true,
+  //   required: true,
+  //   default: () => uuidv4(),
+  // })
+  // id: string;
 
-  @Field(() => String)
+  // @Field(() => String)
   @Prop({
     type: String,
     unique: true,

@@ -5,7 +5,7 @@ import { UpdateUserInput } from '../shared/inputs/update-user.input';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Query(() => [User])
   async findAllUser() {
@@ -32,4 +32,9 @@ export class UserResolver {
   ) {
     return await this.userService.updateUserById(id, updateUserInput);
   }
+
+  // @Query(() => User)
+  // async findUserByDefaultId(@Args({ name: "id", type: () => String }) id: string) {
+  //   return await this.userService.getUserByDefaultId(id);
+  // }
 }

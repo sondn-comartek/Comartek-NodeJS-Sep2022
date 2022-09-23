@@ -2,22 +2,23 @@ import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { Category } from '../shared/schemas';
 import { CreateCategoryInput } from '../shared/inputs';
 import { CategoryService } from './category.service';
+import { CategoryResponseType } from '../shared/types/category-response.type';
 
 @Resolver()
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
 
-  @Query(() => [Category])
+  @Query(() => [CategoryResponseType])
   async findAllCategory() {
     return await this.categoryService.findAllCategory();
   }
 
-  @Query(() => Category)
-  async findCategoryById(@Args({ name: 'id', type: () => String }) id: string) {
-    return await this.categoryService.findCategoryById(id);
-  }
+  // @Query(() => Category)
+  // async findCategoryById(@Args({ name: 'id', type: () => String }) id: string) {
+  //   return await this.categoryService.findCategoryById(id);
+  // }
 
-  @Mutation(() => Category)
+  @Mutation(() => CategoryResponseType)
   async createCategory(
     @Args({ name: 'createCategoryInput', type: () => CreateCategoryInput })
     createCategoryInput: CreateCategoryInput,
@@ -25,14 +26,14 @@ export class CategoryResolver {
     return await this.categoryService.createCategory(createCategoryInput);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => CategoryResponseType)
   async deleteCategoryById(
     @Args({ name: 'id', type: () => String }) id: string,
   ) {
     return await this.categoryService.deleteCategoryById(id);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => CategoryResponseType)
   async updateCategoryById(
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })

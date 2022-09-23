@@ -14,7 +14,7 @@ import { SignInInput } from '../shared/inputs/sign-in-input';
 import { JwtService } from '@nestjs/jwt';
 import { Environments } from '../environments/index';
 import { SignInResponse } from '../shared/types/sign-in-response.type';
-import {} from '@nestjs/common';
+import { } from '@nestjs/common';
 
 @Injectable()
 export class AuthenticationService {
@@ -22,7 +22,7 @@ export class AuthenticationService {
     private readonly userService: UserService,
     private readonly passwordService: PasswordService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signIn(signInInput: SignInInput) {
     const { userName, password } = signInInput;

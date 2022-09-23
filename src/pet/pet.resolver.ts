@@ -7,21 +7,21 @@ import { PetService } from './pet.service';
 export class PetResolver {
   constructor(private readonly petService: PetService) { }
 
-  @Query(() => [Pet])
-  async findAllPet(): Promise<Pet[]> {
-    return await this.petService.findAllPet();
-  }
+  // @Query(() => [Pet])
+  // async findAllPet(): Promise<Pet[]> {
+  //   return await this.petService.findAllPet();
+  // }
 
-  @Query(() => String)
-  async findPetById(): Promise<string> {
-    return 'findAllPet';
-  }
+  // @Query(() => String)
+  // async findPetById(): Promise<string> {
+  //   return 'findAllPet';
+  // }
 
-  @Mutation(() => Pet)
-  async createPet(
-    @Args({ name: 'createPetInput', type: () => CreatePetInput })
-    createPetInput: CreatePetInput,
-  ): Promise<Pet> {
-    return await this.petService.createPet(createPetInput);
-  }
+  // @Mutation(() => Pet)
+  // async createPet(
+  //   @Args({ name: 'createPetInput', type: () => CreatePetInput })
+  //   createPetInput: CreatePetInput,
+  // ): Promise<Pet> {
+  //   return await this.petService.createPet(createPetInput);
+  // }
 }

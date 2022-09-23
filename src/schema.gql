@@ -19,33 +19,15 @@ type SignInResponse {
   refreshToken: String!
 }
 
-type Category {
-  id: String!
+type CategoryResponseType {
+  _id: String!
   name: String!
-}
-
-type Tag {
-  id: String!
-  name: String!
-}
-
-type Pet {
-  id: String!
-  name: String!
-  category: Category!
-  tags: [Tag!]!
-  photos: [String!]!
-  status: String!
 }
 
 type Query {
   findAllUser: [User!]!
   findUserByUserName(userName: String!): User!
-  findAllTag: [Tag!]!
-  findAllCategory: [Category!]!
-  findCategoryById(id: String!): Category!
-  findAllPet: [Pet!]!
-  findPetById: String!
+  findAllCategory: [CategoryResponseType!]!
   hello: String!
 }
 
@@ -53,11 +35,9 @@ type Mutation {
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
-  createTag(createTagInput: CreateTagInput!): Tag!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  deleteCategoryById(id: String!): Category!
-  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
-  createPet(createPetInput: CreatePetInput!): Pet!
+  createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
+  deleteCategoryById(id: String!): CategoryResponseType!
+  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
 }
@@ -75,18 +55,8 @@ input UpdateUserInput {
   phone: String
 }
 
-input CreateTagInput {
-  name: String!
-}
-
 input CreateCategoryInput {
   name: String!
-}
-
-input CreatePetInput {
-  categoryId: String!
-  name: String!
-  tagsId: [String!]!
 }
 
 input CreateUserInput {

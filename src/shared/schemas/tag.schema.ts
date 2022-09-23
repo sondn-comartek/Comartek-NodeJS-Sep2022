@@ -6,18 +6,18 @@ import { v4 as uuidv4 } from 'uuid';
   collection: 'tags',
   timestamps: true,
 })
-@ObjectType()
+// @ObjectType()
 export class Tag {
-  @Field(() => String)
-  @Prop({
-    type: String,
-    unique: true,
-    required: true,
-    default: () => uuidv4(),
-  })
-  id: string;
+  // @Field(() => String)
+  // @Prop({
+  //   type: String,
+  //   unique: true,
+  //   required: true,
+  //   default: () => uuidv4(),
+  // })
+  // id: string;
 
-  @Field(() => String)
+  // @Field(() => String)
   @Prop({
     type: String,
     unique: true,

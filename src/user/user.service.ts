@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     private readonly passwordService: PasswordService,
-  ) {}
+  ) { }
 
   async getAllUser(): Promise<User[]> {
     return await this.userSchema.find({});
@@ -116,4 +116,8 @@ export class UserService {
 
     return await this.userSchema.findOneAndRemove({ id }, { new: true });
   }
+
+  // async getUserByDefaultId(id: string) {
+  //   return await this.userSchema.findById(id)
+  // }
 }
