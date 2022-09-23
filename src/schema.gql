@@ -2,34 +2,44 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type SignUpOutput {
+  """Statuscode"""
+  status: Int!
+
+  """Message"""
+  message: String!
+}
+
+type SignInOutput {
+  """status"""
+  status: Int!
+
+  """message"""
+  message: String!
+
+  """jwt"""
+  jwt: String!
 }
 
 type Query {
-  auth(id: Int!): Auth!
+  rootquery: String!
 }
 
 type Mutation {
-  createAuth(createAuthInput: CreateAuthInput!): Auth!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Int!
-  removeAuth(id: Int!): Auth!
+  signUp(signUpData: SignUpInput!): SignUpOutput!
+  signIn(loginData: SignInInput!): SignInOutput!
 }
 
-input CreateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-
-  """this is description"""
-  exampltField2: Int!
+input SignUpInput {
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  phone: String!
 }
 
-input UpdateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-
-  """this is description"""
-  exampltField2: Int
-  id: Int!
+input SignInInput {
+  username: String!
+  password: String!
 }

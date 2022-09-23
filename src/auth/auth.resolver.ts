@@ -1,37 +1,38 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { Auth } from './entities/auth.entity';
-import { CreateAuthInput } from './dto/create-auth.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
-
-@Resolver(() => Auth)
+import { SignUpInput } from './dto/signup.input';
+import { SignInOutput, SignUpOutput } from './entities/auth.output';
+import { SignInInput } from './dto/signin.input';
+import { UnauthorizedError } from 'type-graphql';
+@Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {
 
   }
-
-  @Mutation(() => Auth)
-  createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-    return this.authService.create(createAuthInput);
-  }
-
-  @Query(() => [Auth], { name: 'auth' })
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.findOne(id);
-  }
-
-  @Mutation(() => Int)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
-  }
   
-  @Mutation(() => Auth)
-  removeAuth(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.remove(id);
+  @Query(() => String, {name: 'rootquery'})
+  rootQuery() {
+    return "root query"
+  }
+
+  @Mutation(() => SignUpOutput)
+  async signUp(@Args('signUpData') signUpData: SignUpInput ) {
+    await this.authService.createNewUser(signUpData)   
+    return {
+      status: 200,
+      message: "create account scuccess"
+    }
+  }
+  @Mutation(() => SignInOutput)
+  async signIn(@Args('loginData') signInData: SignInInput) {
+    const jwt = await this.authService.login(signInData.username, signInData.password)
+    if(jwt) {
+      return {
+        status: 200,
+        message: "Login scuccess",
+        jwt: jwt
+      }
+    }
+    throw new UnauthorizedError()
   }
 }
