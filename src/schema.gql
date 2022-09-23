@@ -24,9 +24,15 @@ type CategoryResponseType {
   name: String!
 }
 
+type TagResponseType {
+  _id: String!
+  name: String!
+}
+
 type Query {
   findAllUser: [User!]!
   findUserByUserName(userName: String!): User!
+  findAllTag: [TagResponseType!]!
   findAllCategory: [CategoryResponseType!]!
   hello: String!
 }
@@ -35,6 +41,7 @@ type Mutation {
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
+  createTag(createTagInput: CreateTagInput!): TagResponseType!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
   deleteCategoryById(id: String!): CategoryResponseType!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
@@ -53,6 +60,10 @@ input UpdateUserInput {
   email: String
   password: String
   phone: String
+}
+
+input CreateTagInput {
+  name: String!
 }
 
 input CreateCategoryInput {
