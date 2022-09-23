@@ -18,11 +18,17 @@ export class Pet {
   @Field(() => [String], { description: 'pet have tags' })
   @Prop()
   tags: string[];
-  @Field(() => PetStatus, { description: 'status of pet', defaultValue: PetStatus.available })
+  @Field(() => PetStatus, {
+    description: 'status of pet',
+    defaultValue: PetStatus.available,
+  })
   @Prop()
   status: PetStatus;
   @Field(() => String, { description: 'photo url of pet' })
   @Prop()
   photo_urls: string;
+  @Field(() => Number, { description: 'price of pet' })
+  @Prop()
+  price: number;
 }
 export const PetSchema = SchemaFactory.createForClass(Pet);

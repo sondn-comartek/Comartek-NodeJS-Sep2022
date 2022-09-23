@@ -3,7 +3,6 @@ import { OrderService } from './order.service';
 import { Order } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
-import { Pet } from 'src/pet/entities/pet.entity';
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -26,9 +25,9 @@ export class OrderResolver {
     return this.orderService.findOne(id);
   }
 
-  @Mutation(() => Order)
-  updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
-    return this.orderService.update(updateOrderInput.id, updateOrderInput);
+  @Mutation(() => Order, {name: "approve"})
+  async updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
+    return await this.orderService.update(updateOrderInput);
   }
 
   @Mutation(() => Order)

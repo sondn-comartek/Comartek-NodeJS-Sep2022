@@ -13,4 +13,6 @@ export class CreatePetInput {
   status: PetStatus;
   @Field(() => String, { description: 'photo url of pet' })
   photo_urls: string;
+  @Field(() => Number, { description: 'price of pet' })
+  price: number;
 }

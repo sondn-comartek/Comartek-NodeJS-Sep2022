@@ -23,6 +23,9 @@ input CreatePetInput {
   """photo url of pet"""
   photo_urls: String!
 
+  """price of pet"""
+  price: Float!
+
   """status of pet"""
   status: PetStatus!
 
@@ -67,13 +70,13 @@ input LoginUserInput {
 }
 
 type Mutation {
+  approve(updateOrderInput: UpdateOrderInput!): Order!
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createPet(createPetInput: CreatePetInput!): Pet!
   createUser(createUserInput: CreateUserInput!): User!
   removeOrder(id: Int!): Order!
   removePet(id: Int!): Pet!
   removeUser(id: Int!): User!
-  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
   updatePet(updatePetInput: UpdatePetInput!): Pet!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
@@ -81,6 +84,9 @@ type Mutation {
 type Order {
   """List Pets in order"""
   pets: [Pet!]!
+
+  """price of order"""
+  price: Float!
 
   """Expected shipping date"""
   shipping_date: DateTime!
@@ -108,6 +114,9 @@ type Pet {
   """photo url of pet"""
   photo_urls: String!
 
+  """price of pet"""
+  price: Float!
+
   """status of pet"""
   status: PetStatus!
 
@@ -131,7 +140,8 @@ type Query {
 }
 
 input UpdateOrderInput {
-  id: Int!
+  """orderID of order"""
+  orderID: String!
 
   """List Pets in order"""
   pets: [String!]
@@ -139,8 +149,8 @@ input UpdateOrderInput {
   """Expected shipping date"""
   shipping_date: DateTime
 
-  """order of status"""
-  status: OrderStatus
+  """status of order"""
+  status: OrderStatus!
 }
 
 input UpdatePetInput {
@@ -153,6 +163,9 @@ input UpdatePetInput {
 
   """photo url of pet"""
   photo_urls: String
+
+  """price of pet"""
+  price: Float
 
   """status of pet"""
   status: PetStatus

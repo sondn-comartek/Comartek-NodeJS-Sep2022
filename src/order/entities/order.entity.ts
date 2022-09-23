@@ -1,7 +1,6 @@
-import { CreatePetInput } from './../../pet/dto/create-pet.input';
 import { OrderStatus } from './../../enums/order.status';
 import { Pet } from './../../pet/entities/pet.entity';
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Float } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -18,5 +17,8 @@ export class Order {
   @Field(() => OrderStatus, { description: 'order of status' })
   @Prop({ required: true })
   status: OrderStatus;
+  @Field(() => Number, { description: 'price of order' })
+  @Prop()
+  price: number;
 }
 export const OrderSchema = SchemaFactory.createForClass(Order);
