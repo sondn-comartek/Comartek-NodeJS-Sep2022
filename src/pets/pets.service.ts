@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePetInput } from './dto/create-pet.input';
+import { InventoryPetOutput } from './dto/inventory-pet.output';
 import { UpdatePetInput } from './dto/update-pet.input';
 import { Pet, PetDocument } from './schemas/pet.schema';
 
@@ -23,11 +24,19 @@ export class PetsService {
   }
 
   async petInventory() {
-    const pets = await this.petModel.find();
-    const petAvailable = await this.petModel.find({ status: 'available' });
+    try {
+      const pets = await this.petModel.find();
+      const petAvailable = await this.petModel.find({ status: 'available' });
+      const available = petAvailable.length;
 
-    const result = { pets, available: petAvailable.length };
-    return result;
+      const result = {
+        pets,
+        available,
+      };
+      return result;
+    } catch (e) {
+      throw e;
+    }
   }
 
   async findAll() {

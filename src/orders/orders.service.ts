@@ -21,23 +21,26 @@ export class OrdersService {
       const { petsId } = createOrderInput;
       const countItem = petsId.length;
       let salesTax: number;
+      let discount = 1;
       if (countItem == 1) {
         salesTax = 0.1;
       } else if (countItem < 5) {
         salesTax = 0.08;
       } else if (countItem < 10) {
         salesTax = 0.05;
+      } else {
+        salesTax = 0.05;
+        discount = 0.5;
       }
 
       let price: number;
       price = 0;
       for (let i = 0; i < countItem; i++) {
         const pet = await this.petModel.findOne({ id: petsId[i] });
-        console.log('price pet in loop : ', pet.price);
         price += pet.price;
       }
 
-      price = price * (1 + salesTax);
+      price = price * (1 + salesTax) * discount;
 
       const shipDate = new Date();
       shipDate.setDate(shipDate.getDate() + 5);

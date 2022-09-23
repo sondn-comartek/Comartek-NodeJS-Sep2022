@@ -1,7 +1,8 @@
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Pet } from '../entities/pet.entity';
 import { PetStatus } from '../enums/status.enum';
-import { Pet } from '../schemas/pet.schema';
 
+@ObjectType()
 export class PetItem {
   @Field()
   petId: string;
@@ -10,9 +11,9 @@ export class PetItem {
   status: PetStatus;
 }
 
-// @ObjectType
+@ObjectType()
 export class InventoryPetOutput {
-  @Field()
+  @Field(() => [Pet])
   pets: [Pet];
 
   @Field()
