@@ -25,7 +25,10 @@ export class PetService {
     }
     return allPetsOfStore;
   }
-
+  async findPetsCustomerOrderByIds(pets: object | [string]) {
+    const petsOfOrder = await this.petModel.find({ petID: pets });
+    return petsOfOrder;
+  }
   async findByFields(id: string, tags: string[], status: PetStatus) {
     try {
       const pets = await this.petModel.find({

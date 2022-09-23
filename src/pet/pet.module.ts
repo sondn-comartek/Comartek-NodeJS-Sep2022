@@ -7,5 +7,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [MongooseModule.forFeature([{ name: Pet.name, schema: PetSchema }])],
   providers: [PetResolver, PetService],
+  exports: [PetService],
 })
 export class PetModule {}
