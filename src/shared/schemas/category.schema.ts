@@ -1,11 +1,15 @@
 // import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CategoryResponseType } from '../types/category-response.type';
 // import { v4 as uuidv4 } from 'uuid';
 
 @Schema({
   collection: 'categories',
   timestamps: true,
+  methods: {
+    toRes() {
+      return;
+    },
+  },
 })
 // @ObjectType()
 export class Category {

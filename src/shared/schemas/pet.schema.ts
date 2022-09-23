@@ -38,7 +38,7 @@ export class Pet {
     required: true,
     unique: false,
   })
-  tags: string[];
+  tagsId: string[];
 
   @Prop({
     type: [mongoose.Types.ObjectId],

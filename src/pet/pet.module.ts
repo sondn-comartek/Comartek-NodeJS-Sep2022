@@ -7,6 +7,8 @@ import { PhotoModule } from '../photo/photo.module';
 import { UploadModule } from '../upload/upload.module';
 import { CategoryModule } from 'src/category/category.module';
 import { TagModule } from '../tag/tag.module';
+import { Category, CategorySchema } from '../shared/schemas/category.schema';
+import { Tag, TagSchema } from 'src/shared/schemas';
 
 @Module({
   imports: [
@@ -14,6 +16,14 @@ import { TagModule } from '../tag/tag.module';
       {
         name: Pet.name,
         schema: PetSchema,
+      },
+      {
+        name: Category.name,
+        schema: CategorySchema,
+      },
+      {
+        name: Tag.name,
+        schema: TagSchema,
       },
     ]),
     PhotoModule,

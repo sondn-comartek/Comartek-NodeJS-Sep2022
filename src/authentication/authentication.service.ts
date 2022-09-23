@@ -7,7 +7,6 @@ import {
 import { UserService } from '../user/user.service';
 import { PasswordService } from '../password/password.service';
 import { CreateUserInput } from '../shared/inputs/create-user.input';
-import { AuthenticationError } from 'apollo-server-express';
 import { AuthenticationErrorMessage } from './constants/index';
 import { User } from 'src/shared/schemas';
 import { SignInInput } from '../shared/inputs/sign-in-input';

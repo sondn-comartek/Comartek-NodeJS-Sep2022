@@ -22,7 +22,7 @@ export class TagService {
 
   async findAllTag(): Promise<TagResponseType[]> {
     const tags = await this.tagSchema.find({});
-    let tagsResponse: TagResponseType[] = [];
+    const tagsResponse: TagResponseType[] = [];
 
     tags.forEach((tag) => {
       const tagResponse = new TagResponseType(tag._id.toString(), tag.name);
@@ -40,7 +40,7 @@ export class TagService {
     return await this.tagSchema.findOne({ name });
   }
 
-  async findTagByArrayId(ids: [string]): Promise<Tag[]> {
+  async findTagByArrayId(ids: string[]): Promise<Tag[]> {
     return await this.tagSchema.find({ _id: { $in: ids } });
   }
 }

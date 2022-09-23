@@ -13,6 +13,11 @@ export class CategoryService {
     private readonly categorySchema: Model<Category>,
   ) {}
 
+  async toResponse(categoryId: string): Promise<CategoryResponseType> {
+    const category = await this.categorySchema.findById(categoryId);
+    return new CategoryResponseType(category._id.toString(), category.name);
+  }
+
   async createCategory(
     createCategoryInput: CreateCategoryInput,
   ): Promise<CategoryResponseType> {
@@ -25,7 +30,7 @@ export class CategoryService {
 
     const category = await this.categorySchema.create(createCategoryInput);
 
-    return new CategoryResponseType(category._id.toString(), category.name);
+    return this.toResponse(category._id.toString());
   }
 
   async findCategoryByName(name: string): Promise<Category> {
@@ -33,7 +38,7 @@ export class CategoryService {
   }
 
   async findCategoryById(id: string): Promise<Category> {
-    return await this.categorySchema.findById(id);
+    return await this.categorySchema.findById(id).exec();
   }
 
   async deleteCategoryById(id: string): Promise<Category> {
@@ -46,6 +51,7 @@ export class CategoryService {
       { _id: id },
       { new: true },
     );
+
     return new CategoryResponseType(
       deletedCategory._id.toString(),
       deletedCategory.name,
@@ -54,7 +60,7 @@ export class CategoryService {
 
   async findAllCategory(): Promise<CategoryResponseType[]> {
     const categories = await this.categorySchema.find({});
-    let response: CategoryResponseType[] = [];
+    const response: CategoryResponseType[] = [];
 
     categories.forEach((category) => {
       const responseCategory = new CategoryResponseType(

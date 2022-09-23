@@ -29,11 +29,28 @@ type TagResponseType {
   name: String!
 }
 
+type PhotoResponseType {
+  id: String!
+  url: String!
+}
+
+type PetResponseType {
+  _id: String!
+  name: String!
+  price: Float!
+  category: CategoryResponseType!
+  tags: [TagResponseType!]!
+  photos: [PhotoResponseType!]!
+  status: String!
+}
+
 type Query {
   findAllUser: [User!]!
   findUserByUserName(userName: String!): User!
   findAllTag: [TagResponseType!]!
   findAllCategory: [CategoryResponseType!]!
+  findAllPet: [PetResponseType!]!
+  findPetById(id: String!): PetResponseType!
   hello: String!
 }
 
@@ -45,6 +62,7 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
   deleteCategoryById(id: String!): CategoryResponseType!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
+  createPet(createPetInput: CreatePetInput!): PetResponseType!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
 }
@@ -68,6 +86,14 @@ input CreateTagInput {
 
 input CreateCategoryInput {
   name: String!
+}
+
+input CreatePetInput {
+  categoryId: String!
+  name: String!
+  tagsId: [String!]!
+  price: Float!
+  photosId: [String!]!
 }
 
 input CreateUserInput {

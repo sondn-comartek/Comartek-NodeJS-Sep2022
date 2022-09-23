@@ -1,5 +1,4 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { Category } from '../shared/schemas';
 import { CreateCategoryInput } from '../shared/inputs';
 import { CategoryService } from './category.service';
 import { CategoryResponseType } from '../shared/types/category-response.type';

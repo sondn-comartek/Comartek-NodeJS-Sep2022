@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Tag } from '../shared/schemas/tag.schema';
 import { CreateTagInput } from '../shared/inputs/create-tag.input';
 import { TagService } from './tag.service';
 import { TagResponseType } from '../shared/types/tag-response.type';
