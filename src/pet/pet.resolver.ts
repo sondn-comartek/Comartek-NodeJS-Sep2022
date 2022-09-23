@@ -5,7 +5,7 @@ import { PetService } from './pet.service';
 
 @Resolver()
 export class PetResolver {
-  constructor(private readonly petService: PetService) { }
+  constructor(private readonly petService: PetService) {}
 
   // @Query(() => [Pet])
   // async findAllPet(): Promise<Pet[]> {

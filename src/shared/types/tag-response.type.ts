@@ -1,15 +1,15 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class TagResponseType {
-    @Field(() => String)
-    _id: string
+  @Field(() => String)
+  _id: string;
 
-    @Field(() => String)
-    name: string
+  @Field(() => String)
+  name: string;
 
-    constructor(_id: string, name: string) {
-        this._id = _id;
-        this.name = name
-    }
+  constructor(_id: string, name: string) {
+    this._id = _id;
+    this.name = name;
+  }
 }

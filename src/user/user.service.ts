@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     private readonly passwordService: PasswordService,
-  ) { }
+  ) {}
 
   async getAllUser(): Promise<User[]> {
     return await this.userSchema.find({});

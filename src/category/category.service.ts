@@ -11,9 +11,11 @@ export class CategoryService {
   constructor(
     @InjectModel(Category.name)
     private readonly categorySchema: Model<Category>,
-  ) { }
+  ) {}
 
-  async createCategory(createCategoryInput: CreateCategoryInput): Promise<CategoryResponseType> {
+  async createCategory(
+    createCategoryInput: CreateCategoryInput,
+  ): Promise<CategoryResponseType> {
     const { name } = createCategoryInput;
 
     const existedName = await this.findCategoryByName(name);
@@ -23,7 +25,7 @@ export class CategoryService {
 
     const category = await this.categorySchema.create(createCategoryInput);
 
-    return new CategoryResponseType(category._id.toString(), category.name)
+    return new CategoryResponseType(category._id.toString(), category.name);
   }
 
   async findCategoryByName(name: string): Promise<Category> {
@@ -40,20 +42,29 @@ export class CategoryService {
       throw new NotFoundException('Category không tồn tại');
     }
 
-    const deletedCategory = await this.categorySchema.findOneAndRemove({ _id: id }, { new: true });
-    return new CategoryResponseType(deletedCategory._id.toString(), deletedCategory.name)
+    const deletedCategory = await this.categorySchema.findOneAndRemove(
+      { _id: id },
+      { new: true },
+    );
+    return new CategoryResponseType(
+      deletedCategory._id.toString(),
+      deletedCategory.name,
+    );
   }
 
   async findAllCategory(): Promise<CategoryResponseType[]> {
-    const categories = await this.categorySchema.find({})
+    const categories = await this.categorySchema.find({});
     let response: CategoryResponseType[] = [];
 
-    categories.forEach(category => {
-      const responseCategory = new CategoryResponseType(category._id.toString(), category.name)
-      response.push(responseCategory)
+    categories.forEach((category) => {
+      const responseCategory = new CategoryResponseType(
+        category._id.toString(),
+        category.name,
+      );
+      response.push(responseCategory);
     });
 
-    return response
+    return response;
   }
 
   async updateCategoryById(
@@ -68,7 +79,7 @@ export class CategoryService {
     }
 
     if (category.name === name) {
-      throw new ConflictException("Tên đã sử dụng trước đó")
+      throw new ConflictException('Tên đã sử dụng trước đó');
     }
 
     if (await this.findCategoryByName(name)) {
@@ -78,10 +89,13 @@ export class CategoryService {
     const updatedCategory = await this.categorySchema.findOneAndUpdate(
       { _id: id },
       { $set: updateCategoryInput },
-      { new: true }
+      { new: true },
     );
 
-    return new CategoryResponseType(updatedCategory._id.toString(), updatedCategory.name)
+    return new CategoryResponseType(
+      updatedCategory._id.toString(),
+      updatedCategory.name,
+    );
   }
 
   // async updateCategoryByName(

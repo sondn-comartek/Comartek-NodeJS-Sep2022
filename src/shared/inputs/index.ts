@@ -5,4 +5,4 @@ export * from './create-category.input';
 export * from './update-user.input';
 export * from './update-password.input';
 export * from './create-tag.input';
-export * from "./create-pet.input"
+export * from './create-pet.input';

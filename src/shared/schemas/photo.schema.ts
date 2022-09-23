@@ -12,16 +12,16 @@ export class Photo {
   @Prop({
     type: String,
     required: true,
-    unique: true
+    unique: true,
   })
-  readonly id: string
+  readonly id: string;
 
   @Field(() => String)
   @Prop({
     type: String,
-    required: true
+    required: true,
   })
-  readonly url: string
+  readonly url: string;
 }
 
 export const PhotoSchema = SchemaFactory.createForClass(Photo);

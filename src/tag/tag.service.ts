@@ -7,7 +7,7 @@ import { TagResponseType } from '../shared/types/tag-response.type';
 
 @Injectable()
 export class TagService {
-  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) { }
+  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) {}
 
   async createTag(createTagInput: CreateTagInput): Promise<TagResponseType> {
     const { name } = createTagInput;
@@ -17,19 +17,19 @@ export class TagService {
 
     const tag = await this.tagSchema.create(createTagInput);
 
-    return new TagResponseType(tag._id.toString(), tag.name)
+    return new TagResponseType(tag._id.toString(), tag.name);
   }
 
   async findAllTag(): Promise<TagResponseType[]> {
     const tags = await this.tagSchema.find({});
-    let tagsResponse: TagResponseType[] = []
+    let tagsResponse: TagResponseType[] = [];
 
     tags.forEach((tag) => {
-      const tagResponse = new TagResponseType(tag._id.toString(), tag.name)
-      tagsResponse.push(tagResponse)
-    })
+      const tagResponse = new TagResponseType(tag._id.toString(), tag.name);
+      tagsResponse.push(tagResponse);
+    });
 
-    return tagsResponse
+    return tagsResponse;
   }
 
   async getTagById(id: string): Promise<Tag> {
@@ -41,6 +41,6 @@ export class TagService {
   }
 
   async findTagByArrayId(ids: [string]): Promise<Tag[]> {
-    return await this.tagSchema.find({ _id: { $in: ids } })
+    return await this.tagSchema.find({ _id: { $in: ids } });
   }
 }

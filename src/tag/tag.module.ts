@@ -14,6 +14,6 @@ import { Tag, TagSchema } from '../shared/schemas/tag.schema';
     ]),
   ],
   providers: [TagService, TagResolver],
-  exports: [TagService]
+  exports: [TagService],
 })
-export class TagModule { }
+export class TagModule {}

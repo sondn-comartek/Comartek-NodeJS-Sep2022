@@ -19,8 +19,8 @@ import { TagModule } from '../tag/tag.module';
     PhotoModule,
     UploadModule,
     CategoryModule,
-    TagModule
+    TagModule,
   ],
   providers: [PetService, PetResolver],
 })
-export class PetModule { }
+export class PetModule {}
