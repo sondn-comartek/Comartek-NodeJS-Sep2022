@@ -51,6 +51,8 @@ type Query {
   findAllCategory: [CategoryResponseType!]!
   findAllPet: [PetResponseType!]!
   findPetById(id: String!): PetResponseType!
+  findPetByTags: String!
+  findPetByStatus: String!
   hello: String!
 }
 
@@ -63,6 +65,8 @@ type Mutation {
   deleteCategoryById(id: String!): CategoryResponseType!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
+  updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
+  deletePetById(id: String!): String!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
 }
@@ -94,6 +98,14 @@ input CreatePetInput {
   tagsId: [String!]!
   price: Float!
   photosId: [String!]!
+}
+
+input UpdatePetInput {
+  categoryId: String
+  name: String
+  tagsId: [String!]
+  price: Float
+  photosId: [String!]
 }
 
 input CreateUserInput {

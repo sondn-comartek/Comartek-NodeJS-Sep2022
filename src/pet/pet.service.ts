@@ -15,6 +15,7 @@ import { PetResponseType } from '../shared/types/pet-response.type';
 import { CategoryResponseType } from 'src/shared/types/category-response.type';
 import { TagResponseType } from 'src/shared/types/tag-response.type';
 import { Category } from '../shared/schemas/category.schema';
+import { UpdatePetInput } from '../shared/inputs/update-pet.input';
 
 @Injectable()
 export class PetService {
@@ -130,5 +131,41 @@ export class PetService {
       [],
       pet.status,
     );
+  }
+
+  async updatePetById(id: string, updatePetInput: UpdatePetInput) {
+    const pet = await this.petSchema.findById(id);
+    if (!pet) {
+      throw new NotFoundException('PET NOT FOUND');
+    }
+
+    if (updatePetInput?.categoryId) {
+      if (
+        !(await this.categoryService.findCategoryById(
+          updatePetInput?.categoryId,
+        ))
+      ) {
+        throw new NotFoundException('Category NOT FOUND');
+      }
+    }
+
+    if (updatePetInput?.tagsId) {
+      if (
+        (await (
+          await this.tagSchema.find({ id: { $in: updatePetInput?.tagsId } })
+        ).length) === 0
+      ) {
+        throw new NotFoundException('TAG NOT FOUND');
+      }
+    }
+
+    await this.petSchema.findByIdAndUpdate(id, { $set: updatePetInput });
+
+    return 'UPDATED';
+  }
+
+  async deletePetById(id: string) {
+    await this.petSchema.findByIdAndRemove(id);
+    return 'deleted';
   }
 }
