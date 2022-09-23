@@ -74,7 +74,7 @@ type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createPet(createPetInput: CreatePetInput!): Pet!
   createUser(createUserInput: CreateUserInput!): User!
-  removeOrder(id: Int!): Order!
+  removeOrder(id: String!): Order!
   removePet(id: Int!): Pet!
   removeUser(id: Int!): User!
   updatePet(updatePetInput: UpdatePetInput!): Pet!
@@ -131,7 +131,8 @@ enum PetStatus {
 
 type Query {
   login(logger: LoginUserInput!): String!
-  order(id: Int!): Order!
+  order(orderID: String!): Order!
+  orders: [Order!]!
   pet(petID: String!, status: PetStatus!, tags: [String!]!): [Pet!]!
   pets: [Pet!]!
   pets_status(status: PetStatus!): Float!

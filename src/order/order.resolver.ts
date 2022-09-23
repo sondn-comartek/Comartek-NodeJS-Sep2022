@@ -15,23 +15,25 @@ export class OrderResolver {
     return await this.orderService.create(createOrderInput);
   }
 
-  @Query(() => [Order], { name: 'order' })
+  @Query(() => [Order], { name: 'orders' })
   findAll() {
     return this.orderService.findAll();
   }
 
   @Query(() => Order, { name: 'order' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.orderService.findOne(id);
+  async findOne(@Args('orderID', { type: () => String }) id: string) {
+    return await this.orderService.findOne(id);
   }
 
-  @Mutation(() => Order, {name: "approve"})
-  async updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
+  @Mutation(() => Order, { name: 'approve' })
+  async updateOrder(
+    @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
+  ) {
     return await this.orderService.update(updateOrderInput);
   }
 
-  @Mutation(() => Order)
-  removeOrder(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Order, {name: "removeOrder"})
+  removeOrder(@Args('id', { type: () => String }) id: string) {
     return this.orderService.remove(id);
   }
 }

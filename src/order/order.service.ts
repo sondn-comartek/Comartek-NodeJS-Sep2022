@@ -62,8 +62,12 @@ export class OrderService {
     return `This action returns all order`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: string) {
+    try {
+      return await this.orderModel.findOne({ _id: id });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async update(updateOrderInput: UpdateOrderInput) {
@@ -83,7 +87,11 @@ export class OrderService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: string) {
+    try {
+      return await this.orderModel.findByIdAndDelete(id);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
