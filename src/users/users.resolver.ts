@@ -6,6 +6,8 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from './enums/role.enum';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -23,6 +25,8 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async findByUsername(@Args('username') username: string) {
     return await this.usersService.findByUsername(username);
   }
@@ -38,11 +42,15 @@ export class UsersResolver {
   // }
 
   @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return await this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
   @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async removeUser(@Args('id') id: string) {
     return await this.usersService.remove(id);
   }

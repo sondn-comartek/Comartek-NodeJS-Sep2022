@@ -43,7 +43,10 @@ export class AuthService {
   async login(createAuthInput: CreateAuthInput) {
     const { username, password } = createAuthInput;
     return {
-      access_token: this.jwtService.sign({ username, password }),
+      access_token: this.jwtService.sign({
+        username,
+        password,
+      }),
     };
   }
 

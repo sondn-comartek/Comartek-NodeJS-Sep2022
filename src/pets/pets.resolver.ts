@@ -7,6 +7,8 @@ import { UpdateImagePetInput } from './dto/update-image-pet.input';
 import { InventoryPetOutput } from './dto/inventory-pet.output';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/users/enums/role.enum';
 
 @Resolver(() => Pet)
 export class PetsResolver {
@@ -14,12 +16,14 @@ export class PetsResolver {
 
   @Mutation(() => Pet)
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async createPet(@Args('createPetInput') createPetInput: CreatePetInput) {
     return await this.petsService.create(createPetInput);
   }
 
   @Query(() => InventoryPetOutput, { name: 'petInventory' })
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async petInventory() {
     return await this.petsService.petInventory();
   }
@@ -50,12 +54,14 @@ export class PetsResolver {
 
   @Mutation(() => Pet)
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async updatePet(@Args('updatePetInput') updatePetInput: UpdatePetInput) {
     return await this.petsService.update(updatePetInput.id, updatePetInput);
   }
 
   @Mutation(() => Pet)
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async updateImagePet(
     @Args('updateImagePetInput') updateImagePetInput: UpdateImagePetInput,
   ) {
@@ -67,6 +73,7 @@ export class PetsResolver {
 
   @Mutation(() => Pet)
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async removePet(@Args('id') id: string) {
     return await this.petsService.remove(id);
   }

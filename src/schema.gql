@@ -132,6 +132,7 @@ type User {
   lastName: String!
   password: String!
   phone: String!
+  role: String!
   status: String!
   username: String!
 }
