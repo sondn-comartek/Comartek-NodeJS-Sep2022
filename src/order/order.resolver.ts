@@ -1,4 +1,10 @@
-import { Resolver } from '@nestjs/graphql';
+import { Mutation, Resolver } from '@nestjs/graphql';
+import { OrderService } from './order.service';
 
 @Resolver()
-export class OrderResolver {}
+export class OrderResolver {
+    constructor(private readonly orderService: OrderService) { }
+
+    @Mutation(() => String)
+    async createOrder() { }
+}

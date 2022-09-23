@@ -60,6 +60,7 @@ type Mutation {
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
+  createOrder: String!
   createTag(createTagInput: CreateTagInput!): TagResponseType!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
   deleteCategoryById(id: String!): CategoryResponseType!
