@@ -1,3 +1,4 @@
+import { PetStatus } from 'src/enums/pet.status';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { PetService } from './pet.service';
 import { Pet } from './entities/pet.entity';
@@ -22,11 +23,16 @@ export class PetResolver {
   async findOne(
     @Args('petID', { type: () => String }) id: string,
     @Args('tags', { type: () => [String] }) tags: string[],
-    @Args('status', { type: () => String }) status: string,
+    @Args('status', { type: () => PetStatus }) status: PetStatus,
   ) {
     return await this.petService.findByFields(id, tags, status);
   }
-
+  @Query(() => Number, { name: 'pets_status' })
+  async findAmountPetByStatus(
+    @Args('status', { type: () => PetStatus }) status: PetStatus,
+  ) {
+    return await this.petService.findAmountPetByStatus(status);
+  }
   @Mutation(() => Pet)
   updatePet(@Args('updatePetInput') updatePetInput: UpdatePetInput) {
     return this.petService.update(updatePetInput.id, updatePetInput);

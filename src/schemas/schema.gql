@@ -13,7 +13,7 @@ input CreatePetInput {
   photo_urls: String!
 
   """status of pet"""
-  status: String!
+  status: PetStatus!
 
   """pet have tags"""
   tags: [String!]!
@@ -73,16 +73,22 @@ type Pet {
   photo_urls: String!
 
   """status of pet"""
-  status: String!
+  status: PetStatus!
 
   """pet have tags"""
   tags: [String!]!
 }
 
+enum PetStatus {
+  available
+  unavailable
+}
+
 type Query {
   login(logger: LoginUserInput!): String!
-  pet(petID: String!, status: String!, tags: [String!]!): [Pet!]!
+  pet(petID: String!, status: PetStatus!, tags: [String!]!): [Pet!]!
   pets: [Pet!]!
+  pets_status(status: PetStatus!): Float!
   user(id: String!): User!
   users: String!
 }
@@ -99,7 +105,7 @@ input UpdatePetInput {
   photo_urls: String
 
   """status of pet"""
-  status: String
+  status: PetStatus
 
   """pet have tags"""
   tags: [String!]

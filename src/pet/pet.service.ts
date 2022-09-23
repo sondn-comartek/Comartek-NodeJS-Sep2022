@@ -1,3 +1,4 @@
+import { PetStatus } from 'src/enums/pet.status';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreatePetInput } from './dto/create-pet.input';
@@ -25,7 +26,7 @@ export class PetService {
     return allPetsOfStore;
   }
 
-  async findByFields(id: string, tags: string[], status: string) {
+  async findByFields(id: string, tags: string[], status: PetStatus) {
     try {
       const pets = await this.petModel.find({
         $or: [{ petID: id }, { tags: tags }, { status: status }],
@@ -35,7 +36,13 @@ export class PetService {
       throw new Error(error);
     }
   }
-
+  async findAmountPetByStatus(status: PetStatus) {
+    try {
+      return await this.petModel.count({ status: status });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   update(id: number, updatePetInput: UpdatePetInput) {
     return `This action updates a #${id} pet`;
   }

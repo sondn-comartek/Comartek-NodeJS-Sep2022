@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { PetStatus } from 'src/enums/pet.status';
 export type PetDocument = Pet & Document;
 @Schema({ timestamps: true, collection: 'pets' })
 @ObjectType()
@@ -17,9 +18,9 @@ export class Pet {
   @Field(() => [String], { description: 'pet have tags' })
   @Prop()
   tags: string[];
-  @Field(() => String, { description: 'status of pet' })
+  @Field(() => PetStatus, { description: 'status of pet', defaultValue: PetStatus.available })
   @Prop()
-  status: string;
+  status: PetStatus;
   @Field(() => String, { description: 'photo url of pet' })
   @Prop()
   photo_urls: string;
