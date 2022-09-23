@@ -6,7 +6,7 @@ import { UserDocument } from 'src/schema/user.schema';
 import { Model } from 'mongoose';
 import { SignUpInput } from './dto/signup.input';
 import { hashSync, compareSync } from 'bcrypt';
-import { LoginException } from 'src/exception/loginexception';
+import { LoginException } from 'src/eceptio/loginexception';
 import { JwtService } from '@nestjs/jwt/dist';
 @Injectable()
 export class AuthService {
@@ -53,7 +53,7 @@ export class AuthService {
   async login(username, password): Promise<string | null> {
     const userID = await this.verifiUser(username, password);
     if(userID)
-      return this.jwtService.signAsync({username: username}, {secret: process.env.JWT_SECRET,
+      return this.jwtService.signAsync({username: username, userID: userID}, {secret: process.env.JWT_SECRET,
                                                               expiresIn: process.env.EXPIRED_IN})
     return null
   }

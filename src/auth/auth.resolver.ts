@@ -17,6 +17,7 @@ export class AuthResolver {
 
   @Mutation(() => SignUpOutput)
   async signUp(@Args('signUpData') signUpData: SignUpInput ) {
+    console.log("thissadasd")
     await this.authService.createNewUser(signUpData)   
     return {
       status: 200,
@@ -35,4 +36,6 @@ export class AuthResolver {
     }
     throw new UnauthorizedError()
   }
+
+  
 }

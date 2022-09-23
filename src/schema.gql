@@ -21,13 +21,22 @@ type SignInOutput {
   jwt: String!
 }
 
+type User {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   rootquery: String!
+  user: String!
 }
 
 type Mutation {
   signUp(signUpData: SignUpInput!): SignUpOutput!
   signIn(loginData: SignInInput!): SignInOutput!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
 }
 
 input SignUpInput {
@@ -42,4 +51,15 @@ input SignUpInput {
 input SignInInput {
   username: String!
   password: String!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
