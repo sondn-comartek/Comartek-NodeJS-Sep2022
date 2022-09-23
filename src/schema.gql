@@ -42,6 +42,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type InventoryPetOutput {
+  available: Float!
+  pets: [Pet!]!
+}
+
 type Mutation {
   approveOrder(approveOrderInput: ApproveOrderInput!): Order!
   createAuth(createAuthInput: CreateAuthInput!): Auth!
@@ -80,8 +85,10 @@ type Query {
   findPetById(id: String!): Pet!
   findPetByStatus(status: String!): Pet!
   findPetByTags(tags: String!): Pet!
+  petInventory: InventoryPetOutput!
   pets: [Pet!]!
   user(username: String!): User!
+  whoAmI: User!
 }
 
 input UpdateImagePetInput {

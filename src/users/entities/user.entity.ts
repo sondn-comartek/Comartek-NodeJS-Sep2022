@@ -3,8 +3,8 @@ import { UserStatus } from '../enums/status.enum';
 
 @ObjectType()
 export class User {
-  @Field(() => Int)
-  id: number;
+  @Field()
+  id: string;
 
   @Field()
   username: string;

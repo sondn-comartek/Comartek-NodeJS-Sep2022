@@ -41,19 +41,34 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findByUsername(username: string) {
+    return await this.userModel.findOne({ username });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // async findAll() {
+  //   return await this.userModel.find();
+  // }
+
+  // findOne(id: number) {
+  //   return `This action returns a #${id} user`;
+  // }
+
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    return await this.userModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateUserInput } },
+      {
+        new: true,
+      },
+    );
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
-  }
+  async remove(id: string) {
+    const userExist = await this.userModel.findOne({ id });
+    if (!userExist) {
+      return null;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return await this.userModel.deleteOne({ id });
   }
 }
