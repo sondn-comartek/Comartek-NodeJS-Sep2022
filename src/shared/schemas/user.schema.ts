@@ -66,7 +66,7 @@ export class User {
   @Prop({
     type: String,
     required: true,
-    default: UserStatus.Inactive,
+    default: UserStatus.Active, // vì chỗ này chưa thể config gửi mailer nhận OTP để viết mutation active tài khoản nên để default là Active
   })
   status: UserStatus;
 

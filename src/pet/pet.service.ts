@@ -134,6 +134,7 @@ export class PetService {
     }
 
     const pet = await this.petSchema.create(createPetInput);
+
     const categoryRespone = new CategoryResponseType(
       category._id.toString(),
       category.name,
@@ -148,7 +149,7 @@ export class PetService {
       pet.price,
       categoryRespone,
       tagsResponse,
-      [],
+      [], // default empty photos
       pet.status,
     );
   }
@@ -171,9 +172,8 @@ export class PetService {
 
     if (updatePetInput?.tagsId) {
       if (
-        (await (
-          await this.tagSchema.find({ id: { $in: updatePetInput?.tagsId } })
-        ).length) === 0
+        (await this.tagSchema.find({ id: { $in: updatePetInput?.tagsId } }))
+          .length === 0
       ) {
         throw new NotFoundException('TAG NOT FOUND');
       }

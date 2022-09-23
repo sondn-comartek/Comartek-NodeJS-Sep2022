@@ -3,7 +3,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class PhotoResponseType {
   @Field(() => String)
-  id: string;
+  _id: string;
 
   @Field(() => String)
   url: string;

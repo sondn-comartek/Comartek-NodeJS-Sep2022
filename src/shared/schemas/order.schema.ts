@@ -13,9 +13,16 @@ export class Order {
   @Prop({
     type: [mongoose.Types.ObjectId],
     required: true,
-    ref: Pet.name
+    ref: Pet.name,
   })
-  petsId: string
+  petsId: string;
+
+  @Prop({
+    type: String,
+    required: true,
+    default: OrderStatus.Placed,
+  })
+  status: OrderStatus;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

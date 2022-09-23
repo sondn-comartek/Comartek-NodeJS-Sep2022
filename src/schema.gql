@@ -30,7 +30,7 @@ type TagResponseType {
 }
 
 type PhotoResponseType {
-  id: String!
+  _id: String!
   url: String!
 }
 
