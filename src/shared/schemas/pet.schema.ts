@@ -30,28 +30,26 @@ export class Pet {
   })
   name: string;
 
-  @Field(() => String)
+  @Field(() => Category)
   @Prop({
-    type: mongoose.Types.ObjectId,
+    type: Category,
     required: true,
-    ref: Category.name,
+    unique: true
   })
   category: Category;
 
-  @Field(() => [String])
+  @Field(() => [Tag])
   @Prop({
-    type: mongoose.Types.ObjectId,
+    type: Array,
     required: true,
-    ref: Tag.name,
   })
   tags: [Tag];
 
   @Field(() => [String])
   @Prop({
-    type: mongoose.Types.ObjectId,
-    required: true,
-    ref: Photo.name,
-    default: ['1'], // default photo on DB
+    type: Array,
+    requried: true,
+    default: []
   })
   photos: [Photo];
 

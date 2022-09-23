@@ -6,7 +6,7 @@ export class CreatePetInput {
     @Field(() => String)
     @IsString()
     @IsNotEmpty()
-    readonly category: string;
+    readonly categoryId: string;
 
     @Field(() => String)
     @IsString()
@@ -16,5 +16,5 @@ export class CreatePetInput {
     @Field(() => [String])
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
-    readonly tags: [string];
+    readonly tagsId: [string];
 }

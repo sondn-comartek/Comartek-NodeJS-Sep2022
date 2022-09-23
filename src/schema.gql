@@ -32,16 +32,16 @@ type Tag {
 type Pet {
   id: String!
   name: String!
-  category: String!
-  tags: [String!]!
+  category: Category!
+  tags: [Tag!]!
   photos: [String!]!
   status: String!
 }
 
 type Query {
-  findAllTag: [Tag!]!
   findAllUser: [User!]!
   findUserByUserName(userName: String!): User!
+  findAllTag: [Tag!]!
   findAllCategory: [Category!]!
   findCategoryById(id: String!): Category!
   findAllPet: String!
@@ -50,20 +50,16 @@ type Query {
 }
 
 type Mutation {
-  createTag(createTagInput: CreateTagInput!): Tag!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
+  createTag(createTagInput: CreateTagInput!): Tag!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategoryById(id: String!): Category!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   createPet(createPetInput: CreatePetInput!): Pet!
   signUp(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): SignInResponse!
-}
-
-input CreateTagInput {
-  name: String!
 }
 
 input CreateActiveAccountRequestInput {
@@ -79,14 +75,18 @@ input UpdateUserInput {
   phone: String
 }
 
+input CreateTagInput {
+  name: String!
+}
+
 input CreateCategoryInput {
   name: String!
 }
 
 input CreatePetInput {
-  category: String!
+  categoryId: String!
   name: String!
-  tags: [String!]!
+  tagsId: [String!]!
 }
 
 input CreateUserInput {

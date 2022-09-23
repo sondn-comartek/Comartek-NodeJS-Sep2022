@@ -6,7 +6,7 @@ import { CreateTagInput } from '../shared/inputs/create-tag.input';
 
 @Injectable()
 export class TagService {
-  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) {}
+  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) { }
 
   async createTag(createTagInput: CreateTagInput) {
     const { name } = createTagInput;
@@ -27,5 +27,9 @@ export class TagService {
 
   async getTagByName(name: string): Promise<Tag> {
     return await this.tagSchema.findOne({ name });
+  }
+
+  async findTagByArrayId(ids: [string]): Promise<Tag[]> {
+    return await this.tagSchema.find({ id: { $in: ids } })
   }
 }

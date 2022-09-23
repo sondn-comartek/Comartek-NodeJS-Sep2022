@@ -6,6 +6,7 @@ import { Pet, PetSchema } from '../shared/schemas/pet.schema';
 import { PhotoModule } from '../photo/photo.module';
 import { UploadModule } from '../upload/upload.module';
 import { CategoryModule } from 'src/category/category.module';
+import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { CategoryModule } from 'src/category/category.module';
     PhotoModule,
     UploadModule,
     CategoryModule,
+    TagModule
   ],
   providers: [PetService, PetResolver],
 })
-export class PetModule {}
+export class PetModule { }
