@@ -12,7 +12,7 @@ export class TagService {
   async createTag(createTagInput: CreateTagInput): Promise<TagResponseType> {
     const { name } = createTagInput;
 
-    if (await this.getTagByName(name)) {
+    if (await this.tagSchema.findOne({ name })) {
       throw new ConflictException(`Tag ${name} đã tồn tại`);
     }
 
@@ -31,17 +31,5 @@ export class TagService {
     });
 
     return tagsResponse;
-  }
-
-  async getTagById(id: string): Promise<Tag> {
-    return await this.tagSchema.findOne({ _id: id });
-  }
-
-  async getTagByName(name: string): Promise<Tag> {
-    return await this.tagSchema.findOne({ name });
-  }
-
-  async findTagByArrayId(ids: string[]): Promise<Tag[]> {
-    return await this.tagSchema.find({ _id: { $in: ids } });
   }
 }

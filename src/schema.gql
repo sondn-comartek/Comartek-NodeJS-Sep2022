@@ -57,10 +57,12 @@ type Query {
 
 type Mutation {
   createTag(createTagInput: CreateTagInput!): TagResponseType!
+  updateTagById(id: String!, updateTagInput: CreateTagInput!): String!
+  deleteTagById(id: String!): String!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
-  deleteCategoryById(id: String!): CategoryResponseType!
-  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
+  deleteCategoryById(id: String!): String!
+  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   createOrder(createOrderInput: CreateOrderInput!): String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
   updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!

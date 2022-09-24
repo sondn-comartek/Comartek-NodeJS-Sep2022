@@ -41,21 +41,15 @@ export class CategoryService {
     return await this.categorySchema.findById(id).exec();
   }
 
-  async deleteCategoryById(id: string): Promise<Category> {
+  async deleteCategoryById(id: string): Promise<string> {
     const category = await this.findCategoryById(id);
     if (!category) {
       throw new NotFoundException('Category không tồn tại');
     }
 
-    const deletedCategory = await this.categorySchema.findOneAndRemove(
-      { _id: id },
-      { new: true },
-    );
+    await this.categorySchema.findOneAndRemove({ _id: id }, { new: true });
 
-    return new CategoryResponseType(
-      deletedCategory._id.toString(),
-      deletedCategory.name,
-    );
+    return 'DELETE CATEGORY SUCCESS';
   }
 
   async findAllCategory(): Promise<CategoryResponseType[]> {
@@ -76,7 +70,7 @@ export class CategoryService {
   async updateCategoryById(
     id: string,
     updateCategoryInput: CreateCategoryInput,
-  ): Promise<CategoryResponseType> {
+  ): Promise<string> {
     const { name } = updateCategoryInput;
 
     const category = await this.findCategoryById(id);
@@ -88,7 +82,7 @@ export class CategoryService {
       throw new ConflictException('Tên đã sử dụng trước đó');
     }
 
-    if (await this.findCategoryByName(name)) {
+    if (await this.categorySchema.findOne({ name })) {
       throw new ConflictException(`Category ${name} đã tồn tại`);
     }
 
@@ -98,36 +92,6 @@ export class CategoryService {
       { new: true },
     );
 
-    return new CategoryResponseType(
-      updatedCategory._id.toString(),
-      updatedCategory.name,
-    );
+    return 'UPDATE CATEGORY SUCCESS';
   }
-
-  // async updateCategoryByName(
-  //   name: string,
-  //   updateCategoryInput: CreateCategoryInput,
-  // ): Promise<string> {
-  //   const category = await this.findCategoryByName(name);
-  //   if (!category) {
-  //     throw new NotFoundException('Category không tồn tại');
-  //   }
-
-  //   const inputName = updateCategoryInput.name;
-
-  //   if (category.name === inputName) {
-  //     return 'Update category thành công';
-  //   }
-
-  //   if (await this.findCategoryByName(inputName)) {
-  //     throw new ConflictException(`Category ${inputName} đã tồn tại`);
-  //   }
-
-  //   await this.categorySchema.updateOne(
-  //     { name },
-  //     { $set: updateCategoryInput },
-  //   );
-
-  //   return `Update category thành công`;
-  // }
 }

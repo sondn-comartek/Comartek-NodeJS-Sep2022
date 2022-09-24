@@ -2,6 +2,9 @@ import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { CreateCategoryInput } from '../shared/inputs';
 import { CategoryService } from './category.service';
 import { CategoryResponseType } from '../shared/types/category-response.type';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class CategoryResolver {
@@ -12,54 +15,34 @@ export class CategoryResolver {
     return await this.categoryService.findAllCategory();
   }
 
-  // @Query(() => Category)
-  // async findCategoryById(@Args({ name: 'id', type: () => String }) id: string) {
-  //   return await this.categoryService.findCategoryById(id);
-  // }
-
   @Mutation(() => CategoryResponseType)
+  @UseGuards(JwtAuthGuard)
   async createCategory(
+    @Admin() admin: any,
     @Args({ name: 'createCategoryInput', type: () => CreateCategoryInput })
     createCategoryInput: CreateCategoryInput,
   ) {
     return await this.categoryService.createCategory(createCategoryInput);
   }
 
-  @Mutation(() => CategoryResponseType)
+  @Mutation(() => String)
+  @UseGuards()
   async deleteCategoryById(
+    @Admin() admin: any,
     @Args({ name: 'id', type: () => String }) id: string,
-  ) {
+  ): Promise<string> {
     return await this.categoryService.deleteCategoryById(id);
   }
 
-  @Mutation(() => CategoryResponseType)
+  @Mutation(() => String)
   async updateCategoryById(
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })
     updateCategoryInput: CreateCategoryInput,
-  ) {
+  ): Promise<string> {
     return await this.categoryService.updateCategoryById(
       id,
       updateCategoryInput,
     );
   }
-
-  // @Query(() => Category)
-  // async findCategoryByName(
-  //   @Args({ name: 'name', type: () => String }) name: string,
-  // ) {
-  //   return await this.categoryService.findCategoryByName(name);
-  // }
-
-  // @Mutation(() => String)
-  // async updateCategoryByName(
-  //   @Args({ name: 'name', type: () => String }) name: string,
-  //   @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })
-  //   updateCategoryInput: CreateCategoryInput,
-  // ) {
-  //   return await this.categoryService.updateCategoryByName(
-  //     name,
-  //     updateCategoryInput,
-  //   );
-  // }
 }
