@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { OrderStatus } from '../enums/order-status.enum';
 import mongoose from 'mongoose';
 import { Pet } from './pet.schema';
+import { User } from './user.schema';
 
 @Schema({
   collection: 'orders',
@@ -11,11 +12,11 @@ import { Pet } from './pet.schema';
 @ObjectType()
 export class Order {
   @Prop({
-    type: [mongoose.Types.ObjectId],
+    type: mongoose.Types.ObjectId,
+    ref: User.name,
     required: true,
-    ref: Pet.name,
   })
-  petsId: string;
+  userId: string;
 
   @Prop({
     type: String,
@@ -23,6 +24,25 @@ export class Order {
     default: OrderStatus.Placed,
   })
   status: OrderStatus;
+
+  @Prop({
+    type: [mongoose.Types.ObjectId],
+    required: true,
+    ref: Pet.name,
+  })
+  petsId: string;
+
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  price: number;
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  expectedShippingDate: Date;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

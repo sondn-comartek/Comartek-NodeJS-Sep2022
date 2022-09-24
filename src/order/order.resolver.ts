@@ -3,8 +3,8 @@ import { OrderService } from './order.service';
 
 @Resolver()
 export class OrderResolver {
-    constructor(private readonly orderService: OrderService) { }
+  constructor(private readonly orderService: OrderService) {}
 
-    @Mutation(() => String)
-    async createOrder() { }
+  @Mutation(() => String)
+  async createOrder() {}
 }
