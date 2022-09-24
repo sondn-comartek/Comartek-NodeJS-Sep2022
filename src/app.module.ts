@@ -37,7 +37,6 @@ import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
     }),
     MailerModule.forRoot({
       transports: {
-        // service: "gmail",
         auth: {
           user: 'nodemailer.demo.v1@gmail.com',
           pass: Environments.EmailPass,

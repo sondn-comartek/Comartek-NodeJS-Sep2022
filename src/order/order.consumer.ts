@@ -4,10 +4,14 @@ import { OrderService } from './order.service';
 
 @Processor('order')
 export class OrderConsumer {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Process('handleCreateOrder')
   async handleCreateOrder(job: Job<unknown>) {
+    // calculate order price
+    // update pet status
     console.log({ job });
+
+    return 'done';
   }
 }

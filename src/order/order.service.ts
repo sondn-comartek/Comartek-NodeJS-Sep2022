@@ -41,10 +41,16 @@ export class OrderService {
     });
     if (pets.length === 0) {
       throw new NotFoundException(
-        'Pet không tồn tại hoặc đã được đặt chỗ / bán',
+        'Pet does not exist or has been ordered/sold',
       );
     }
 
-    return 'create order';
+    const job = await this.orderQueue.add('handleCreateOrder', {
+      userId,
+      createOrderInput,
+    });
+    console.log({ job });
+
+    return 'Your order is creating...';
   }
 }
