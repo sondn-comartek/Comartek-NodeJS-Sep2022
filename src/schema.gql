@@ -46,7 +46,6 @@ type PetResponseType {
 type Query {
   findAllTag: [TagResponseType!]!
   findAllCategory: [CategoryResponseType!]!
-  exampleCurrentUser: String!
   findAllPet: [PetResponseType!]!
   findPetById(id: String!): PetResponseType!
   findPetByTags: String!

@@ -1,5 +1,5 @@
 export enum PetStatus {
-  Avalible = 'avalible',
+  Available = 'available',
   Ordered = 'ordered',
   Sold = 'sold',
 }

@@ -1,11 +1,12 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class CreatePetInput {
   @Field(() => String)
   @IsString()
   @IsNotEmpty()
+  @IsMongoId()
   readonly categoryId: string;
 
   @Field(() => String)
@@ -16,6 +17,7 @@ export class CreatePetInput {
   @Field(() => [String])
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
+  @IsMongoId({ each: true })
   readonly tagsId: [string];
 
   @Field(() => Float)
@@ -25,5 +27,6 @@ export class CreatePetInput {
   @Field(() => [String])
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
+  @IsMongoId({ each: true })
   readonly photosId: [string];
 }

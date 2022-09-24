@@ -51,7 +51,7 @@ export class Pet {
   @Prop({
     type: String,
     reuqired: true,
-    default: PetStatus.Avalible,
+    default: PetStatus.Available,
   })
   status: PetStatus;
 }
