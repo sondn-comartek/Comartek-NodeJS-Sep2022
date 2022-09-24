@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UploadService {
-  constructor() {}
-
-  async uploadImages() {}
+  // constructor() {}
+  // async uploadImages() {}
 }

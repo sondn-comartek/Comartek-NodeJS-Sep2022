@@ -4,13 +4,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PhotoService } from 'src/photo/photo.service';
 import { UploadService } from 'src/upload/upload.service';
 import { Model } from 'mongoose';
 import { Pet, Tag } from 'src/shared/schemas';
 import { CreatePetInput } from '../shared/inputs/create-pet.input';
-import { CategoryService } from 'src/category/category.service';
-import { TagService } from '../tag/tag.service';
+// import { PhotoService } from 'src/photo/photo.service';
+// import { CategoryService } from 'src/category/category.service';
+// import { TagService } from '../tag/tag.service';
 import { PetResponseType } from '../shared/types/pet-response.type';
 import { CategoryResponseType } from 'src/shared/types/category-response.type';
 import { TagResponseType } from 'src/shared/types/tag-response.type';
@@ -26,11 +26,8 @@ export class PetService {
     private readonly categorySchema: Model<Category>,
     @InjectModel(Tag.name) private readonly tagSchema: Model<Tag>,
 
-    private readonly photoService: PhotoService,
     private readonly uploadService: UploadService,
-    private readonly categoryService: CategoryService,
-    private readonly tagService: TagService,
-    private readonly cachingService: CachingService,
+    private readonly cachingService: CachingService, // private readonly photoService: PhotoService, // private readonly categoryService: CategoryService, // private readonly tagService: TagService,
   ) {}
 
   async findPetByName(name: string) {
@@ -157,16 +154,12 @@ export class PetService {
   async updatePetById(id: string, updatePetInput: UpdatePetInput) {
     const pet = await this.petSchema.findById(id);
     if (!pet) {
-      throw new NotFoundException('PET NOT FOUND');
+      throw new NotFoundException('PET NOT FOUND TO UPDATE');
     }
 
     if (updatePetInput?.categoryId) {
-      if (
-        !(await this.categoryService.findCategoryById(
-          updatePetInput?.categoryId,
-        ))
-      ) {
-        throw new NotFoundException('Category NOT FOUND');
+      if (!(await this.categorySchema.findById(updatePetInput?.categoryId))) {
+        throw new NotFoundException('CATEGORY NOT FOUND');
       }
     }
 
@@ -181,11 +174,16 @@ export class PetService {
 
     await this.petSchema.findByIdAndUpdate(id, { $set: updatePetInput });
 
-    return 'UPDATED';
+    return 'UPDATE PET SUCCESS';
   }
 
   async deletePetById(id: string) {
+    if (!(await this.petSchema.findById(id))) {
+      throw new NotFoundException('PET NOT FOUND TO DELETE');
+    }
+
     await this.petSchema.findByIdAndRemove(id);
-    return 'deleted';
+
+    return 'DELETE PET SUCCESS';
   }
 }

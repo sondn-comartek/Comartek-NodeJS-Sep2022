@@ -11,6 +11,7 @@ export class TagService {
 
   async createTag(createTagInput: CreateTagInput): Promise<TagResponseType> {
     const { name } = createTagInput;
+
     if (await this.getTagByName(name)) {
       throw new ConflictException(`Tag ${name} đã tồn tại`);
     }
