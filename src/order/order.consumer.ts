@@ -7,5 +7,7 @@ export class OrderConsumer {
   constructor(private readonly orderService: OrderService) {}
 
   @Process('handleCreateOrder')
-  async handleCreateOrder(job: Job<unknown>) {}
+  async handleCreateOrder(job: Job<unknown>) {
+    console.log({ job });
+  }
 }

@@ -1,13 +1,17 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserService } from '../../user/user.service';
 import { Environments } from '../../environments/index';
 import { UnauthorizedException, Injectable } from '@nestjs/common';
-import { JwtPayload } from 'src/shared/interfaces';
+import { JwtPayload } from '../../shared/interfaces';
+import { InjectModel } from '@nestjs/mongoose';
+import { User } from '../../shared/schemas';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    @InjectModel(User.name) private readonly UserSchema: Model<User>,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -16,11 +20,11 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const { id } = payload;
+    const { _id } = payload;
 
-    const user = await this.userService.getUserById(id);
+    const user = await this.UserSchema.findById(_id);
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('You are not authenticated');
     }
 
     return payload;

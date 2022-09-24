@@ -1,18 +1,18 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User } from '../shared/schemas/user.schema';
 import { UpdateUserInput } from '../shared/inputs/update-user.input';
+import { UserResponseType } from '../shared/types/user-response.type';
 
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => [User])
+  @Query(() => [UserResponseType])
   async findAllUser() {
     return await this.userService.getAllUser();
   }
 
-  @Query(() => User)
+  @Query(() => UserResponseType)
   async findUserByUserName(
     @Args({ name: 'userName', type: () => String }) userName: string,
   ) {
@@ -24,7 +24,7 @@ export class UserResolver {
     return await this.userService.deleteUserById(id);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => String)
   async updateUserById(
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateUserInput', type: () => UpdateUserInput })

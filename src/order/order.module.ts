@@ -4,6 +4,7 @@ import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order, OrderSchema } from '../shared/schemas/order.schema';
 import { OrderService } from './order.service';
+import { User, UserSchema } from '../shared/schemas/user.schema';
 import {
   Category,
   CategorySchema,
@@ -31,6 +32,10 @@ import {
       {
         name: Tag.name,
         schema: TagSchema,
+      },
+      {
+        name: User.name,
+        schema: UserSchema,
       },
     ]),
     BullModule.registerQueue({

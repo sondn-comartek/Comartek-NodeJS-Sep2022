@@ -9,6 +9,7 @@ import { User } from '../shared/schemas/user.schema';
 import { CreateUserInput } from '../shared/inputs/create-user.input';
 import { UpdateUserInput } from '../shared/inputs/update-user.input';
 import { PasswordService } from 'src/password/password.service';
+import { UserResponseType } from '../shared/types/user-response.type';
 
 @Injectable()
 export class UserService {
@@ -33,58 +34,72 @@ export class UserService {
     return await this.userSchema.findOne({ email: email.toLowerCase() });
   }
 
-  async getUserByUserName(userName: string): Promise<User> {
-    return await this.userSchema.findOne({ userName: userName.toLowerCase() });
+  async getUserByUserName(userName: string): Promise<UserResponseType> {
+    const user = await this.userSchema.findOne({
+      userName: userName.toLowerCase(),
+    });
+    if (!user) {
+      throw new NotFoundException('USER NOT FOUND');
+    }
+
+    const userResponse: UserResponseType = {
+      _id: user._id.toString(),
+      userName: user.userName,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      status: user.status,
+      role: user.role,
+    };
+
+    return userResponse;
   }
 
   async updateUserById(
     id: string,
     updateUserInput: UpdateUserInput,
-  ): Promise<User> {
+  ): Promise<string> {
     let userName = updateUserInput?.userName;
     let email = updateUserInput?.email;
     let password = updateUserInput?.password;
 
-    const user = await this.getUserById(id);
+    const user = await this.userSchema.findById(id);
     if (!user) {
-      throw new NotFoundException('User không tồn tại');
+      throw new NotFoundException('USER NOT FOUND');
     }
 
-    // if (userName) {
-    //   switch (userName === user.userName) {
-    //     case true:
-    //       break;
-
-    //     case false:
-    //       const existedUserName = await this.getUserByUserName(userName);
-    //       if (existedUserName) {
-    //         throw new ConflictException("Tên người dùng đã được sử dụng")
-    //       }
-    //       break
-
-    //     default:
-    //       break;
-    //   }
-    //   userName = userName.toLowerCase();
-    // }
-
     if (userName) {
-      if (userName === user.userName) {
-      } else {
-        const existedUserName = await this.getUserByUserName(userName);
-        if (existedUserName) {
-          throw new ConflictException('Tên người dùng đã được sử dụng');
-        }
+      switch (user.userName === userName.toLowerCase()) {
+        case true:
+          break;
+
+        default:
+          const existedUserName = await this.userSchema.findOne({ userName });
+          if (existedUserName) {
+            throw new ConflictException('Tên người dùng đã được sử dụng');
+          }
+
+          break;
       }
 
       userName = userName.toLowerCase();
     }
 
     if (email) {
-      const registeredEmail = await this.getUserByEmail(email);
-      if (registeredEmail) {
-        throw new ConflictException('Email đã được sử dụng');
+      switch (user.email === email.toLowerCase()) {
+        case true:
+          break;
+
+        default:
+          const existedEmail = await this.userSchema.findOne({ email });
+          if (existedEmail) {
+            throw new ConflictException('Email đã được sử dụng');
+          }
+
+          break;
       }
+
       email = email.toLowerCase();
     }
 
@@ -92,32 +107,26 @@ export class UserService {
       password = await this.passwordService.encryptPassword(password);
     }
 
-    return await this.userSchema.findOneAndUpdate(
-      { id },
-      {
-        $set: {
-          ...updateUserInput,
-          userName,
-          email,
-          password,
-        },
+    await this.userSchema.findByIdAndUpdate(id, {
+      $set: {
+        ...updateUserInput,
+        userName,
+        email,
+        password,
       },
-      {
-        new: true,
-      },
-    );
+    });
+
+    return 'UPDATE USER SUCCESS';
   }
 
-  async deleteUserById(id: string): Promise<User> {
-    const user = await this.getUserById(id);
+  async deleteUserById(id: string): Promise<string> {
+    const user = await this.userSchema.findById(id);
     if (!user) {
-      throw new NotFoundException('User không tồn tại');
+      throw new NotFoundException('USER NOT FOUND');
     }
 
-    return await this.userSchema.findOneAndRemove({ id }, { new: true });
-  }
+    await this.userSchema.findOneAndRemove({ _id: id });
 
-  // async getUserByDefaultId(id: string) {
-  //   return await this.userSchema.findById(id)
-  // }
+    return 'DELETE USER SUCCESS';
+  }
 }

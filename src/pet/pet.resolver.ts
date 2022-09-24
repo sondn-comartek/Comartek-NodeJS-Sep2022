@@ -3,6 +3,9 @@ import { CreatePetInput } from 'src/shared/inputs';
 import { PetService } from './pet.service';
 import { PetResponseType } from '../shared/types/pet-response.type';
 import { UpdatePetInput } from '../shared/inputs/update-pet.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class PetResolver {
@@ -19,7 +22,9 @@ export class PetResolver {
   }
 
   @Mutation(() => PetResponseType)
+  @UseGuards(JwtAuthGuard)
   async createPet(
+    @Admin() admin: any,
     @Args({ name: 'createPetInput', type: () => CreatePetInput })
     createPetInput: CreatePetInput,
   ): Promise<PetResponseType> {
@@ -27,7 +32,9 @@ export class PetResolver {
   }
 
   @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
   async updatePetById(
+    @Admin() admin: any,
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updatePetInput', type: () => UpdatePetInput })
     updatePetInput: UpdatePetInput,
@@ -36,7 +43,11 @@ export class PetResolver {
   }
 
   @Mutation(() => String)
-  async deletePetById(@Args({ name: 'id', type: () => String }) id: string) {
+  @UseGuards(JwtAuthGuard)
+  async deletePetById(
+    @Admin() admin: any,
+    @Args({ name: 'id', type: () => String }) id: string,
+  ) {
     return await this.petService.deletePetById(id);
   }
 

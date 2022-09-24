@@ -2,21 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: String!
-  userName: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  phone: String!
-  status: String!
-  role: String!
-}
-
 type SignInResponse {
   accessToken: String!
   refreshToken: String!
+}
+
+type UserResponseType {
+  _id: String!
+  userName: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  phone: String!
+  status: String!
+  role: String!
 }
 
 type CategoryResponseType {
@@ -46,29 +45,30 @@ type PetResponseType {
 
 type Query {
   findAllTag: [TagResponseType!]!
-  findAllUser: [User!]!
-  findUserByUserName(userName: String!): User!
   findAllCategory: [CategoryResponseType!]!
+  exampleCurrentUser: String!
   findAllPet: [PetResponseType!]!
   findPetById(id: String!): PetResponseType!
   findPetByTags: String!
   findPetByStatus: String!
+  findAllUser: [UserResponseType!]!
+  findUserByUserName(userName: String!): UserResponseType!
   hello: String!
 }
 
 type Mutation {
   createTag(createTagInput: CreateTagInput!): TagResponseType!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
-  deleteUserById(id: String!): String!
-  updateUserById(id: String!, updateUserInput: UpdateUserInput!): User!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
   deleteCategoryById(id: String!): CategoryResponseType!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): CategoryResponseType!
-  createOrder: String!
+  createOrder(createOrderInput: CreateOrderInput!): String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
   updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
   deletePetById(id: String!): String!
-  signUp(createUserInput: CreateUserInput!): User!
+  deleteUserById(id: String!): String!
+  updateUserById(id: String!, updateUserInput: UpdateUserInput!): String!
+  signUp(createUserInput: CreateUserInput!): UserResponseType!
   signIn(signInInput: SignInInput!): SignInResponse!
 }
 
@@ -80,17 +80,12 @@ input CreateActiveAccountRequestInput {
   email: String!
 }
 
-input UpdateUserInput {
-  userName: String
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  phone: String
-}
-
 input CreateCategoryInput {
   name: String!
+}
+
+input CreateOrderInput {
+  petsId: [String!]!
 }
 
 input CreatePetInput {
@@ -107,6 +102,15 @@ input UpdatePetInput {
   tagsId: [String!]
   price: Float
   photosId: [String!]
+}
+
+input UpdateUserInput {
+  userName: String
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phone: String
 }
 
 input CreateUserInput {

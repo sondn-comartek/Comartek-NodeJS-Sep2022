@@ -1,11 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from '../shared/schemas/user.schema';
+// import { User } from '../shared/schemas/user.schema';
 import { CreateUserInput } from '../shared/inputs/create-user.input';
 import { AuthenticationService } from './authentication.service';
 import { SignInInput } from '../shared/inputs/sign-in-input';
 import { SignInResponse } from '../shared/types/sign-in-response.type';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { UserResponseType } from '../shared/types/user-response.type';
 
 @Resolver()
 export class AuthenticationResolver {
@@ -17,7 +18,7 @@ export class AuthenticationResolver {
     return 'Hello, World!';
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponseType)
   async signUp(
     @Args({ name: 'createUserInput', type: () => CreateUserInput })
     createUserInput: CreateUserInput,

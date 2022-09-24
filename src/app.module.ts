@@ -5,7 +5,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo/dist/drivers';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './user/user.module';
 import { PasswordModule } from './password/password.module';
 import { join } from 'path';
@@ -74,7 +73,6 @@ import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
       ],
     }),
     AuthenticationModule,
-    AuthorizationModule,
     UserModule,
     PasswordModule,
     PetModule,
