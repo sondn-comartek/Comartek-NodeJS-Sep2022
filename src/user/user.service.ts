@@ -36,8 +36,8 @@ export class UserService {
       throw new Error(error);
     }
   }
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  update(updateUserInput: UpdateUserInput) {
+    return `This action updates a user`;
   }
 
   remove(id: number) {

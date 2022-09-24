@@ -130,7 +130,7 @@ enum PetStatus {
 }
 
 type Query {
-  login(logger: LoginUserInput!): String!
+  login(user: LoginUserInput!): String!
   order(orderID: String!): Order!
   orders: [Order!]!
   pet(petID: String!, status: PetStatus!, tags: [String!]!): [Pet!]!
@@ -181,7 +181,6 @@ input UpdateUserInput {
 
   """first name of user"""
   first_name: String
-  id: Int!
 
   """last name of user"""
   last_name: String
@@ -194,6 +193,7 @@ input UpdateUserInput {
 
   """status of user in system"""
   status: UserStatus = inactive
+  userID: String!
 
   """username of user"""
   username: String

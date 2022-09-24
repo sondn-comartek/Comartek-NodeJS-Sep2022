@@ -6,9 +6,7 @@ import { LoginUserInput } from './dto/login-user.input';
 export class AuthResolver {
   constructor(private authService: AuthService) {}
   @Query(() => String)
-  login(
-    @Args('logger', { type: () => LoginUserInput }) logger: LoginUserInput,
-  ) {
-    return this.authService.userLogin(logger);
+  login(@Args('user', { type: () => LoginUserInput }) user: LoginUserInput) {
+    return this.authService.userLogin(user);
   }
 }
