@@ -1,8 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Query , Resolver ,Mutation, Args, ID} from '@nestjs/graphql';
-import { Status } from '../auth/decorators';
-import { JwtGuard, StatusGuard } from '../auth/guards';
-import { UserStatus } from "src/modules/user/types";
+import { Role, Status } from '../auth/decorators';
+import { JwtGuard, RoleGuard, StatusGuard } from '../auth/guards';
+import { UserRole, UserStatus } from "src/modules/user/types";
 import { CreatePetInput } from './dto';
 import { UpdatePetInput } from './dto';
 import { FindPetArg } from './dto'
@@ -20,22 +20,25 @@ export class PetResolver {
   }
   
   @Mutation( () => Pet )
+  @Role(UserRole.ADMIN)
   @Status(UserStatus.ACTIVE)
-  @UseGuards( JwtGuard , StatusGuard)
+  @UseGuards( JwtGuard , StatusGuard , RoleGuard)
   async createPet(@Args('createPetInput') createPetInput: CreatePetInput):Promise<PetDocument>{
     return this.petService.createOne(createPetInput)
   } 
 
   @Mutation( () => Pet )
+  @Role(UserRole.ADMIN)
   @Status(UserStatus.ACTIVE)
-  @UseGuards( JwtGuard , StatusGuard)
+  @UseGuards( JwtGuard , StatusGuard , RoleGuard)
   async updatePet(@Args('updatePetInput') updatePetInput: UpdatePetInput){
     return this.petService.updateOne(updatePetInput)
   }
 
   @Mutation( () => Pet )
+  @Role(UserRole.ADMIN)
   @Status(UserStatus.ACTIVE)
-  @UseGuards( JwtGuard , StatusGuard)
+  @UseGuards( JwtGuard , StatusGuard , RoleGuard)
   async deletePet(
     @Args('petid', { type : () => ID }) petid: string
   ) {
