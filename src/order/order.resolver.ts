@@ -5,6 +5,8 @@ import { CreateOrderInput } from '../shared/inputs/create-order.input';
 import { CurrentUser } from 'src/authentication/decorators/current-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { Admin } from 'src/authentication/decorators/admin.decorator';
+import { UpdateOrderStatusInput } from 'src/shared/inputs/update-order-status.input';
 
 @Resolver()
 export class OrderResolver {
@@ -25,5 +27,18 @@ export class OrderResolver {
 
   @Mutation(() => String)
   @UseGuards(JwtAuthGuard)
-  async updateApprovedOrder() {}
+  async updateOrderStatus(
+    @Admin() admin: any,
+    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({
+      name: 'updateOrderStatusInput',
+      type: () => UpdateOrderStatusInput,
+    })
+    updateOrderStatusInput: UpdateOrderStatusInput,
+  ) {
+    return await this.orderService.updateOrderStatus(
+      id,
+      updateOrderStatusInput,
+    );
+  }
 }

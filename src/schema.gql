@@ -78,7 +78,7 @@ type Mutation {
   deleteCategoryById(id: String!): String!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   createOrder(createOrderInput: CreateOrderInput!): OrderResponseType!
-  updateApprovedOrder: String!
+  updateOrderStatus(id: String!, updateOrderStatusInput: UpdateOrderStatusInput!): String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
   updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
   deletePetById(id: String!): String!
@@ -102,6 +102,10 @@ input CreateCategoryInput {
 
 input CreateOrderInput {
   petsId: [String!]!
+}
+
+input UpdateOrderStatusInput {
+  status: String!
 }
 
 input CreatePetInput {

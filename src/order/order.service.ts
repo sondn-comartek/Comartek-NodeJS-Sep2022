@@ -2,6 +2,8 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
+  NotAcceptableException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Order } from '../shared/schemas/order.schema';
@@ -16,6 +18,8 @@ import { PetStatus } from '../shared/enums/pet-status.enum';
 import { OrderResponseType } from '../shared/types/order-response.type';
 import { UserResponseType } from '../shared/types/user-response.type';
 import { PetResponseType } from '../shared/types/pet-response.type';
+import { OrderStatus } from 'src/shared/enums';
+import { UpdateOrderStatusInput } from 'src/shared/inputs/update-order-status.input';
 
 @Injectable()
 export class OrderService {
@@ -73,6 +77,7 @@ export class OrderService {
       };
     });
 
+    // Not working ???
     await this.orderQueue.add('handleCreateOrder', {
       order,
     });
@@ -83,5 +88,30 @@ export class OrderService {
       ...order.toObject(),
       price,
     };
+  }
+
+  async updateOrderStatus(
+    id: string,
+    updateOrderStatusInput: UpdateOrderStatusInput,
+  ): Promise<string> {
+    const order = await this.orderSchema.findById(id);
+    if (!order) {
+      throw new NotFoundException('Order not found to be update');
+    }
+
+    if (order.status !== OrderStatus.Placed) {
+      throw new NotAcceptableException('Only placed order can be update');
+    }
+
+    const { status } = updateOrderStatusInput;
+    if (status !== OrderStatus.Approved && status !== OrderStatus.Delivered) {
+      throw new BadRequestException('Order status input is not valid');
+    }
+
+    await this.orderSchema.findByIdAndUpdate(id, {
+      $set: updateOrderStatusInput,
+    });
+
+    return 'Update order success';
   }
 }
