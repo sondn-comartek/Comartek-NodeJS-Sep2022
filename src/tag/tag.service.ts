@@ -7,7 +7,7 @@ import { TagResponseType } from '../shared/types/tag-response.type';
 
 @Injectable()
 export class TagService {
-  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) { }
+  constructor(@InjectModel(Tag.name) private readonly tagSchema: Model<Tag>) {}
 
   async createTag(createTagInput: CreateTagInput): Promise<TagResponseType> {
     const { name } = createTagInput;
@@ -20,7 +20,7 @@ export class TagService {
 
     return {
       _id: tag._id.toString(),
-      name: tag.name
+      name: tag.name,
     };
   }
 
@@ -29,10 +29,10 @@ export class TagService {
     const tagsResponse: TagResponseType[] = tags.map((tag) => {
       return {
         _id: tag._id.toString(),
-        name: tag.name
-      }
-    })
+        name: tag.name,
+      };
+    });
 
-    return tagsResponse
+    return tagsResponse;
   }
 }

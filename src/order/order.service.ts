@@ -24,10 +24,13 @@ export class OrderService {
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     @InjectModel(Pet.name) private readonly petSchema: Model<Pet>,
     @InjectQueue('order') private readonly orderQueue: Queue,
-  ) { }
+  ) {}
 
   // return an object with order id, pets, status
-  async createOrder(userId: string, createOrderInput: CreateOrderInput): Promise<OrderResponseType> {
+  async createOrder(
+    userId: string,
+    createOrderInput: CreateOrderInput,
+  ): Promise<OrderResponseType> {
     const isActiveUser = await this.userSchema.findOne({
       _id: userId,
       status: UserStatus.Active,
@@ -38,28 +41,47 @@ export class OrderService {
       );
     }
 
-    const { petsId } = createOrderInput
-    const pets = await this.petSchema.find({ _id: { $in: petsId } })
-    console.log({ pets })
+    const { petsId } = createOrderInput;
+    const pets = await this.petSchema.find({ _id: { $in: petsId } });
     if (pets.length === 0) {
-      throw new NotFoundException("Pet does not exist")
+      throw new NotFoundException('Pet does not exist');
     }
 
-    const order = await this.orderSchema.create({ userId, ...createOrderInput })
+    let price: number = 0;
+    pets.forEach((pet) => {
+      console.log(pet.price);
+      price += pet.price;
+    });
+    price += 50; // default shipping price is total of pet's price + 50$, then be updated later
 
-    const petsResponse: PetResponseType[] = pets.map(function (pet): PetResponseType {
+    console.log({ price, type: typeof price });
+
+    const order = await this.orderSchema.create({
+      userId,
+      ...createOrderInput,
+      price,
+    });
+
+    const petsResponse: PetResponseType[] = pets.map(function (
+      pet,
+    ): PetResponseType {
       return {
         _id: pet._id.toString(),
         name: pet.name,
         price: pet.price,
-        photos: []
-      }
-    })
+        photos: [],
+      };
+    });
+
+    await this.orderQueue.add('handleCreateOrder', {
+      order,
+    });
 
     return {
       _id: order._id.toString,
       pets: petsResponse,
       ...order.toObject(),
+      price,
     };
   }
 }

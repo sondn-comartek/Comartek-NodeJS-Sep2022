@@ -11,7 +11,7 @@ export class CategoryService {
   constructor(
     @InjectModel(Category.name)
     private readonly categorySchema: Model<Category>,
-  ) { }
+  ) {}
 
   async createCategory(
     createCategoryInput: CreateCategoryInput,
@@ -27,7 +27,7 @@ export class CategoryService {
 
     return {
       _id: category._id.toString(),
-      name: category.name
+      name: category.name,
     };
   }
 
@@ -52,11 +52,13 @@ export class CategoryService {
 
   async findAllCategory(): Promise<CategoryResponseType[]> {
     const categories = await this.categorySchema.find({});
-    const categoriesResponse: CategoryResponseType[] = categories.map(function (category): CategoryResponseType {
+    const categoriesResponse: CategoryResponseType[] = categories.map(function (
+      category,
+    ): CategoryResponseType {
       return {
         _id: category._id.toString(),
-        name: category.name
-      }
+        name: category.name,
+      };
     });
 
     return categoriesResponse;

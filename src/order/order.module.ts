@@ -40,6 +40,10 @@ import {
     ]),
     BullModule.registerQueue({
       name: 'order',
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
     }),
   ],
   providers: [OrderResolver, OrderService],

@@ -8,7 +8,7 @@ import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 
 @Resolver()
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) { }
+  constructor(private readonly orderService: OrderService) {}
 
   @Mutation(() => OrderResponseType)
   @UseGuards(JwtAuthGuard)
@@ -22,4 +22,8 @@ export class OrderResolver {
       createOrderInput,
     );
   }
+
+  @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
+  async updateApprovedOrder() {}
 }

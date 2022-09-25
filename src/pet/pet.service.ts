@@ -25,43 +25,46 @@ export class PetService {
 
     private readonly uploadService: UploadService,
     private readonly cachingService: CachingService,
-  ) { }
+  ) {}
 
   async findPetByName(name: string) {
     return await this.petSchema.findOne({ name });
   }
 
   async findAllPet(): Promise<PetResponseType[]> {
+    const petsResponse: PetResponseType[] = [];
     const pets = await this.petSchema.find({});
 
-    const petsResponse = pets.map(async function (pet): Promise<PetResponseType> {
-      const categoryId = pet.categoryId;
-      const category = await this.categorySchema.findById(categoryId);
+    console.log({ pets });
+
+    for (const pet of pets) {
+      const category = await this.categorySchema.findById(pet.categoryId);
       const categoryResponse: CategoryResponseType = {
-        _id: category._id.toHexString(),
+        _id: category._id.toString(),
         name: category.name,
+      };
+
+      const tags = await this.tagSchema.find({ _id: { $in: pet.tagsId } });
+      const tagsResponse: TagResponseType[] = [];
+      for (const tag of tags) {
+        const tagResponse: TagResponseType = {
+          _id: tag._id.toString(),
+          name: tag.name,
+        };
+        tagsResponse.push(tagResponse);
       }
 
-      const tagsId = pet.tagsId;
-      const tags = await this.tagSchema.find({ _id: { $in: tagsId } });
-      const tagsResponse: TagResponseType[] = tags.map(function (tag): TagResponseType {
-        return {
-          _id: tag._id.toString(),
-          name: tag.name
-        }
-      })
-
-      return {
+      const petResponse: PetResponseType = {
         _id: pet._id.toString(),
         ...pet.toObject(),
         category: categoryResponse,
         tags: tagsResponse,
-        photos: []
-      }
-    });
+      };
 
-    return
-    // return petsResponse;
+      petsResponse.push(petResponse);
+    }
+
+    return petsResponse;
   }
 
   async findPetById(id: string): Promise<PetResponseType> {
@@ -79,22 +82,22 @@ export class PetService {
     const categoryResponse: CategoryResponseType = {
       _id: category._id.toString(),
       name: category.name,
-    }
+    };
 
     const tags = await this.tagSchema.find({ _id: { $in: pet.tagsId } });
     const tagsResponse = tags.map(function (tag): TagResponseType {
       return {
         _id: tag._id.toString(),
-        name: tag.name
-      }
+        name: tag.name,
+      };
     });
 
     const petResponse: PetResponseType = {
       _id: pet._id.toString(),
       ...pet.toObject(),
       category: categoryResponse,
-      tags: tagsResponse
-    }
+      tags: tagsResponse,
+    };
 
     await this.cachingService.setValue(id, JSON.stringify(petResponse));
 
@@ -126,15 +129,15 @@ export class PetService {
     };
 
     const tagsResponse = tags.map(function (tag): TagResponseType {
-      return { _id: tag._id.toString(), name: tag.name }
+      return { _id: tag._id.toString(), name: tag.name };
     });
 
     return {
       _id: pet._id.toString(),
       ...pet.toObject(),
       category: categoryRespone,
-      tags: tagsResponse
-    }
+      tags: tagsResponse,
+    };
   }
 
   async updatePetById(id: string, updatePetInput: UpdatePetInput) {

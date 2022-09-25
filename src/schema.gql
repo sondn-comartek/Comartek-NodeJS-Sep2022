@@ -48,8 +48,8 @@ type OrderResponseType {
   user: UserResponseType
   pets: [PetResponseType!]!
   status: String!
-  price: String
-  expectedShippingDate: DateTime
+  price: Float!
+  expectedShippingDate: DateTime!
 }
 
 """
@@ -78,6 +78,7 @@ type Mutation {
   deleteCategoryById(id: String!): String!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   createOrder(createOrderInput: CreateOrderInput!): OrderResponseType!
+  updateApprovedOrder: String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
   updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
   deletePetById(id: String!): String!
