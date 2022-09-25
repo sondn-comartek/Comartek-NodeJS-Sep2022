@@ -7,9 +7,4 @@ export class TagResponseType {
 
   @Field(() => String)
   name: string;
-
-  constructor(_id: string, name: string) {
-    this._id = _id;
-    this.name = name;
-  }
 }

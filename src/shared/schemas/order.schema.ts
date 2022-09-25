@@ -21,7 +21,7 @@ export class Order {
   @Prop({
     type: String,
     required: true,
-    default: OrderStatus.Placed,
+    default: OrderStatus.Processing,
   })
   status: OrderStatus;
 
@@ -34,13 +34,18 @@ export class Order {
 
   @Prop({
     type: Number,
-    required: true,
+    // required: true,
   })
   price: number;
 
   @Prop({
     type: Date,
-    required: true,
+    // required: true,
+    // default: () => {
+    //   const currentDate = new Date()
+    //   currentDate.setDate(currentDate.getDate() + 7) // after 1 week
+    //   return currentDate
+    // }
   })
   expectedShippingDate: Date;
 }

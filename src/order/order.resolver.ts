@@ -1,3 +1,4 @@
+import { OrderResponseType } from './../shared/types/order-response.type';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { OrderService } from './order.service';
 import { CreateOrderInput } from '../shared/inputs/create-order.input';
@@ -7,9 +8,9 @@ import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 
 @Resolver()
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
-  @Mutation(() => String)
+  @Mutation(() => OrderResponseType)
   @UseGuards(JwtAuthGuard)
   async createOrder(
     @CurrentUser() currentUser: any,

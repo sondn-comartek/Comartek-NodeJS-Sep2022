@@ -10,38 +10,20 @@ export class PetResponseType {
   _id: string;
 
   @Field(() => String)
-  name: string;
+  name?: string;
 
   @Field(() => Float)
-  price: number;
+  price?: number;
 
-  @Field(() => CategoryResponseType)
-  category: CategoryResponseType;
+  @Field(() => CategoryResponseType, { nullable: true })
+  category?: CategoryResponseType;
 
-  @Field(() => [TagResponseType])
-  tags: TagResponseType[];
+  @Field(() => [TagResponseType], { nullable: true })
+  tags?: TagResponseType[];
 
-  @Field(() => [PhotoResponseType])
-  photos: PhotoResponseType[];
+  @Field(() => [PhotoResponseType], { nullable: true })
+  photos?: PhotoResponseType[];
 
-  @Field(() => String)
-  status: PetStatus;
-
-  constructor(
-    _id: string,
-    name: string,
-    price: number,
-    category: CategoryResponseType,
-    tags: TagResponseType[],
-    photos: PhotoResponseType[],
-    status: PetStatus,
-  ) {
-    this._id = _id;
-    this.name = name;
-    this.price = price;
-    this.category = category;
-    this.tags = tags;
-    this.photos = photos;
-    this.status = status;
-  }
+  @Field(() => String, { nullable: true })
+  status?: PetStatus;
 }

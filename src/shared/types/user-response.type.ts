@@ -6,23 +6,23 @@ export class UserResponseType {
   readonly _id: string;
 
   @Field(() => String)
-  readonly userName: string;
+  readonly userName?: string;
 
   @Field(() => String)
-  readonly email: string;
+  readonly email?: string;
 
   @Field(() => String)
-  readonly firstName: string;
+  readonly firstName?: string;
 
   @Field(() => String)
-  readonly lastName: string;
+  readonly lastName?: string;
 
   @Field(() => String)
-  readonly phone: string;
+  readonly phone?: string;
 
   @Field(() => String)
-  readonly status: string;
+  readonly status?: string;
 
   @Field(() => String)
-  readonly role: string;
+  readonly role?: string;
 }

@@ -13,6 +13,9 @@ import { User } from '../shared/schemas/user.schema';
 import { UserStatus } from '../shared/enums/user-status.enum';
 import { Pet } from '../shared/schemas/pet.schema';
 import { PetStatus } from '../shared/enums/pet-status.enum';
+import { OrderResponseType } from '../shared/types/order-response.type';
+import { UserResponseType } from '../shared/types/user-response.type';
+import { PetResponseType } from '../shared/types/pet-response.type';
 
 @Injectable()
 export class OrderService {
@@ -21,9 +24,10 @@ export class OrderService {
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     @InjectModel(Pet.name) private readonly petSchema: Model<Pet>,
     @InjectQueue('order') private readonly orderQueue: Queue,
-  ) {}
+  ) { }
 
-  async createOrder(userId: string, createOrderInput: CreateOrderInput) {
+  // return an object with order id, pets, status
+  async createOrder(userId: string, createOrderInput: CreateOrderInput): Promise<OrderResponseType> {
     const isActiveUser = await this.userSchema.findOne({
       _id: userId,
       status: UserStatus.Active,
@@ -34,23 +38,28 @@ export class OrderService {
       );
     }
 
-    const { petsId } = createOrderInput;
-    const pets = await this.petSchema.find({
-      _id: { $in: petsId },
-      status: PetStatus.Available,
-    });
+    const { petsId } = createOrderInput
+    const pets = await this.petSchema.find({ _id: { $in: petsId } })
+    console.log({ pets })
     if (pets.length === 0) {
-      throw new NotFoundException(
-        'Pet does not exist or has been ordered/sold',
-      );
+      throw new NotFoundException("Pet does not exist")
     }
 
-    const job = await this.orderQueue.add('handleCreateOrder', {
-      userId,
-      createOrderInput,
-    });
-    console.log({ job });
+    const order = await this.orderSchema.create({ userId, ...createOrderInput })
 
-    return 'Your order is creating...';
+    const petsResponse: PetResponseType[] = pets.map(function (pet): PetResponseType {
+      return {
+        _id: pet._id.toString(),
+        name: pet.name,
+        price: pet.price,
+        photos: []
+      }
+    })
+
+    return {
+      _id: order._id.toString,
+      pets: petsResponse,
+      ...order.toObject(),
+    };
   }
 }
