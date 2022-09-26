@@ -56,7 +56,21 @@ type PetOutPut {
   photoids: [String!]!
 }
 
+type UserOutput {
+  id: String!
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+}
+
+type DeleteUserOutPut {
+  status: Int!
+  message: String!
+}
+
 type Query {
+  findAllUser: [UserOutput!]!
   rootquery: String!
   listAllPet: [PetOutPut!]!
   findPet(findpet: FindPet!): [PetOutPut!]!
@@ -70,12 +84,17 @@ input FindPet {
 }
 
 type Mutation {
+  deleteUser(deleteuser: DeleteUserInput!): DeleteUserOutPut!
   signUp(signUpData: SignUpInput!): SignUpOutput!
   signIn(loginData: SignInInput!): SignInOutput!
   createnewpet(createpet: CreateNewPetInput!): CreateNewPetOutPut!
   updatePet(updatepet: UpdatePetInput!): updatePetOutPut!
   deletePet(deletepet: DeletePetInput!): DeletePetOutPut!
   UploadPetPhoto(uploadphotopet: UploadPetPhotoInput!): UploadPetPhotoOutPut!
+}
+
+input DeleteUserInput {
+  id: String!
 }
 
 input SignUpInput {

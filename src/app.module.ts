@@ -9,6 +9,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { RootResolver } from './root.reslover';
 import { PetModule } from './pet/pet.module';
+import { UserModule } from './user/user.module';
+import { StoreModule } from './store/store.module';
 
 
 
@@ -20,14 +22,16 @@ import { PetModule } from './pet/pet.module';
     driver: ApolloDriver,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     playground: true,
-    include: [RootResolver,AuthModule,  PetModule ]
+    include: [RootResolver,AuthModule,  PetModule, UserModule ]
   }),
   ConfigModule.forRoot({
     envFilePath: '.env',
   }),
   MongooseModule.forRoot(process.env.DB),
   PetModule,
-  AuthModule
+  AuthModule,
+  UserModule,
+  StoreModule
   
   
   ],

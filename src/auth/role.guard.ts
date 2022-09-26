@@ -18,7 +18,7 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const jwt = GqlExecutionContext.create(context).getContext().req.header('authorization').split(" ")[1];
+    const jwt = GqlExecutionContext.create(context).getContext().req.header('authorization')?.split(" ")[1];
     const user = await this.jwtService.verifyAsync(jwt, {secret: process.env.JWT_SECRET})
     return requiredRoles.some((role) => user.role === role)
     
