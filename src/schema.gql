@@ -1,0 +1,152 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SignUpOutput {
+  """Statuscode"""
+  status: Int!
+
+  """Message"""
+  message: String!
+}
+
+type SignInOutput {
+  """status"""
+  status: Int!
+
+  """message"""
+  message: String!
+
+  """jwt"""
+  jwt: String!
+}
+
+type UploadPetPhotoOutPut {
+  status: Int!
+  message: String!
+}
+
+type CreateNewPetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+}
+
+type updatePetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+}
+
+type DeletePetOutPut {
+  status: Int!
+  message: String!
+}
+
+type PetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+  photoids: [String!]!
+}
+
+type UserOutput {
+  id: String!
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+}
+
+type DeleteUserOutPut {
+  status: Int!
+  message: String!
+}
+
+type IdAndStatus {
+  id: String!
+  status: String!
+}
+
+type FindPetByStatus {
+  pets: [IdAndStatus!]!
+  totalPets: Int!
+}
+
+type Query {
+  findPetWithStatus(petStatus: FindPetWidthStatus!): FindPetByStatus!
+  findAllUser: [UserOutput!]!
+  listAllPet: [PetOutPut!]!
+  findPet(findpet: FindPet!): [PetOutPut!]!
+}
+
+input FindPetWidthStatus {
+  status: String!
+}
+
+input FindPet {
+  id: String
+  tags: [String!]
+  status: String
+}
+
+type Mutation {
+  deleteUser(deleteuser: DeleteUserInput!): DeleteUserOutPut!
+  signUp(signUpData: SignUpInput!): SignUpOutput!
+  signIn(loginData: SignInInput!): SignInOutput!
+  createnewpet(createpet: CreateNewPetInput!): CreateNewPetOutPut!
+  updatePet(updatepet: UpdatePetInput!): updatePetOutPut!
+  deletePet(deletepet: DeletePetInput!): DeletePetOutPut!
+  UploadPetPhoto(uploadphotopet: UploadPetPhotoInput!): UploadPetPhotoOutPut!
+}
+
+input DeleteUserInput {
+  id: String!
+}
+
+input SignUpInput {
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  phone: String!
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}
+
+input CreateNewPetInput {
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+}
+
+input UpdatePetInput {
+  id: String!
+  category: String
+  name: String
+  tags: [String!]
+  status: String
+}
+
+input DeletePetInput {
+  id: String!
+}
+
+input UploadPetPhotoInput {
+  id: String!
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
