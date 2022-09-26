@@ -51,7 +51,7 @@ export class OrderService {
       throw new NotFoundException('Pet does not exist');
     }
 
-    let price: number = 0;
+    let price = 0;
     pets.forEach((pet) => {
       console.log(pet.price);
       price += pet.price;
@@ -113,5 +113,45 @@ export class OrderService {
     });
 
     return 'Update order success';
+  }
+
+  async findOrderById(id: string): Promise<OrderResponseType> {
+    const order = await this.orderSchema.findById(id);
+    if (!order) {
+      throw new NotFoundException('Order not found to be update');
+    }
+
+    const petsResponse: PetResponseType[] = [];
+    for (const petId of order.petsId) {
+      const pet = await this.petSchema.findById(petId);
+      const petResponse: PetResponseType = {
+        _id: pet._id.toString(),
+        name: pet.name,
+        price: pet.price,
+        photos: [],
+      };
+      petsResponse.push(petResponse);
+    }
+
+    return {
+      _id: order._id.toString(),
+      pets: petsResponse,
+      ...order.toObject(),
+    };
+  }
+
+  async deleteOrder(id: string): Promise<string> {
+    const validOrderStatus = [OrderStatus.Approved, OrderStatus.Delivered];
+    const order = await this.orderSchema.find({
+      _id: id,
+      status: { $not: { $in: validOrderStatus } },
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found to delete');
+    }
+
+    await this.orderSchema.deleteOne({ _id: id });
+
+    return 'Delete order success';
   }
 }

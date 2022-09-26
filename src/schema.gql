@@ -60,10 +60,11 @@ scalar DateTime
 type Query {
   findAllTag: [TagResponseType!]!
   findAllCategory: [CategoryResponseType!]!
+  findOrderById(id: String!): OrderResponseType!
   findAllPet: [PetResponseType!]!
   findPetById(id: String!): PetResponseType!
   findPetByTags: String!
-  findPetByStatus: String!
+  findPetByStatus(status: String!): [PetResponseType!]!
   findAllUser: [UserResponseType!]!
   findUserByUserName(userName: String!): UserResponseType!
   hello: String!
@@ -79,6 +80,7 @@ type Mutation {
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
   createOrder(createOrderInput: CreateOrderInput!): OrderResponseType!
   updateOrderStatus(id: String!, updateOrderStatusInput: UpdateOrderStatusInput!): String!
+  deleteOrder(id: String!): String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
   updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
   deletePetById(id: String!): String!

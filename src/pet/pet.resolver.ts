@@ -1,7 +1,7 @@
+import { PetResponseType } from './../shared/types/pet-response.type';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreatePetInput } from 'src/shared/inputs';
 import { PetService } from './pet.service';
-import { PetResponseType } from '../shared/types/pet-response.type';
 import { UpdatePetInput } from '../shared/inputs/update-pet.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
@@ -9,7 +9,7 @@ import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class PetResolver {
-  constructor(private readonly petService: PetService) {}
+  constructor(private readonly petService: PetService) { }
 
   @Query(() => [PetResponseType])
   async findAllPet() {
@@ -56,8 +56,8 @@ export class PetResolver {
     return 'findPetByTag';
   }
 
-  @Query(() => String)
-  async findPetByStatus() {
-    return 'findPetByStatus';
+  @Query(() => [PetResponseType])
+  async findPetByStatus(@Args({ name: 'status', type: () => String }) status: string) {
+    return await this.petService.findPetByStatus(status)
   }
 }

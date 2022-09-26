@@ -8,7 +8,7 @@ import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class TagResolver {
-  constructor(private readonly tagService: TagService) {}
+  constructor(private readonly tagService: TagService) { }
   @Query(() => [TagResponseType])
   async findAllTag(): Promise<TagResponseType[]> {
     return await this.tagService.findAllTag();
@@ -30,7 +30,7 @@ export class TagResolver {
     @Admin() admin: any,
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateTagInput', type: () => CreateTagInput })
-    iupdateTagInputd: CreateTagInput,
+    updateTagInputd: CreateTagInput,
   ): Promise<string> {
     return 'Developing...';
   }

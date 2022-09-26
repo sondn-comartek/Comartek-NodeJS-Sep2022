@@ -18,7 +18,7 @@ export class OrderResolver {
     @CurrentUser() currentUser: any,
     @Args({ name: 'createOrderInput', type: () => CreateOrderInput })
     createOrderInput: CreateOrderInput,
-  ) {
+  ): Promise<OrderResponseType> {
     return await this.orderService.createOrder(
       currentUser._id,
       createOrderInput,
@@ -35,10 +35,24 @@ export class OrderResolver {
       type: () => UpdateOrderStatusInput,
     })
     updateOrderStatusInput: UpdateOrderStatusInput,
-  ) {
+  ): Promise<string> {
     return await this.orderService.updateOrderStatus(
       id,
       updateOrderStatusInput,
     );
+  }
+
+  @Query(() => OrderResponseType)
+  async findOrderById(
+    @Args({ name: 'id', type: () => String }) id: string,
+  ): Promise<OrderResponseType> {
+    return await this.orderService.findOrderById(id);
+  }
+
+  @Mutation(() => String)
+  async deleteOrder(
+    @Args({ name: 'id', type: () => String }) id: string,
+  ): Promise<string> {
+    return await this.orderService.deleteOrder(id);
   }
 }

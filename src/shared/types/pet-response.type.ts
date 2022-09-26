@@ -10,10 +10,10 @@ export class PetResponseType {
   _id: string;
 
   @Field(() => String)
-  name?: string;
+  name: string;
 
   @Field(() => Float)
-  price?: number;
+  price: number;
 
   @Field(() => CategoryResponseType, { nullable: true })
   category?: CategoryResponseType;

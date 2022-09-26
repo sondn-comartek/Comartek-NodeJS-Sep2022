@@ -1,3 +1,4 @@
+import { PetStatus } from './../shared/enums/pet-status.enum';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ConflictException,
@@ -25,7 +26,7 @@ export class PetService {
 
     private readonly uploadService: UploadService,
     private readonly cachingService: CachingService,
-  ) {}
+  ) { }
 
   async findPetByName(name: string) {
     return await this.petSchema.findOne({ name });
@@ -34,8 +35,6 @@ export class PetService {
   async findAllPet(): Promise<PetResponseType[]> {
     const petsResponse: PetResponseType[] = [];
     const pets = await this.petSchema.find({});
-
-    console.log({ pets });
 
     for (const pet of pets) {
       const category = await this.categorySchema.findById(pet.categoryId);
@@ -174,5 +173,25 @@ export class PetService {
     await this.petSchema.findByIdAndRemove(id);
 
     return 'DELETE PET SUCCESS';
+  }
+
+  async findPetByStatus(status: string) {
+    const pets = await this.petSchema.find({ status })
+    if (pets.length === 0) {
+      throw new NotFoundException("Pets not found")
+    }
+
+    const petsResponse: PetResponseType[] = []
+
+    for (const pet of pets) {
+      const petResponse: PetResponseType = {
+        _id: pet._id.toString(),
+        name: pet.name,
+        price: pet.price
+      }
+      petsResponse.push(petResponse)
+    }
+
+    return petsResponse
   }
 }

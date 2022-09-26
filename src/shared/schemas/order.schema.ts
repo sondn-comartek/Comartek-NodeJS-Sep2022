@@ -30,7 +30,7 @@ export class Order {
     required: true,
     ref: Pet.name,
   })
-  petsId: string;
+  petsId: string[];
 
   @Prop({
     type: Number,
