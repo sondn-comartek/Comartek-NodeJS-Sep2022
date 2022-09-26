@@ -79,8 +79,14 @@ type FindPetByStatus {
   totalPets: Int!
 }
 
+type StatusAndMessage {
+  status: Int!
+  message: String!
+}
+
 type Query {
   findPetWithStatus(petStatus: FindPetWidthStatus!): FindPetByStatus!
+  createOrder(createorder: PlaceOrderInput!): StatusAndMessage!
   findAllUser: [UserOutput!]!
   listAllPet: [PetOutPut!]!
   findPet(findpet: FindPet!): [PetOutPut!]!
@@ -89,6 +95,17 @@ type Query {
 input FindPetWidthStatus {
   status: String!
 }
+
+input PlaceOrderInput {
+  petsID: [String!]!
+  shipingDate: DateTime!
+  OrderStatus: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 input FindPet {
   id: String

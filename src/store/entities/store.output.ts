@@ -1,12 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { PetOutPut } from 'src/pet/entities/pet.output';
-@ObjectType()
-export class Store {
-  @Field(() => [PetOutPut])
-  pets: [PetOutPut]
-  @Field(() => Int)
-  totalPets: number
-}
+
 @ObjectType()
 class IdAndStatus {
   @Field(() => String)
@@ -20,4 +14,13 @@ export class FindPetByStatus {
   pets: [IdAndStatus]
   @Field(() => Int)
   totalPets: number
+}
+
+
+@ObjectType()
+export class StatusAndMessage {
+  @Field(() => Int)
+  status: number
+  @Field(() => String)
+  message: string
 }

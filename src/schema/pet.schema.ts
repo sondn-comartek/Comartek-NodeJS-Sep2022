@@ -17,9 +17,8 @@ export class Pet {
   @Prop({default: []})
   photoids: string[]
 
-
-
-  
+  @Prop({default: 100})
+  price: number
   
 }
 
