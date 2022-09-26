@@ -7,14 +7,15 @@ import { ConfigModule , ConfigService } from '@nestjs/config' ;
 import { MongooseModule } from '@nestjs/mongoose';
 import { PetModule } from './pet/pet.module';
 import { StoreModule } from './store/store.module';
+import { PhotoModule } from './photo/photo.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver : ApolloDriver ,
-      autoSchemaFile: true,
+      autoSchemaFile: true, 
       buildSchemaOptions: {
         dateScalarMode: 'timestamp',
-      }
+      } 
     }),
     ConfigModule.forRoot({
       isGlobal : true
@@ -31,6 +32,7 @@ import { StoreModule } from './store/store.module';
     AuthModule,
     PetModule,
     StoreModule,
+    PhotoModule,
   ],
 })
 export class AppModule {}

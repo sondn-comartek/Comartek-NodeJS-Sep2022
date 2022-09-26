@@ -19,14 +19,14 @@ export class Order extends Document {
     @Prop({ isRequired: true })
     pets: string[]
 
-    @Field( () => GraphQLTimestamp)
-    @Prop({ isRequired: true })
+    @Field( type => GraphQLTimestamp , { nullable : true})
+    @Prop({default : null })
     expected_date: Date
 
     @Field(() => OrderStatus)
     @Prop({ 
         isRequired: true,
-        default: OrderStatus.PLACED
+        default: OrderStatus.PLACED ,
     })
     status : OrderStatus
 
