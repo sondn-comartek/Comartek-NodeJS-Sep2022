@@ -1,3 +1,4 @@
+import { QueryMongoIdInput } from './../shared/inputs/query-mongo-id.input';
 import { OrderResponseType } from './../shared/types/order-response.type';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { OrderService } from './order.service';
@@ -44,15 +45,17 @@ export class OrderResolver {
 
   @Query(() => OrderResponseType)
   async findOrderById(
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
   ): Promise<OrderResponseType> {
-    return await this.orderService.findOrderById(id);
+    return await this.orderService.findOrderById(queryMongoIdInput.id);
   }
 
   @Mutation(() => String)
   async deleteOrder(
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
   ): Promise<string> {
-    return await this.orderService.deleteOrder(id);
+    return await this.orderService.deleteOrder(queryMongoIdInput.id);
   }
 }

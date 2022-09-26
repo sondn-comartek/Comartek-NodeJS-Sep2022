@@ -83,10 +83,9 @@ export class CategoryService {
       throw new ConflictException(`Category ${name} đã tồn tại`);
     }
 
-    const updatedCategory = await this.categorySchema.findOneAndUpdate(
+    await this.categorySchema.findOneAndUpdate(
       { _id: id },
       { $set: updateCategoryInput },
-      { new: true },
     );
 
     return 'UPDATE CATEGORY SUCCESS';

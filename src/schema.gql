@@ -60,14 +60,22 @@ scalar DateTime
 type Query {
   findAllTag: [TagResponseType!]!
   findAllCategory: [CategoryResponseType!]!
-  findOrderById(id: String!): OrderResponseType!
+  findOrderById(queryMongoIdInput: QueryMongoIdInput!): OrderResponseType!
   findAllPet: [PetResponseType!]!
-  findPetById(id: String!): PetResponseType!
-  findPetByTags(ids: [String!]!): [PetResponseType!]!
+  findPetById(queryMongoIdInput: QueryMongoIdInput!): PetResponseType!
+  findPetByTags(queryMongoIdArrayInput: QueryMongoIdArrayInput!): [PetResponseType!]!
   findPetByStatus(status: String!): [PetResponseType!]!
   findAllUser: [UserResponseType!]!
   findUserByUserName(userName: String!): UserResponseType!
   hello: String!
+}
+
+input QueryMongoIdInput {
+  id: String!
+}
+
+input QueryMongoIdArrayInput {
+  ids: [String!]!
 }
 
 type Mutation {
@@ -75,16 +83,16 @@ type Mutation {
   updateTagById(id: String!, updateTagInput: CreateTagInput!): String!
   deleteTagById(id: String!): String!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
-  exampleUploadToCloud(file: String!): String!
+  exampleUpload(uploadImageInput: UploadImageInput!): String!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
-  deleteCategoryById(id: String!): String!
-  updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!
+  deleteCategoryById(queryMongoIdInput: QueryMongoIdInput!): String!
+  updateCategoryById(queryMongoIdInput: QueryMongoIdInput!, updateCategoryInput: CreateCategoryInput!): String!
   createOrder(createOrderInput: CreateOrderInput!): OrderResponseType!
   updateOrderStatus(id: String!, updateOrderStatusInput: UpdateOrderStatusInput!): String!
-  deleteOrder(id: String!): String!
+  deleteOrder(queryMongoIdInput: QueryMongoIdInput!): String!
   createPet(createPetInput: CreatePetInput!): PetResponseType!
-  updatePetById(id: String!, updatePetInput: UpdatePetInput!): String!
-  deletePetById(id: String!): String!
+  updatePetById(queryMongoIdInput: QueryMongoIdInput!, updatePetInput: UpdatePetInput!): String!
+  deletePetById(queryMongoIdInput: QueryMongoIdInput!): String!
   deleteUserById(id: String!): String!
   updateUserById(id: String!, updateUserInput: UpdateUserInput!): String!
   signUp(createUserInput: CreateUserInput!): UserResponseType!
@@ -98,6 +106,13 @@ input CreateTagInput {
 input CreateActiveAccountRequestInput {
   email: String!
 }
+
+input UploadImageInput {
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input CreateCategoryInput {
   name: String!

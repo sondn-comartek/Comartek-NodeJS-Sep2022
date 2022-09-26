@@ -208,12 +208,28 @@ export class PetService {
     return petsResponse;
   }
 
-  async findPetByTagIds(ids: string[]): Promise<PetResponseType> {
+  async findPetByTagIds(ids: string[]): Promise<PetResponseType[]> {
     const tags = await this.tagSchema.find({ _id: { $in: ids } });
     if (tags.length === 0) {
       throw new NotFoundException('Tags not found');
     }
 
-    return;
+    const tasgIdValidValue = tags.map((tag) => tag._id);
+
+    const pets = await this.petSchema.find({
+      tagsId: { $in: tasgIdValidValue },
+    });
+    const petsResponse: PetResponseType[] = [];
+
+    for (const pet of pets) {
+      const petResponse: PetResponseType = {
+        _id: pet._id.toString(),
+        ...pet.toObject(),
+      };
+
+      petsResponse.push(petResponse);
+    }
+
+    return petsResponse;
   }
 }

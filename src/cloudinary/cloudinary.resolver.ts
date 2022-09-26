@@ -1,3 +1,4 @@
+import { UploadImageInput } from './../shared/inputs/upload-image.input';
 import { CloudinaryService } from './cloudinary.service';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
@@ -5,9 +6,10 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 export class CloudinaryResolver {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
   @Mutation(() => String)
-  async exampleUploadToCloud(
-    @Args({ name: 'file', type: () => String }) file: string,
+  async exampleUpload(
+    @Args({ name: 'uploadImageInput', type: () => UploadImageInput })
+    uploadImageInput: UploadImageInput,
   ) {
-    return await this.cloudinaryService.exampleUploadToCloud(file);
+    return await this.cloudinaryService.exampleUploadToCloud(uploadImageInput);
   }
 }

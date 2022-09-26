@@ -1,3 +1,5 @@
+import { QueryMongoIdArrayInput } from './../shared/inputs/query-mongo-id-array-input';
+import { QueryMongoIdInput } from './../shared/inputs/query-mongo-id.input';
 import { PetResponseType } from './../shared/types/pet-response.type';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreatePetInput } from 'src/shared/inputs';
@@ -17,8 +19,11 @@ export class PetResolver {
   }
 
   @Query(() => PetResponseType)
-  async findPetById(@Args({ name: 'id', type: () => String }) id: string) {
-    return await this.petService.findPetById(id);
+  async findPetById(
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
+  ) {
+    return await this.petService.findPetById(queryMongoIdInput.id);
   }
 
   @Mutation(() => PetResponseType)
@@ -35,27 +40,36 @@ export class PetResolver {
   @UseGuards(JwtAuthGuard)
   async updatePetById(
     @Admin() admin: any,
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
     @Args({ name: 'updatePetInput', type: () => UpdatePetInput })
     updatePetInput: UpdatePetInput,
   ) {
-    return await this.petService.updatePetById(id, updatePetInput);
+    return await this.petService.updatePetById(
+      queryMongoIdInput.id,
+      updatePetInput,
+    );
   }
 
   @Mutation(() => String)
   @UseGuards(JwtAuthGuard)
   async deletePetById(
     @Admin() admin: any,
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
   ) {
-    return await this.petService.deletePetById(id);
+    return await this.petService.deletePetById(queryMongoIdInput.id);
   }
 
   @Query(() => [PetResponseType])
   async findPetByTags(
-    @Args({ name: 'ids', type: () => [String] }) ids: string[],
+    @Args({
+      name: 'queryMongoIdArrayInput',
+      type: () => QueryMongoIdArrayInput,
+    })
+    queryMongoIdArrayInput: QueryMongoIdArrayInput,
   ) {
-    return await this.petService.findPetByTagIds(ids);
+    return await this.petService.findPetByTagIds(queryMongoIdArrayInput.ids);
   }
 
   @Query(() => [PetResponseType])

@@ -1,3 +1,4 @@
+import { QueryMongoIdInput } from './../shared/inputs/query-mongo-id.input';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { CreateCategoryInput } from '../shared/inputs';
 import { CategoryService } from './category.service';
@@ -29,19 +30,21 @@ export class CategoryResolver {
   @UseGuards()
   async deleteCategoryById(
     @Admin() admin: any,
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
   ): Promise<string> {
-    return await this.categoryService.deleteCategoryById(id);
+    return await this.categoryService.deleteCategoryById(queryMongoIdInput.id);
   }
 
   @Mutation(() => String)
   async updateCategoryById(
-    @Args({ name: 'id', type: () => String }) id: string,
+    @Args({ name: 'queryMongoIdInput', type: () => QueryMongoIdInput })
+    queryMongoIdInput: QueryMongoIdInput,
     @Args({ name: 'updateCategoryInput', type: () => CreateCategoryInput })
     updateCategoryInput: CreateCategoryInput,
   ): Promise<string> {
     return await this.categoryService.updateCategoryById(
-      id,
+      queryMongoIdInput.id,
       updateCategoryInput,
     );
   }
