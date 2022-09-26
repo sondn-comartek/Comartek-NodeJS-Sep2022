@@ -51,3 +51,10 @@ export class FindPet {
   @Field(() => String, {nullable: true})
   status: string
 }
+
+
+@InputType()
+export class FindPetWidthStatus {
+  @Field(() => String)
+  status: string
+}

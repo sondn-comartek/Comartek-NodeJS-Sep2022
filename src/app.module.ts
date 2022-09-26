@@ -22,7 +22,7 @@ import { StoreModule } from './store/store.module';
     driver: ApolloDriver,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     playground: true,
-    include: [RootResolver,AuthModule,  PetModule, UserModule ]
+    include: [RootResolver,AuthModule,  PetModule, UserModule, StoreModule ]
   }),
   ConfigModule.forRoot({
     envFilePath: '.env',

@@ -11,10 +11,7 @@ export class AuthResolver {
 
   }
   
-  @Query(() => String, {name: 'rootquery'})
-  rootQuery() {
-    return "root query"
-  }
+ 
 
   @Mutation(() => SignUpOutput)
   async signUp(@Args('signUpData') signUpData: SignUpInput ) {

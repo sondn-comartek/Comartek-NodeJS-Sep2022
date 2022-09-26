@@ -1,26 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Pet } from 'src/schema/pet.schema';
 import { CreateStoreInput } from './dto/create-store.input';
 import { UpdateStoreInput } from './dto/update-store.input';
 
 @Injectable()
 export class StoreService {
-  create(createStoreInput: CreateStoreInput) {
-    return 'This action adds a new store';
-  }
+  constructor(@InjectModel('pet') private petModel: Model<Pet>){}
 
-  findAll() {
-    return `This action returns all store`;
+  async findByStatus(status: string) {
+    return this.petModel.find({status: status})
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} store`;
-  }
-
-  update(id: number, updateStoreInput: UpdateStoreInput) {
-    return `This action updates a #${id} store`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} store`;
-  }
+ 
 }

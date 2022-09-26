@@ -69,12 +69,25 @@ type DeleteUserOutPut {
   message: String!
 }
 
+type IdAndStatus {
+  id: String!
+  status: String!
+}
+
+type FindPetByStatus {
+  pets: [IdAndStatus!]!
+  totalPets: Int!
+}
+
 type Query {
+  findPetWithStatus(petStatus: FindPetWidthStatus!): FindPetByStatus!
   findAllUser: [UserOutput!]!
-  rootquery: String!
   listAllPet: [PetOutPut!]!
   findPet(findpet: FindPet!): [PetOutPut!]!
-  sayHello: String!
+}
+
+input FindPetWidthStatus {
+  status: String!
 }
 
 input FindPet {
