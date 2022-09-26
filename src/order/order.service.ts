@@ -29,7 +29,7 @@ export class OrderService {
     @InjectModel(Pet.name) private readonly petSchema: Model<Pet>,
     @InjectModel(Photo.name) private readonly photoSchema: Model<Photo>,
     @InjectQueue('order') private readonly orderQueue: Queue,
-  ) {}
+  ) { }
 
   // return an object with order id, pets, status
   async createOrder(
@@ -54,12 +54,9 @@ export class OrderService {
 
     let price = 0;
     pets.forEach((pet) => {
-      console.log(pet.price);
       price += pet.price;
     });
     price += 50; // default shipping price is total of pet's price + 50$, then be updated later
-
-    console.log({ price, type: typeof price });
 
     const order = await this.orderSchema.create({
       userId,
