@@ -8,7 +8,7 @@ export type OrderDocument = Order & Document;
 @Schema()
 export class Order {
   @Prop()
-  petid: [string]
+  petids: [string]
   @Prop()
   shippingDate: Date
   @Prop({default: 'placed'})

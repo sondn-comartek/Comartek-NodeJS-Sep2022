@@ -79,14 +79,37 @@ type FindPetByStatus {
   totalPets: Int!
 }
 
-type StatusAndMessage {
+type CreateOrderOutPut {
+  status: Int!
+  message: String!
+  totalPrice: Int!
+}
+
+type ChangeStatusOrderOutPut {
+  status: Int!
+  message: String!
+}
+
+type FindOrderByIdOutPut {
+  orderid: String!
+  petids: [String!]!
+  shippingDate: DateTime!
+  orderStatus: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DeleteOrderOutPut {
   status: Int!
   message: String!
 }
 
 type Query {
   findPetWithStatus(petStatus: FindPetWidthStatus!): FindPetByStatus!
-  createOrder(createorder: PlaceOrderInput!): StatusAndMessage!
+  findorderbyid(id: FindOrderByIdInput!): FindOrderByIdOutPut!
   findAllUser: [UserOutput!]!
   listAllPet: [PetOutPut!]!
   findPet(findpet: FindPet!): [PetOutPut!]!
@@ -96,16 +119,9 @@ input FindPetWidthStatus {
   status: String!
 }
 
-input PlaceOrderInput {
-  petsID: [String!]!
-  shipingDate: DateTime!
-  OrderStatus: String!
+input FindOrderByIdInput {
+  orderid: String!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 input FindPet {
   id: String
@@ -114,6 +130,9 @@ input FindPet {
 }
 
 type Mutation {
+  createOrder(createorder: PlaceOrderInput!): CreateOrderOutPut!
+  changeStatusOrder(changestatusorder: ChangeStatusOrderInput!): ChangeStatusOrderOutPut!
+  deleteorder(id: DeleteOrderInput!): DeleteOrderOutPut!
   deleteUser(deleteuser: DeleteUserInput!): DeleteUserOutPut!
   signUp(signUpData: SignUpInput!): SignUpOutput!
   signIn(loginData: SignInInput!): SignInOutput!
@@ -121,6 +140,20 @@ type Mutation {
   updatePet(updatepet: UpdatePetInput!): updatePetOutPut!
   deletePet(deletepet: DeletePetInput!): DeletePetOutPut!
   UploadPetPhoto(uploadphotopet: UploadPetPhotoInput!): UploadPetPhotoOutPut!
+}
+
+input PlaceOrderInput {
+  petsID: [String!]!
+  shipingDate: DateTime!
+}
+
+input ChangeStatusOrderInput {
+  orderid: String!
+  status: String!
+}
+
+input DeleteOrderInput {
+  orderid: String!
 }
 
 input DeleteUserInput {

@@ -18,9 +18,42 @@ export class FindPetByStatus {
 
 
 @ObjectType()
-export class StatusAndMessage {
+export class CreateOrderOutPut {
   @Field(() => Int)
   status: number
   @Field(() => String)
   message: string
+
+  @Field(() => Int)
+  totalPrice: number
+}
+
+@ObjectType()
+export class ChangeStatusOrderOutPut {
+  @Field(() => Int)
+  status: number
+  @Field(() => String)
+  message: string
+
+}
+
+@ObjectType()
+export class FindOrderByIdOutPut {
+  @Field(() => String)
+  orderid: string
+  @Field(() => [String])
+  petids: [string]
+  @Field(() => Date)  
+  shippingDate: Date
+
+  @Field(() => String)
+  orderStatus: string
+}
+@ObjectType()
+export class DeleteOrderOutPut {
+  @Field(() => Int)
+  status: number
+  @Field(() => String)
+  message: string
+
 }
