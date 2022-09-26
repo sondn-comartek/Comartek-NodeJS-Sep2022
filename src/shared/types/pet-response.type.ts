@@ -21,8 +21,8 @@ export class PetResponseType {
   @Field(() => [TagResponseType], { nullable: true })
   tags?: TagResponseType[];
 
-  @Field(() => [PhotoResponseType], { nullable: true })
-  photos?: PhotoResponseType[];
+  @Field(() => PhotoResponseType)
+  photos: PhotoResponseType;
 
   @Field(() => String, { nullable: true })
   status?: PetStatus;

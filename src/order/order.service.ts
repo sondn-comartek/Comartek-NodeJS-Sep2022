@@ -1,3 +1,5 @@
+import { PhotoResponseType } from './../shared/types/photo-response.type';
+import { Photo } from './../shared/schemas/photo.schema';
 import {
   Injectable,
   ForbiddenException,
@@ -27,6 +29,7 @@ export class OrderService {
     @InjectModel(Order.name) private readonly orderSchema: Model<Order>,
     @InjectModel(User.name) private readonly userSchema: Model<User>,
     @InjectModel(Pet.name) private readonly petSchema: Model<Pet>,
+    @InjectModel(Photo.name) private readonly photoSchema: Model<Photo>,
     @InjectQueue('order') private readonly orderQueue: Queue,
   ) {}
 
@@ -66,16 +69,23 @@ export class OrderService {
       price,
     });
 
-    const petsResponse: PetResponseType[] = pets.map(function (
-      pet,
-    ): PetResponseType {
-      return {
-        _id: pet._id.toString(),
-        name: pet.name,
-        price: pet.price,
-        photos: [],
+    const petsResponse: PetResponseType[] = [];
+
+    for (const pet of pets) {
+      const photo = await this.photoSchema.findById(pet.photosId);
+      const photoResponse: PhotoResponseType = {
+        _id: photo._id.toString(),
+        url: photo.url,
       };
-    });
+
+      const petResponse: PetResponseType = {
+        _id: pet._id.toString(),
+        ...pet.toObject(),
+        photos: photoResponse,
+      };
+
+      petsResponse.push(petResponse);
+    }
 
     // Not working ???
     await this.orderQueue.add('handleCreateOrder', {
@@ -122,14 +132,22 @@ export class OrderService {
     }
 
     const petsResponse: PetResponseType[] = [];
+
     for (const petId of order.petsId) {
       const pet = await this.petSchema.findById(petId);
+
+      const photo = await this.photoSchema.findById(pet.photosId);
+      const photoResponse: PhotoResponseType = {
+        _id: photo._id.toString(),
+        url: photo.url,
+      };
       const petResponse: PetResponseType = {
         _id: pet._id.toString(),
         name: pet.name,
         price: pet.price,
-        photos: [],
+        photos: photoResponse,
       };
+
       petsResponse.push(petResponse);
     }
 

@@ -1,11 +1,11 @@
-import { PetStatus } from './../shared/enums/pet-status.enum';
+import { PhotoResponseType } from './../shared/types/photo-response.type';
+import { Photo } from './../shared/schemas/photo.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UploadService } from 'src/upload/upload.service';
 import { Model } from 'mongoose';
 import { Pet, Tag } from 'src/shared/schemas';
 import { CreatePetInput } from '../shared/inputs/create-pet.input';
@@ -23,10 +23,10 @@ export class PetService {
     @InjectModel(Category.name)
     private readonly categorySchema: Model<Category>,
     @InjectModel(Tag.name) private readonly tagSchema: Model<Tag>,
+    @InjectModel(Photo.name) private readonly photoSchema: Model<Photo>,
 
-    private readonly uploadService: UploadService,
     private readonly cachingService: CachingService,
-  ) { }
+  ) {}
 
   async findPetByName(name: string) {
     return await this.petSchema.findOne({ name });
@@ -53,11 +53,18 @@ export class PetService {
         tagsResponse.push(tagResponse);
       }
 
+      const photo = await this.photoSchema.findById(pet.photosId);
+      const photoResponse: PhotoResponseType = {
+        _id: photo._id.toString(),
+        url: photo.url,
+      };
+
       const petResponse: PetResponseType = {
         _id: pet._id.toString(),
         ...pet.toObject(),
         category: categoryResponse,
         tags: tagsResponse,
+        photos: photoResponse,
       };
 
       petsResponse.push(petResponse);
@@ -176,22 +183,37 @@ export class PetService {
   }
 
   async findPetByStatus(status: string) {
-    const pets = await this.petSchema.find({ status })
+    const pets = await this.petSchema.find({ status });
     if (pets.length === 0) {
-      throw new NotFoundException("Pets not found")
+      throw new NotFoundException('Pets not found');
     }
 
-    const petsResponse: PetResponseType[] = []
+    const petsResponse: PetResponseType[] = [];
 
     for (const pet of pets) {
+      const photos = await this.photoSchema.findById(pet.photosId);
+      const photoResponse: PhotoResponseType = {
+        _id: photos._id.toString(),
+        url: photos.url,
+      };
       const petResponse: PetResponseType = {
         _id: pet._id.toString(),
         name: pet.name,
-        price: pet.price
-      }
-      petsResponse.push(petResponse)
+        price: pet.price,
+        photos: photoResponse,
+      };
+      petsResponse.push(petResponse);
     }
 
-    return petsResponse
+    return petsResponse;
+  }
+
+  async findPetByTagIds(ids: string[]): Promise<PetResponseType> {
+    const tags = await this.tagSchema.find({ _id: { $in: ids } });
+    if (tags.length === 0) {
+      throw new NotFoundException('Tags not found');
+    }
+
+    return;
   }
 }

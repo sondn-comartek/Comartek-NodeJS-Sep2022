@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UpdateUserInput } from '../shared/inputs/update-user.input';
 import { UserResponseType } from '../shared/types/user-response.type';
+import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class UserResolver {
@@ -20,21 +21,20 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  async deleteUserById(@Args({ name: 'id', type: () => String }) id: string) {
+  async deleteUserById(
+    @Admin() admin: any,
+    @Args({ name: 'id', type: () => String }) id: string,
+  ) {
     return await this.userService.deleteUserById(id);
   }
 
   @Mutation(() => String)
   async updateUserById(
+    @Admin() admin: any,
     @Args({ name: 'id', type: () => String }) id: string,
     @Args({ name: 'updateUserInput', type: () => UpdateUserInput })
     updateUserInput: UpdateUserInput,
   ) {
     return await this.userService.updateUserById(id, updateUserInput);
   }
-
-  // @Query(() => User)
-  // async findUserByDefaultId(@Args({ name: "id", type: () => String }) id: string) {
-  //   return await this.userService.getUserByDefaultId(id);
-  // }
 }

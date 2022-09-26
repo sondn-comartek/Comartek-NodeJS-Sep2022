@@ -1,3 +1,4 @@
+import { Photo, PhotoSchema } from './../shared/schemas/photo.schema';
 import { Module } from '@nestjs/common';
 import { OrderResolver } from './order.resolver';
 import { BullModule } from '@nestjs/bull';
@@ -36,6 +37,10 @@ import {
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: Photo.name,
+        schema: PhotoSchema,
       },
     ]),
     BullModule.registerQueue({

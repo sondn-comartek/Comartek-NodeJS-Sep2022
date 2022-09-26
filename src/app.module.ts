@@ -22,12 +22,13 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { CachingModule } from './caching/caching.module';
 import { TagModule } from './tag/tag.module';
 import { BullModule } from '@nestjs/bull';
-import { UploadModule } from './upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     MulterModule.register(),
     BullModule.forRoot({
       redis: {
@@ -69,6 +70,7 @@ import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
         PetModule,
         OrderModule,
         TagModule,
+        CloudinaryModule,
       ],
     }),
     AuthenticationModule,
@@ -82,7 +84,6 @@ import { TaskSchedulingModule } from './task-scheduling/task-scheduling.module';
     EmailModule,
     CachingModule,
     TagModule,
-    UploadModule,
     TaskSchedulingModule,
   ],
   controllers: [AppController],

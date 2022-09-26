@@ -1,9 +1,9 @@
+import { Photo, PhotoSchema } from './../shared/schemas/photo.schema';
 import { Module } from '@nestjs/common';
 import { PetService } from './pet.service';
 import { PetResolver } from './pet.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Pet, PetSchema } from '../shared/schemas/pet.schema';
-import { UploadModule } from '../upload/upload.module';
 import { Category, CategorySchema } from '../shared/schemas/category.schema';
 import { Tag, TagSchema } from 'src/shared/schemas';
 import { CachingModule } from '../caching/caching.module';
@@ -23,8 +23,11 @@ import { CachingModule } from '../caching/caching.module';
         name: Tag.name,
         schema: TagSchema,
       },
+      {
+        name: Photo.name,
+        schema: PhotoSchema,
+      },
     ]),
-    UploadModule,
     CachingModule,
   ],
   providers: [PetService, PetResolver],

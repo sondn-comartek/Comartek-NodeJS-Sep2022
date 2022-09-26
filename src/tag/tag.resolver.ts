@@ -8,7 +8,7 @@ import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class TagResolver {
-  constructor(private readonly tagService: TagService) { }
+  constructor(private readonly tagService: TagService) {}
   @Query(() => [TagResponseType])
   async findAllTag(): Promise<TagResponseType[]> {
     return await this.tagService.findAllTag();

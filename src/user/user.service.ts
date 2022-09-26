@@ -44,13 +44,7 @@ export class UserService {
 
     const userResponse: UserResponseType = {
       _id: user._id.toString(),
-      userName: user.userName,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phone: user.phone,
-      status: user.status,
-      role: user.role,
+      ...user.toObject(),
     };
 
     return userResponse;

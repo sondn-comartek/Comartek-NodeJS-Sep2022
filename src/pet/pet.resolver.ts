@@ -9,7 +9,7 @@ import { Admin } from 'src/authentication/decorators/admin.decorator';
 
 @Resolver()
 export class PetResolver {
-  constructor(private readonly petService: PetService) { }
+  constructor(private readonly petService: PetService) {}
 
   @Query(() => [PetResponseType])
   async findAllPet() {
@@ -51,13 +51,17 @@ export class PetResolver {
     return await this.petService.deletePetById(id);
   }
 
-  @Query(() => String)
-  async findPetByTags() {
-    return 'findPetByTag';
+  @Query(() => [PetResponseType])
+  async findPetByTags(
+    @Args({ name: 'ids', type: () => [String] }) ids: string[],
+  ) {
+    return await this.petService.findPetByTagIds(ids);
   }
 
   @Query(() => [PetResponseType])
-  async findPetByStatus(@Args({ name: 'status', type: () => String }) status: string) {
-    return await this.petService.findPetByStatus(status)
+  async findPetByStatus(
+    @Args({ name: 'status', type: () => String }) status: string,
+  ) {
+    return await this.petService.findPetByStatus(status);
   }
 }

@@ -39,7 +39,7 @@ type PetResponseType {
   price: Float!
   category: CategoryResponseType
   tags: [TagResponseType!]
-  photos: [PhotoResponseType!]
+  photos: PhotoResponseType!
   status: String
 }
 
@@ -63,7 +63,7 @@ type Query {
   findOrderById(id: String!): OrderResponseType!
   findAllPet: [PetResponseType!]!
   findPetById(id: String!): PetResponseType!
-  findPetByTags: String!
+  findPetByTags(ids: [String!]!): [PetResponseType!]!
   findPetByStatus(status: String!): [PetResponseType!]!
   findAllUser: [UserResponseType!]!
   findUserByUserName(userName: String!): UserResponseType!
@@ -75,6 +75,7 @@ type Mutation {
   updateTagById(id: String!, updateTagInput: CreateTagInput!): String!
   deleteTagById(id: String!): String!
   sendOtpToEmail(createActiveAccountRequestInput: CreateActiveAccountRequestInput!): String!
+  exampleUploadToCloud(file: String!): String!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponseType!
   deleteCategoryById(id: String!): String!
   updateCategoryById(id: String!, updateCategoryInput: CreateCategoryInput!): String!

@@ -1,6 +1,4 @@
-// import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-// import { v4 as uuidv4 } from 'uuid';
 import { Category } from './category.schema';
 import { Tag } from './tag.schema';
 import { PetStatus } from '../enums/pet-status.enum';
@@ -41,12 +39,12 @@ export class Pet {
   tagsId: string[];
 
   @Prop({
-    type: [mongoose.Types.ObjectId],
+    type: mongoose.Types.ObjectId,
     ref: Photo.name,
     requried: true,
-    default: [],
+    default: '63312210850172461aead078', // default image because dont know how to upload file to Cloudinary T.T
   })
-  photosId: string[];
+  photosId: string;
 
   @Prop({
     type: String,
