@@ -1,0 +1,145 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input ApproveOrderInput {
+  id: String!
+  petsId: [String!]
+  status: String!
+}
+
+type Auth {
+  access_token: String!
+}
+
+input CreateAuthInput {
+  password: String!
+  username: String!
+}
+
+input CreateOrderInput {
+  petsId: [String!]!
+}
+
+input CreatePetInput {
+  category: String!
+  image: Upload!
+  name: String!
+  photoUrl: String!
+  tags: String!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  phone: String!
+  username: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type InventoryPetOutput {
+  available: Float!
+  pets: [Pet!]!
+}
+
+type Mutation {
+  approveOrder(approveOrderInput: ApproveOrderInput!): Order!
+  createAuth(createAuthInput: CreateAuthInput!): Auth!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  createPet(createPetInput: CreatePetInput!): Pet!
+  createUser(createUserInput: CreateUserInput!): User!
+  removeOrder(id: String!): Order!
+  removePet(id: String!): Pet!
+  removeUser(id: String!): User!
+  updateImagePet(updateImagePetInput: UpdateImagePetInput!): Pet!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+  updatePet(updatePetInput: UpdatePetInput!): Pet!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Order {
+  id: String!
+  petsId: [String!]!
+  price: Float!
+  shipDate: DateTime!
+  status: String!
+}
+
+type Pet {
+  category: String!
+  id: String!
+  image: String!
+  name: String!
+  photoUrl: String!
+  price: Float!
+  status: String!
+  tags: String!
+}
+
+type Query {
+  findOrderById(id: String!): Order!
+  findPetById(id: String!): Pet!
+  findPetByStatus(status: String!): Pet!
+  findPetByTags(tags: String!): Pet!
+  petInventory: InventoryPetOutput!
+  pets: [Pet!]!
+  user(username: String!): User!
+  whoAmI: User!
+}
+
+input UpdateImagePetInput {
+  category: String
+  id: String!
+  image: Upload
+  name: String
+  photoUrl: String!
+  price: Float!
+  status: String
+  tags: String
+}
+
+input UpdateOrderInput {
+  id: Int!
+  petsId: [String!]
+}
+
+input UpdatePetInput {
+  category: String
+  id: String!
+  image: Upload
+  name: String
+  photoUrl: String
+  status: String
+  tags: String
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  phone: String
+  username: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
+  password: String!
+  phone: String!
+  role: String!
+  status: String!
+  username: String!
+}
