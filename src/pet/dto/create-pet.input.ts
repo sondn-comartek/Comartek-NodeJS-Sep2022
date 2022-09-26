@@ -1,5 +1,7 @@
 import { PetStatus } from './../../enums/pet.status';
 import { InputType, Field } from '@nestjs/graphql';
+import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+import { FileUpload } from 'src/interfaces/file-upload';
 // import {} from "class-validator"
 @InputType()
 export class CreatePetInput {
@@ -11,8 +13,8 @@ export class CreatePetInput {
   tags: string[];
   @Field(() => PetStatus, { description: 'status of pet' })
   status: PetStatus;
-  @Field(() => String, { description: 'photo url of pet' })
-  photo_urls: string;
   @Field(() => Number, { description: 'price of pet' })
   price: number;
+  @Field(() => GraphQLUpload)
+  image: Promise<FileUpload>;
 }

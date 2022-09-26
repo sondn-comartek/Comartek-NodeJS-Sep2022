@@ -1,17 +1,31 @@
 import { PetStatus } from 'src/enums/pet.status';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreatePetInput } from './dto/create-pet.input';
 import { UpdatePetInput } from './dto/update-pet.input';
 import { Pet, PetDocument } from './entities/pet.entity';
 import { Model } from 'mongoose';
 import { v4 as uuidV4 } from 'uuid';
+import { createWriteStream } from 'fs';
+import { join } from 'path';
 @Injectable()
 export class PetService {
   constructor(@InjectModel(Pet.name) private petModel: Model<PetDocument>) {}
   async create(createPetInput: CreatePetInput) {
+    const { createReadStream, filename } = await createPetInput.image;
+    const filename_petAvatar = await createReadStream().pipe(
+      createWriteStream(join(process.cwd(), `./public/images/${filename}`))
+        .on('finish', () => {
+          return filename;
+        })
+        .on('error', () => {
+          new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
+        }),
+    );
     try {
-      const petInfo = { petID: uuidV4(), ...createPetInput };
+      let petInfo = { petID: uuidV4(), ...createPetInput };
+      delete petInfo.image
+      petInfo['photo_urls'] = filename
       return await this.petModel.create(petInfo);
     } catch (error) {
       throw new Error(error);
