@@ -1,0 +1,219 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """ID of user"""
+  userId: String!
+
+  """Username of user"""
+  userName: String!
+
+  """First name of user"""
+  firstName: String!
+
+  """Last name of user"""
+  lastName: String!
+
+  """Email of user"""
+  email: String!
+
+  """Password of the account"""
+  password: String!
+
+  """Phone number of user"""
+  phone: String!
+
+  """Status of user"""
+  status: String!
+}
+
+type ManagePet {
+  """ID of the pet"""
+  petId: Int!
+
+  """Category of pet"""
+  category: String!
+
+  """Name of pet"""
+  name: String!
+
+  """Tag of pet"""
+  tag: String!
+
+  """Status of pet"""
+  status: String!
+
+  """Url of photo of pet"""
+  photoUrl: [String!]
+
+  """Price of pet"""
+  price: Float!
+}
+
+type ManageOrder {
+  """ID of the order"""
+  orderId: String!
+
+  """List of pet in order"""
+  petList: [ManagePet!]!
+
+  """The expected date that customer want to receive the shipping"""
+  expectedShippingDate: DateTime!
+
+  """Status of the order"""
+  orderStatus: String!
+
+  """Total cost of an order"""
+  totalCost: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PetListRes {
+  """petId of pet"""
+  petId: Int!
+
+  """status of pet"""
+  status: String!
+}
+
+type GetQueryByStatusRes {
+  """List of pets"""
+  petList: [PetListRes!]!
+
+  """Total of pet that have certain status"""
+  totalPet: Int!
+}
+
+type Query {
+  userLogin(loginUserInput: LoginUserInput!): String!
+  users: [User!]!
+  user(email: String!): User!
+  whoAmI: User!
+  manageAllPet: [ManagePet!]!
+  searchPet(searchManagePetInput: SearchManagePetInput!): [ManagePet!]!
+  queryPetByStatus(status: String!): GetQueryByStatusRes!
+  findOrderById(orderId: String!): ManageOrder!
+}
+
+input LoginUserInput {
+  """Email of user"""
+  email: String!
+
+  """Password of the account"""
+  password: String!
+}
+
+input SearchManagePetInput {
+  """Filters for searching pet"""
+  where: PetSearch!
+}
+
+input PetSearch {
+  """petId for searching pet"""
+  petId: Float
+
+  """Tag for searching pet"""
+  tag: String
+
+  """Status for searching pet"""
+  status: String
+}
+
+type Mutation {
+  register(createUserInput: CreateUserInput!): User!
+  createManagePet(createManagePetInput: CreateManagePetInput!): ManagePet!
+  updateManagePet(updateManagePetInput: UpdateManagePetInput!): ManagePet!
+  deletePet(petId: Int!): ManagePet!
+  uploadImage(uploadPetImageInput: UploadPetImageInput!): ManagePet!
+  placeOrder(placeOrderInput: PlaceOrderInput!): ManageOrder!
+  approveAnOrder(orderId: String!, orderStatus: String!): ManageOrder!
+  deleteOrder(orderId: String!): ManageOrder!
+}
+
+input CreateUserInput {
+  """Username of user"""
+  userName: String!
+
+  """Firstname of user"""
+  firstName: String!
+
+  """Last name of user"""
+  lastName: String!
+
+  """Email of user"""
+  email: String!
+
+  """Password of the account"""
+  password: String!
+
+  """Confirm password that match the password"""
+  confirmPassword: String!
+
+  """Phone number of user"""
+  phone: String!
+}
+
+input CreateManagePetInput {
+  """Category of pet"""
+  category: String!
+
+  """Name of pet"""
+  name: String!
+
+  """Tag of pet"""
+  tag: String!
+
+  """Status of pet"""
+  status: String!
+
+  """Price of pet"""
+  price: Float!
+
+  """Image of pet"""
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateManagePetInput {
+  """Category of pet"""
+  category: String
+
+  """Name of pet"""
+  name: String
+
+  """Tag of pet"""
+  tag: String
+
+  """Status of pet"""
+  status: String
+
+  """Price of pet"""
+  price: Float
+
+  """Image of pet"""
+  image: Upload
+  petId: Int!
+}
+
+input UploadPetImageInput {
+  """ID of the pet"""
+  petId: Int!
+
+  """Image of pet"""
+  image: Upload!
+}
+
+input PlaceOrderInput {
+  """The array of petId for the order"""
+  petIdList: [Int!]!
+
+  """The expected shipping date for the order"""
+  expectedDate: String
+}
