@@ -21,6 +21,9 @@ export class Pet {
   @Field()
   photoUrl: string;
 
+  @Field(() => String)
+  image: string;
+
   @Field()
   price: number;
 }

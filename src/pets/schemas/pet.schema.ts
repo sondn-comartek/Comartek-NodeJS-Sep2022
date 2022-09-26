@@ -31,6 +31,9 @@ export class Pet {
   photoUrl: string;
 
   @Prop()
+  image: string;
+
+  @Prop()
   price: number;
 }
 

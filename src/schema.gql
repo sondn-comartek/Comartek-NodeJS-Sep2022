@@ -23,6 +23,7 @@ input CreateOrderInput {
 
 input CreatePetInput {
   category: String!
+  image: Upload!
   name: String!
   photoUrl: String!
   tags: String!
@@ -73,6 +74,7 @@ type Order {
 type Pet {
   category: String!
   id: String!
+  image: String!
   name: String!
   photoUrl: String!
   price: Float!
@@ -94,6 +96,7 @@ type Query {
 input UpdateImagePetInput {
   category: String
   id: String!
+  image: Upload
   name: String
   photoUrl: String!
   price: Float!
@@ -109,6 +112,7 @@ input UpdateOrderInput {
 input UpdatePetInput {
   category: String
   id: String!
+  image: Upload
   name: String
   photoUrl: String
   status: String
@@ -124,6 +128,9 @@ input UpdateUserInput {
   phone: String
   username: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   email: String!
