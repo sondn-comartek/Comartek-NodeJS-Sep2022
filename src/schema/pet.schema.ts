@@ -2,30 +2,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type UserDocument = User & Document;
+export type PetDocument = Pet & Document;
 
 @Schema()
-export class User {
+export class Pet {
   @Prop()
-  username: string;
-
+  category: string;
   @Prop()
-  firstname: string
-
+  name: string
   @Prop()
-  lastname: string
-
+  tags: string[]
   @Prop()
-  email: string
+  status: string
+  @Prop({default: []})
+  photoids: string[]
 
-  @Prop()
-  password: string;
 
-  @Prop()
-  phone: string;
 
-  @Prop({default: 'inactive'})
-  userstatus: string
+  
+  
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const PetSchema = SchemaFactory.createForClass(Pet);

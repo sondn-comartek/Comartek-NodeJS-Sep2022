@@ -4,6 +4,7 @@ import { SignUpInput } from './dto/signup.input';
 import { SignInOutput, SignUpOutput } from './entities/auth.output';
 import { SignInInput } from './dto/signin.input';
 import { UnauthorizedError } from 'type-graphql';
+import { get } from 'http';
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {
@@ -17,7 +18,6 @@ export class AuthResolver {
 
   @Mutation(() => SignUpOutput)
   async signUp(@Args('signUpData') signUpData: SignUpInput ) {
-    console.log("thissadasd")
     await this.authService.createNewUser(signUpData)   
     return {
       status: 200,

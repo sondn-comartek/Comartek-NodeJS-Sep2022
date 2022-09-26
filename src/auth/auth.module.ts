@@ -3,9 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/schema/user.schema';
-import { JwtModule } from '@nestjs/jwt'
+import { JwtModule, JwtService } from '@nestjs/jwt'
 import { JwtStrategy } from './jwt.strategy';
 import { JWTAuthGuard } from './auth.guard';
+import { RolesGuard } from './role.guard';
 @Module({
   imports: [
     MongooseModule.forFeature(
@@ -17,8 +18,9 @@ import { JWTAuthGuard } from './auth.guard';
       signOptions: {
         expiresIn: process.env.EXPIRED_IN
       }
-    })
+    }),
+   
   ],
-  providers: [AuthResolver, AuthService, JwtStrategy, JWTAuthGuard]
+  providers: [AuthResolver, AuthService, JwtStrategy, JWTAuthGuard, RolesGuard,  JwtService]
 })
 export class AuthModule {}

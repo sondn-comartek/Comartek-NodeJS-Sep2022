@@ -29,7 +29,7 @@ export class AuthService {
     const hashedPassword = hashSync(rawPassword, parseInt(process.env.SALT_ROUND))
     return new this.userModel({...signupInput, password: hashedPassword}).save()
   }
-  async verifiUser(username: string, password: string): Promise<string | null> {
+  async verifiUser(username: string, password: string): Promise<any> {
     // for store userdata if user existed 
     let user: UserDocument = null
     
@@ -44,16 +44,19 @@ export class AuthService {
       const {password: hashedPassword} = user 
       const isMatchPassword = compareSync(password, hashedPassword)
       if(isMatchPassword) 
-        return user._id.toString()
+        return {
+          id: user._id.toString(),
+          role: user.role
+        }
       return null
     }
     
     return null
   }
   async login(username, password): Promise<string | null> {
-    const userID = await this.verifiUser(username, password);
-    if(userID)
-      return this.jwtService.signAsync({username: username, userID: userID}, {secret: process.env.JWT_SECRET,
+    const user = await this.verifiUser(username, password);
+    if(user)
+      return this.jwtService.signAsync({username: username, id: user.id, role: user.role  }, {secret: process.env.JWT_SECRET,
                                                               expiresIn: process.env.EXPIRED_IN})
     return null
   }

@@ -21,22 +21,61 @@ type SignInOutput {
   jwt: String!
 }
 
-type User {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type UploadPetPhotoOutPut {
+  status: Int!
+  message: String!
+}
+
+type CreateNewPetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+}
+
+type updatePetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+}
+
+type DeletePetOutPut {
+  status: Int!
+  message: String!
+}
+
+type PetOutPut {
+  id: String!
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
+  photoids: [String!]!
 }
 
 type Query {
   rootquery: String!
-  user: String!
+  listAllPet: [PetOutPut!]!
+  findPet(findpet: FindPet!): [PetOutPut!]!
+  sayHello: String!
+}
+
+input FindPet {
+  id: String
+  tags: [String!]
+  status: String
 }
 
 type Mutation {
   signUp(signUpData: SignUpInput!): SignUpOutput!
   signIn(loginData: SignInInput!): SignInOutput!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  createnewpet(createpet: CreateNewPetInput!): CreateNewPetOutPut!
+  updatePet(updatepet: UpdatePetInput!): updatePetOutPut!
+  deletePet(deletepet: DeletePetInput!): DeletePetOutPut!
+  UploadPetPhoto(uploadphotopet: UploadPetPhotoInput!): UploadPetPhotoOutPut!
 }
 
 input SignUpInput {
@@ -53,13 +92,29 @@ input SignInInput {
   password: String!
 }
 
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateNewPetInput {
+  category: String!
+  name: String!
+  tags: [String!]!
+  status: String!
 }
 
-input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input UpdatePetInput {
+  id: String!
+  category: String
+  name: String
+  tags: [String!]
+  status: String
 }
+
+input DeletePetInput {
+  id: String!
+}
+
+input UploadPetPhotoInput {
+  id: String!
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

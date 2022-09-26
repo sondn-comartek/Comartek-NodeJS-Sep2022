@@ -7,23 +7,27 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
 import { RootResolver } from './root.reslover';
+import { PetModule } from './pet/pet.module';
 
-@Global()
+
+
 @Module({
   providers: [AppService],
-  imports: [ 
+  imports: [
+    RootResolver ,
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     playground: true,
-    include: [RootResolver, AuthModule, UserModule ]
+    include: [RootResolver,AuthModule,  PetModule ]
   }),
   ConfigModule.forRoot({
     envFilePath: '.env',
   }),
   MongooseModule.forRoot(process.env.DB),
+  PetModule,
+  AuthModule
   
   
   ],
