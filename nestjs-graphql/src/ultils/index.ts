@@ -1,1 +1,0 @@
-export * from './generate-photo-id.ultil'
