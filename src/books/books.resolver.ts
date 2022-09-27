@@ -9,8 +9,8 @@ export class BooksResolver {
   constructor(private readonly booksService: BooksService) {}
 
   @Mutation(() => Book)
-  createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
-    return this.booksService.create(createBookInput);
+  async createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
+    return await this.booksService.create(createBookInput);
   }
 
   @Query(() => [Book], { name: 'books' })

@@ -1,0 +1,115 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  access_token: String!
+}
+
+type Book {
+  categoryId: String!
+  id: String!
+  name: String!
+  numberOfPages: Int!
+  part: Int!
+  quantity: Int!
+}
+
+type Category {
+  """Example field (placeholder)"""
+  exampleField: Int!
+  id: String!
+  image: String!
+  name: String!
+}
+
+input CreateAuthInput {
+  password: String!
+  username: String!
+}
+
+input CreateBookInput {
+  categoryId: String!
+  name: String!
+  numberOfPages: Int!
+  part: Int!
+  quantity: Int!
+}
+
+input CreateCategoryInput {
+  image: Upload!
+  name: String!
+  widthImage: Int!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  phone: String!
+  username: String!
+}
+
+type Mutation {
+  createBook(createBookInput: CreateBookInput!): Book!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  login(createAuthInput: CreateAuthInput!): Auth!
+  register(createUserInput: CreateUserInput!): User!
+  removeBook(id: Int!): Book!
+  removeCategory(id: Int!): Category!
+  removeUser(id: String!): User!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  book(id: Int!): Book!
+  books: [Book!]!
+  categories: [Category!]!
+  category(id: Int!): Category!
+  user(username: String!): User!
+  whoAmI: User!
+}
+
+input UpdateBookInput {
+  categoryId: String
+  id: Int!
+  name: String
+  numberOfPages: Int
+  part: Int
+  quantity: Int
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  image: Upload
+  name: String
+  widthImage: Int
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  phone: String
+  username: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
+  password: String!
+  phone: String!
+  role: String!
+  status: String!
+  username: String!
+}
