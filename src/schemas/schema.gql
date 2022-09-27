@@ -1,0 +1,61 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthInput {
+  """Email using login"""
+  email: String!
+
+  """password of account"""
+  password: String!
+}
+
+input CreateUserInput {
+  """Email of User"""
+  email: String!
+
+  """password of account"""
+  password: String!
+
+  """role of account"""
+  role: Roles = user
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  removeUser(id: Int!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  login(account: AuthInput!): String!
+  user(id: Int!): User!
+}
+
+enum Roles {
+  admin
+  user
+}
+
+input UpdateUserInput {
+  """Email of User"""
+  email: String
+  id: Int!
+
+  """password of account"""
+  password: String
+
+  """role of account"""
+  role: Roles = user
+}
+
+type User {
+  """Email of User"""
+  email: String!
+
+  """password of account"""
+  password: String!
+
+  """role of account"""
+  role: Roles!
+}
