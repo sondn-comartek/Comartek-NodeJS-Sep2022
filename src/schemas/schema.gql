@@ -10,6 +10,22 @@ input AuthInput {
   password: String!
 }
 
+type Category {
+  """category name"""
+  name: String!
+
+  """category's avatar"""
+  photo_urls: String!
+}
+
+input CreateCategoryInput {
+  """image of category"""
+  image: Upload!
+
+  """category name"""
+  name: String!
+}
+
 input CreateUserInput {
   """Email of User"""
   email: String!
@@ -22,12 +38,16 @@ input CreateUserInput {
 }
 
 type Mutation {
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
+  removeCategory(id: Int!): Category!
   removeUser(id: Int!): User!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
+  category(id: Int!): Category!
   login(account: AuthInput!): String!
   user(id: Int!): User!
 }
@@ -35,6 +55,16 @@ type Query {
 enum Roles {
   admin
   user
+}
+
+input UpdateCategoryInput {
+  id: Int!
+
+  """image of category"""
+  image: Upload
+
+  """category name"""
+  name: String
 }
 
 input UpdateUserInput {
@@ -48,6 +78,9 @@ input UpdateUserInput {
   """role of account"""
   role: Roles = user
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   """Email of User"""
