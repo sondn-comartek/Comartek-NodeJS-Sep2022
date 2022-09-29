@@ -33,6 +33,19 @@ export class BookItemsService {
     return `This action returns a #${id} bookItem`;
   }
 
+  async getBookItemsByBatch(
+    bookItemIds: string[],
+  ): Promise<(BookItem | any)[]> {
+    const bookItems = await this.bookItemModel.find({
+      id: { $in: bookItemIds },
+    });
+    const mappedBookItems = bookItemIds.map(
+      (id) => bookItems.find((bookItem) => bookItem.id === id) || null,
+    );
+    // console.log('mappedBookItems', mappedBookItems);
+    return mappedBookItems;
+  }
+
   update(id: number, updateBookItemInput: UpdateBookItemInput) {
     return `This action updates a #${id} bookItem`;
   }

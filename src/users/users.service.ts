@@ -20,13 +20,24 @@ export class UsersService {
     return user.role;
   }
 
-  // async findAll() {
-  //   return await this.userModel.find();
-  // }
+  async findAll() {
+    return await this.userModel.find();
+  }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
+  async findUserById(id: string) {
+    return await this.userModel.findOne({ id });
+  }
+
+  async getUsersByBatch(userIds: string[]) {
+    const users = await this.userModel.find({ id: { $in: userIds } });
+    const mappedUsers = userIds.map(
+      (id) =>
+        users.find((user) => user.id === id) ||
+        new Error(`Could not load user ${id}`),
+    );
+    // console.log('mappedUsers', mappedUsers);
+    return mappedUsers;
+  }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
     return await this.userModel.findOneAndUpdate(

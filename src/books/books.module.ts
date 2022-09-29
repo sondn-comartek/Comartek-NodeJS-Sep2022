@@ -22,5 +22,6 @@ import { BookConsumer } from './books.processor';
       name: 'book',
     }),
   ],
+  exports: [BooksService],
 })
 export class BooksModule {}

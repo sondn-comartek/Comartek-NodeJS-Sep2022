@@ -6,110 +6,168 @@ type Auth {
   access_token: String!
 }
 
-type Book {
-  categoryId: String!
+type User {
   id: String!
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+  status: String!
+  role: String!
+  totalBookBorrowed: Int!
+  borrowed: [Loan!]!
+}
+
+type Loan {
+  id: String!
+  userId: String!
+  bookItemId: String!
+  dateBorrow: DateTime!
+  status: String!
+  user: User!
+  bookItem: BookItem!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BookItem {
+  id: String!
+  bookId: String!
+  status: String!
+  book: Book!
+}
+
+type Book {
+  id: String!
+  categoryId: String!
   name: String!
-  numberOfPages: Int!
   part: Int!
+  numberOfPages: Int!
   quantity: Int!
+  image: String!
 }
 
 type Category {
-  """Example field (placeholder)"""
-  exampleField: Int!
   id: String!
-  image: String!
   name: String!
+  image: String!
 }
 
-input CreateAuthInput {
-  password: String!
-  username: String!
+type Query {
+  whoAmI: User!
+  user(username: String!): User!
+  users: [User!]!
+  loans: [Loan!]!
+  loan(id: Int!): Loan!
+  bookItems: [BookItem!]!
+  bookItem(id: Int!): BookItem!
+  books: [Book!]!
+  book(id: Int!): Book!
+  categories: [Category!]!
+  category(id: Int!): Category!
+}
+
+type Mutation {
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  createLoan(createLoanInput: CreateLoanInput!): Loan!
+  updateLoan(updateLoanInput: UpdateLoanInput!): Loan!
+  removeLoan(id: Int!): Loan!
+  createBookItem(createBookItemInput: CreateBookItemInput!): BookItem!
+  updateBookItem(updateBookItemInput: UpdateBookItemInput!): BookItem!
+  removeBookItem(id: Int!): BookItem!
+  createBook(createBookInput: CreateBookInput!): Book!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+  removeBook(id: Int!): Book!
+  register(createUserInput: CreateUserInput!): User!
+  login(createAuthInput: CreateAuthInput!): Auth!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
+}
+
+input UpdateUserInput {
+  username: String
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phone: String
+  id: String!
+}
+
+input CreateLoanInput {
+  userId: String!
+  bookItemId: String!
+}
+
+input UpdateLoanInput {
+  userId: String
+  bookItemId: String
+  id: Int!
+}
+
+input CreateBookItemInput {
+  bookId: String!
+}
+
+input UpdateBookItemInput {
+  bookId: String
+  id: Int!
 }
 
 input CreateBookInput {
   categoryId: String!
   name: String!
-  numberOfPages: Int!
   part: Int!
+  numberOfPages: Int!
   quantity: Int!
-}
-
-input CreateCategoryInput {
   image: Upload!
-  name: String!
   widthImage: Int!
-}
-
-input CreateUserInput {
-  email: String!
-  firstName: String!
-  lastName: String!
-  password: String!
-  phone: String!
-  username: String!
-}
-
-type Mutation {
-  createBook(createBookInput: CreateBookInput!): Book!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  login(createAuthInput: CreateAuthInput!): Auth!
-  register(createUserInput: CreateUserInput!): User!
-  removeBook(id: Int!): Book!
-  removeCategory(id: Int!): Category!
-  removeUser(id: String!): User!
-  updateBook(updateBookInput: UpdateBookInput!): Book!
-  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-}
-
-type Query {
-  book(id: Int!): Book!
-  books: [Book!]!
-  categories: [Category!]!
-  category(id: Int!): Category!
-  user(username: String!): User!
-  whoAmI: User!
-}
-
-input UpdateBookInput {
-  categoryId: String
-  id: Int!
-  name: String
-  numberOfPages: Int
-  part: Int
-  quantity: Int
-}
-
-input UpdateCategoryInput {
-  id: Int!
-  image: Upload
-  name: String
-  widthImage: Int
-}
-
-input UpdateUserInput {
-  email: String
-  firstName: String
-  id: String!
-  lastName: String
-  password: String
-  phone: String
-  username: String
 }
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
-type User {
-  email: String!
+input UpdateBookInput {
+  categoryId: String
+  name: String
+  part: Int
+  numberOfPages: Int
+  quantity: Int
+  image: Upload
+  widthImage: Int
+  id: Int!
+}
+
+input CreateUserInput {
+  username: String!
   firstName: String!
-  id: String!
   lastName: String!
+  email: String!
   password: String!
   phone: String!
-  role: String!
-  status: String!
+}
+
+input CreateAuthInput {
   username: String!
+  password: String!
+}
+
+input CreateCategoryInput {
+  name: String!
+  image: Upload!
+  widthImage: Int!
+}
+
+input UpdateCategoryInput {
+  name: String
+  image: Upload
+  widthImage: Int
+  id: Int!
 }

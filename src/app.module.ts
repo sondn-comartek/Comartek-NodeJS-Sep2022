@@ -14,14 +14,27 @@ import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { HelpersModule } from './helpers/helpers.module';
 import { BullModule } from '@nestjs/bull';
+import { BookItemsModule } from './book-items/book-items.module';
+import { LoansModule } from './loans/loans.module';
+import { DataloaderModule } from './dataloader/dataloader.module';
+import { DataloaderService } from './dataloader/dataloader.service';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/nestjs-library'),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      // sortSchema: true,
+      imports: [DataloaderModule],
+      inject: [DataloaderService],
+      useFactory: (dataloaderService: DataloaderService) => {
+        return {
+          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+          context: () => ({
+            loaders: dataloaderService.createLoaders(),
+          }),
+        };
+      },
     }),
     ConfigModule.forRoot({
       envFilePath: '.env',
@@ -38,6 +51,9 @@ import { BullModule } from '@nestjs/bull';
     BooksModule,
     CategoriesModule,
     HelpersModule,
+    BookItemsModule,
+    LoansModule,
+    DataloaderModule,
   ],
   controllers: [AppController],
   providers: [

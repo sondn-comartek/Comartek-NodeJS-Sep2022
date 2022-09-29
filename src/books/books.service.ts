@@ -91,6 +91,15 @@ export class BooksService {
     return `This action returns a #${id} book`;
   }
 
+  async getBooksByBatch(bookIds: string[]): Promise<(Book | any)[]> {
+    const books = await this.bookModel.find({ id: { $in: bookIds } });
+    const mappedBooks = bookIds.map(
+      (bookId) => books.find((book) => book.id === bookId) || null,
+    );
+    // console.log('mappedBooks', mappedBooks);
+    return mappedBooks;
+  }
+
   update(id: number, updateBookInput: UpdateBookInput) {
     return `This action updates a #${id} book`;
   }
