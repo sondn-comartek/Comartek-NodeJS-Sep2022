@@ -17,7 +17,7 @@ export class Book {
     @Field( () => ID )
     @Prop({
         isRequired : true ,
-        unique : true
+        unique : true ,
     })
     bookid : string 
 

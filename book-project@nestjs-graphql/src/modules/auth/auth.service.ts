@@ -43,7 +43,7 @@ export class AuthService {
     )
   }
 
-  async login( {email , password} : LoginInput): Promise<JwtTokens | Record<string,unknown>> {
+  async login( {email , password} : LoginInput): Promise<JwtTokens | Record<string,unknown> > {
     const user = await this.userRepository.FindOne({
       email: email
     } , null , { lean : true} )

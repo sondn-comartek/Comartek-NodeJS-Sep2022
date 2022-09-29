@@ -9,6 +9,7 @@ import { CategoryModule } from './category/category.module';
 import { BookModule } from './book/book.module';
 import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
+import { BullModule } from '@nestjs/bull';
 
 
 @Module({
@@ -27,6 +28,16 @@ import { ImageModule } from './image/image.module';
         useNewUrlParser : true ,
       }) , 
       inject : [ConfigService] ,
+    }) ,
+    BullModule.forRootAsync({
+      imports : [ConfigModule] ,
+      useFactory : (configService:ConfigService) => ({
+        redis : {
+          host : configService.get<string>('REDIS_HOST'),
+          port : configService.get<number>('REDIS_PORT'),
+        }
+      }),
+      inject : [ConfigService ]
     }) ,
     AuthModule,
     UserModule,
