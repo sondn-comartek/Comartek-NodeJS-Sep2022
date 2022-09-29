@@ -11,5 +11,6 @@ import { CategoryResolver } from './category.resolver';
     ]),
   ],
   providers: [CategoryResolver, CategoryService],
+  exports: [CategoryService]
 })
 export class CategoryModule {}

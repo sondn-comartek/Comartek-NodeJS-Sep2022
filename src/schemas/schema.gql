@@ -10,12 +10,55 @@ input AuthInput {
   password: String!
 }
 
+type Book {
+  """amount book"""
+  amount: Float!
+
+  """Book id"""
+  bookID: String!
+
+  """book name"""
+  book_title: String!
+
+  """category of book"""
+  category: [String!]!
+
+  """page number"""
+  page: Float!
+
+  """photo of book"""
+  photo_urls: String!
+
+  """volume"""
+  volume: Float!
+}
+
 type Category {
   """category name"""
   name: String!
 
   """category's avatar"""
   photo_urls: String!
+}
+
+input CreateBookInput {
+  """amount of book"""
+  amount: Float!
+
+  """book name"""
+  book_title: String!
+
+  """category of book"""
+  category: [String!]!
+
+  """image of category"""
+  image: Upload!
+
+  """page number"""
+  page: Float!
+
+  """volume"""
+  volume: Float!
 }
 
 input CreateCategoryInput {
@@ -38,15 +81,19 @@ input CreateUserInput {
 }
 
 type Mutation {
+  createBook(createBookInput: CreateBookInput!): Book!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
+  removeBook(id: Int!): Book!
   removeCategory(id: Int!): Category!
   removeUser(id: Int!): User!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
+  book(id: Int!): Book!
   category(id: Int!): Category!
   login(account: AuthInput!): String!
   user(id: Int!): User!
@@ -55,6 +102,29 @@ type Query {
 enum Roles {
   admin
   user
+}
+
+input UpdateBookInput {
+  """amount of book"""
+  amount: Float!
+
+  """book id"""
+  bookID: String!
+
+  """book name"""
+  book_title: String!
+
+  """category of book"""
+  category: [String!]!
+
+  """image of category"""
+  image: Upload!
+
+  """page number"""
+  page: Float!
+
+  """volume"""
+  volume: Float!
 }
 
 input UpdateCategoryInput {

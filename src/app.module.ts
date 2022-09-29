@@ -10,13 +10,14 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { BullModule } from '@nestjs/bull';
+import { BookModule } from './book/book.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      include: [UserModule, AuthModule, CategoryModule],
+      include: [UserModule, AuthModule, CategoryModule, BookModule],
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
@@ -31,6 +32,7 @@ import { BullModule } from '@nestjs/bull';
     UserModule,
     AuthModule,
     CategoryModule,
+    BookModule,
   ],
   controllers: [AppController],
   providers: [AppService],

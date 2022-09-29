@@ -9,7 +9,6 @@ import { Category, CategoryDocument } from './entities/category.entity';
 import * as Resize from '../helper/image.resize';
 import { finished } from 'stream/promises';
 
-import * as sharp from 'sharp';
 
 @Injectable()
 export class CategoryService {
