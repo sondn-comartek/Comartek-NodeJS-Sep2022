@@ -3,6 +3,7 @@ import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
+import { ListCategory } from './dto/list-category.output';
 
 @Resolver(() => Category)
 export class CategoriesResolver {
@@ -14,6 +15,11 @@ export class CategoriesResolver {
   ) {
     return await this.categoriesService.create(createCategoryInput);
   }
+
+  // @Query(() => [ListCategory], { name: 'listCategory' })
+  // listCategory() {
+  //   return this.categoriesService.listCategory();
+  // }
 
   @Query(() => [Category], { name: 'categories' })
   findAll() {

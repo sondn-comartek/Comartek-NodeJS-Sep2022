@@ -31,8 +31,8 @@ export class Book {
   @Prop({ required: true })
   quantity: number;
 
-  // @Prop({ required: true })
-  // image: string;
+  @Prop({ required: true })
+  image: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

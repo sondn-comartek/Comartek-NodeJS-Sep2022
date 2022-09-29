@@ -16,41 +16,39 @@ export class CategoriesService {
   constructor(
     @InjectModel(Category.name)
     private readonly categoryModel: Model<CategoryDocument>,
-    private readonly helpersService: HelpersService,
     @InjectQueue('category') private categoryQueue: Queue,
   ) {}
 
   async create(createCategoryInput: CreateCategoryInput) {
     try {
       const { name, image, widthImage } = createCategoryInput;
-      // const categoryExist = await this.categoryModel.findOne({ name });
-      // if (categoryExist) return new Error(`Category ${name} already exists`);
+      const categoryExist = await this.categoryModel.findOne({ name });
+      if (categoryExist) return new Error(`Category ${name} already exists`);
 
       const { createReadStream, filename } = await image;
-
-      console.log('create read stream: ' + createReadStream);
 
       createReadStream()
         .pipe(
           createWriteStream(
-            join(process.cwd(), `./src/upload/category/origin/${filename}`),
+            join(process.cwd(), `./src/upload/categories/origin/${filename}`),
           ),
         )
         .on('finish', async () => {
           await this.categoryQueue.add(
-            'convertImage',
+            'convertCategoryImage',
             {
               input:
-                process.cwd() + `\\src\\upload\\category\\origin\\${filename}`,
+                process.cwd() +
+                `\\src\\upload\\categories\\origin\\${filename}`,
               outputThumb:
                 process.cwd() +
-                `\\src\\upload\\category\\thumb\\${name}_thumb.webp`,
+                `\\src\\upload\\categories\\thumb\\${name}_thumb.webp`,
               outputPreview:
                 process.cwd() +
-                `\\src\\upload\\category\\preview\\${name}_preview.webp`,
+                `\\src\\upload\\categories\\preview\\${name}_preview.webp`,
               outputCustom:
                 process.cwd() +
-                `\\src\\upload\\category\\custom\\${name}_custom_${widthImage}.jpg`,
+                `\\src\\upload\\categories\\custom\\${name}_custom_w${widthImage}.jpg`,
               widthImage,
             },
             { delay: 3000 },
@@ -69,6 +67,11 @@ export class CategoriesService {
     } catch (e) {
       throw new Error(e);
     }
+  }
+
+  async listCategory() {
+    // const categories = await this.categoryModel.find();
+    // categories.forEach(category => {total: category.quantity, borrowed: })
   }
 
   findAll() {

@@ -20,6 +20,6 @@ export class Book {
   @Field(() => Int)
   quantity: number;
 
-  // @Field(() => String)
-  // image: string;
+  @Field(() => String)
+  image: string;
 }
