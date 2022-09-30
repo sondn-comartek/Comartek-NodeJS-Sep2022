@@ -77,7 +77,7 @@ input CreateUserInput {
   password: String!
 
   """role of account"""
-  role: Roles = user
+  role: Role = user
 }
 
 type Mutation {
@@ -99,7 +99,7 @@ type Query {
   user(id: Int!): User!
 }
 
-enum Roles {
+enum Role {
   admin
   user
 }
@@ -146,7 +146,7 @@ input UpdateUserInput {
   password: String
 
   """role of account"""
-  role: Roles = user
+  role: Role = user
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -160,5 +160,5 @@ type User {
   password: String!
 
   """role of account"""
-  role: Roles!
+  role: Role!
 }

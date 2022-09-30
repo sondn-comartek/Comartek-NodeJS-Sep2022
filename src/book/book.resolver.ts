@@ -7,13 +7,17 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current.user';
 import { User } from 'src/user/entities/user.entity';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Resolver(() => Book)
 export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
   @Mutation(() => Book)
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async createBook(
     @Args('createBookInput') createBookInput: CreateBookInput,
     @CurrentUser() user: User,
