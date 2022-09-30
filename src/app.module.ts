@@ -3,29 +3,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { AuthModule } from './auth/auth.module';
-import { CategoryModule } from './category/category.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from './modules/category/category.module';
 import { BullModule } from '@nestjs/bull';
-import { BookModule } from './book/book.module';
-import { CustomerModule } from './customer/customer.module';
-import { StoreModule } from './store/store.module';
+import { BookModule } from './modules/book/book.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      include: [
-        UserModule,
-        AuthModule,
-        CategoryModule,
-        BookModule,
-        CustomerModule,
-      ],
+      include: [UserModule, AuthModule, CategoryModule, BookModule],
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
@@ -41,8 +33,6 @@ import { StoreModule } from './store/store.module';
     AuthModule,
     CategoryModule,
     BookModule,
-    CustomerModule,
-    StoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

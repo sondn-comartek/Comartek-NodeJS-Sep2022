@@ -10,6 +10,11 @@ input AuthInput {
   password: String!
 }
 
+type AuthResDto {
+  access_token: String!
+  user: User!
+}
+
 type Book {
   """amount book"""
   amount: Float!
@@ -31,20 +36,6 @@ type Book {
 
   """volume"""
   volume: Float!
-}
-
-type Borrower {
-  """book id"""
-  bookIds: [String!]!
-
-  """borrower id"""
-  borrowerID: String!
-
-  """status borrow"""
-  status: borrow_status!
-
-  """user id"""
-  userId: String!
 }
 
 type Category {
@@ -75,14 +66,6 @@ input CreateBookInput {
   volume: Float!
 }
 
-input CreateBorrowInput {
-  """book ids"""
-  bookIds: [String!]!
-
-  """user id"""
-  userId: String!
-}
-
 input CreateCategoryInput {
   """image of category"""
   image: Upload!
@@ -104,7 +87,6 @@ input CreateUserInput {
 
 type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
-  createBorrow(createBorrowInput: CreateBorrowInput!): Borrower!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
   removeBook(id: Int!): Book!
@@ -118,7 +100,7 @@ type Mutation {
 type Query {
   book(id: Int!): Book!
   category(id: Int!): Category!
-  login(account: AuthInput!): String!
+  login(account: AuthInput!): AuthResDto!
   user(id: Int!): User!
 }
 
@@ -184,10 +166,4 @@ type User {
 
   """role of account"""
   role: Role!
-}
-
-enum borrow_status {
-  accept
-  ignore
-  pending
 }
