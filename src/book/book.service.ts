@@ -39,7 +39,9 @@ export class BookService {
   findOne(id: number) {
     return `This action returns a #${id} book`;
   }
-
+  findAmountBooks(bookIds: any) {
+    return this.bookModel.find({ bookID: { $in: bookIds } }).count();
+  }
   async update(updateBookInput: UpdateBookInput) {
     const bookID = updateBookInput?.bookID;
     const { createReadStream, filename } = await updateBookInput?.image;

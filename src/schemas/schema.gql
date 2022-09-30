@@ -33,6 +33,20 @@ type Book {
   volume: Float!
 }
 
+type Borrower {
+  """book id"""
+  bookIds: [String!]!
+
+  """borrower id"""
+  borrowerID: String!
+
+  """status borrow"""
+  status: borrow_status!
+
+  """user id"""
+  userId: String!
+}
+
 type Category {
   """category name"""
   name: String!
@@ -61,6 +75,14 @@ input CreateBookInput {
   volume: Float!
 }
 
+input CreateBorrowInput {
+  """book ids"""
+  bookIds: [String!]!
+
+  """user id"""
+  userId: String!
+}
+
 input CreateCategoryInput {
   """image of category"""
   image: Upload!
@@ -82,6 +104,7 @@ input CreateUserInput {
 
 type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
+  createBorrow(createBorrowInput: CreateBorrowInput!): Borrower!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
   removeBook(id: Int!): Book!
@@ -161,4 +184,10 @@ type User {
 
   """role of account"""
   role: Role!
+}
+
+enum borrow_status {
+  accept
+  ignore
+  pending
 }

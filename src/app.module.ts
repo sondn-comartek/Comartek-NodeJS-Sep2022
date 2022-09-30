@@ -11,13 +11,21 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { BullModule } from '@nestjs/bull';
 import { BookModule } from './book/book.module';
+import { CustomerModule } from './customer/customer.module';
+import { StoreModule } from './store/store.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      include: [UserModule, AuthModule, CategoryModule, BookModule],
+      include: [
+        UserModule,
+        AuthModule,
+        CategoryModule,
+        BookModule,
+        CustomerModule,
+      ],
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
@@ -33,6 +41,8 @@ import { BookModule } from './book/book.module';
     AuthModule,
     CategoryModule,
     BookModule,
+    CustomerModule,
+    StoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

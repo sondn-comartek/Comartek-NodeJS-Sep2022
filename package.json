@@ -34,6 +34,7 @@
     "apollo-server-express": "^3.10.2",
     "bcryptjs": "^2.4.3",
     "bull": "^4.9.0",
+    "dataloader": "^2.1.0",
     "graphql": "^16.6.0",
     "graphql-upload": "14",
     "mongoose": "^6.6.2",

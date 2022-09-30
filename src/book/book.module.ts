@@ -11,5 +11,6 @@ import { Book, BookSchema } from './entities/book.entity';
     CategoryModule,
   ],
   providers: [BookResolver, BookService],
+  exports: [BookService],
 })
 export class BookModule {}
