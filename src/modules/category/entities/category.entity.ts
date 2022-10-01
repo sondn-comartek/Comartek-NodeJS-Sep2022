@@ -10,7 +10,7 @@ export class Category {
   @Prop({ required: true })
   name: string;
   @Field(() => String, { description: `category's avatar` })
-  @Prop({ default: process.env.CATEGORY_DEFAULT_IMAGE })
-  photo_urls: string;
+  @Prop()
+  photo_id: string;
 }
 export const CategorySchema = SchemaFactory.createForClass(Category);

@@ -13,21 +13,9 @@ import { Model } from 'mongoose';
 export class BookService {
   constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>) {}
   async create(createBookInput: CreateBookInput) {
-    const { createReadStream, filename } = await createBookInput?.image;
-    const pathImage = `${process.env.PATH_IMAGE_SAVE_CATEGORY}${filename}`;
-    const stream = await createReadStream();
-    const out = await createWriteStream(pathImage);
-    await stream.pipe(out);
-    await finished(out);
-
-    // const pathFile = await Resize.categoryResize(pathImage);
-    const pathFile = '';
-    await unlink(pathImage);
-    delete createBookInput.image;
     const dataInsert = {
       bookID: uuid_v4(),
       ...createBookInput,
-      photo_urls: pathFile,
     };
     const createdBook = await this.bookModel.create(dataInsert);
     return createdBook;

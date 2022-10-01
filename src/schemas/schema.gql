@@ -43,7 +43,7 @@ type Category {
   name: String!
 
   """category's avatar"""
-  photo_urls: String!
+  photo_id: String!
 }
 
 input CreateBookInput {
@@ -67,11 +67,11 @@ input CreateBookInput {
 }
 
 input CreateCategoryInput {
-  """image of category"""
-  image: Upload!
-
   """category name"""
   name: String!
+
+  """image of category"""
+  photo_id: String!
 }
 
 input CreateMediaDto {
@@ -158,11 +158,11 @@ input UpdateBookInput {
 input UpdateCategoryInput {
   id: Int!
 
-  """image of category"""
-  image: Upload
-
   """category name"""
   name: String
+
+  """image of category"""
+  photo_id: String
 }
 
 input UpdateUserInput {

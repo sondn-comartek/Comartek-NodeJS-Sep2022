@@ -15,20 +15,7 @@ export class CategoryService {
     @InjectModel(Category.name) private categoryModel = Model<CategoryDocument>,
   ) {}
   async create(createCategoryInput: CreateCategoryInput) {
-    const { createReadStream, filename } = await createCategoryInput?.image;
-    const pathImage = `${process.env.PATH_IMAGE_SAVE_CATEGORY}${filename}`;
-    const stream = await createReadStream();
-    const out = await createWriteStream(pathImage);
-    await stream.pipe(out);
-    await finished(out);
-    const pathFile = 'x';
-
-    // const pathFile = await Resize.categoryResize(pathImage);
-    await unlink(pathImage);
-    delete createCategoryInput.image;
-    const dataInsert = { ...createCategoryInput, photo_urls: pathFile };
-    const createdCategory = await this.categoryModel.create(dataInsert);
-    return createdCategory;
+    return await this.categoryModel.create({ ...createCategoryInput });
   }
   findAll() {
     return `This action returns all category`;

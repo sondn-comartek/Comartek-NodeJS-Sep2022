@@ -12,9 +12,9 @@ export class Book {
   @Field(() => String, { description: 'book name' })
   @Prop()
   book_title: string;
-  @Field(() => [String], { description: 'category of book' })
+  @Field(() => String, { description: 'category of book' })
   @Prop()
-  category: string[];
+  category: string;
   @Field(() => Number, { description: 'volume' })
   @Prop()
   volume: number;
@@ -23,9 +23,6 @@ export class Book {
   page: number;
   @Field(() => String, { description: 'photo of book' })
   @Prop()
-  photo_urls: string;
-  @Field(() => Number, { description: 'amount book' })
-  @Prop()
-  amount: number;
+  photo_id: string;
 }
 export const BookSchema = SchemaFactory.createForClass(Book);
