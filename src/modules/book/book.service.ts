@@ -20,7 +20,8 @@ export class BookService {
     await stream.pipe(out);
     await finished(out);
 
-    const pathFile = await Resize.categoryResize(pathImage);
+    // const pathFile = await Resize.categoryResize(pathImage);
+    const pathFile = '';
     await unlink(pathImage);
     delete createBookInput.image;
     const dataInsert = {
@@ -55,7 +56,8 @@ export class BookService {
       const out = await createWriteStream(pathImage);
       await stream.pipe(out);
       await finished(out);
-      const pathFile = await Resize.categoryResize(pathImage);
+      const pathFile = '';
+      // const pathFile = await Resize.categoryResize(pathImage);
       await unlink(pathImage);
       delete updateBookInput.image;
       payload['photo_urls'] = pathFile;

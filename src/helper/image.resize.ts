@@ -1,9 +1,11 @@
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as sharp from 'sharp';
-export const categoryResize = async (path, width = 128) => {
-  const date = new Date();
-  const pathFile = `${
-    process.env.PATH_IMAGE_SAVE_CATEGORY
-  }${date.getTime()}.webp`;
-  await sharp(path).resize({ width: width }).toFormat('webp').toFile(pathFile);
-  return pathFile;
-};
+import { v4 as uuidV4 } from 'uuid';
+@Injectable()
+export class ResizingHelper {
+  resize(path, size) {
+    const newPath = `${process.env.PATH_IMAGE_SAVE_CATEGORY}${uuidV4()}.webp`;
+    sharp(path).resize({ width: 100 }).toFormat('webp').toFile(newPath);
+    return newPath;
+  }
+}

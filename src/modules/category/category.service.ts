@@ -21,7 +21,9 @@ export class CategoryService {
     const out = await createWriteStream(pathImage);
     await stream.pipe(out);
     await finished(out);
-    const pathFile = await Resize.categoryResize(pathImage);
+    const pathFile = 'x';
+
+    // const pathFile = await Resize.categoryResize(pathImage);
     await unlink(pathImage);
     delete createCategoryInput.image;
     const dataInsert = { ...createCategoryInput, photo_urls: pathFile };

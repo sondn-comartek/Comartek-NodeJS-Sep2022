@@ -11,28 +11,36 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
 import { BullModule } from '@nestjs/bull';
 import { BookModule } from './modules/book/book.module';
+import { MediaModule } from './modules/media/media.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      include: [UserModule, AuthModule, CategoryModule, BookModule],
-      debug: false,
-      playground: true,
-      autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
-      sortSchema: true,
-    }),
     BullModule.forRoot({
       redis: {
         host: 'localhost',
         port: 6379,
       },
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      include: [
+        UserModule,
+        AuthModule,
+        CategoryModule,
+        BookModule,
+        MediaModule,
+      ],
+      debug: false,
+      playground: true,
+      autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
+      sortSchema: true,
+    }),
     UserModule,
     AuthModule,
     CategoryModule,
     BookModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

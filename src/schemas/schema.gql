@@ -74,6 +74,14 @@ input CreateCategoryInput {
   name: String!
 }
 
+input CreateMediaDto {
+  """title of media"""
+  description: String!
+
+  """image of category"""
+  media: Upload!
+}
+
 input CreateUserInput {
   """Email of User"""
   email: String!
@@ -95,6 +103,7 @@ type Mutation {
   updateBook(updateBookInput: UpdateBookInput!): Book!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  upload_media(media: CreateMediaDto!): String!
 }
 
 type Query {
