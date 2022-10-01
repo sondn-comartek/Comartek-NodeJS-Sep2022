@@ -6,7 +6,7 @@ import { MediaService } from './media.service';
 @Resolver(() => Media)
 export class MediaResolver {
   constructor(private mediaService: MediaService) {}
-  @Mutation(() => String, { name: 'upload_media' })
+  @Mutation(() => Media, { name: 'upload_media' })
   async uploadMedia(@Args('media') createMediaDto: CreateMediaDto) {
     return await this.mediaService.upload(createMediaDto);
   }

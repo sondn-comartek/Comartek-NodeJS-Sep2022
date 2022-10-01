@@ -1,8 +1,8 @@
 import { OnQueueActive, OnQueueFailed, Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import * as sharp from 'sharp';
 import { ResizingHelper } from 'src/helper/image.resize';
+
 @Processor('media')
 export class MediaConsumer {
   private readonly logger = new Logger('pending');
@@ -11,11 +11,8 @@ export class MediaConsumer {
   resizing({ data }: Job<any>) {
     const size = data?.size;
     const path = data?.path;
-    this.resizeHelper.resize(path, size);
-    return {};
+    const pathResizeFile = data?.path_resize;
+    const media_url = this.resizeHelper.resize(path, pathResizeFile, size);
+    return { path: media_url };
   }
-  // @OnQueueFailed()
-  // handler(job: Job, error: Error) {
-  //   console.log('fired exception');
-  // }
 }

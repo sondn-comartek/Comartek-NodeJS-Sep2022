@@ -80,6 +80,9 @@ input CreateMediaDto {
 
   """image of category"""
   media: Upload!
+
+  """size of media using resizing"""
+  size: Float!
 }
 
 input CreateUserInput {
@@ -93,6 +96,17 @@ input CreateUserInput {
   role: Role = user
 }
 
+type Media {
+  """description of media"""
+  description: String!
+
+  """media id"""
+  mediaID: String!
+
+  """url of media"""
+  media_urls: String!
+}
+
 type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
@@ -103,7 +117,7 @@ type Mutation {
   updateBook(updateBookInput: UpdateBookInput!): Book!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  upload_media(media: CreateMediaDto!): String!
+  upload_media(media: CreateMediaDto!): Media!
 }
 
 type Query {

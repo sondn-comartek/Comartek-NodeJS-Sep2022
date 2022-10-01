@@ -5,6 +5,8 @@ import { FileUpload } from 'src/interfaces/file-upload';
 export class CreateMediaDto {
   @Field(() => String, { description: 'title of media' })
   description: string;
+  @Field(() => Number, { description: 'size of media using resizing' })
+  size: number;
   @Field(() => GraphQLUpload, { description: 'image of category' })
   media: Promise<FileUpload>;
 }
