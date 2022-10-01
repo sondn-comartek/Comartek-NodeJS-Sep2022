@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  _id: ID!
+  userName: String!
+  email: String!
+  fullName: String!
+  phoneNumber: String!
+  role: UserRoleEnum!
+}
+
+enum UserRoleEnum {
+  ADMIN
+  USER
+}
+
+type AuthResponseType {
+  accessToken: String!
+  refreshToken: String!
+  user: User
+}
+
+type Query {
+  findAllUser(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [User!]!
+  getHello: String!
+}
+
+input QueryArgsInput {
+  limit: Int
+  skip: Int
+}
+
+type Mutation {
+  signUp(createUserInput: CreateUserInput!): AuthResponseType!
+  signIn(signInInput: SignInInput!): AuthResponseType!
+}
+
+input CreateUserInput {
+  userName: String!
+  email: String!
+  password: String!
+  fullName: String!
+  phoneNumber: String!
+}
+
+input SignInInput {
+  userName: String!
+  password: String!
+}
