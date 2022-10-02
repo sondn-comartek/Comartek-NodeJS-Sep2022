@@ -2,15 +2,19 @@ import { CategoryService } from './../category/category.service';
 import { Injectable } from '@nestjs/common';
 import { BookService } from '../book/book.service';
 import * as _ from 'lodash';
+import { Args } from '@nestjs/graphql';
 @Injectable()
 export class StatisticalService {
   constructor(
     private categoryService: CategoryService,
     private bookService: BookService,
   ) {}
-  async findTotalBookEachCategory(): Promise<any> {
+  async findTotalBookEachCategory(page: number, record: number): Promise<any> {
     const categories = await this.categoryService.findAll();
-    const amountEachCategory = await this.bookService.findGroupBookByCategory();
+    const amountEachCategory = await this.bookService.findGroupBookByCategory(
+      page,
+      record,
+    );
     let result = [];
     _.forEach(amountEachCategory, (o) => {
       const { category, status } = o?._id;

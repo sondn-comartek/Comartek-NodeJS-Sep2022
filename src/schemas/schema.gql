@@ -143,7 +143,7 @@ type Query {
   book(id: Int!): Book!
   category(id: Int!): Category!
   login(account: AuthInput!): AuthResDto!
-  total_category: [BookCategory!]!
+  total_category(page: Int!, record: Int!): [BookCategory!]!
   user(id: Int!): User!
 }
 

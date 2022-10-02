@@ -31,15 +31,18 @@ export class BookService {
   findOne(id: number) {
     return `This action returns a #${id} book`;
   }
-  async findGroupBookByCategory() {
-    return await this.bookModel.aggregate([
-      {
-        $group: {
-          _id: { category: '$category', status: '$status' },
-          count: { $sum: 1 },
+  async findGroupBookByCategory(page = 1, record = 5) {
+    return await this.bookModel
+      .aggregate([
+        {
+          $group: {
+            _id: { category: '$category', status: '$status' },
+            count: { $sum: 1 },
+          },
         },
-      },
-    ]);
+      ])
+      .skip(page * record)
+      .limit(record);
   }
   findAmountBooks(bookIds: any) {
     return this.bookModel.find({ bookID: { $in: bookIds } }).count();
