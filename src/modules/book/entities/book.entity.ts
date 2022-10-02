@@ -1,3 +1,4 @@
+import { BookStatus } from './../enums/status.enum';
 import { Category } from './../../category/entities/category.entity';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -24,5 +25,8 @@ export class Book {
   @Field(() => String, { description: 'photo of book' })
   @Prop()
   photo_id: string;
+  @Field(() => BookStatus, { description: 'status of book' })
+  @Prop({ required: true, default: BookStatus.available })
+  status: BookStatus;
 }
 export const BookSchema = SchemaFactory.createForClass(Book);

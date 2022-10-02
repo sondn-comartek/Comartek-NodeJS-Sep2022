@@ -1,17 +1,21 @@
+import { CategoryService } from './../category/category.service';
 import { Injectable } from '@nestjs/common';
-import { createWriteStream } from 'fs';
+import { createWriteStream, stat } from 'fs';
 import { finished } from 'stream/promises';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
-import * as Resize from '../../helper/image.resize';
 import { unlink } from 'fs/promises';
 import { v4 as uuid_v4 } from 'uuid';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book, BookDocument } from './entities/book.entity';
 import { Model } from 'mongoose';
+import * as _ from 'lodash';
 @Injectable()
 export class BookService {
-  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>) {}
+  constructor(
+    @InjectModel(Book.name) private bookModel: Model<BookDocument>,
+    private categoryService: CategoryService,
+  ) {}
   async create(createBookInput: CreateBookInput) {
     const dataInsert = {
       bookID: uuid_v4(),
@@ -22,11 +26,20 @@ export class BookService {
   }
 
   findAll() {
-    return `This action returns all book`;
+    return 'hello world';
   }
-
   findOne(id: number) {
     return `This action returns a #${id} book`;
+  }
+  async findGroupBookByCategory() {
+    return await this.bookModel.aggregate([
+      {
+        $group: {
+          _id: { category: '$category', status: '$status' },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
   }
   findAmountBooks(bookIds: any) {
     return this.bookModel.find({ bookID: { $in: bookIds } }).count();

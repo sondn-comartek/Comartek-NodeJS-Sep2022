@@ -29,7 +29,6 @@ export class BookResolver {
   findAll() {
     return this.bookService.findAll();
   }
-
   @Query(() => Book, { name: 'book' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.bookService.findOne(id);

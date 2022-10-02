@@ -39,6 +39,7 @@
     "dataloader": "^2.1.0",
     "graphql": "^16.6.0",
     "graphql-upload": "14",
+    "lodash": "^4.17.21",
     "mongoose": "^6.6.2",
     "nestjs-dataloader": "^9.0.0",
     "passport": "^0.6.0",

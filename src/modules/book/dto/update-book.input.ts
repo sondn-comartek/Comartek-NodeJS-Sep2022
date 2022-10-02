@@ -10,8 +10,8 @@ export class UpdateBookInput extends PartialType(CreateBookInput) {
   bookID: string;
   @Field(() => String, { description: 'book name' })
   book_title: string;
-  @Field(() => [String], { description: 'category of book' })
-  category: string[];
+  @Field(() => String, { description: 'category of book' })
+  category: string;
   @Field(() => Number, { description: 'volume' })
   volume: number;
   @Field(() => Number, { description: 'page number' })

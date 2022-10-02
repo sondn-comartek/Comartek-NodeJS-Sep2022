@@ -12,6 +12,8 @@ import { CategoryModule } from './modules/category/category.module';
 import { BullModule } from '@nestjs/bull';
 import { BookModule } from './modules/book/book.module';
 import { MediaModule } from './modules/media/media.module';
+import { OrderModule } from './modules/order/order.module';
+import { StatisticalModule } from './modules/statistical/statistical.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -30,6 +32,8 @@ import { MediaModule } from './modules/media/media.module';
         CategoryModule,
         BookModule,
         MediaModule,
+        OrderModule,
+        StatisticalModule,
       ],
       debug: false,
       playground: true,
@@ -41,6 +45,7 @@ import { MediaModule } from './modules/media/media.module';
     CategoryModule,
     BookModule,
     MediaModule,
+    StatisticalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

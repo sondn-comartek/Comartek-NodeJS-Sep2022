@@ -16,9 +16,6 @@ type AuthResDto {
 }
 
 type Book {
-  """amount book"""
-  amount: Float!
-
   """Book id"""
   bookID: String!
 
@@ -26,16 +23,41 @@ type Book {
   book_title: String!
 
   """category of book"""
-  category: [String!]!
+  category: String!
 
   """page number"""
   page: Float!
 
   """photo of book"""
-  photo_urls: String!
+  photo_id: String!
+
+  """status of book"""
+  status: BookStatus!
 
   """volume"""
   volume: Float!
+}
+
+type BookCategory {
+  """category id"""
+  categoryID: String!
+
+  """category name"""
+  name: String!
+
+  """photo_id"""
+  photo_id: String!
+
+  """status of books above"""
+  status: BookStatus!
+
+  """total book of category"""
+  total: Float!
+}
+
+enum BookStatus {
+  available
+  unavailable
 }
 
 type Category {
@@ -47,20 +69,17 @@ type Category {
 }
 
 input CreateBookInput {
-  """amount of book"""
-  amount: Float!
-
   """book name"""
   book_title: String!
 
   """category of book"""
-  category: [String!]!
-
-  """image of category"""
-  image: Upload!
+  category: String!
 
   """page number"""
   page: Float!
+
+  """image of category"""
+  photo_id: String!
 
   """volume"""
   volume: Float!
@@ -124,6 +143,7 @@ type Query {
   book(id: Int!): Book!
   category(id: Int!): Category!
   login(account: AuthInput!): AuthResDto!
+  total_category: [BookCategory!]!
   user(id: Int!): User!
 }
 
@@ -143,13 +163,16 @@ input UpdateBookInput {
   book_title: String!
 
   """category of book"""
-  category: [String!]!
+  category: String!
 
   """image of category"""
   image: Upload!
 
   """page number"""
   page: Float!
+
+  """image of category"""
+  photo_id: String
 
   """volume"""
   volume: Float!

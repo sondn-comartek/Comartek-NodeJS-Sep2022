@@ -17,8 +17,8 @@ export class CategoryService {
   async create(createCategoryInput: CreateCategoryInput) {
     return await this.categoryModel.create({ ...createCategoryInput });
   }
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    return await this.categoryModel.find();
   }
 
   findOne(id: number) {
