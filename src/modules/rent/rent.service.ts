@@ -1,3 +1,4 @@
+import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 import { UpdateRentStatusInput } from './inputs/update-rent-status.input';
 import { CreateRentInput } from './inputs/create-rent.input';
 import {
@@ -22,9 +23,31 @@ export class RentService {
     return await this.rentSchema.findById(id);
   }
 
-  async findByIds() {}
+  async findByIds(ids: string[]) {
+    return await this.rentSchema.find({ _id: { $in: ids } }).populate([
+      {
+        path: 'userId',
+      },
+      {
+        path: 'bookIds',
+        populate: { path: 'categoryId' },
+      },
+    ]);
+  }
 
-  async findAll() {}
+  async findAll(queryArgsInput?: QueryArgsInput) {
+    return await this.rentSchema
+      .find({}, {}, { limit: queryArgsInput.limit, skip: queryArgsInput.skip })
+      .populate([
+        {
+          path: 'userId',
+        },
+        {
+          path: 'bookIds',
+          populate: { path: 'categoryId' },
+        },
+      ]);
+  }
 
   async create(
     userId: string,
@@ -115,12 +138,22 @@ export class RentService {
         );
     }
 
-    return await this.rentSchema.findOneAndUpdate(
-      { _id: rentId },
-      { $set: { status: updateStatus } },
-      {
-        new: true,
-      },
-    );
+    return await this.rentSchema
+      .findOneAndUpdate(
+        { _id: rentId },
+        { $set: { status: updateStatus } },
+        {
+          new: true,
+        },
+      )
+      .populate([
+        {
+          path: 'userId',
+        },
+        {
+          path: 'bookIds',
+          populate: { path: 'categoryId' },
+        },
+      ]);
   }
 }

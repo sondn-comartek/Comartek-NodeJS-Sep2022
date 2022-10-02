@@ -1,6 +1,6 @@
+import { UpdateRentStatusInput } from './../inputs/update-rent-status.input';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { userInfo } from 'os';
 import { Admin } from 'src/modules/auth/decorators/admin.decorator';
 import { User } from 'src/modules/auth/decorators/user.decorator';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
@@ -26,9 +26,9 @@ export class RentMutationResolver {
   @UseGuards(JwtAuthGuard)
   async updateRentStatus(
     @Admin() admin,
-    @Args({ name: 'createRentInput', type: () => CreateRentInput })
-    createRentInput: CreateRentInput,
+    @Args({ name: 'updateRentStatusInput', type: () => UpdateRentStatusInput })
+    updateRentStatusInput: UpdateRentStatusInput,
   ): Promise<Rent> {
-    return;
+    return await this.rentService.updateStatusById(updateRentStatusInput);
   }
 }

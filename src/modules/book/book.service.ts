@@ -31,7 +31,7 @@ export class BookService {
     return await this.bookSchema.find({ _id: { $in: ids } });
   }
 
-  async findByCondition(condition: Object): Promise<Book[]> {
+  async findByCondition(condition: any): Promise<Book[]> {
     return await this.bookSchema.find(condition);
   }
 
@@ -70,7 +70,7 @@ export class BookService {
       .populate('categoryId mediaId');
   }
 
-  async updateMany(filter: Object, update: Object) {
+  async updateMany(filter: any, update: any) {
     return await this.bookSchema.updateMany(filter, update);
   }
 }

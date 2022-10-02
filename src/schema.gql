@@ -58,12 +58,13 @@ type Rent {
 
 enum RentStatusEnum {
   PROCESSING
-  PLACED
+  ACCEPTED
   DENIED
   DONE
 }
 
 type Query {
+  findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
   findAllBook(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Book!]!
   findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
   findAllUser(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [User!]!
@@ -78,7 +79,7 @@ input QueryArgsInput {
 type Mutation {
   uploadFile(uploadFileInput: UploadFileInput!): Media!
   createRent(createRentInput: CreateRentInput!): Rent!
-  updateRentStatus(createRentInput: CreateRentInput!): Rent!
+  updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
   createBook(createBookInput: CreateBookInput!): Book!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   signUp(createUserInput: CreateUserInput!): AuthResponseType!
@@ -96,6 +97,11 @@ scalar Upload
 
 input CreateRentInput {
   bookIds: [String!]!
+}
+
+input UpdateRentStatusInput {
+  rentId: String!
+  updateStatus: RentStatusEnum!
 }
 
 input CreateBookInput {

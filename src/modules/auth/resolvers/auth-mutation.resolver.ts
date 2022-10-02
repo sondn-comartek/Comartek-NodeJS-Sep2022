@@ -1,6 +1,5 @@
-import { JwtAuthGuard } from './../guards/jwt-auth.guard';
 import { SignInInput } from './../inputs/sign-in.input';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from 'src/modules/user/inputs/create-user.input';
 import { AuthService } from '../auth.service';
 import { AuthResponseType } from '../types/auth-response.type';

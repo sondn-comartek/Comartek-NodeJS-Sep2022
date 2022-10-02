@@ -1,6 +1,6 @@
 export class CodeHelper {
   static generate(): string {
-    let code: string = '';
+    let code = '';
     const numberCharacters = '0123456789';
     const codeLength = 6;
 
