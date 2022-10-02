@@ -22,8 +22,10 @@ export class OrderService {
     return `This action returns a #${id} order`;
   }
 
-  update(updateOrderInput: UpdateOrderInput) {
-    return `This action updates a order`;
+  async update(updateOrderInput: UpdateOrderInput) {
+    return await this.orderModel.findByIdAndUpdate(updateOrderInput?.orderID, {
+      status: updateOrderInput?.status,
+    });
   }
 
   remove(id: number) {

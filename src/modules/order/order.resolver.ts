@@ -3,12 +3,19 @@ import { OrderService } from './order.service';
 import { Order } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../user/enums/roles.enum';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Resolver(() => Order)
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 
   @Mutation(() => Order)
+  @Roles(Role.user)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async createOrder(
     @Args('createOrderInput') createOrderInput: CreateOrderInput,
   ) {
@@ -26,8 +33,12 @@ export class OrderResolver {
   }
 
   @Mutation(() => Order)
-  updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
-    return this.orderService.update(updateOrderInput);
+  @Roles(Role.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateOrder(
+    @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
+  ) {
+    return await this.orderService.update(updateOrderInput);
   }
 
   @Mutation(() => Order)
