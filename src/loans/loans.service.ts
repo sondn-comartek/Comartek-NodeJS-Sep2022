@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { StatusBookItem } from 'src/book-items/enums/status.enum';
 import {
   BookItem,
   BookItemDocument,
@@ -36,9 +37,38 @@ export class LoansService {
     const loanExist = await this.loanModel.findOne({ userId, bookItemId });
     if (loanExist) return new Error(`This loan already exists`);
 
+    await this.bookItemModel.findOneAndUpdate(
+      { id: bookItemId },
+      { $set: { status: StatusBookItem.Unavailable } },
+      {
+        new: true,
+      },
+    );
+
     return await new this.loanModel({
       ...createLoanInput,
     }).save();
+  }
+
+  async getTotalBorrowed() {
+    const totalBorrowedBook = await this.loanModel.aggregate([
+      { $match: { status: 'borrowing' } },
+      {
+        $count: 'total',
+      },
+    ]);
+
+    return totalBorrowedBook[0].total;
+  }
+
+  async getBorrowedByBookId(bookId: string): Promise<number> {
+    const totalBorrowedBook = await this.bookItemModel.aggregate([
+      { $match: { $and: [{ bookId: bookId }, { status: 'unavailable' }] } },
+      {
+        $count: 'total',
+      },
+    ]);
+    return totalBorrowedBook[0]?.total || 0;
   }
 
   async countLoanByUserId(userId: string) {
@@ -46,11 +76,6 @@ export class LoansService {
   }
 
   async getLoansByBatch(userIds: string[]): Promise<(Loan | any)[]> {
-    const totalBookBorrowed = await this.loanModel
-      .find({ userId: { $in: userIds } })
-      .count();
-
-    console.log('total>>>>', totalBookBorrowed);
     const loans = await this.loanModel.find({ userId: { $in: userIds } });
     const mappedLoans = userIds.map(
       (userId) => loans.filter((loan) => loan.userId === userId) || null,

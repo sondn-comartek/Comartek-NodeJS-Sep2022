@@ -9,16 +9,24 @@ import { BookItem, BookItemDocument } from './schemas/book-item.schema';
 @Injectable()
 export class BookItemsService {
   constructor(
-    @InjectModel(Book.name)
-    private readonly bookModel: Model<BookDocument>,
     @InjectModel(BookItem.name)
     private readonly bookItemModel: Model<BookItemDocument>,
+    @InjectModel(Book.name)
+    private readonly bookModel: Model<BookDocument>,
   ) {}
 
   async create(createBookItemInput: CreateBookItemInput) {
     const { bookId } = createBookItemInput;
-    const bookIdExist = await this.bookModel.findOne({ id: bookId });
-    if (!bookIdExist) return new Error(`Book does not exist`);
+    const bookExist = await this.bookModel.findOne({ id: bookId });
+    if (!bookExist) return new Error(`Book does not exist`);
+
+    await this.bookModel.findOneAndUpdate(
+      { id: bookId },
+      { $set: { quantity: bookExist.quantity + 1 } },
+      {
+        new: true,
+      },
+    );
 
     return await new this.bookItemModel({
       ...createBookItemInput,

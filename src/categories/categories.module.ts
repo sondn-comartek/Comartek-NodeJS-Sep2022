@@ -6,6 +6,7 @@ import { Category, CategorySchema } from './schemas/category.schema';
 import { HelpersService } from 'src/helpers/helpers.service';
 import { BullModule } from '@nestjs/bull';
 import { CategoryConsumer } from './categories.processor';
+import { BooksModule } from 'src/books/books.module';
 
 @Module({
   providers: [
@@ -21,6 +22,7 @@ import { CategoryConsumer } from './categories.processor';
     BullModule.registerQueue({
       name: 'category',
     }),
+    BooksModule,
   ],
 })
 export class CategoriesModule {}

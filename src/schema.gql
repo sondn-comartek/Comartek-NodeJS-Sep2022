@@ -50,12 +50,20 @@ type Book {
   numberOfPages: Int!
   quantity: Int!
   image: String!
+  listBooks: ListBook!
+}
+
+type ListBook {
+  total: Int!
+  borrowed: Int!
+  rest: Int!
 }
 
 type Category {
   id: String!
   name: String!
   image: String!
+  listCategory: ListBook!
 }
 
 type Query {
@@ -68,6 +76,7 @@ type Query {
   bookItem(id: Int!): BookItem!
   books: [Book!]!
   book(id: Int!): Book!
+  listBook: ListBook!
   categories: [Category!]!
   category(id: Int!): Category!
 }

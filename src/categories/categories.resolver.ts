@@ -1,9 +1,17 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
-import { ListCategory } from './dto/list-category.output';
+import { ListBook } from 'src/books/dto/list-book.output';
 
 @Resolver(() => Category)
 export class CategoriesResolver {
@@ -16,10 +24,10 @@ export class CategoriesResolver {
     return await this.categoriesService.create(createCategoryInput);
   }
 
-  // @Query(() => [ListCategory], { name: 'listCategory' })
-  // listCategory() {
-  //   return this.categoriesService.listCategory();
-  // }
+  @ResolveField(() => ListBook, { name: 'listCategory' })
+  async listCategory(@Parent() category: Category) {
+    return await this.categoriesService.listCategory(category.id);
+  }
 
   @Query(() => [Category], { name: 'categories' })
   findAll() {

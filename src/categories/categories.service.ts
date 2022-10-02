@@ -10,6 +10,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import { join } from 'path';
+import { BooksService } from 'src/books/books.service';
 
 @Injectable()
 export class CategoriesService {
@@ -17,6 +18,7 @@ export class CategoriesService {
     @InjectModel(Category.name)
     private readonly categoryModel: Model<CategoryDocument>,
     @InjectQueue('category') private categoryQueue: Queue,
+    private readonly booksService: BooksService,
   ) {}
 
   async create(createCategoryInput: CreateCategoryInput) {
@@ -69,13 +71,12 @@ export class CategoriesService {
     }
   }
 
-  async listCategory() {
-    // const categories = await this.categoryModel.find();
-    // categories.forEach(category => {total: category.quantity, borrowed: })
+  async listCategory(categoryId: string) {
+    return await this.booksService.getBorrowedByCategoryId(categoryId);
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    return await this.categoryModel.find();
   }
 
   findOne(id: number) {

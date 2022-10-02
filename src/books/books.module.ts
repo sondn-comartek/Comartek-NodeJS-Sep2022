@@ -10,6 +10,7 @@ import {
 import { BullModule } from '@nestjs/bull';
 import { HelpersService } from 'src/helpers/helpers.service';
 import { BookConsumer } from './books.processor';
+import { LoansModule } from 'src/loans/loans.module';
 
 @Module({
   providers: [BooksResolver, BooksService, HelpersService, BookConsumer],
@@ -21,6 +22,7 @@ import { BookConsumer } from './books.processor';
     BullModule.registerQueue({
       name: 'book',
     }),
+    LoansModule,
   ],
   exports: [BooksService],
 })
