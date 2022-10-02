@@ -2,7 +2,7 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum RentStatusEnum {
   PROCESSING = 'PROCESSING',
-  PLACED = 'PLACED',
+  ACCEPTED = 'ACCEPTED',
   DENIED = 'DENIED',
   DONE = 'DONE',
 }

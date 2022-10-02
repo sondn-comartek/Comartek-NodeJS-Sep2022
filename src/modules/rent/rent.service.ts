@@ -1,10 +1,15 @@
 import { UpdateRentStatusInput } from './inputs/update-rent-status.input';
 import { CreateRentInput } from './inputs/create-rent.input';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { BookService } from '../book/book.service';
 import { Rent } from './schemas/rent.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { RentStatusEnum } from './enums/rent-status.enum';
 
 @Injectable()
 export class RentService {
@@ -13,7 +18,9 @@ export class RentService {
     @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
   ) {}
 
-  async findById() {}
+  async findById(id: string): Promise<Rent> {
+    return await this.rentSchema.findById(id);
+  }
 
   async findByIds() {}
 
@@ -49,7 +56,71 @@ export class RentService {
     updateRentStatusInput: UpdateRentStatusInput,
   ): Promise<Rent> {
     const { rentId, updateStatus } = updateRentStatusInput;
-    
-    return;
+    const rent = await this.findById(rentId);
+
+    if (!rent) {
+      throw new NotFoundException(`Rent with ID ${rentId} does not exist`);
+    }
+
+    const bookIds = rent.bookIds;
+    const availableBooks = await this.bookService.findByCondition({
+      _id: { $in: bookIds },
+      available: { $gt: 0 },
+    });
+    const availableBookIds = availableBooks.map((book) => book._id.toString());
+
+    switch (updateStatus) {
+      case RentStatusEnum.ACCEPTED:
+        if (rent.status !== RentStatusEnum.PROCESSING) {
+          throw new BadRequestException(
+            'Only PROCESSING rent can be updated to PLACED',
+          );
+        }
+
+        // Update book available number
+        await this.bookService.updateMany(
+          { _id: { $in: availableBookIds } },
+          { available: { $inc: -1 } },
+        );
+
+        break;
+
+      case RentStatusEnum.DENIED:
+        if (rent.status !== RentStatusEnum.PROCESSING) {
+          throw new BadRequestException(
+            'Only PROCESSING rent can be updated to DENIED',
+          );
+        }
+
+        break;
+
+      case RentStatusEnum.DONE:
+        if (rent.status !== RentStatusEnum.ACCEPTED) {
+          throw new BadRequestException(
+            'Only ACCEPTED rent can be updated to DONE',
+          );
+        }
+
+        // Update book available number
+        await this.bookService.updateMany(
+          { _id: { $in: availableBookIds } },
+          { available: { $inc: 1 } },
+        );
+
+        break;
+
+      default:
+        throw new BadRequestException(
+          'ACCEPTED, DENIED and DONE status are required',
+        );
+    }
+
+    return await this.rentSchema.findOneAndUpdate(
+      { _id: rentId },
+      { $set: { status: updateStatus } },
+      {
+        new: true,
+      },
+    );
   }
 }

@@ -31,6 +31,10 @@ export class BookService {
     return await this.bookSchema.find({ _id: { $in: ids } });
   }
 
+  async findByCondition(condition: Object): Promise<Book[]> {
+    return await this.bookSchema.find(condition);
+  }
+
   async create(createBookInput: CreateBookInput): Promise<Book> {
     const { categoryId, mediaId, title } = createBookInput;
 
@@ -64,5 +68,9 @@ export class BookService {
         },
       )
       .populate('categoryId mediaId');
+  }
+
+  async updateMany(filter: Object, update: Object) {
+    return await this.bookSchema.updateMany(filter, update);
   }
 }
