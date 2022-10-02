@@ -15,7 +15,7 @@ export class BookQueryResolver {
       nullable: true,
       defaultValue: { limit: 0, skip: 0 },
     })
-    queryArgsInput: QueryArgsInput,
+    queryArgsInput?: QueryArgsInput,
   ): Promise<Book[]> {
     return await this.bookService.findAll(queryArgsInput);
   }

@@ -19,6 +19,18 @@ export class RentService {
     @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
   ) {}
 
+  async findByCondition(condition: any): Promise<Rent[]> {
+    return await this.rentSchema.find({ condition }).populate([
+      {
+        path: 'userId',
+      },
+      {
+        path: 'bookIds',
+        populate: { path: 'categoryId' },
+      },
+    ]);
+  }
+
   async findById(id: string): Promise<Rent> {
     return await this.rentSchema.findById(id);
   }
@@ -103,7 +115,7 @@ export class RentService {
         // Update book available number
         await this.bookService.updateMany(
           { _id: { $in: availableBookIds } },
-          { available: { $inc: -1 } },
+          { $inc: { available: -1 } },
         );
 
         break;
@@ -127,7 +139,7 @@ export class RentService {
         // Update book available number
         await this.bookService.updateMany(
           { _id: { $in: availableBookIds } },
-          { available: { $inc: 1 } },
+          { $inc: { available: 1 } },
         );
 
         break;

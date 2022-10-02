@@ -9,6 +9,7 @@ type User {
   fullName: String!
   phoneNumber: String!
   role: UserRoleEnum!
+  rents: Rent
 }
 
 enum UserRoleEnum {
@@ -64,9 +65,10 @@ enum RentStatusEnum {
 }
 
 type Query {
-  findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
+  findAllMedia(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Media!]!
   findAllBook(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Book!]!
   findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
+  findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
   findAllUser(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [User!]!
   getHello: String!
 }
@@ -78,10 +80,10 @@ input QueryArgsInput {
 
 type Mutation {
   uploadFile(uploadFileInput: UploadFileInput!): Media!
-  createRent(createRentInput: CreateRentInput!): Rent!
-  updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
   createBook(createBookInput: CreateBookInput!): Book!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  createRent(createRentInput: CreateRentInput!): Rent!
+  updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
   signUp(createUserInput: CreateUserInput!): AuthResponseType!
   signIn(signInInput: SignInInput!): AuthResponseType!
 }
@@ -94,15 +96,6 @@ input UploadFileInput {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
-
-input CreateRentInput {
-  bookIds: [String!]!
-}
-
-input UpdateRentStatusInput {
-  rentId: String!
-  updateStatus: RentStatusEnum!
-}
 
 input CreateBookInput {
   categoryId: String!
@@ -118,6 +111,15 @@ input CreateCategoryInput {
   name: String!
   code: String!
   mediaId: String!
+}
+
+input CreateRentInput {
+  bookIds: [String!]!
+}
+
+input UpdateRentStatusInput {
+  rentId: String!
+  updateStatus: RentStatusEnum!
 }
 
 input CreateUserInput {

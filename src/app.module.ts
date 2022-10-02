@@ -38,6 +38,7 @@ import { MediaModule } from './modules/media/media.module';
         RentModule,
         RentModule,
         UploadModule,
+        MediaModule,
       ],
     }),
     JwtModule.register({

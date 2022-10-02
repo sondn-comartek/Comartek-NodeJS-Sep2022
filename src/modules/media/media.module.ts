@@ -3,6 +3,7 @@ import { Media } from 'src/modules/media/schemas/media.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { MediaService } from './media.service';
+import { MediaQueryResolver } from './resolvers/media-query.resolver';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { MediaService } from './media.service';
       },
     ]),
   ],
-  providers: [MediaService],
+  providers: [MediaService, MediaQueryResolver],
   exports: [MediaService],
 })
 export class MediaModule {}

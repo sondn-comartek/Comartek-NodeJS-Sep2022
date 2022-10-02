@@ -20,7 +20,7 @@ export class RentQueryResolver {
       nullable: true,
       defaultValue: { limit: 0, skip: 0 },
     })
-    queryArgsInput: QueryArgsInput,
+    queryArgsInput?: QueryArgsInput,
   ): Promise<Rent[]> {
     return await this.rentService.findAll(queryArgsInput);
   }

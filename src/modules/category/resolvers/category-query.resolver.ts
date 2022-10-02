@@ -14,7 +14,7 @@ export class CategoryQueryResolver {
       nullable: true,
       defaultValue: { limit: 0, skip: 0 },
     })
-    queryArgsInput: QueryArgsInput,
+    queryArgsInput?: QueryArgsInput,
   ): Promise<Category[]> {
     return await this.categoryService.findAll(queryArgsInput);
   }

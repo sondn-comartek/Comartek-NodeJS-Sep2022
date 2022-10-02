@@ -17,5 +17,6 @@ import { RentService } from './rent.service';
     ]),
   ],
   providers: [RentService, RentMutationResolver, RentQueryResolver],
+  exports: [RentService],
 })
 export class RentModule {}
