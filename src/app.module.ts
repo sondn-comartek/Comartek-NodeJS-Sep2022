@@ -21,9 +21,9 @@ import { MediaModule } from './modules/media/media.module';
   imports: [
     AuthModule,
     UserModule,
+    RentModule,
     BookModule,
     CategoryModule,
-    RentModule,
     UploadModule,
     LoaderModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -33,10 +33,10 @@ import { MediaModule } from './modules/media/media.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       include: [
         AppModule,
+        AuthModule,
         UserModule,
+        RentModule,
         BookModule,
-        RentModule,
-        RentModule,
         UploadModule,
         MediaModule,
       ],

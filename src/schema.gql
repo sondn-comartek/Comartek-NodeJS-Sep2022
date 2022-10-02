@@ -9,7 +9,9 @@ type User {
   fullName: String!
   phoneNumber: String!
   role: UserRoleEnum!
-  rents: Rent
+  rents: [Rent!]!
+  bookRentalCount: Int
+  bookRentalInfo: [Book!]
 }
 
 enum UserRoleEnum {
@@ -34,6 +36,7 @@ type Category {
   name: String!
   code: String!
   media: Media!
+  books: [Book!]!
 }
 
 type Book {

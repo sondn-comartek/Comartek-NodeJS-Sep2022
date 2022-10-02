@@ -1,3 +1,5 @@
+import { FileResizeHelper } from './helpers/file-resize.helper';
+import { FileResizeProcessor } from './processors/file-resize.processor';
 import { MediaModule } from './../media/media.module';
 import { UploadMutationResolver } from './resolvers/upload-mutation.resolver';
 import { Module } from '@nestjs/common';
@@ -11,6 +13,11 @@ import { BullModule } from '@nestjs/bull';
       name: 'file-processor',
     }),
   ],
-  providers: [UploadMutationResolver, UploadService],
+  providers: [
+    UploadMutationResolver,
+    UploadService,
+    FileResizeProcessor,
+    FileResizeHelper,
+  ],
 })
 export class UploadModule {}

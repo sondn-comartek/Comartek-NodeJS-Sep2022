@@ -1,4 +1,3 @@
-import { Parent } from '@nestjs/graphql';
 import { CreateMediaInput } from './inputs/create-media.input';
 import { Media } from 'src/modules/media/schemas/media.schema';
 import { Injectable } from '@nestjs/common';

@@ -1,3 +1,7 @@
+import {
+  BookRentalCountLoader,
+  BookRentalInfoLoader,
+} from './../loader/loader.rent';
 import { RentModule } from './../rent/rent.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,7 +20,13 @@ import { UserService } from './user.service';
       },
     ]),
   ],
-  providers: [UserService, UserQueryResolver, UserRentLoader],
+  providers: [
+    UserService,
+    UserQueryResolver,
+    UserRentLoader,
+    BookRentalCountLoader,
+    BookRentalInfoLoader,
+  ],
   exports: [UserService],
 })
 export class UserModule {}

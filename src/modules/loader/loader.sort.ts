@@ -5,12 +5,16 @@ export function sortDataByRefIds({
   entities,
   refIds,
 }: SortDataByRefIds) {
-  console.log({ refIdFieldName, entities, refIds });
+  // console.log({
+  //   refIdFieldName,
+  //   entities,
+  //   refIds,
+  // });
 
-  let result = {};
+  const result = {};
 
   entities.forEach((entity) => {
-    const refId = entity[refIdFieldName];
+    const refId = entity[refIdFieldName]?._id;
 
     if (result[refId]) result[refId].push(entity);
     else result[refId] = [entity];

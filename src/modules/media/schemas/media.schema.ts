@@ -1,5 +1,6 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { MimetypeEnum } from 'src/common/enums/mimetype.enum';
 
 @ObjectType()
 @Schema({
@@ -22,7 +23,7 @@ export class Media {
     type: String,
     required: true,
   })
-  readonly mimetype: string;
+  readonly mimetype: MimetypeEnum;
 }
 
 export const MediaSchema = SchemaFactory.createForClass(Media);

@@ -32,7 +32,9 @@ export class BookService {
   }
 
   async findByCondition(condition: any): Promise<Book[]> {
-    return await this.bookSchema.find(condition);
+    return await this.bookSchema
+      .find({ condition })
+      .populate('categoryId mediaId');
   }
 
   async create(createBookInput: CreateBookInput): Promise<Book> {

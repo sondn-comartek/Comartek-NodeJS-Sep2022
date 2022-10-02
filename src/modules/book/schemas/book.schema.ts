@@ -42,7 +42,7 @@ export class Book {
     required: true,
     ref: Media.name,
   })
-  readonly mediaId: Types.ObjectId | string;
+  readonly mediaId: Types.ObjectId | Media;
 
   @Field(() => String)
   @Prop({
