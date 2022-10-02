@@ -12,10 +12,10 @@ import { RentService } from './rent.service';
     MongooseModule.forFeature([
       {
         name: Rent.name,
-        schema: RentSchema
-      }
-    ])
+        schema: RentSchema,
+      },
+    ]),
   ],
-  providers: [RentService, RentMutationResolver, RentQueryResolver]
+  providers: [RentService, RentMutationResolver, RentQueryResolver],
 })
 export class RentModule {}

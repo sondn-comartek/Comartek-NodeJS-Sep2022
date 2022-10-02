@@ -17,6 +17,6 @@ export class BookMutationResolver {
     @Args({ name: 'createBookInput', type: () => CreateBookInput })
     createBookInput: CreateBookInput,
   ): Promise<Book> {
-    return await this.bookService.create(createBookInput)
+    return await this.bookService.create(createBookInput);
   }
 }

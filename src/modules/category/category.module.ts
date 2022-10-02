@@ -9,12 +9,14 @@ import { Category, CategorySchema } from './schemas/category.schema';
 @Module({
   imports: [
     MediaModule,
-    MongooseModule.forFeature([{
-      name: Category.name,
-      schema: CategorySchema
-    }])
+    MongooseModule.forFeature([
+      {
+        name: Category.name,
+        schema: CategorySchema,
+      },
+    ]),
   ],
   providers: [CategoryService, CategoryQueryResolver, CategoryMutationResolver],
-  exports: [CategoryService]
+  exports: [CategoryService],
 })
 export class CategoryModule {}

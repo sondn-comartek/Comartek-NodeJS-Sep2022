@@ -32,7 +32,7 @@ export class Book {
     type: String,
     required: true,
     unique: true,
-    default: () => CodeHelper.generate()
+    default: () => CodeHelper.generate(),
   })
   readonly code: string;
 

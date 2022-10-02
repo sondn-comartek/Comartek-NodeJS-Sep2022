@@ -19,6 +19,6 @@ export class MediaService {
   }
 
   async create(createMediaInput: CreateMediaInput): Promise<Media> {
-    return await this.mediaSchema.create(createMediaInput)
+    return await this.mediaSchema.create(createMediaInput);
   }
 }

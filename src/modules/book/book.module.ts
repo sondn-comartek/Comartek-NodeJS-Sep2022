@@ -19,6 +19,6 @@ import { BookMutationResolver } from './resolvers/book-mutation.resolver';
     ]),
   ],
   providers: [BookService, BookMutationResolver, BookQueryResolver],
-  exports: [BookService]
+  exports: [BookService],
 })
 export class BookModule {}

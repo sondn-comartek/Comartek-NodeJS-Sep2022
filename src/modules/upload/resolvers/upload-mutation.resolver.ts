@@ -12,6 +12,6 @@ export class UploadMutationResolver {
     @Args({ name: 'uploadFileInput', type: () => UploadFileInput })
     uploadFileInput: UploadFileInput,
   ): Promise<Media> {
-    return await this.uploadService.upload(uploadFileInput)
+    return await this.uploadService.upload(uploadFileInput);
   }
 }
