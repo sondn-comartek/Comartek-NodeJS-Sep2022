@@ -60,6 +60,17 @@ enum BookStatus {
   unavailable
 }
 
+type BookValid {
+  """Book invalid"""
+  book_invalid: Float!
+
+  """Book valid"""
+  book_valid: Float!
+
+  """Book total"""
+  total: Float!
+}
+
 type Category {
   """category name"""
   name: String!
@@ -141,6 +152,7 @@ type Mutation {
 
 type Query {
   book(id: Int!): Book!
+  book_in_store(page: Int!, record: Int!): BookValid!
   category(id: Int!): Category!
   login(account: AuthInput!): AuthResDto!
   total_category(page: Int!, record: Int!): [BookCategory!]!

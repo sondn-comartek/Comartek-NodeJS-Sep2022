@@ -31,4 +31,11 @@ export class StatisticalService {
     });
     return result;
   }
+  async bookInStore(page, record): Promise<any> {
+    const total = await this.bookService.totalBook();
+    const unAvailable = await this.bookService.bookInValid();
+    const available = await this.bookService.bookValid();
+    
+    return { total: total, book_valid: available, book_invalid: unAvailable };
+  }
 }

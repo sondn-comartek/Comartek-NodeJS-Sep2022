@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Book, BookDocument } from './entities/book.entity';
 import { Model } from 'mongoose';
 import * as _ from 'lodash';
+import { BookStatus } from './enums/status.enum';
 @Injectable()
 export class BookService {
   constructor(
@@ -25,8 +26,19 @@ export class BookService {
     return createdBook;
   }
 
-  findAll() {
-    return 'hello world';
+  async findAll() {
+    return 'find all';
+  }
+  async totalBook() {
+    return await this.bookModel.find().count();
+  }
+  async bookValid() {
+    return await this.bookModel.find({ status: BookStatus.available }).count();
+  }
+  async bookInValid() {
+    return await this.bookModel
+      .find({ status: BookStatus.unavailable })
+      .count();
   }
   findOne(id: number) {
     return `This action returns a #${id} book`;
