@@ -72,6 +72,12 @@ export class Book {
     required: true,
   })
   readonly available: number;
+
+  @Field(() => String)
+  readonly createdAt: Date;
+
+  @Field(() => String)
+  readonly updatedAt: Date;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

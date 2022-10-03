@@ -17,6 +17,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
+import { NotificationModule } from './modules/notification/notification.module';
+import { MigrationModule } from './modules/migration/migration.module';
 
 @Module({
   imports: [
@@ -40,6 +42,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
         BookModule,
         UploadModule,
         MediaModule,
+        NotificationModule,
       ],
     }),
     JwtModule.register({
@@ -54,6 +57,8 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
     }),
     MediaModule,
     ScheduleModule,
+    NotificationModule,
+    MigrationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
