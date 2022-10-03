@@ -36,7 +36,7 @@ export class OrderService {
       status: updateOrderInput?.status,
     });
   }
-  async findByIds(ids): Promise<OrderS[]> {
+  async findByIds(ids) {
     return await this.orderModel.find({ userID: { $in: ids } });
   }
   async findByCondition(condition: any) {

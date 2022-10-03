@@ -10,8 +10,6 @@ export class OrderLoader implements NestDataLoader<string, OrderS> {
   constructor(private readonly orderService: OrderService) {}
   generateDataLoader(): DataLoader<string, OrderS> {
     return new DataLoader<string, OrderS>(async (userIds) => {
-      console.log(await this.orderService.findByIds(userIds));
-
       return await this.orderService.findByIds(userIds);
     });
   }

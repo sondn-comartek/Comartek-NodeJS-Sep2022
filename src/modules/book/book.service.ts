@@ -33,7 +33,10 @@ export class BookService {
     return await this.bookModel.find().count();
   }
   async bookReadyToBorrow(id) {
-    return await this.bookModel.findById(id, { status: BookStatus.available });
+    return await this.bookModel.find({
+      bookID: id,
+      status: BookStatus.available,
+    });
   }
   async bookValid() {
     return await this.bookModel.find({ status: BookStatus.available }).count();

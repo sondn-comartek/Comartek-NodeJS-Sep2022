@@ -28,7 +28,7 @@ export class UserResolver {
   findAll() {
     return this.userService.findAll();
   }
-  @ResolveField(() => [OrderS])
+  @ResolveField(() => OrderS)
   async getAmountBooksBorrowedUser(
     @Parent() user: User,
     @Loader(OrderLoader) orderLoader: DataLoader<User['_id'], OrderS>,

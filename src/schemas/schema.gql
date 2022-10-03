@@ -280,7 +280,7 @@ type User {
 
   """Email of User"""
   email: String!
-  getAmountBooksBorrowedUser: [OrderS!]!
+  getAmountBooksBorrowedUser: OrderS!
 
   """password of account"""
   password: String!
