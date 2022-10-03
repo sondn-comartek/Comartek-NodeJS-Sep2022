@@ -70,7 +70,7 @@ export class AdminService {
 
     
 
-    return result
+    return result.map(data => data.id)
   }
 
   async getAllUser() {

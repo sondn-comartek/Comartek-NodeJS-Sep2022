@@ -3,6 +3,8 @@ import { ImageConsumer } from './image.consumer';
 import { BullModule } from '@nestjs/bull';
 import { join } from 'path';
 import { ImagePublish } from './image.publish';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MediaSchema } from 'src/schema/media.schema';
 
 @Global()
 @Module({
@@ -11,6 +13,10 @@ import { ImagePublish } from './image.publish';
       name: 'image',
       processors: [join(__dirname, 'imagies.childprocess.js')],
     }),
+    MongooseModule.forFeature(
+      [{
+        name: 'media', schema: MediaSchema
+      }]),
   ],
   providers: [ImageConsumer, ImagePublish],
   exports: [ImagePublish]

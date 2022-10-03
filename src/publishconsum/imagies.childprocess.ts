@@ -1,10 +1,12 @@
 
 import { Job, DoneCallback } from 'bull';
-import { Mongoose } from 'mongoose';
+import { Collection, Mongoose } from 'mongoose';
 import { BookSchema } from '../schema/book.schema';
 import * as dotenv from "dotenv";
 import * as sharp from 'sharp';
 import {v4} from 'uuid'
+import { MediaSchema } from 'src/schema/media.schema';
+import { SignInOutput } from 'src/auth/entities/auth.output';
 
 export default async function (job: Job, cb: DoneCallback) {
   console.log(`[${process.pid}]`);
@@ -31,8 +33,12 @@ export default async function (job: Job, cb: DoneCallback) {
   const images: string[] = [rawFileName, resizeFileName]
 
   const mg = new Mongoose()
+  
   await mg.connect(process.env.DB)
   const Book = mg.model('book', BookSchema);
-  await Book.updateMany({_id: ids}, {$push: {images: images}})
+  const Media = mg.model('media', MediaSchema)
+  const md = new Media({rawImg: rawFileName, resizeImg: resizeFileName})
+  await md.save()
+  await Book.updateMany({_id: ids}, {$push: {images: md.id}})
   cb(null, 'done');
 }

@@ -1,7 +1,7 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 
-// @Processor('image1')
+// @Processor('image')
 export class ImageConsumer {
   // @Process()
   // async imageProcess(job: Job<unknown>) {
