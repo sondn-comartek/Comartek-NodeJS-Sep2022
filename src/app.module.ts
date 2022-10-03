@@ -45,6 +45,7 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
     CategoryModule,
     BookModule,
     MediaModule,
+    OrderModule,
     StatisticalModule,
   ],
   controllers: [AppController],

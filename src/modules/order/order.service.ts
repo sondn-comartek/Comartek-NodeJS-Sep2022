@@ -27,7 +27,9 @@ export class OrderService {
       status: updateOrderInput?.status,
     });
   }
-
+  async findByIds(ids): Promise<Order[]> {
+    return await this.orderModel.find({ _id: { $in: ids } });
+  }
   remove(id: number) {
     return `This action removes a #${id} order`;
   }

@@ -13,7 +13,7 @@ import { RolesGuard } from '../auth/roles.guard';
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 
-  @Mutation(() => Order)
+  @Mutation(() => Order, { name: 'create_order' })
   @Roles(Role.user)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createOrder(
