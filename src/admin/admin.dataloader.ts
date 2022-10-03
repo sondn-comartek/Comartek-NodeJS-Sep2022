@@ -37,7 +37,8 @@ export class UserLoader implements NestDataLoader<string, User> {
               firstname: user.firstname,
               lastname: user.lastname,
               phone: user.phone,
-              borrowBook: borrowBook
+              borrowBook: borrowBook,
+              numberBorrow: 0
             }
           }
           return null

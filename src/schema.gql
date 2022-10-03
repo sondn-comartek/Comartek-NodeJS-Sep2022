@@ -47,6 +47,7 @@ type UserOutPut {
   lastname: String!
   phone: String!
   borrowBook: [BookOutPut!]!
+  numberBorrow: Int!
 }
 
 type BorrowBookOutput {

@@ -34,4 +34,7 @@ export class UserOutPut {
   @Field(() => [BookOutPut])
   borrowBook: BookOutPut[]
 
+  @Field(() => Int)
+  numberBorrow: number
+
 }
