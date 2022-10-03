@@ -2,7 +2,7 @@ import { UploadFileInput } from './inputs/upload-file.input';
 import { join } from 'path';
 import { MediaService } from './../media/media.service';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { createWriteStream } from 'fs';
+import { createWriteStream, readFileSync } from 'fs';
 import { CreateMediaInput } from '../media/inputs/create-media.input';
 import { Media } from '../media/schemas/media.schema';
 import { InjectQueue } from '@nestjs/bull';
@@ -13,7 +13,7 @@ export class UploadService {
   constructor(
     private readonly mediaService: MediaService,
     @InjectQueue('file-processor') private readonly fileQueue: Queue,
-  ) {}
+  ) { }
 
   async upload(uploadFileInput: UploadFileInput): Promise<Media> {
     const { filename, mimetype, createReadStream } = await uploadFileInput.file;
@@ -32,6 +32,7 @@ export class UploadService {
             filename,
             height,
             width,
+            buffer: readFileSync(`src/modules/upload/store/${filename}`)
           });
 
           const createMediaInput: CreateMediaInput = {
