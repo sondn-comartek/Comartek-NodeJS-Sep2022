@@ -1,4 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
+
 export enum NotificationTypeEnum {
   BOOK_ADDED = 'BOOK_ADDED',
   RENT_ACCEPTED = 'RENT_ACCEPTED',
