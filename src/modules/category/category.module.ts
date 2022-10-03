@@ -1,3 +1,4 @@
+import { Book, BookSchema } from './../book/schemas/book.schema';
 import { BookModule } from './../book/book.module';
 import { MediaModule } from './../media/media.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,6 +17,10 @@ import { BookCategoryLoader } from '../loader/loader.book';
       {
         name: Category.name,
         schema: CategorySchema,
+      },
+      {
+        name: Book.name,
+        schema: BookSchema,
       },
     ]),
   ],

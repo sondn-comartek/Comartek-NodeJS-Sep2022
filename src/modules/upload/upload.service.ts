@@ -13,7 +13,7 @@ export class UploadService {
   constructor(
     private readonly mediaService: MediaService,
     @InjectQueue('file-processor') private readonly fileQueue: Queue,
-  ) { }
+  ) {}
 
   async upload(uploadFileInput: UploadFileInput): Promise<Media> {
     const { filename, mimetype, createReadStream } = await uploadFileInput.file;
@@ -32,7 +32,7 @@ export class UploadService {
             filename,
             height,
             width,
-            buffer: readFileSync(`src/modules/upload/store/${filename}`)
+            buffer: readFileSync(`src/modules/upload/store/${filename}`),
           });
 
           const createMediaInput: CreateMediaInput = {

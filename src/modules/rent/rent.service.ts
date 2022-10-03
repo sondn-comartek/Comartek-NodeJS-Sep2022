@@ -1,3 +1,4 @@
+import { Book } from './../book/schemas/book.schema';
 import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 import { UpdateRentStatusInput } from './inputs/update-rent-status.input';
 import { CreateRentInput } from './inputs/create-rent.input';
@@ -17,18 +18,24 @@ export class RentService {
   constructor(
     private readonly bookService: BookService,
     @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
+    @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
   ) {}
 
   async findByCondition(condition: any): Promise<Rent[]> {
-    return await this.rentSchema.find({ condition }).populate([
-      {
-        path: 'userId',
-      },
-      {
-        path: 'bookIds',
-        populate: { path: 'categoryId' },
-      },
-    ]);
+    return await this.rentSchema
+      .find()
+      .$where(() => {
+        condition;
+      })
+      .populate([
+        {
+          path: 'userId',
+        },
+        {
+          path: 'bookIds',
+          populate: { path: 'categoryId' },
+        },
+      ]);
   }
 
   async findById(id: string): Promise<Rent> {
@@ -98,7 +105,7 @@ export class RentService {
     }
 
     const bookIds = rent.bookIds;
-    const availableBooks = await this.bookService.findByCondition({
+    const availableBooks = await this.bookSchema.find({
       _id: { $in: bookIds },
       available: { $gt: 0 },
     });
@@ -112,8 +119,12 @@ export class RentService {
           );
         }
 
+        if (availableBookIds.length === 0) {
+          throw new BadRequestException('Books are not available');
+        }
+
         // Update book available number
-        await this.bookService.updateMany(
+        await this.bookSchema.updateMany(
           { _id: { $in: availableBookIds } },
           { $inc: { available: -1 } },
         );
@@ -137,7 +148,7 @@ export class RentService {
         }
 
         // Update book available number
-        await this.bookService.updateMany(
+        await this.bookSchema.updateMany(
           { _id: { $in: availableBookIds } },
           { $inc: { available: 1 } },
         );

@@ -27,8 +27,8 @@ export class CategoryQueryResolver {
   async books(
     @Parent() category: Category,
     @Loader(BookCategoryLoader)
-    bookCategoryLoader: DataLoader<Category['_id'], Book>,
-  ): Promise<Book> {
+    bookCategoryLoader: DataLoader<Category['_id'], [Book]>,
+  ): Promise<[Book]> {
     return await bookCategoryLoader.load(category._id);
   }
 }

@@ -11,6 +11,8 @@ export function sortDataByRefIds({
   //   refIds,
   // });
 
+  console.log(entities);
+
   const result = {};
 
   entities.forEach((entity) => {

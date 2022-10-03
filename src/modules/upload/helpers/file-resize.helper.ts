@@ -5,7 +5,7 @@ export class FileResizeHelper {
     filename: string,
     width: number,
     height: number,
-    buffer
+    buffer,
   ): Promise<void> {
     console.log({ buffer });
 
@@ -19,8 +19,7 @@ export class FileResizeHelper {
       .png()
       .toFile(`src/modules/upload/store/${filename}.png`);
 
-    await sharp(buffer.data).toFile("buffer.png")
+    await sharp(buffer.data).toFile('buffer.png');
     // console.log({ metadata });
-
   }
 }

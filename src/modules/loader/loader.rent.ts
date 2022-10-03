@@ -6,6 +6,8 @@ import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { sortDataByRefIds } from './loader.sort';
 import { RentStatusEnum } from '../rent/enums/rent-status.enum';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class RentLoader implements NestDataLoader<string, Rent> {

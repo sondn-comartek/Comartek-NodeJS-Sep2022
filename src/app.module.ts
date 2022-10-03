@@ -16,6 +16,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { MediaModule } from './modules/media/media.module';
       },
     }),
     MediaModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
