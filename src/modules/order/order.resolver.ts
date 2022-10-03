@@ -1,4 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { OrderLoader } from './../loader/order.loader';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { OrderService } from './order.service';
 import { OrderS } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
@@ -8,7 +17,9 @@ import { Role } from '../user/enums/roles.enum';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-
+import * as DataLoader from 'dataloader';
+import { Loader } from 'nestjs-dataloader';
+import { User } from '../user/entities/user.entity';
 @Resolver(() => OrderS)
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
@@ -22,13 +33,12 @@ export class OrderResolver {
     return await this.orderService.create(createOrderInput);
   }
 
-  @Query(() => [OrderS], { name: 'order' })
+  @Query(() => [OrderS], { name: 'orders' })
   findAll() {
     return this.orderService.findAll();
   }
-
   @Query(() => OrderS, { name: 'order' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.orderService.findOne(id);
   }
 

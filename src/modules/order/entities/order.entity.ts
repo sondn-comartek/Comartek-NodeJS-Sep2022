@@ -2,6 +2,7 @@ import { OrderStatus } from './../enums/order.enum';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { User } from 'src/modules/user/entities/user.entity';
 
 export type OrderSDocument = OrderS & Document;
 @Schema({ timestamps: true })

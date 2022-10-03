@@ -203,9 +203,11 @@ type Query {
   book_in_store(page: Int!, record: Int!): BookValid!
   category(id: Int!): Category!
   login(account: AuthInput!): AuthResDto!
-  order(id: Int!): OrderS!
+  order(id: String!): OrderS!
+  orders: [OrderS!]!
   total_category(page: Int!, record: Int!): [BookCategory!]!
   user(id: Int!): User!
+  users: [User!]!
 }
 
 enum Role {
@@ -273,8 +275,12 @@ input UpdateUserInput {
 scalar Upload
 
 type User {
+  """email"""
+  _id: ID!
+
   """Email of User"""
   email: String!
+  getAmountBooksBorrowedUser: [OrderS!]!
 
   """password of account"""
   password: String!
