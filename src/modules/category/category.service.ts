@@ -18,6 +18,10 @@ export class CategoryService {
     private readonly mediaService: MediaService,
   ) {}
 
+  async findByIds(ids: string[]): Promise<Category[]> {
+    return await this.categorySchema.find({ _id: { $in: ids } });
+  }
+
   async findById(id: string): Promise<Category> {
     return await this.categorySchema.findById(id);
   }
@@ -43,9 +47,7 @@ export class CategoryService {
       );
     }
 
-    return await (
-      await this.categorySchema.create(createCategoryInput)
-    ).populate('mediaId');
+    return await this.categorySchema.create(createCategoryInput);
   }
 
   async findByName(name: string): Promise<Category> {
@@ -57,8 +59,10 @@ export class CategoryService {
   }
 
   async findAll(queryArgsInput?: QueryArgsInput): Promise<Category[]> {
-    return await this.categorySchema
-      .find({}, {}, { limit: queryArgsInput.limit, skip: queryArgsInput.skip })
-      .populate('mediaId');
+    return await this.categorySchema.find(
+      {},
+      {},
+      { limit: queryArgsInput.limit, skip: queryArgsInput.skip },
+    );
   }
 }

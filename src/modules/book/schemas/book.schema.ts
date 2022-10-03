@@ -6,18 +6,21 @@ import { Types } from 'mongoose';
 import { CodeHelper } from '../helpers/code.helper';
 
 @ObjectType()
-@Schema()
+@Schema({
+  collection: 'books',
+  timestamps: true,
+})
 export class Book {
   @Field(() => ID)
   readonly _id: string;
 
-  @Field(() => Category, { name: 'category' })
+  @Field(() => String)
   @Prop({
     type: Types.ObjectId,
     required: true,
     ref: Category.name,
   })
-  readonly categoryId: Types.ObjectId | Category;
+  readonly categoryId: string;
 
   @Field(() => String)
   @Prop({
@@ -36,13 +39,13 @@ export class Book {
   })
   readonly code: string;
 
-  @Field(() => Media, { name: 'media' })
+  @Field(() => String)
   @Prop({
     type: Types.ObjectId,
     required: true,
     ref: Media.name,
   })
-  readonly mediaId: Types.ObjectId | Media;
+  readonly mediaId: string;
 
   @Field(() => String)
   @Prop({

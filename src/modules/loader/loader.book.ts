@@ -1,12 +1,9 @@
 import { Book } from './../book/schemas/book.schema';
-import { Rent } from '../rent/schemas/rent.schema';
 import { NestDataLoader } from 'nestjs-dataloader';
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { sortDataByRefIds } from './loader.sort';
+import { sortDataByRefIds, sortDataByIds } from './loader.sort';
 import { BookService } from '../book/book.service';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class BookLoader implements NestDataLoader<string, Book> {
@@ -14,24 +11,23 @@ export class BookLoader implements NestDataLoader<string, Book> {
 
   generateDataLoader(): DataLoader<string, Book> {
     return new DataLoader<string, Book>((keys: string[]) =>
-      this.bookService.findByIds(keys),
+      this.bookService
+        .findByIds(keys)
+        .then((data) => sortDataByIds(data, keys)),
     );
   }
 }
 
+// Dùng để load books trong category
 @Injectable()
 export class BookCategoryLoader implements NestDataLoader<string, Book> {
-  constructor(
-    @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
-  ) {}
+  constructor(private readonly bookService: BookService) {}
 
   generateDataLoader(): DataLoader<string, Book> {
     return new DataLoader<string, Book>(async (categoryIds: string[]) => {
-      const books = await this.bookSchema
-        .find({})
-        .populate('categoryId mediaId');
-
-      console.log({ books });
+      const books = await this.bookService.findByCondition({
+        categoryId: { $in: categoryIds },
+      });
 
       return sortDataByRefIds({
         refIdFieldName: 'categoryId',

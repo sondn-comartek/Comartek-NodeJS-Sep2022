@@ -11,6 +11,10 @@ export class MediaService {
     @InjectModel(Media.name) private readonly mediaSchema: Model<Media>,
   ) {}
 
+  async findByCondition(condition: any): Promise<Media[]> {
+    return await this.mediaSchema.find({ condition });
+  }
+
   async findById(id: string): Promise<Media> {
     return await this.mediaSchema.findById(id);
   }

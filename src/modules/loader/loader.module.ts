@@ -1,6 +1,4 @@
-import { BookSchema } from './../book/schemas/book.schema';
-import { Rent, RentSchema } from 'src/modules/rent/schemas/rent.schema';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MediaModule } from './../media/media.module';
 import { BookCategoryLoader, BookLoader } from './loader.book';
 import { CategoryModule } from './../category/category.module';
 import { UserModule } from './../user/user.module';
@@ -15,7 +13,9 @@ import {
 } from './loader.rent';
 import { RentModule } from '../rent/rent.module';
 import { BookModule } from '../book/book.module';
-import { Book } from '../book/schemas/book.schema';
+import { MediaLoader } from './loader.media';
+import { CategoryLoader } from './loader.category';
+import { UserLoader } from './loader.user';
 
 @Module({
   imports: [
@@ -23,12 +23,8 @@ import { Book } from '../book/schemas/book.schema';
     forwardRef(() => RentModule),
     forwardRef(() => BookModule),
     forwardRef(() => CategoryModule),
-    MongooseModule.forFeature([
-      {
-        name: Book.name,
-        schema: BookSchema,
-      },
-    ]),
+    forwardRef(() => MediaModule),
+    forwardRef(() => UserModule),
   ],
 
   providers: [
@@ -42,6 +38,9 @@ import { Book } from '../book/schemas/book.schema';
     BookCategoryLoader,
     BookRentalCountLoader,
     BookRentalInfoLoader,
+    MediaLoader,
+    CategoryLoader,
+    UserLoader,
   ],
 })
 export class LoaderModule {}

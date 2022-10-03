@@ -6,6 +6,8 @@ import { Book } from 'src/modules/book/schemas/book.schema';
 import { Loader } from 'nestjs-dataloader';
 import DataLoader from 'dataloader';
 import { BookCategoryLoader } from 'src/modules/loader/loader.book';
+import { Media } from 'src/modules/media/schemas/media.schema';
+import { MediaLoader } from 'src/modules/loader/loader.media';
 
 @Resolver(() => Category)
 export class CategoryQueryResolver {
@@ -21,6 +23,15 @@ export class CategoryQueryResolver {
     queryArgsInput?: QueryArgsInput,
   ): Promise<Category[]> {
     return await this.categoryService.findAll(queryArgsInput);
+  }
+
+  @ResolveField(() => Media)
+  async thumbnail(
+    @Parent() category: Category,
+    @Loader(MediaLoader)
+    mediaLoader: DataLoader<Category['mediaId'], Media>,
+  ): Promise<Media> {
+    return await mediaLoader.load(category.mediaId);
   }
 
   @ResolveField(() => [Book])

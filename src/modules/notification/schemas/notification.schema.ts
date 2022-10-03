@@ -22,15 +22,15 @@ export class Notification {
   @Field(() => String)
   @Prop({
     type: [Types.ObjectId],
-    required: true
+    required: true,
   })
   readonly entityIds: string[];
 
   @Prop({
     type: String,
-    required: true
+    required: true,
   })
-  readonly refCollectionName: string
+  readonly refCollectionName: string;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

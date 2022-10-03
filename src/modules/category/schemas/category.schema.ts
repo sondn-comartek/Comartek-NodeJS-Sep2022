@@ -28,13 +28,13 @@ export class Category {
   })
   readonly code: string;
 
-  @Field(() => Media, { name: 'media' })
+  @Field(() => String)
   @Prop({
     type: Types.ObjectId,
     ref: Media.name,
     required: true,
   })
-  readonly mediaId: Types.ObjectId | Media;
+  readonly mediaId: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

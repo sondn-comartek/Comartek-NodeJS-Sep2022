@@ -22,20 +22,7 @@ export class RentService {
   ) {}
 
   async findByCondition(condition: any): Promise<Rent[]> {
-    return await this.rentSchema
-      .find()
-      .$where(() => {
-        condition;
-      })
-      .populate([
-        {
-          path: 'userId',
-        },
-        {
-          path: 'bookIds',
-          populate: { path: 'categoryId' },
-        },
-      ]);
+    return await this.rentSchema.find({ condition });
   }
 
   async findById(id: string): Promise<Rent> {
@@ -43,29 +30,15 @@ export class RentService {
   }
 
   async findByIds(ids: string[]) {
-    return await this.rentSchema.find({ _id: { $in: ids } }).populate([
-      {
-        path: 'userId',
-      },
-      {
-        path: 'bookIds',
-        populate: { path: 'categoryId' },
-      },
-    ]);
+    return await this.rentSchema.find({ _id: { $in: ids } });
   }
 
   async findAll(queryArgsInput?: QueryArgsInput) {
-    return await this.rentSchema
-      .find({}, {}, { limit: queryArgsInput.limit, skip: queryArgsInput.skip })
-      .populate([
-        {
-          path: 'userId',
-        },
-        {
-          path: 'bookIds',
-          populate: { path: 'categoryId' },
-        },
-      ]);
+    return await this.rentSchema.find(
+      {},
+      {},
+      { limit: queryArgsInput.limit, skip: queryArgsInput.skip },
+    );
   }
 
   async create(
@@ -81,17 +54,10 @@ export class RentService {
 
     const existedBookIds = existedBooks.map((book) => book._id.toString());
 
-    return await (
-      await this.rentSchema.create({ userId, bookIds: existedBookIds })
-    ).populate([
-      {
-        path: 'userId',
-      },
-      {
-        path: 'bookIds',
-        populate: { path: 'categoryId' },
-      },
-    ]);
+    return await await this.rentSchema.create({
+      userId,
+      bookIds: existedBookIds,
+    });
   }
 
   async updateStatusById(
@@ -161,22 +127,12 @@ export class RentService {
         );
     }
 
-    return await this.rentSchema
-      .findOneAndUpdate(
-        { _id: rentId },
-        { $set: { status: updateStatus } },
-        {
-          new: true,
-        },
-      )
-      .populate([
-        {
-          path: 'userId',
-        },
-        {
-          path: 'bookIds',
-          populate: { path: 'categoryId' },
-        },
-      ]);
+    return await this.rentSchema.findOneAndUpdate(
+      { _id: rentId },
+      { $set: { status: updateStatus } },
+      {
+        new: true,
+      },
+    );
   }
 }

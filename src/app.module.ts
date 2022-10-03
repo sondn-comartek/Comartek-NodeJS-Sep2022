@@ -12,15 +12,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MigrationModule } from './modules/migration/migration.module';
-import { UserService } from './modules/user/user.service';
-import { UserSchema } from './modules/user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -38,20 +36,9 @@ import { UserSchema } from './modules/user/schemas/user.schema';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       subscriptions: {
         'graphql-ws': {
-          path: "/graphql",
-          onConnect: async (connectionParams) => {
-            const authHeader: string = connectionParams['authorization']
-            const bearerToken = authHeader.split(" ")[1];
-
-            console.log({
-              authHeader,
-              bearerToken
-            });
-
-
-            throw new UnauthorizedException('Your are not authenticated')
-          }
-        }
+          path: '/graphql',
+          onConnect: async (connectionParams) => {},
+        },
       },
       include: [
         AppModule,
@@ -82,4 +69,4 @@ import { UserSchema } from './modules/user/schemas/user.schema';
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule { }
+export class AppModule {}

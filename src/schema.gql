@@ -35,31 +35,36 @@ type Category {
   _id: ID!
   name: String!
   code: String!
-  media: Media!
+  mediaId: String!
+  thumbnail: Media!
   books: [Book!]!
 }
 
 type Book {
   _id: ID!
-  category: Category!
+  categoryId: String!
   title: String!
   code: String!
-  media: Media!
+  mediaId: String!
   description: String!
   pageTotal: Int!
   quantity: Int!
   available: Int!
   createdAt: String!
   updatedAt: String!
+  thumbnail: Media!
+  categoryInfo: Category!
 }
 
 type Rent {
   _id: ID!
-  user: User!
-  books: [Book!]!
+  userId: String!
+  bookIds: [String!]!
   status: RentStatusEnum!
   createdAt: String!
   updatedAt: String!
+  userInfo: User!
+  booksInfo: [Book!]!
 }
 
 enum RentStatusEnum {

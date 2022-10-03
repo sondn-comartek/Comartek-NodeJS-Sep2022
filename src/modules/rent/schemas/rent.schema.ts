@@ -14,21 +14,21 @@ export class Rent {
   @Field(() => ID)
   readonly _id: string;
 
-  @Field(() => User, { name: 'user' })
+  @Field(() => String)
   @Prop({
     type: Types.ObjectId,
     ref: User.name,
     required: true,
   })
-  readonly userId: Types.ObjectId | User;
+  readonly userId: string;
 
-  @Field(() => [Book], { name: 'books' })
+  @Field(() => [String])
   @Prop({
-    type: [Types.ObjectId],
+    type: Array<Types.ObjectId>,
     ref: Book.name,
     required: true,
   })
-  readonly bookIds: Types.ObjectId[] | Book[];
+  readonly bookIds: string[];
 
   @Field(() => RentStatusEnum)
   @Prop({

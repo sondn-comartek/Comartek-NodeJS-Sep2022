@@ -4,10 +4,8 @@ import { RentService } from '../rent/rent.service';
 import { NestDataLoader } from 'nestjs-dataloader';
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { sortDataByRefIds } from './loader.sort';
+import { sortDataByIds, sortDataByRefIds } from './loader.sort';
 import { RentStatusEnum } from '../rent/enums/rent-status.enum';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 
 @Injectable()
 export class RentLoader implements NestDataLoader<string, Rent> {
@@ -15,7 +13,9 @@ export class RentLoader implements NestDataLoader<string, Rent> {
 
   generateDataLoader(): DataLoader<string, Rent> {
     return new DataLoader<string, Rent>((keys: string[]) =>
-      this.rentService.findByIds(keys),
+      this.rentService
+        .findByIds(keys)
+        .then((data) => sortDataByIds(data, keys)),
     );
   }
 }

@@ -28,19 +28,12 @@ export class BookService {
   }
 
   async findByIds(ids: string[]): Promise<Book[]> {
-    return await this.bookSchema
-      .find({ _id: { $in: ids } })
-      .populate('categoryId mediaId');
+    return await this.bookSchema.find({ _id: { $in: ids } });
   }
 
-  // async findByCondition(condition: any): Promise<Book[]> {
-  //   const books = await this.bookSchema
-  //     .find({ condition })
-  //     .populate('categoryId mediaId');
-  //   console.log({ booksFindByCond: books });
-
-  //   return books;
-  // }
+  async findByCondition(condition: any): Promise<Book[]> {
+    return await this.bookSchema.find({ condition });
+  }
 
   async create(createBookInput: CreateBookInput): Promise<Book> {
     const { categoryId, mediaId, title } = createBookInput;
@@ -59,25 +52,17 @@ export class BookService {
       throw new ConflictException(`Book with title ${title} is already exist`);
     }
 
-    return (await this.bookSchema.create(createBookInput)).populate(
-      'categoryId mediaId',
-    );
+    return await this.bookSchema.create(createBookInput);
   }
 
   async findAll(queryArgsInput: QueryArgsInput): Promise<Book[]> {
-    return await this.bookSchema
-      .find(
-        {},
-        {},
-        {
-          limit: queryArgsInput.limit,
-          skip: queryArgsInput.skip,
-        },
-      )
-      .populate('categoryId mediaId');
+    return await this.bookSchema.find(
+      {},
+      {},
+      {
+        limit: queryArgsInput.limit,
+        skip: queryArgsInput.skip,
+      },
+    );
   }
-
-  // async updateMany(filter: any, update: any) {
-  //   return await this.bookSchema.updateMany({ filter }, { update });
-  // }
 }
