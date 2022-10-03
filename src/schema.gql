@@ -1,0 +1,275 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  _id: ID!
+
+  """Username of the user in the system"""
+  username: String!
+
+  """First name of user"""
+  firstName: String!
+
+  """Last name of user"""
+  lastName: String!
+  userRole: String!
+  phone: String!
+  email: String!
+  password: String!
+  city: String!
+  borrowed: [RentBook!]!
+  totalBorrowed: Float!
+}
+
+type SignInResponse {
+  """Access token return when user login"""
+  access_token: String!
+  user: User!
+}
+
+type Category {
+  _id: ID!
+
+  """Name of category in the system"""
+  categoryName: String!
+
+  """Image url of category in the system"""
+  imageUrl: String!
+  books: [Book!]!
+  statistics: CategoryStatistic!
+}
+
+type Book {
+  _id: ID!
+  bookName: String!
+  categoryId: String!
+  chapter: Int!
+  totalPage: Int!
+  imageUrl: [String!]!
+
+  """The number of book in the book's store"""
+  totalBook: Int!
+
+  """The number of available book in the book's store"""
+  availableBook: Int!
+}
+
+type BookList {
+  book: [Book!]!
+  countAllBook: Int!
+  countBookRent: Int!
+  countRestBook: Int!
+}
+
+type CategoryStatistic {
+  """Total number of book of category"""
+  totalBook: Float!
+
+  """Total number of available book of category"""
+  available: Float!
+
+  """Total number of book that has been rent of category"""
+  hasRent: Float!
+}
+
+type RentBook {
+  _id: ID!
+
+  """ID of user in the system"""
+  user: String!
+  book: [Book!]!
+
+  """Status of a rentBook"""
+  status: String!
+
+  """Time to start renting a book"""
+  startTime: String!
+
+  """Expired time of renting a book"""
+  expiredTime: String!
+}
+
+type Image {
+  imageId: String!
+  originalFilePath: String!
+  thumbnailFilePath: String!
+}
+
+type Query {
+  user(email: String!): User!
+  getAllUser: [User!]!
+  signIn(signInInput: SignInInput!): SignInResponse!
+  getAllBook(offset: Float!, limit: Float!): BookList!
+  getAllRent: [RentBook!]!
+  rent(id: Int!): RentBook!
+  getAllCategories(limit: Float!, offset: Float!): [Category!]!
+  category(id: Int!): Category!
+  images: [Image!]!
+  image(id: Int!): Image!
+}
+
+input SignInInput {
+  """Email that user use to sign in"""
+  email: String!
+
+  """Password that user use to sign in"""
+  password: String!
+}
+
+type Mutation {
+  rentBook(rentBookInput: RentBookInput!): RentBook!
+  approvedRentBook(id: String!): RentBook!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  signUp(signUpInput: SignUpInput!): User!
+  createBook(createBookInput: CreateBookInput!): Book!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+  removeBook(id: Int!): Book!
+  updateRent(updateRentInput: UpdateRentInput!): RentBook!
+  removeRent(id: Int!): RentBook!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
+  createImage(createImageInput: CreateImageInput!): String!
+}
+
+input RentBookInput {
+  """Id of book that user rent"""
+  bookId: String!
+
+  """Total time to rent a book (in units of days)"""
+  rentTime: Int!
+}
+
+input UpdateUserInput {
+  """Username of user"""
+  username: String
+
+  """Firstname of user"""
+  firstName: String
+
+  """Last name of user"""
+  lastName: String
+
+  """Email of user"""
+  email: String
+
+  """Password of the account"""
+  password: String
+
+  """Confirm password that match the password"""
+  confirmPassword: String
+
+  """Phone number of user"""
+  phone: String
+  city: String
+  id: Int!
+}
+
+input SignUpInput {
+  """Username of user"""
+  username: String!
+
+  """Firstname of user"""
+  firstName: String!
+
+  """Last name of user"""
+  lastName: String!
+
+  """Email of user"""
+  email: String!
+
+  """Password of the account"""
+  password: String!
+
+  """Confirm password that match the password"""
+  confirmPassword: String!
+
+  """Phone number of user"""
+  phone: String!
+  city: String!
+}
+
+input CreateBookInput {
+  """Name of book"""
+  bookName: String!
+
+  """Id of category that book belong to"""
+  categoryId: String!
+
+  """Chapter of book"""
+  chapter: Int!
+
+  """Total page of book"""
+  totalPage: Int!
+
+  """Image of book"""
+  bookImage: Upload!
+
+  """The number of book in the book's store"""
+  totalBook: Int!
+
+  """The number of available book in book's store"""
+  availableBook: Int!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateBookInput {
+  """Name of book"""
+  bookName: String
+
+  """Id of category that book belong to"""
+  categoryId: String
+
+  """Chapter of book"""
+  chapter: Int
+
+  """Total page of book"""
+  totalPage: Int
+
+  """Image of book"""
+  bookImage: Upload
+
+  """The number of book in the book's store"""
+  totalBook: Int
+
+  """The number of available book in book's store"""
+  availableBook: Int
+  id: Int!
+}
+
+input UpdateRentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateCategoryInput {
+  """Name of category in the system"""
+  categoryName: String!
+
+  """Image of category"""
+  image: Upload!
+}
+
+input UpdateCategoryInput {
+  """Name of category in the system"""
+  categoryName: String
+
+  """Image of category"""
+  image: Upload
+  id: Int!
+}
+
+input CreateImageInput {
+  image: Upload!
+
+  """Width of image that user want to resize"""
+  width: Int!
+
+  """Height of image that user want to resize"""
+  height: Int!
+}
