@@ -1,0 +1,100 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: String!
+  name: String!
+  imgId: String!
+}
+
+type Book {
+  id: String!
+  name: String!
+  Category: Category!
+  imgId: String!
+  quanities: Float!
+  borrowed: Float!
+  remain: Float!
+  pages: Float!
+  category: Category!
+}
+
+type User {
+  id: String!
+  username: String!
+  gmail: String!
+  password: String!
+  role: String!
+  ListBooksBorrow: [Book!]!
+  listBooksBorrow: [Book!]!
+}
+
+type JWT {
+  access_token: String!
+  user: User!
+}
+
+type Order {
+  id: String!
+  Book: Book!
+  User: User!
+  dateBorrow: String!
+  dateReturn: String!
+  status: String!
+}
+
+type Query {
+  hello: Boolean!
+  getUser(userId: String!): User!
+  getUsers: [User!]!
+  findBook(name: String!): Book!
+  findBooks(page: Float!): [Book!]!
+}
+
+type Mutation {
+  signup(SignupInput: UserSignupInput!): JWT!
+  login(LoginUserInput: UserLoginInput!): JWT!
+  sendRequestBorrowBook(CreateOrderRequestInput: CreateOrderRequestInput!): Order!
+  updateRequest(UpdateOrderRequestInput: UpdateOrderRequestInput!): Order!
+  createBook(CreateBookInput: CreateBookInput!): Book!
+  createCategory(CreateCategoryInput: CreateCategoryInput!): Category!
+}
+
+input UserSignupInput {
+  username: String!
+  gmail: String!
+  password: String!
+}
+
+input UserLoginInput {
+  gmail: String!
+  password: String!
+}
+
+input CreateOrderRequestInput {
+  bookId: String!
+  dateBorrow: String!
+  dateReturn: String!
+}
+
+input UpdateOrderRequestInput {
+  orderId: String!
+  status: String!
+}
+
+input CreateBookInput {
+  name: String!
+  categoryId: String!
+  quanities: Float!
+  pages: Float!
+  img: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateCategoryInput {
+  name: String!
+  img: Upload!
+}
