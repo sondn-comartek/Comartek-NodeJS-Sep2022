@@ -1,14 +1,14 @@
 import { NestDataLoader } from 'nestjs-dataloader';
 import { Injectable } from '@nestjs/common';
-import { Order } from '../order/entities/order.entity';
+import { OrderS } from '../order/entities/order.entity';
 import { OrderService } from '../order/order.service';
 import DataLoader from 'dataloader';
 
 @Injectable()
-export class OrderLoader implements NestDataLoader<string, Order> {
+export class OrderLoader implements NestDataLoader<string, OrderS> {
   constructor(private readonly orderService: OrderService) {}
-  generateDataLoader(): DataLoader<string, Order> {
-    return new DataLoader<string, Order>((keys) =>
+  generateDataLoader(): DataLoader<string, OrderS> {
+    return new DataLoader<string, OrderS>((keys) =>
       this.orderService.findByIds(keys),
     );
   }

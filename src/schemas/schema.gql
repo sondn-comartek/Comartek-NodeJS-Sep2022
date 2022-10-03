@@ -115,6 +115,23 @@ input CreateMediaDto {
   size: Float!
 }
 
+input CreateOrderInput {
+  """book id"""
+  bookID: String!
+
+  """borrowed date"""
+  borrowed_date: DateTime!
+
+  """return data"""
+  return_data: DateTime!
+
+  """return data"""
+  status: Order!
+
+  """user id"""
+  userID: String!
+}
+
 input CreateUserInput {
   """Email of User"""
   email: String!
@@ -125,6 +142,11 @@ input CreateUserInput {
   """role of account"""
   role: Role = user
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Media {
   """description of media"""
@@ -141,13 +163,39 @@ type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
+  create_order(createOrderInput: CreateOrderInput!): OrderS!
   removeBook(id: Int!): Book!
   removeCategory(id: Int!): Category!
+  removeOrder(id: Int!): OrderS!
   removeUser(id: Int!): User!
   updateBook(updateBookInput: UpdateBookInput!): Book!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  updateOrder(updateOrderInput: UpdateOrderInput!): OrderS!
   updateUser(updateUserInput: UpdateUserInput!): User!
   upload_media(media: CreateMediaDto!): Media!
+}
+
+enum Order {
+  accept
+  ignore
+  pending
+}
+
+type OrderS {
+  """book id"""
+  bookID: String!
+
+  """borrowed date"""
+  borrowed_date: DateTime!
+
+  """return data"""
+  return_data: DateTime!
+
+  """return data"""
+  status: Order!
+
+  """user id"""
+  userID: String!
 }
 
 type Query {
@@ -155,6 +203,7 @@ type Query {
   book_in_store(page: Int!, record: Int!): BookValid!
   category(id: Int!): Category!
   login(account: AuthInput!): AuthResDto!
+  order(id: Int!): OrderS!
   total_category(page: Int!, record: Int!): [BookCategory!]!
   user(id: Int!): User!
 }
@@ -198,6 +247,14 @@ input UpdateCategoryInput {
 
   """image of category"""
   photo_id: String
+}
+
+input UpdateOrderInput {
+  """user id"""
+  orderID: String!
+
+  """return data"""
+  status: Order!
 }
 
 input UpdateUserInput {

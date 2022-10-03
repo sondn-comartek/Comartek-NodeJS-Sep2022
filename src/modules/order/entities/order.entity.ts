@@ -3,10 +3,10 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type OrderDocument = Order & Document;
+export type OrderSDocument = OrderS & Document;
 @Schema({ timestamps: true })
 @ObjectType()
-export class Order {
+export class OrderS {
   @Field(() => String, { description: 'user id' })
   @Prop({ required: true })
   userID: string;
@@ -23,4 +23,4 @@ export class Order {
   @Prop({ required: true, default: OrderStatus.pending })
   status: OrderStatus;
 }
-export const OrderSchema = SchemaFactory.createForClass(Order);
+export const OrderSchema = SchemaFactory.createForClass(OrderS);

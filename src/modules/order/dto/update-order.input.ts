@@ -1,5 +1,4 @@
-import { CreateOrderInput } from './create-order.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field} from '@nestjs/graphql';
 import { OrderStatus } from '../enums/order.enum';
 
 @InputType()
