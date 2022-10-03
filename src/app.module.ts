@@ -7,18 +7,18 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { RolesGuard } from './auth/guards/roles.guard';
-import { BooksModule } from './books/books.module';
-import { UsersModule } from './users/users.module';
-import { CategoriesModule } from './categories/categories.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { RolesGuard } from './modules/auth/guards/roles.guard';
+import { BooksModule } from './modules/books/books.module';
+import { UsersModule } from './modules/users/users.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { HelpersModule } from './helpers/helpers.module';
 import { BullModule } from '@nestjs/bull';
-import { BookItemsModule } from './book-items/book-items.module';
-import { LoansModule } from './loans/loans.module';
-import { DataloaderModule } from './dataloader/dataloader.module';
-import { DataloaderService } from './dataloader/dataloader.service';
-import { UploadModule } from './upload/upload.module';
+import { BookItemsModule } from './modules/book-items/book-items.module';
+import { LoansModule } from './modules/loans/loans.module';
+import { DataloaderModule } from './modules/dataloader/dataloader.module';
+import { DataloaderService } from './modules/dataloader/dataloader.service';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [

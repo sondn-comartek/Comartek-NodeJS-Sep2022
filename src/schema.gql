@@ -2,10 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  access_token: String!
-}
-
 type User {
   id: String!
   username: String!
@@ -18,6 +14,18 @@ type User {
   role: String!
   totalBookBorrowed: Int!
   borrowed: [Loan!]!
+}
+
+type Auth {
+  access_token: String!
+  user: User!
+}
+
+type BookItem {
+  id: String!
+  bookId: String!
+  status: String!
+  book: Book!
 }
 
 type Loan {
@@ -35,11 +43,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type BookItem {
+type Category {
   id: String!
-  bookId: String!
-  status: String!
-  book: Book!
+  name: String!
+  imageId: String!
+  listCategory: ListBook!
 }
 
 type UploadImage {
@@ -62,13 +70,6 @@ type ListBook {
   total: Int!
   borrowed: Int!
   rest: Int!
-}
-
-type Category {
-  id: String!
-  name: String!
-  imageId: String!
-  listCategory: ListBook!
 }
 
 type Query {
