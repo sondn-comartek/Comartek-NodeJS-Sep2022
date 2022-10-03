@@ -7,6 +7,7 @@ import { HelpersService } from 'src/helpers/helpers.service';
 import { BullModule } from '@nestjs/bull';
 import { CategoryConsumer } from './categories.processor';
 import { BooksModule } from 'src/books/books.module';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
   providers: [
@@ -23,6 +24,7 @@ import { BooksModule } from 'src/books/books.module';
       name: 'category',
     }),
     BooksModule,
+    UploadModule,
   ],
 })
 export class CategoriesModule {}

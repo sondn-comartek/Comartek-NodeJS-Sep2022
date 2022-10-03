@@ -18,6 +18,7 @@ import { BookItemsModule } from './book-items/book-items.module';
 import { LoansModule } from './loans/loans.module';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { DataloaderService } from './dataloader/dataloader.service';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { DataloaderService } from './dataloader/dataloader.service';
     BookItemsModule,
     LoansModule,
     DataloaderModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [

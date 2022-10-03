@@ -35,4 +35,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # upload file image
-src/upload
+src/stores

@@ -11,6 +11,7 @@ import { BullModule } from '@nestjs/bull';
 import { HelpersService } from 'src/helpers/helpers.service';
 import { BookConsumer } from './books.processor';
 import { LoansModule } from 'src/loans/loans.module';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
   providers: [BooksResolver, BooksService, HelpersService, BookConsumer],
@@ -22,6 +23,7 @@ import { LoansModule } from 'src/loans/loans.module';
     BullModule.registerQueue({
       name: 'book',
     }),
+    UploadModule,
     LoansModule,
   ],
   exports: [BooksService],

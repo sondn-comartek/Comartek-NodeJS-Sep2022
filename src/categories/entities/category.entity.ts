@@ -9,5 +9,5 @@ export class Category {
   name: string;
 
   @Field()
-  image: string;
+  imageId: string;
 }

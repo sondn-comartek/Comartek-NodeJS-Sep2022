@@ -10,6 +10,7 @@ import {
   CategoryDocument,
 } from 'src/categories/schemas/category.schema';
 import { LoansService } from 'src/loans/loans.service';
+import { UploadService } from 'src/upload/upload.service';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import { Book, BookDocument } from './schemas/book.schema';
@@ -22,12 +23,13 @@ export class BooksService {
     @InjectModel(Category.name)
     private readonly categoryModel: Model<CategoryDocument>,
     @InjectQueue('book') private bookQueue: Queue,
+    private readonly uploadService: UploadService,
     private readonly loansService: LoansService,
   ) {}
 
   async create(createBookInput: CreateBookInput) {
     try {
-      const { name, part, categoryId } = createBookInput;
+      const { name, part, categoryId, imageId, widthImage } = createBookInput;
 
       const bookExist = await this.bookModel.find({ name });
       if (bookExist) {
@@ -40,45 +42,24 @@ export class BooksService {
         if (!categoryExist) return new Error(`No category exists`);
       }
 
-      const { image, widthImage } = createBookInput;
+      const imageExist = await this.uploadService.findOne(imageId);
+      if (!imageExist) return new Error(`Image doesn't not exist`);
 
-      const { createReadStream, filename } = await image;
+      async () => {
+        await this.bookQueue.add(
+          'convertBookImage',
+          {
+            filename: imageExist.filename,
+            name,
+            widthImage,
+          },
+          { delay: 3000 },
+        );
 
-      createReadStream()
-        .pipe(
-          createWriteStream(
-            join(process.cwd(), `./src/upload/books/origin/${filename}`),
-          ),
-        )
-        .on('finish', async () => {
-          await this.bookQueue.add(
-            'convertBookImage',
-            {
-              input:
-                process.cwd() + `\\src\\upload\\books\\origin\\${filename}`,
-              outputThumb:
-                process.cwd() +
-                `\\src\\upload\\books\\thumb\\${name}_thumb.webp`,
-              outputPreview:
-                process.cwd() +
-                `\\src\\upload\\books\\preview\\${name}_preview.webp`,
-              outputCustom:
-                process.cwd() +
-                `\\src\\upload\\books\\custom\\${name}_custom_w${widthImage}.jpg`,
-              widthImage,
-            },
-            { delay: 3000 },
-          );
-
-          return true;
-        })
-        .on('error', () => {
-          new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
-        });
-
+        return true;
+      };
       return await new this.bookModel({
         ...createBookInput,
-        image: filename,
       }).save();
     } catch (e) {
       throw new Error(e);

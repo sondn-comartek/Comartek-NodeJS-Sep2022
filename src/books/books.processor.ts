@@ -15,14 +15,7 @@ export class BookConsumer {
   @Process('convertBookImage')
   async convertImage(job: Job) {
     // console.log('job data: ', job.data);
-    const { input, outputThumb, outputPreview, outputCustom, widthImage } =
-      job.data;
-    await this.helpersService.convertImage(
-      input,
-      outputThumb,
-      outputPreview,
-      outputCustom,
-      widthImage,
-    );
+    const { filename, name, widthImage } = job.data;
+    await this.helpersService.convertImage(filename, name, widthImage);
   }
 }

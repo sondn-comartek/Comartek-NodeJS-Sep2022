@@ -1,6 +1,4 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
-import { FileUpload } from 'src/interfaces/file-upload.interface';
 
 @InputType()
 export class CreateBookInput {
@@ -19,8 +17,8 @@ export class CreateBookInput {
   @Field(() => Int)
   quantity: number;
 
-  @Field(() => GraphQLUpload)
-  image: Promise<FileUpload>;
+  @Field(() => String)
+  imageId: string;
 
   @Field(() => Int)
   widthImage: number;

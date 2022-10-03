@@ -42,6 +42,11 @@ type BookItem {
   book: Book!
 }
 
+type UploadImage {
+  id: String!
+  filename: String!
+}
+
 type Book {
   id: String!
   categoryId: String!
@@ -49,7 +54,7 @@ type Book {
   part: Int!
   numberOfPages: Int!
   quantity: Int!
-  image: String!
+  imageId: String!
   listBooks: ListBook!
 }
 
@@ -62,7 +67,7 @@ type ListBook {
 type Category {
   id: String!
   name: String!
-  image: String!
+  imageId: String!
   listCategory: ListBook!
 }
 
@@ -77,6 +82,8 @@ type Query {
   books: [Book!]!
   book(id: Int!): Book!
   listBook: ListBook!
+  uploads: [UploadImage!]!
+  upload(id: Int!): UploadImage!
   categories: [Category!]!
   category(id: Int!): Category!
 }
@@ -93,6 +100,9 @@ type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
   updateBook(updateBookInput: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
+  createUpload(createUploadInput: CreateUploadInput!): UploadImage!
+  updateUpload(updateUploadInput: UpdateUploadInput!): UploadImage!
+  removeUpload(id: Int!): UploadImage!
   register(createUserInput: CreateUserInput!): User!
   login(createAuthInput: CreateAuthInput!): Auth!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
@@ -136,12 +146,9 @@ input CreateBookInput {
   part: Int!
   numberOfPages: Int!
   quantity: Int!
-  image: Upload!
+  imageId: String!
   widthImage: Int!
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input UpdateBookInput {
   categoryId: String
@@ -149,8 +156,20 @@ input UpdateBookInput {
   part: Int
   numberOfPages: Int
   quantity: Int
-  image: Upload
+  imageId: String
   widthImage: Int
+  id: Int!
+}
+
+input CreateUploadInput {
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateUploadInput {
+  image: Upload
   id: Int!
 }
 
@@ -170,13 +189,13 @@ input CreateAuthInput {
 
 input CreateCategoryInput {
   name: String!
-  image: Upload!
+  imageId: String!
   widthImage: Int!
 }
 
 input UpdateCategoryInput {
   name: String
-  image: Upload
+  imageId: String
   widthImage: Int
   id: Int!
 }

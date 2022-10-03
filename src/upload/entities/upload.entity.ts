@@ -1,13 +1,16 @@
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-export type CategoryDocument = Category & Document;
+export type UploadImageDocument = UploadImage & Document;
 
+@ObjectType()
 @Schema({
   timestamps: true,
 })
-export class Category {
+export class UploadImage {
+  @Field()
   @Prop({
     type: String,
     default: function genUUID() {
@@ -16,11 +19,9 @@ export class Category {
   })
   id: string;
 
+  @Field()
   @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  imageId: string;
+  filename: string;
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export const UploadImageSchema = SchemaFactory.createForClass(UploadImage);

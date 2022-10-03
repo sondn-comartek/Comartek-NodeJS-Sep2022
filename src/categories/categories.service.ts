@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { HelpersService } from 'src/helpers/helpers.service';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category, CategoryDocument } from './schemas/category.schema';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { createWriteStream } from 'fs';
-import { join } from 'path';
 import { BooksService } from 'src/books/books.service';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class CategoriesService {
@@ -19,52 +16,30 @@ export class CategoriesService {
     private readonly categoryModel: Model<CategoryDocument>,
     @InjectQueue('category') private categoryQueue: Queue,
     private readonly booksService: BooksService,
+    private readonly uploadService: UploadService,
   ) {}
 
   async create(createCategoryInput: CreateCategoryInput) {
     try {
-      const { name, image, widthImage } = createCategoryInput;
+      const { name, imageId, widthImage } = createCategoryInput;
       const categoryExist = await this.categoryModel.findOne({ name });
       if (categoryExist) return new Error(`Category ${name} already exists`);
 
-      const { createReadStream, filename } = await image;
+      const imageExist = await this.uploadService.findOne(imageId);
+      if (!imageExist) return new Error(`Image doesn't not exist`);
 
-      createReadStream()
-        .pipe(
-          createWriteStream(
-            join(process.cwd(), `./src/upload/categories/origin/${filename}`),
-          ),
-        )
-        .on('finish', async () => {
-          await this.categoryQueue.add(
-            'convertCategoryImage',
-            {
-              input:
-                process.cwd() +
-                `\\src\\upload\\categories\\origin\\${filename}`,
-              outputThumb:
-                process.cwd() +
-                `\\src\\upload\\categories\\thumb\\${name}_thumb.webp`,
-              outputPreview:
-                process.cwd() +
-                `\\src\\upload\\categories\\preview\\${name}_preview.webp`,
-              outputCustom:
-                process.cwd() +
-                `\\src\\upload\\categories\\custom\\${name}_custom_w${widthImage}.jpg`,
-              widthImage,
-            },
-            { delay: 3000 },
-          );
-
-          return true;
-        })
-        .on('error', () => {
-          new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
-        });
+      await this.categoryQueue.add(
+        'convertCategoryImage',
+        {
+          filename: imageExist.filename,
+          name,
+          widthImage,
+        },
+        { delay: 3000 },
+      );
 
       return await new this.categoryModel({
         ...createCategoryInput,
-        image: filename,
       }).save();
     } catch (e) {
       throw new Error(e);

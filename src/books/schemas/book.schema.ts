@@ -32,7 +32,7 @@ export class Book {
   quantity: number;
 
   @Prop({ required: true })
-  image: string;
+  imageId: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

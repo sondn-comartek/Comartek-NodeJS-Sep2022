@@ -21,5 +21,5 @@ export class Book {
   quantity: number;
 
   @Field(() => String)
-  image: string;
+  imageId: string;
 }
