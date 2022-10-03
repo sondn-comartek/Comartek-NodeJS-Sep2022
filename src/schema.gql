@@ -1,0 +1,100 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SignUpOutput {
+  """Statuscode"""
+  status: Int!
+
+  """Message"""
+  message: String!
+}
+
+type UserInfo {
+  id: String!
+  username: String!
+  firstname: String!
+  lastname: String!
+  phone: String!
+}
+
+type Auth {
+  """status"""
+  status: Int
+
+  """message"""
+  message: String
+
+  """jwt"""
+  jwt: String
+  name: String
+  id: String!
+  user: UserInfo!
+}
+
+type AdminCreateBookOutPut {
+  bookIds: [String!]!
+}
+
+type BookOutPut {
+  id: String!
+  name: String!
+}
+
+type UserOutPut {
+  username: String!
+  firstname: String!
+  lastname: String!
+  phone: String!
+  borrowBook: [BookOutPut!]!
+}
+
+type BorrowBookOutput {
+  status: Int!
+  message: String!
+}
+
+type Query {
+  getUser(userids: GetUserInput!): [UserOutPut!]!
+  root: String!
+}
+
+input GetUserInput {
+  ids: [String!]!
+}
+
+type Mutation {
+  borrowBook(borrowbook: BorrowBookInput!): BorrowBookOutput!
+  createBook(createbook: AdminCreateBookInput!): AdminCreateBookOutPut!
+  signUp(signUpData: SignUpInput!): SignUpOutput!
+  signIn(loginData: SignInInput!): Auth!
+}
+
+input BorrowBookInput {
+  bookid: String!
+}
+
+input AdminCreateBookInput {
+  number: Int!
+  name: String!
+  categorys: [String!]!
+  episode: Float
+  images: [Upload!]
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input SignUpInput {
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  phone: String!
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}

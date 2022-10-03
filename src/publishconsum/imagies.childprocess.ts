@@ -1,0 +1,38 @@
+
+import { Job, DoneCallback } from 'bull';
+import { Mongoose } from 'mongoose';
+import { BookSchema } from '../schema/book.schema';
+import * as dotenv from "dotenv";
+import * as sharp from 'sharp';
+import {v4} from 'uuid'
+
+export default async function (job: Job, cb: DoneCallback) {
+  console.log(`[${process.pid}]`);
+  dotenv.config({ path: __dirname+'/.env'});
+  const {image, filename, ids} = job.data
+  const buffer = Buffer.from(image)
+  const uuid = v4()
+  const extendtion = filename.split(".").at(-1)
+
+
+  
+  // store raw images
+  const rawFileName = `${uuid}.${extendtion}`
+  await sharp(buffer)
+        .toFile(__dirname + `/../../upload/${rawFileName}`)
+
+  // store resize file
+  const resizeFileName = `resize-320-${uuid}.webp`
+  await sharp(buffer)
+        .resize(320)
+        .toFile(__dirname + `/../../upload/${resizeFileName}`)
+
+    
+  const images: string[] = [rawFileName, resizeFileName]
+
+  const mg = new Mongoose()
+  await mg.connect(process.env.DB)
+  const Book = mg.model('book', BookSchema);
+  await Book.updateMany({_id: ids}, {$push: {images: images}})
+  cb(null, 'done');
+}
