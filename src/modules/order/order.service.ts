@@ -7,6 +7,7 @@ import { OrderS, OrderSDocument } from './entities/order.entity';
 import { v4 as uuidV4 } from 'uuid';
 import { User } from '../user/entities/user.entity';
 import { BookService } from '../book/book.service';
+import { BookStatus } from '../book/enums/status.enum';
 @Injectable()
 export class OrderService {
   constructor(
@@ -18,6 +19,10 @@ export class OrderService {
       createOrderInput?.bookID,
     );
     if (isBookValid) {
+      this.bookService.changeStatusBook(
+        createOrderInput.bookID,
+        BookStatus.unavailable,
+      );
       return await this.orderModel.create({ ...createOrderInput });
     }
     throw Error('book is unavailable');

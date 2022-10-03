@@ -27,7 +27,7 @@ export class BookService {
   }
 
   async findAll() {
-    return 'find all';
+    return await this.bookModel.find();
   }
   async totalBook() {
     return await this.bookModel.find().count();
@@ -45,6 +45,9 @@ export class BookService {
     return await this.bookModel
       .find({ status: BookStatus.unavailable })
       .count();
+  }
+  changeStatusBook(id: string, status: BookStatus) {
+    return this.bookModel.findOneAndUpdate({ bookID: id }, { status: status });
   }
   findOne(id: number) {
     return `This action returns a #${id} book`;
