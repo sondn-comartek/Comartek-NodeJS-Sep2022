@@ -10,7 +10,6 @@ export class ResizeHelper {
             .webp()
             .toFile(  newImagePath , (err , info) => {
                 if(err) throw new InternalServerErrorException(err) 
-                unlinkSync(image_path)
             })
         return newImagePath ;
     }

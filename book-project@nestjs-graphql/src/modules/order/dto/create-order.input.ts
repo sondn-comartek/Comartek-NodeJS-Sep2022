@@ -15,10 +15,10 @@ export class CreateOrderInput {
     @IsUUID()
     customer : string
 
-    @Field( () => [ID])
+    @Field( () => [ID] )
     @IsArray()
     @ArrayNotEmpty()
-    @IsUUID(null , { each : true })
+    @IsUUID( 4 , { each : true})
     @ArrayUnique()
     books : string[]
 }

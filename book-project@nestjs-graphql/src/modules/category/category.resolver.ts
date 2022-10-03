@@ -1,32 +1,52 @@
-import { UseGuards } from '@nestjs/common';
-import { Resolver, Mutation, Query, Args } from '@nestjs/graphql';
-import { Role } from '../auth/decorators';
-import { JwtGuard, RoleGuard } from '../auth/guards';
-import { ListBook } from '../book/models';
-import { UserRole } from '../user/types';
-import { CategoryService } from './category.service';
-import { CreateCategoryInput, GetListArg } from './dto';
-import { Category } from './models';
+import { UseGuards } from '@nestjs/common'
+import {
+   Resolver,
+   Mutation,
+   Query,
+   Args,
+   ResolveField,
+   Parent,
+   Int,
+} from '@nestjs/graphql'
+import { Role } from '../auth/decorators'
+import { JwtGuard, RoleGuard } from '../auth/guards'
+import { BookService } from '../book/book.service'
+import { Book } from '../book/models'
+import { UserRole } from '../user/types'
+import { CategoryService } from './category.service'
+import { CreateCategoryInput, GetCategoryArg } from './dto'
+import { Category } from './models'
 
-@Resolver()
+@Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) { }
-  @Mutation(() => Category)
-  @Role(UserRole.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
-  createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
-    return this.categoryService.create(createCategoryInput)
-  }
+   constructor(
+      private readonly categoryService: CategoryService,
+      private readonly bookService: BookService,
+   ) {}
+   @Mutation(() => Category)
+   @Role(UserRole.ADMIN)
+   @UseGuards(JwtGuard, RoleGuard)
+   createCategory(
+      @Args('createCategoryInput') createCategoryInput: CreateCategoryInput,
+   ) {
+      return this.categoryService.create(createCategoryInput)
+   }
 
-  @Query( () => ListBook)
-  async getListBookOfCategory(
-    @Args() getList: GetListArg
-  ) {
-    const books = await this.categoryService.findBooks(getList)
-    return {
-      books,
-      count: books.length
-    }
-  }
+   @Query(() => Category)
+   async category(@Args() getCategoryArg: GetCategoryArg) {
+      return this.categoryService.findOneCategory(getCategoryArg)
+   }
 
+   @Query(() => [Category])
+   async categories() {
+      return this.categoryService.findAllCategories()
+   }
+
+   @ResolveField(() => [Book])
+   books(
+      @Parent() { code }: Category,
+      @Args('page', { nullable: true }) page: number | null,
+   ) {
+      return this.bookService.findBooksByCategoryCode(code, page)
+   }
 }

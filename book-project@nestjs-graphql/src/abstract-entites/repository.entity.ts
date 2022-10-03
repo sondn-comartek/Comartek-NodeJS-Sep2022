@@ -23,7 +23,11 @@ export abstract class EnityRepository<T extends Document> {
         return await this.EntityModel.find(
             Filter,
             Projection,
-            Option
+            {
+                lean : true , 
+                // sort : { createdAt : 1 } ,
+                ...Option
+            }
             )
     }
 
@@ -35,7 +39,10 @@ export abstract class EnityRepository<T extends Document> {
         return await this.EntityModel.findOne(
             Filter,
             Projection,
-            Option,
+            {
+                lean : true , 
+                ...Option
+            }
         )
     }
 
@@ -57,6 +64,18 @@ export abstract class EnityRepository<T extends Document> {
     ): Promise<T | null> {
         return await this.EntityModel.findOneAndDelete(
             Filter,
+            Option
+        );
+    }
+
+    async UpdateMany(
+        Filter: FilterQuery<T>,
+        Update: UpdateQuery<T>,
+        Option?: QueryOptions
+    ) {
+        return await this.EntityModel.updateMany(
+            Filter,
+            Update,
             Option
         );
     }

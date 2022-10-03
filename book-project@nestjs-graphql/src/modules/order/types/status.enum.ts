@@ -3,7 +3,8 @@ import { registerEnumType } from "@nestjs/graphql"
 export enum OrderStatus {
     ACCEPCTED = "accepted" ,
     PENDING = "pending" ,
-    REJECTED ="rejected"
+    REJECTED = "rejected" ,
+    COMPLETED = "completed"
 }
 
 registerEnumType( 

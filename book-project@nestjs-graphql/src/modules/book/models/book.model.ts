@@ -1,9 +1,8 @@
 
 import { ObjectType , Field  , Int, ID } from '@nestjs/graphql'
 import { Prop , Schema , SchemaFactory } from '@nestjs/mongoose' 
-import { Document } from 'mongoose' 
+import { Document, Types } from 'mongoose' 
 import { Category } from 'src/modules/category/models'
-import { BookStatus } from '../types'
 
 
 export type BookDocument = Book & Document 
@@ -25,7 +24,7 @@ export class Book {
     @Prop({ 
         isRequired : true 
     })
-    name : string  
+    title : string  
 
     @Field()
     @Prop( {
@@ -34,10 +33,9 @@ export class Book {
     })
     code : string 
 
-    @Field( () => [String])
+    @Field( () => [Category])
     @Prop({
         isRequired : true ,
-        ref : 'category',
     })
     categories : string[]
 
@@ -47,21 +45,28 @@ export class Book {
 
     @Field(() => Int )
     @Prop({ isRequired : true })
-    amount :  number 
+    page_count :  number 
+
+    @Field(() => Int )
+    @Prop({ isRequired : true })
+    count_avaiable :  number 
+
+    @Field(() => Int )
+    @Prop({ isRequired : true , default : 0 })
+    count_unavaiable :  number 
 
     @Field({ nullable : true})
     @Prop({ default : null })
     image_url : string 
 
-    @Field( () => BookStatus)
-    @Prop({ default : BookStatus.AVAIABLE })
-    status : BookStatus
-
-    @Field( () => Date)
-    createdAt : Date
+    @Field( () => Date )
+    createdAt? : Date
 
     @Field( () => Date )
-    updatedAt : Date
+    updatedAt? : Date
+
+    @Field( () => Int )
+    total? : number 
 
 }
 

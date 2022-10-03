@@ -1,7 +1,8 @@
-import { Document } from 'mongoose'
+import { Document, Types } from 'mongoose'
 import { Schema , Prop , SchemaFactory } from "@nestjs/mongoose"
-import { Field  , ID , ObjectType } from '@nestjs/graphql'
+import { Field  , ID , Int, ObjectType } from '@nestjs/graphql'
 import { UserRole, UserStatus } from "../types" ;
+import { Order } from 'src/modules/order/models';
 
 
 
@@ -49,18 +50,17 @@ export class User extends Document {
     })
     role : UserRole
 
-    @Field( () => [ID])
-    @Prop({
-        unique : true ,
-        default : null
-    })
-    books : string[]
-
     @Field( () => Date)
-    createdAt : Date
+    createdAt? : Date
 
     @Field( () => Date )
-    updatedAt : Date
+    updatedAt? : Date
+
+    @Field( () => [Order])
+    orders? : Order[]
+
+    @Field( () => Int )
+    count? : number
 }
 
 export const UserSchema = SchemaFactory.createForClass(User) 

@@ -8,6 +8,9 @@ import { UserModule } from '../user/user.module';
 import { BookModule } from '../book/book.module';
 import { UserRepository } from '../user/user.repository';
 import { BookRepository } from '../book/book.repository';
+import { UserService } from '../user/user.service';
+import { BookService } from '../book/book.service';
+import { CategoryModule } from '../category/category.module';
 
 @Module({
   imports : [
@@ -17,15 +20,18 @@ import { BookRepository } from '../book/book.repository';
         schema : OrderSchema 
       }
     ]) ,
-    BookModule ,
-    forwardRef( () => UserModule)
+    forwardRef( () => BookModule) ,
+    forwardRef( () => UserModule) ,
+    forwardRef( () => CategoryModule)
   ] ,
   providers: [
      OrderResolver,
      OrderService , 
+     UserService  ,
+     BookService , 
      BookRepository ,
      OrderRepository , 
-     UserRepository
+     UserRepository , 
     ] ,
   exports : [ OrderRepository , MongooseModule ]
 })

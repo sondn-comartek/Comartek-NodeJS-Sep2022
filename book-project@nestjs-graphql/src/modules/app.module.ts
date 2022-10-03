@@ -10,6 +10,7 @@ import { BookModule } from './book/book.module';
 import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
 import { BullModule } from '@nestjs/bull';
+import { DataloaderModule } from './dataloader/dataloader.module';
 
 
 @Module({
@@ -44,7 +45,8 @@ import { BullModule } from '@nestjs/bull';
     CategoryModule,
     BookModule,
     OrderModule,
-    ImageModule ,
+    ImageModule,
+    DataloaderModule ,
 
   ],
 })

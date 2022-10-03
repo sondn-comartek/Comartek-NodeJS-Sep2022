@@ -1,5 +1,5 @@
 
-import { InputType , Field  } from '@nestjs/graphql';
+import { InputType , Field, ID  } from '@nestjs/graphql';
 import { 
     IsNotEmpty , 
     IsNumber , 
@@ -17,9 +17,9 @@ export class CreateBookInput {
     @Field()
     @IsNotEmpty()
     @IsString()
-    name : string
+    title : string
 
-    @Field( () => [String] )
+    @Field( () => [ID] )
     @IsArray()
     @ArrayNotEmpty()
     @IsString( { each : true })
@@ -33,10 +33,17 @@ export class CreateBookInput {
     @Min(1)
     part? : number 
 
-    @Field()
+    @Field({defaultValue : 1})
     @IsNotEmpty()
     @IsNumber()
-    amount : number 
+    @Min(1)
+    page_count : number 
+
+    @Field({defaultValue : 1})
+    @IsNotEmpty()
+    @IsNumber()
+    @Min(1)
+    count_avaiable : number 
 
     @Field({ nullable : true })
     @IsOptional()
