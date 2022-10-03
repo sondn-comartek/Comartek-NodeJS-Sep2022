@@ -11,12 +11,15 @@ import {
 import { Role } from '../auth/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
 import { CategoryService } from '../category/category.service'
-import { Category } from '../category/models'
+import { Category, CategoryDocument } from '../category/models'
 import { UserRole } from '../user/types'
 import { BookService } from './book.service'
 import { CreateBookInput } from './dto'
 import { GetListArg } from './dto/get-list.arg'
-import { Book } from './models'
+import { Book } from './models' ;
+import { Loader } from 'nestjs-dataloader'
+import { CategoryLoader } from '../dataloader/loaders'
+import DataLoader from 'dataloader'
 
 @Resolver(() => Book)
 export class BookResolver {
@@ -38,8 +41,11 @@ export class BookResolver {
     }
 
     @ResolveField('categories', () => [Category])
-    categories(@Parent() { categories }: Book) {
-        return this.categoryService.findCategoriesByCodes(categories)
+    categories(
+      @Parent() { categories }: Book ,
+      @Loader(CategoryLoader) categoryLoader: DataLoader<string , CategoryDocument>
+      ) {
+        return categoryLoader.loadMany(categories)
     }
 
     @ResolveField('total', () => Int )

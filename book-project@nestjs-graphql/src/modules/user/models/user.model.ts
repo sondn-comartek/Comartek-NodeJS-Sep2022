@@ -3,6 +3,7 @@ import { Schema , Prop , SchemaFactory } from "@nestjs/mongoose"
 import { Field  , ID , Int, ObjectType } from '@nestjs/graphql'
 import { UserRole, UserStatus } from "../types" ;
 import { Order } from 'src/modules/order/models';
+import { Token } from 'src/modules/auth/models';
 
 
 
@@ -61,6 +62,9 @@ export class User extends Document {
 
     @Field( () => Int )
     count? : number
+
+    @Field( () => Token  , { nullable : true })
+    tokens? : Token
 }
 
 export const UserSchema = SchemaFactory.createForClass(User) 

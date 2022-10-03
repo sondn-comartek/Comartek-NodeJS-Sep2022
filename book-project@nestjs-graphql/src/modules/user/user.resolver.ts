@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common'
+import { ExecutionContext, UseGuards } from '@nestjs/common'
 import {
    Query,
    Mutation,
@@ -6,10 +6,13 @@ import {
    ResolveField,
    Parent,
    Int,
+   Context,
 } from '@nestjs/graphql'
 import { Resolver } from '@nestjs/graphql'
+import { AuthService } from '../auth/auth.service'
 import { Role } from '../auth/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
+import { Token } from '../auth/models'
 import { Order } from '../order/models'
 import { OrderService } from '../order/order.service'
 import { OrderStatus } from '../order/types'
@@ -23,11 +26,12 @@ export class UserResolver {
    constructor(
       private readonly userService: UserService,
       private readonly orderService: OrderService,
+      private readonly authService: AuthService
    ) {}
 
-   @Query( () => [User])
+   @Query(() => [User])
    users() {
-    return this.userService.findUsers()
+      return this.userService.findUsers()
    }
 
    @Query(() => User)
@@ -42,10 +46,17 @@ export class UserResolver {
 
    @ResolveField('count', () => Int)
    count(
-      @Parent() { userid } : User,
+      @Parent() { userid }: User,
       @Args('orderStatus', { type: () => OrderStatus })
       status: OrderStatus,
    ) {
-      return this.orderService.countBooksOfCustomerByStatus(userid , status)
+      return this.orderService.countBooksOfCustomerByStatus(userid, status)
+   }
+
+   @ResolveField('tokens', () => Token )
+   tokens(
+      @Parent() { userid }: User ,
+   ) {
+      return this.authService.findTokenByUserid(userid)
    }
 }

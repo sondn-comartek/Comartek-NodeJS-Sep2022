@@ -6,11 +6,11 @@ import { BookService } from 'src/modules/book/book.service';
 import { maping } from '../helpers';
 
 @Injectable()
-export class BookLoader implements NestDataLoader< string , Book >{
+export class BookLoader implements NestDataLoader< string , BookDocument >{
     constructor(
         private readonly bookService:BookService
     ){}
-    generateDataLoader():DataLoader<string , Book>{
+    generateDataLoader():DataLoader<string , BookDocument>{
         return new DataLoader( async ( bookids: string[] ) => {
             const books = await this.bookService.findBooksByBookIds(bookids)
             return maping<BookDocument>('bookid' , bookids , books)

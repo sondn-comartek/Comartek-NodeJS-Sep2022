@@ -6,7 +6,7 @@ import { ResizeHelper } from './helpers/resize.helper';
 export class ImageConsumer {
     constructor(private resizeHelper: ResizeHelper){}
     @Process('resize')
-    resize( {data}:Job<any>) {
-        return this.resizeHelper.resize( data.image_path , data.shape );
+    resize( { data }:Job<any>) {
+        return this.resizeHelper.resize( data.imageOriginPath , data.shape );
     }
 }

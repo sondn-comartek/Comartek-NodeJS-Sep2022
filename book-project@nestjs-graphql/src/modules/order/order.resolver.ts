@@ -10,7 +10,7 @@ import {
 import { Role } from '../auth/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
 import { BookService } from '../book/book.service'
-import { Book } from '../book/models'
+import { Book, BookDocument } from '../book/models'
 import { User } from '../user/models'
 import { UserRole } from '../user/types'
 import { UserService } from '../user/user.service'
@@ -36,7 +36,7 @@ export class OrderResolver {
 
    @Mutation(() => OrderStatus)
    @Role(UserRole.ADMIN)
-   @UseGuards(JwtGuard, RoleGuard)
+   @UseGuards(JwtGuard)
    approveOrder(
       @Args('approveOrderInput') approveOrderInput: ApproveOrderInput,
    ) {
@@ -51,7 +51,7 @@ export class OrderResolver {
    @ResolveField('books', () => [Book])
    books(
     @Parent() { books }: Order , 
-    @Loader(BookLoader) bookLoader: DataLoader<string , Book>
+    @Loader(BookLoader) bookLoader: DataLoader<string , BookDocument>
     ) {
       return bookLoader.loadMany(books)
    }

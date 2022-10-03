@@ -1,1 +1,2 @@
-export * from './jwt-token.model'
+export * from './token.model'
+export * from './jwt-tokens'

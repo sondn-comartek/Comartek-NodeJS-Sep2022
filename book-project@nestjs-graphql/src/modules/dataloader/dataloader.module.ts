@@ -9,7 +9,7 @@ import { OrderService } from '../order/order.service'
 import { UserModule } from '../user/user.module'
 import { UserService } from '../user/user.service'
 import { DataLoaderInterceptor} from 'nestjs-dataloader'
-import { BookLoader } from './loaders'
+import { BookLoader, CategoryLoader } from './loaders'
 
 @Module({
    imports: [
@@ -27,8 +27,12 @@ import { BookLoader } from './loaders'
         provide: APP_INTERCEPTOR,
         useClass: DataLoaderInterceptor,
       },
-      BookLoader
+      BookLoader ,
+      CategoryLoader 
     ],
-    exports : [ BookLoader ]
+    exports : [ 
+        BookLoader ,
+        CategoryLoader 
+      ]
 })
 export class DataloaderModule {}

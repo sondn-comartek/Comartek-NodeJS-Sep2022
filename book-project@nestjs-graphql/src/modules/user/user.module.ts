@@ -5,10 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from './models';
 import { UserRepository } from './user.repository';
 import { OrderModule } from '../order/order.module';
-import { OrderRepository } from '../order/order.repository';
-import { BookRepository } from '../book/book.repository';
 import { BookModule } from '../book/book.module';
 import { OrderService } from '../order/order.service';
+import { AuthModule } from '../auth/auth.module';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports : [
@@ -19,13 +19,15 @@ import { OrderService } from '../order/order.service';
       }
     ]) ,
     forwardRef( () => OrderModule) ,
-    forwardRef( () => BookModule )
+    forwardRef( () => BookModule ), 
+    forwardRef( () => AuthModule )
   ] ,
   providers: [
      UserResolver,
      UserService , 
      UserRepository , 
-     OrderService
+     OrderService ,
+     AuthService ,
     ] ,
   exports : [  UserRepository , MongooseModule , UserService ]
 })

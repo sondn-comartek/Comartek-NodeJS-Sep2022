@@ -23,6 +23,7 @@ export class CategoryService {
    }
 
    async findCategoriesByCodes(codes: string[]): Promise<CategoryDocument[]> {
+      console.log('find >>>>' + codes)
       return await this.categoryRepositoy.FindAll({
          code: {
             $in: codes,

@@ -1,16 +1,17 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { unlinkSync } from 'fs'
 import * as sharp from 'sharp'
+import { TypeImage } from '../types/type.enum'
 @Injectable()
 export class ResizeHelper {
-    resize(image_path: string, size: number):string {
-        const newImagePath = image_path.split('.')[0] + '.webp'
-        sharp(image_path)
+    resize(imageOriginPath: string, size: number):string {
+        const imageResizedPath = imageOriginPath.split('.')[0] + TypeImage.WEBP
+        sharp(imageOriginPath)
             .resize(size, size)
             .webp()
-            .toFile(  newImagePath , (err , info) => {
+            .toFile( imageResizedPath , (err , info) => {
                 if(err) throw new InternalServerErrorException(err) 
             })
-        return newImagePath ;
+        return imageResizedPath ;
     }
 }

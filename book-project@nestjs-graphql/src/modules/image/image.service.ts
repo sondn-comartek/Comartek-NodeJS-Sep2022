@@ -24,7 +24,7 @@ export class ImageService {
     }: UploadImageInput): Promise<ImageDocument> {
         const { filename, createReadStream } = await file
         const image_id = genImageId(description)
-        const image_path = await new Promise((resolve, reject) => {
+        const imageOriginPath = await new Promise((resolve, reject) => {
             open(this.uploadPath, (err) => {
                 if (err) mkdirSync(this.uploadPath)
                 createReadStream()
@@ -42,7 +42,7 @@ export class ImageService {
             })
         })
         this.imageQueue.add('resize', {
-            image_path,
+         imageOriginPath,
             shape,
         })
         return await this.imageRepository.Create({
