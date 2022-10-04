@@ -1,17 +1,37 @@
-import { Resolver, Subscription } from '@nestjs/graphql';
+import { Book } from 'src/modules/book/schemas/book.schema';
 import { PubSubService } from 'src/modules/pubsub/pubsub.service';
-import { Book } from '../schemas/book.schema';
+import { Parent, ResolveField, Resolver, Subscription } from '@nestjs/graphql';
+import { Notification } from 'src/modules/notification/schemas/notification.schema';
+import { Loader } from 'nestjs-dataloader';
+import * as DataLoader from 'dataloader';
+import { BookLoader } from 'src/modules/loader/loader.book';
+import { UserService } from 'src/modules/user/user.service';
 
-@Resolver(() => Book)
+@Resolver(() => Notification)
 export class BookSubscriptionResolver {
-  constructor(private readonly pubSubService: PubSubService) {}
+  constructor(
+    private readonly pubSubService: PubSubService,
+    private readonly userService: UserService,
+  ) {}
 
-  @Subscription(() => Book, {
-    resolve: async (book: Book) => {
-      return book;
+  @Subscription(() => Notification, {
+    resolve: (payload) => payload?.notification,
+    filter: async (payload, variables, context) => {
+      const userId: string = context?.user?._id;
+      // Kiểm tra user có đăng ký nhận thông báo hay không
+
+      return true;
     },
   })
-  async bookAdded() {
+  async getBookAddedNotification() {
     return await this.pubSubService.listenEvent('bookAdded');
+  }
+
+  @ResolveField(() => Book)
+  async bookInfo(
+    @Parent() notification: Notification,
+    @Loader(BookLoader) bookLoader: DataLoader<Notification['entityId'], Book>,
+  ): Promise<Book> {
+    return await bookLoader.load(notification.entityId);
   }
 }

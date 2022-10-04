@@ -12,20 +12,21 @@ export class Notification {
   @Field(() => ID)
   readonly _id: string;
 
-  // @Field(() => String)
-  // @Prop({
-  //   type: String,
-  //   required: true,
-  // })
-  // readonly type: NotificationTypeEnum;
+  @Field(() => String)
+  @Prop({
+    type: String,
+    required: true,
+  })
+  readonly type: NotificationTypeEnum;
+
+  @Field(() => String)
+  @Prop({
+    type: Types.ObjectId,
+    required: true,
+  })
+  readonly entityId: string;
 
   // @Field(() => String)
-  // @Prop({
-  //   type: [Types.ObjectId],
-  //   required: true,
-  // })
-  // readonly entityIds: string[];
-
   // @Prop({
   //   type: String,
   //   required: true,

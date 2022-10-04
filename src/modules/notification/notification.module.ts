@@ -1,12 +1,12 @@
-import { NotificationSubscriptionResolver } from './resolvers/notification-subscription.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import {
   Notification,
   NotificationSchema,
 } from './schemas/notification.schema';
 
+@Global()
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -16,7 +16,7 @@ import {
       },
     ]),
   ],
-  providers: [NotificationService, NotificationSubscriptionResolver],
+  providers: [NotificationService],
   exports: [NotificationService],
 })
 export class NotificationModule {}

@@ -25,6 +25,15 @@ type AuthResponseType {
   user: User
 }
 
+type Notification {
+  _id: ID!
+  type: String!
+  entityId: String!
+  createdAt: String!
+  bookInfo: Book!
+  rentInfo: Rent!
+}
+
 type Media {
   _id: ID!
   filename: String!
@@ -64,6 +73,7 @@ type Rent {
   createdAt: String!
   updatedAt: String!
   userInfo: User!
+  booksInfo: [Book!]!
 }
 
 enum RentStatusEnum {
@@ -76,9 +86,9 @@ enum RentStatusEnum {
 type Query {
   findAllMedia(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Media!]!
   findAllBook(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Book!]!
-  findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
-  findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
   findAllUser(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [User!]!
+  findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
+  findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
   getHello: String!
 }
 
@@ -90,9 +100,9 @@ input QueryArgsInput {
 type Mutation {
   uploadFile(uploadFileInput: UploadFileInput!): Media!
   createBook(createBookInput: CreateBookInput!): Book!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createRent(createRentInput: CreateRentInput!): Rent!
   updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
   signUp(createUserInput: CreateUserInput!): AuthResponseType!
   signIn(signInInput: SignInInput!): AuthResponseType!
 }
@@ -116,12 +126,6 @@ input CreateBookInput {
   available: Int!
 }
 
-input CreateCategoryInput {
-  name: String!
-  code: String!
-  mediaId: String!
-}
-
 input CreateRentInput {
   bookIds: [String!]!
 }
@@ -129,6 +133,12 @@ input CreateRentInput {
 input UpdateRentStatusInput {
   rentId: String!
   updateStatus: RentStatusEnum!
+}
+
+input CreateCategoryInput {
+  name: String!
+  code: String!
+  mediaId: String!
 }
 
 input CreateUserInput {
@@ -145,5 +155,7 @@ input SignInInput {
 }
 
 type Subscription {
-  bookAdded: Book!
+  getBookAddedNotification: Notification!
+  getRentUpdatedNotification: Notification!
+  getRentCreatedNotification: Notification!
 }

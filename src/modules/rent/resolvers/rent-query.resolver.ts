@@ -40,11 +40,12 @@ export class RentQueryResolver {
   }
 
   // Does not working?
-  // @ResolveField(() => [Book])
-  // async booksInfo(
-  //   @Parent() rent: Rent,
-  //   @Loader(BookLoader) bookLoader: DataLoader<Rent['bookIds'], [Book]>,
-  // ): Promise<[Book]> {
-  //   return await bookLoader.load(rent.bookIds);
-  // }
+  @ResolveField(() => [Book])
+  async booksInfo(
+    @Parent() rent: Rent,
+    @Loader(BookLoader) bookLoader: DataLoader<Rent['bookIds'], [Book]>,
+  ): Promise<Book[]> {
+    return []
+    // return await bookLoader.loadMany(rent.bookIds);
+  }
 }

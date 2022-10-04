@@ -11,6 +11,8 @@ import { Model } from 'mongoose';
 import { MediaService } from '../media/media.service';
 import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 import { PubSubService } from '../pubsub/pubsub.service';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationTypeEnum } from '../notification/enums/notification-type.enum';
 
 @Injectable()
 export class BookService {
@@ -19,6 +21,7 @@ export class BookService {
     private readonly categoryService: CategoryService,
     private readonly mediaService: MediaService,
     private readonly pubSubService: PubSubService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async findByTitle(title: string): Promise<Book> {
@@ -56,7 +59,11 @@ export class BookService {
 
     const book = await this.bookSchema.create(createBookInput);
 
-    await this.pubSubService.registerEvent('bookAdded', book);
+    const notification = await this.notificationService.create({
+      type: NotificationTypeEnum.BOOK_ADDED,
+      entityId: book._id,
+    });
+    await this.pubSubService.registerEvent('bookAdded', { notification });
 
     return book;
   }

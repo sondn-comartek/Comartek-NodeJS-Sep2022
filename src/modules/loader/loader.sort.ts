@@ -1,5 +1,7 @@
 import { LeanDocument } from 'mongoose';
 
+// keys[i]: ID = 1
+// not keys[i]: ID[] = [1, 2]
 export const sortDataByIds = <T>(
   data: T[],
   keys: string[],

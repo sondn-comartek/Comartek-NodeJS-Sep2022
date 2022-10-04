@@ -1,4 +1,4 @@
-import { BadRequestException, Module, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -22,8 +22,8 @@ import { MigrationModule } from './modules/migration/migration.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
 
 const jwtService = new JwtService({
-  secret: "Your secret string"
-})
+  secret: 'Your secret string',
+});
 
 @Module({
   imports: [
@@ -49,29 +49,30 @@ const jwtService = new JwtService({
         'subscriptions-transport-ws': {
           path: '/graphql',
           onConnect: async (connectionParams) => {
-            const authHeader: string = connectionParams?.authorization || connectionParams?.Authorization
+            const authHeader: string =
+              connectionParams?.authorization ||
+              connectionParams?.Authorization;
             if (!authHeader) {
-              throw new BadRequestException('Token is not provided')
+              throw new BadRequestException('Token is not provided');
             }
 
-            const authToken: string = authHeader.split(" ")[1];
+            const authToken: string = authHeader.split(' ')[1];
             if (!authToken) {
-              throw new BadRequestException('Token is not provided')
+              throw new BadRequestException('Token is not provided');
             }
 
-            const badRequestException = new BadRequestException("You are not authenticated")
-
-            const jwtPayload: any = await jwtService.verifyAsync(authToken)
+            const jwtPayload: any = await jwtService.verifyAsync(authToken);
             if (jwtPayload) {
-              if (jwtPayload?._id) {
-                // Find user
-                throw badRequestException
+              if (jwtPayload?._id && jwtPayload?.role) {
+                return {
+                  user: jwtPayload,
+                };
               }
             }
 
-            throw badRequestException
-          }
-        }
+            throw new BadRequestException('You are not authenticated');
+          },
+        },
       },
       include: [
         AppModule,
@@ -94,9 +95,8 @@ const jwtService = new JwtService({
         port: 6379,
       },
     }),
-
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule { }
+export class AppModule {}

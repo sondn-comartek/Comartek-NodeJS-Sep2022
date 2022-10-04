@@ -1,7 +1,8 @@
+import { UserModule } from './../user/user.module';
 import { BookQueryResolver } from './resolvers/book-query.resolver';
 import { Book, BookSchema } from './schemas/book.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CategoryModule } from '../category/category.module';
 import { MediaModule } from '../media/media.module';
@@ -14,6 +15,7 @@ import { BookSubscriptionResolver } from './resolvers/book-subscription.resolver
     CategoryModule,
     MediaModule,
     PubSubModule,
+    forwardRef(() => UserModule),
     MongooseModule.forFeature([
       {
         name: Book.name,

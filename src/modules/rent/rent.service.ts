@@ -1,3 +1,5 @@
+import { NotificationTypeEnum } from './../notification/enums/notification-type.enum';
+import { NotificationService } from './../notification/notification.service';
 import { Book } from './../book/schemas/book.schema';
 import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 import { UpdateRentStatusInput } from './inputs/update-rent-status.input';
@@ -12,11 +14,14 @@ import { Rent } from './schemas/rent.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RentStatusEnum } from './enums/rent-status.enum';
+import { PubSubService } from '../pubsub/pubsub.service';
 
 @Injectable()
 export class RentService {
   constructor(
     private readonly bookService: BookService,
+    private readonly pubSubService: PubSubService,
+    private readonly notification: NotificationService,
     @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
     @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
   ) {}
@@ -54,10 +59,18 @@ export class RentService {
 
     const existedBookIds = existedBooks.map((book) => book._id.toString());
 
-    return await await this.rentSchema.create({
+    const rent = await this.rentSchema.create({
       userId,
       bookIds: existedBookIds,
     });
+
+    const notification = await this.notification.create({
+      type: NotificationTypeEnum.RENT_CREATED,
+      entityId: rent._id,
+    });
+    await this.pubSubService.registerEvent('rentCreated', { notification });
+
+    return rent;
   }
 
   async updateStatusById(
@@ -77,6 +90,8 @@ export class RentService {
     });
     const availableBookIds = availableBooks.map((book) => book._id.toString());
 
+    let notificationType: NotificationTypeEnum;
+
     switch (updateStatus) {
       case RentStatusEnum.ACCEPTED:
         if (rent.status !== RentStatusEnum.PROCESSING) {
@@ -95,6 +110,8 @@ export class RentService {
           { $inc: { available: -1 } },
         );
 
+        notificationType = NotificationTypeEnum.RENT_ACCEPTED;
+
         break;
 
       case RentStatusEnum.DENIED:
@@ -103,6 +120,8 @@ export class RentService {
             'Only PROCESSING rent can be updated to DENIED',
           );
         }
+
+        notificationType = NotificationTypeEnum.RENT_DENIED;
 
         break;
 
@@ -127,12 +146,23 @@ export class RentService {
         );
     }
 
-    return await this.rentSchema.findOneAndUpdate(
+    const updatedRent = await this.rentSchema.findOneAndUpdate(
       { _id: rentId },
       { $set: { status: updateStatus } },
       {
         new: true,
       },
     );
+
+    const notification = await this.notification.create({
+      type: notificationType,
+      entityId: updatedRent._id,
+    });
+    await this.pubSubService.registerEvent('rentUpdated', {
+      notification,
+      userIdOnRent: rent.userId,
+    });
+
+    return updatedRent;
   }
 }

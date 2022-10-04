@@ -6,6 +6,7 @@ import { RentMutationResolver } from './resolvers/rent-mutation.resolver';
 import { Module } from '@nestjs/common';
 import { RentService } from './rent.service';
 import { Book, BookSchema } from '../book/schemas/book.schema';
+import { RentSubscriptionResolver } from './resolvers/rent-subscription.resolver';
 
 @Module({
   imports: [
@@ -21,7 +22,12 @@ import { Book, BookSchema } from '../book/schemas/book.schema';
       },
     ]),
   ],
-  providers: [RentService, RentMutationResolver, RentQueryResolver],
+  providers: [
+    RentService,
+    RentMutationResolver,
+    RentQueryResolver,
+    RentSubscriptionResolver,
+  ],
   exports: [RentService],
 })
 export class RentModule {}
