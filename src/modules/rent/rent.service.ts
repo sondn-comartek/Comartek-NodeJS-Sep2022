@@ -21,7 +21,7 @@ export class RentService {
   constructor(
     private readonly bookService: BookService,
     private readonly pubSubService: PubSubService,
-    private readonly notification: NotificationService,
+    private readonly notificationService: NotificationService,
     @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
     @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
   ) {}
@@ -64,7 +64,7 @@ export class RentService {
       bookIds: existedBookIds,
     });
 
-    const notification = await this.notification.create({
+    const notification = await this.notificationService.create({
       type: NotificationTypeEnum.RENT_CREATED,
       entityId: rent._id,
     });
@@ -154,7 +154,7 @@ export class RentService {
       },
     );
 
-    const notification = await this.notification.create({
+    const notification = await this.notificationService.create({
       type: notificationType,
       entityId: updatedRent._id,
     });
