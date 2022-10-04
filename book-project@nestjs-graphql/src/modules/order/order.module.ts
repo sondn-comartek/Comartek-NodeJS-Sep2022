@@ -11,6 +11,7 @@ import { BookRepository } from '../book/book.repository';
 import { UserService } from '../user/user.service';
 import { BookService } from '../book/book.service';
 import { CategoryModule } from '../category/category.module';
+import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   imports : [
@@ -22,7 +23,7 @@ import { CategoryModule } from '../category/category.module';
     ]) ,
     forwardRef( () => BookModule) ,
     forwardRef( () => UserModule) ,
-    forwardRef( () => CategoryModule)
+    forwardRef( () => CategoryModule) ,
   ] ,
   providers: [
      OrderResolver,
@@ -32,6 +33,7 @@ import { CategoryModule } from '../category/category.module';
      BookRepository ,
      OrderRepository , 
      UserRepository , 
+     PubSub
     ] ,
   exports : [ OrderRepository , MongooseModule ]
 })

@@ -45,7 +45,7 @@ export class OrderService {
       })
       if (books.length < createOrderInput.books.length)
          throw new BadRequestException(`Not found the book to rent!`)
-      books.forEach((book) => {
+      books.forEach( (book) => {
          if (!book || book.count_avaiable === 0)
             throw new BadRequestException(
                `The book '${book?.title}' is unavaiable !`,
@@ -76,7 +76,7 @@ export class OrderService {
    async approve({
       orderid,
       status,
-   }: ApproveOrderInput): Promise<OrderStatus | Record<string, unknown>> {
+   }: ApproveOrderInput): Promise<OrderDocument| Record<string, unknown>> {
       const order = await this.orderRepository.FindOne({
          orderid: orderid,
       })
@@ -85,7 +85,7 @@ export class OrderService {
             `Can not approve order is ${order?.status}`,
          )
       if (status === OrderStatus.ACCEPCTED) {
-         await this.orderRepository.FindOneAndUpdate(
+         const order = await this.orderRepository.FindOneAndUpdate(
             {
                orderid: orderid,
             },
@@ -96,7 +96,7 @@ export class OrderService {
                new: true,
             },
          )
-         return status
+         return order
       }
       if (status === OrderStatus.REJECTED) {
          const order = await this.orderRepository.FindOneAndUpdate(
@@ -126,7 +126,7 @@ export class OrderService {
                new: true,
             },
          )
-         return status
+         return order
       }
    }
 }

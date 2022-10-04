@@ -38,7 +38,9 @@
     "class-validator": "^0.13.2",
     "dataloader": "^2.1.0",
     "graphql": "^16.6.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-upload": "^14.0.0",
+    "graphql-ws": "^5.11.2",
     "lru_map": "^0.4.1",
     "mongoose": "^6.6.2",
     "nestjs-dataloader": "^9.0.0",
@@ -47,7 +49,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "sharp": "^0.31.0"
+    "sharp": "^0.31.0",
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

@@ -11,6 +11,7 @@ import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
 import { BullModule } from '@nestjs/bull';
 import { DataloaderModule } from './dataloader/dataloader.module';
+import { onConnect } from 'src/configs';
 
 
 @Module({
@@ -18,6 +19,12 @@ import { DataloaderModule } from './dataloader/dataloader.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver : ApolloDriver ,
       autoSchemaFile : true  , 
+      installSubscriptionHandlers : true,
+      subscriptions : {
+        'subscriptions-transport-ws' : {
+          onConnect : onConnect
+        }
+      }
     }),
     ConfigModule.forRoot({
       isGlobal : true 
@@ -46,8 +53,7 @@ import { DataloaderModule } from './dataloader/dataloader.module';
     BookModule,
     OrderModule,
     ImageModule,
-    DataloaderModule ,
-
+    DataloaderModule ,    
   ],
 })
 export class AppModule {}

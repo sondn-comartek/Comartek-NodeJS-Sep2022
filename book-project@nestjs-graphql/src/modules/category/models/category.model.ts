@@ -6,7 +6,9 @@ import { Book } from 'src/modules/book/models'
 export type CategoryDocument = Category & Document
 
 @ObjectType()
-@Schema()
+@Schema({
+    timestamps : true
+})
 export class Category extends Document {
    @Field()
    @Prop({

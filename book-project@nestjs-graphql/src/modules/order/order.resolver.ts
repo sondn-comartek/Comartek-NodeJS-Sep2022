@@ -6,6 +6,8 @@ import {
    Query,
    Args,
    Parent,
+   Subscription,
+   ID,
 } from '@nestjs/graphql'
 import { Role } from '../auth/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
@@ -21,6 +23,7 @@ import { OrderStatus } from './types'
 import { Loader } from 'nestjs-dataloader'
 import { BookLoader } from '../dataloader/loaders'
 import DataLoader from 'dataloader'
+import { PubSub } from 'graphql-subscriptions'
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -28,19 +31,46 @@ export class OrderResolver {
       private readonly orderService: OrderService,
       private readonly userService: UserService,
       private readonly bookService: BookService,
+      private readonly pubSub: PubSub,
    ) {}
    @Mutation(() => Order)
-   createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-      return this.orderService.create(createOrderInput)
+   @UseGuards(JwtGuard)
+   async createOrder(
+      @Args('createOrderInput') createOrderInput: CreateOrderInput,
+   ) {
+      const newOrder = await this.orderService.create(createOrderInput)
+      this.pubSub.publish('newOrder', { newOrder: newOrder })
+      return newOrder
    }
 
-   @Mutation(() => OrderStatus)
+   @Subscription(() => Order)
    @Role(UserRole.ADMIN)
-   @UseGuards(JwtGuard)
-   approveOrder(
+   @UseGuards(JwtGuard, RoleGuard)
+   newOrder() {
+      return this.pubSub.asyncIterator('newOrder')
+   }
+
+   @Mutation(() => Order)
+   @Role(UserRole.ADMIN)
+   @UseGuards(JwtGuard, RoleGuard)
+   async approveOrder(
       @Args('approveOrderInput') approveOrderInput: ApproveOrderInput,
    ) {
-      return this.orderService.approve(approveOrderInput)
+      const orderApproved = await this.orderService.approve(approveOrderInput)
+      this.pubSub.publish('orderApproved', { orderApproved: orderApproved })
+      return orderApproved
+   }
+
+   @Subscription(() => Order, {
+      filter: (payload, variables) => {
+        return payload.orderApproved.customer === variables.userid
+      }
+   })
+   
+   @Role(UserRole.MEMBER , UserRole.SUBCRIBER )
+   @UseGuards(JwtGuard, RoleGuard)
+   orderApproved(@Args('userid', { type: () => ID }) userid: string) {
+      return this.pubSub.asyncIterator('orderApproved')
    }
 
    @ResolveField('customer', () => User)
@@ -50,9 +80,9 @@ export class OrderResolver {
 
    @ResolveField('books', () => [Book])
    books(
-    @Parent() { books }: Order , 
-    @Loader(BookLoader) bookLoader: DataLoader<string , BookDocument>
-    ) {
+      @Parent() { books }: Order,
+      @Loader(BookLoader) bookLoader: DataLoader<string, BookDocument>,
+   ) {
       return bookLoader.loadMany(books)
    }
 }

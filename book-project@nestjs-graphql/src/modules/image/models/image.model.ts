@@ -7,7 +7,9 @@ import { ShapeImage } from "../types";
 export type ImageDocument = Image & Document
 
 @ObjectType()
-@Schema()
+@Schema({
+    timestamps : true
+})
 export class Image {
     @Field()
     @Prop({ 

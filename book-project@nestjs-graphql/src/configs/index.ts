@@ -1,0 +1,1 @@
+export * from "./subscription-transport-ws.config"

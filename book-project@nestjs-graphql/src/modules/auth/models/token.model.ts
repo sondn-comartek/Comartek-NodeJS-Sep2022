@@ -6,7 +6,9 @@ import { Document } from 'mongoose'
 export type TokenDocument = Token & Document
 
 @ObjectType()
-@Schema()
+@Schema({
+    timestamps : true
+})
 export class Token {
 
     @Prop({

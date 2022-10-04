@@ -30,11 +30,13 @@ export class UserResolver {
    ) {}
 
    @Query(() => [User])
+   @UseGuards(JwtGuard)
    users() {
       return this.userService.findUsers()
    }
 
    @Query(() => User)
+   @UseGuards(JwtGuard)
    user(@Args() filter: FilterUser) {
       return this.userService.findUser(filter)
    }

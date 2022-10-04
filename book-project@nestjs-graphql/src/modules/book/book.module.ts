@@ -7,6 +7,7 @@ import { BookRepository } from './book.repository'
 import { CategoryModule } from '../category/category.module'
 import { CategoryRepository } from '../category/category.repository'
 import { CategoryService } from '../category/category.service'
+import { PubSub } from 'graphql-subscriptions'
 
 @Module({
    imports: [
@@ -24,6 +25,7 @@ import { CategoryService } from '../category/category.service'
       BookRepository,
       CategoryRepository,
       CategoryService,
+      PubSub
    ],
    exports: [BookRepository, BookService, MongooseModule],
 })
