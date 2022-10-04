@@ -1,31 +1,27 @@
 import { Module, Global } from '@nestjs/common';
 import { AppController} from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AdminModule } from './admin/admin.module';
-import { HelperModule } from './helper/helper.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { HelperModule } from './modules/helper/helper.module';
 import { BullModule } from '@nestjs/bull';
-import { PublishConsumModule } from './publishconsum/publishconsum.module';
-import { UserModule } from './user/user.module';
+import { PublishConsumModule } from './modules/publishconsum/publishconsum.module';
+import { UserModule } from './modules/user/user.module';
+import { JwtModule } from '@nestjs/jwt';
+import { GlobalModule } from './global.module';
+import { BookModule } from './modules/book/book.module';
 
-@Global()
+
+
 @Module({
   providers: [AppService],
   imports: [
-  BullModule.forRoot({
-    redis: {
-      
-      host: 'localhost',
-      port: 6379,
-      
-    },
-  }),
- 
+  GlobalModule,
   AuthModule,
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
@@ -33,17 +29,16 @@ import { UserModule } from './user/user.module';
     playground: true,
     include: [AuthModule, AdminModule, UserModule ]
   }),
-  ConfigModule.forRoot({
-    envFilePath: '.env',
-  }),
   MongooseModule.forRoot(process.env.DB),
   AdminModule,
   HelperModule,
   PublishConsumModule,
   UserModule,
+  BookModule,
   ],
   controllers: [AppController],
   exports: []
-
 })
 export class AppModule {}
+
+
