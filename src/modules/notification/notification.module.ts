@@ -1,3 +1,4 @@
+import { NotificationSubscriptionResolver } from './resolvers/notification-subscription.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { NotificationService } from './notification.service';
@@ -15,7 +16,7 @@ import {
       },
     ]),
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, NotificationSubscriptionResolver],
   exports: [NotificationService],
 })
 export class NotificationModule {}

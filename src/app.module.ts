@@ -1,4 +1,4 @@
-import { Module, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Module, UnauthorizedException } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -12,7 +12,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
@@ -20,6 +20,10 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MigrationModule } from './modules/migration/migration.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
+
+const jwtService = new JwtService({
+  secret: "Your secret string"
+})
 
 @Module({
   imports: [
@@ -44,7 +48,28 @@ import { PubSubModule } from './modules/pubsub/pubsub.module';
       subscriptions: {
         'subscriptions-transport-ws': {
           path: '/graphql',
-          onConnect: (connectionParams) => {
+          onConnect: async (connectionParams) => {
+            const authHeader: string = connectionParams?.authorization || connectionParams?.Authorization
+            if (!authHeader) {
+              throw new BadRequestException('Token is not provided')
+            }
+
+            const authToken: string = authHeader.split(" ")[1];
+            if (!authToken) {
+              throw new BadRequestException('Token is not provided')
+            }
+
+            const badRequestException = new BadRequestException("You are not authenticated")
+
+            const jwtPayload: any = await jwtService.verifyAsync(authToken)
+            if (jwtPayload) {
+              if (jwtPayload?._id) {
+                // Find user
+                throw badRequestException
+              }
+            }
+
+            throw badRequestException
           }
         }
       },

@@ -17,4 +17,3 @@ export class MediaLoader implements NestDataLoader<string, Media> {
     );
   }
 }
-

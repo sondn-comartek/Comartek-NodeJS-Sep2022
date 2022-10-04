@@ -21,7 +21,12 @@ import { BookSubscriptionResolver } from './resolvers/book-subscription.resolver
       },
     ]),
   ],
-  providers: [BookService, BookMutationResolver, BookQueryResolver, BookSubscriptionResolver],
+  providers: [
+    BookService,
+    BookMutationResolver,
+    BookQueryResolver,
+    BookSubscriptionResolver,
+  ],
   exports: [BookService],
 })
-export class BookModule { }
+export class BookModule {}

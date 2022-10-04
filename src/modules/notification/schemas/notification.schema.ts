@@ -33,7 +33,7 @@ export class Notification {
   // readonly refCollectionName: string;
 
   @Field(() => String)
-  readonly createdAt: Date
+  readonly createdAt: Date;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

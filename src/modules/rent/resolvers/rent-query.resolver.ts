@@ -14,7 +14,7 @@ import { UserLoader } from 'src/modules/loader/loader.user';
 
 @Resolver(() => Rent)
 export class RentQueryResolver {
-  constructor(private readonly rentService: RentService) { }
+  constructor(private readonly rentService: RentService) {}
 
   @Query(() => [Rent])
   @UseGuards(JwtAuthGuard)
