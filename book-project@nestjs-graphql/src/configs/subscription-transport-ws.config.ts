@@ -1,12 +1,18 @@
-import { UnauthorizedException } from "@nestjs/common"
+import { UnauthorizedException } from '@nestjs/common'
 
-export const onConnect = (params:unknown) => {
-   if(!params['Authorization']) throw new UnauthorizedException()
-   params['authorization'] = params['Authorization']
-   delete params['Authorization']
+export const subscriptionConfig = () => {
    return {
-      req: {
-         headers: params
+      'subscriptions-transport-ws': {
+         onConnect: (params: unknown) => {
+            if (!params['Authorization']) throw new UnauthorizedException()
+            params['authorization'] = params['Authorization']
+            delete params['Authorization']
+            return {
+               req: {
+                  headers: params,
+               },
+            }
+         },
       },
    }
 }
