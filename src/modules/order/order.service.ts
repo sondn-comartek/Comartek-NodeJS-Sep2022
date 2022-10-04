@@ -1,3 +1,4 @@
+import { OrderStatus } from './enums/order.enum';
 import { NotificationService } from './../notification/notification.service';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -40,9 +41,23 @@ export class OrderService {
   }
 
   async update(updateOrderInput: UpdateOrderInput) {
-    return await this.orderModel.findByIdAndUpdate(updateOrderInput?.orderID, {
-      status: updateOrderInput?.status,
-    });
+    const updatedOrder = await this.orderModel.findByIdAndUpdate(
+      updateOrderInput?.orderID,
+      {
+        status: updateOrderInput?.status,
+      },
+    );
+    let statusUpdate = 0;
+    if (
+      updateOrderInput?.status == OrderStatus.pending ||
+      updateOrderInput?.status == OrderStatus.ignore
+    ) {
+      statusUpdate = BookStatus.available;
+    } else {
+      statusUpdate = BookStatus.unavailable;
+    }
+    await this.bookService.changeStatusBook(updatedOrder?.bookID, statusUpdate);
+    return updatedOrder;
   }
   async findByIds(ids) {
     return await this.orderModel.find({ userID: { $in: ids } });

@@ -85,10 +85,26 @@ export class OrderResolver {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateOrder(
     @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
+    @CurrentUser() user: any,
   ) {
-    return await this.orderService.update(updateOrderInput);
+    const updatedOrder = await this.orderService.update(updateOrderInput);
+    const recipients = await this.userService.findByCondition({
+      _id: updatedOrder.userID,
+    });
+    let recipientsIds = [];
+    recipientsIds = _.map(recipients, '_id');
+    const createdNotification = await this.notificationService.create(
+      'notification_order',
+      {
+        ownerID: user?.userID,
+        content: `order ${updateOrderInput.status}`,
+        type: NotificationTypes.created,
+        recipients: recipientsIds,
+      },
+    );
+    pubSub.publish('order_notification', createdNotification);
+    return updatedOrder;
   }
-
   @Mutation(() => OrderS)
   removeOrder(@Args('id', { type: () => Int }) id: number) {
     return this.orderService.remove(id);
