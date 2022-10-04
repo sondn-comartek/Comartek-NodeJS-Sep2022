@@ -10,8 +10,8 @@ export class Book {
 
 @ObjectType()
 export class BorrowBookOutput {
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   status: number
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   message: string
 }

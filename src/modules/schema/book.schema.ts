@@ -4,8 +4,6 @@ import { Document } from 'mongoose';
 
 export type BookDocument = Book & Document;
 
-
-
 @Schema()
 export class Book extends Document {
   @Prop()
@@ -25,6 +23,9 @@ export class Book extends Document {
   
   @Prop({default: null})
   userborrow: string
+
+  @Prop({default: 'available'})
+  status: string
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

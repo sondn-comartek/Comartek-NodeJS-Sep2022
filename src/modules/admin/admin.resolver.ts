@@ -8,17 +8,21 @@ import * as DataLoader from 'dataloader';
 import { Loader } from 'nestjs-dataloader';
 import { Role } from 'src/enum/role.enum';
 import { JWTAuthGuard } from 'src/modules/auth/auth.guard';
-import { UseGuards } from '@nestjs/common'
+import { UseGuards, Inject } from '@nestjs/common'
 import { Roles } from 'src/decorator/role.decorator';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { PUB_SUB } from '../pubSub/pubSub.module';
 
 @Resolver(() => Admin)
 export class AdminResolver {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(private readonly adminService: AdminService,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub) {}
   @UseGuards(JWTAuthGuard)
   @Roles(Role.Admin)
   @Mutation(() => AdminCreateBookOutPut) 
   async createBook(@Args('createbook') args: AdminCreateBookInput) {
     const data = await this.adminService.AddBook(args)
+    await this.pubSub.publish("newBook", {newBook: data});
     return {
       bookIds: data
     }

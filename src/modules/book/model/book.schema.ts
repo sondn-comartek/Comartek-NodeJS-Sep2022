@@ -23,6 +23,7 @@ export class Book extends Document {
   
   @Prop({default: null})
   userborrow: string
+
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

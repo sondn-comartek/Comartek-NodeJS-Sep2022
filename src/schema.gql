@@ -43,8 +43,15 @@ type UserOutPut {
 }
 
 type BorrowBookOutput {
-  status: Int!
-  message: String!
+  status: Int
+  message: String
+}
+
+type BorrowOrderBook {
+  orderid: String
+  userid: String
+  bookid: String
+  status: String
 }
 
 type Query {
@@ -57,25 +64,20 @@ input GetUserInput {
 
 type Mutation {
   borrowBook(borrowbook: BorrowBookInput!): BorrowBookOutput!
-  createBook(createbook: AdminCreateBookInput!): AdminCreateBookOutPut!
+  processOrder(borrowbook: OrderAction!): BorrowBookOutput!
   signUp(signUpData: SignUpInput!): Auth!
   signIn(loginData: SignInInput!): Auth!
+  createBook(createbook: AdminCreateBookInput!): AdminCreateBookOutPut!
 }
 
 input BorrowBookInput {
   bookid: String!
 }
 
-input AdminCreateBookInput {
-  number: Int!
-  name: String!
-  categorys: [String!]!
-  episode: Float
-  images: [Upload!]
+input OrderAction {
+  orderid: String!
+  action: String!
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input SignUpInput {
   username: String!
@@ -89,4 +91,21 @@ input SignUpInput {
 input SignInInput {
   username: String!
   password: String!
+}
+
+input AdminCreateBookInput {
+  number: Int!
+  name: String!
+  categorys: [String!]!
+  episode: Float
+  images: [Upload!]
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type Subscription {
+  addBook: BorrowOrderBook!
+  orderStatus: BorrowOrderBook!
+  newBook: [String!]!
 }
