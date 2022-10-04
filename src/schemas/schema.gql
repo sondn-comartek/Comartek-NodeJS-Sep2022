@@ -185,6 +185,9 @@ type Notification {
   """owner of notification"""
   ownerID: String!
 
+  """recipients notification"""
+  recipients: [String!]!
+
   """notification type"""
   type: NotificationTypes!
 }
@@ -234,7 +237,7 @@ enum Role {
 }
 
 type Subscription {
-  notificationOrder: Notification!
+  notificationOrder(userID: String!): Notification!
 }
 
 input UpdateBookInput {

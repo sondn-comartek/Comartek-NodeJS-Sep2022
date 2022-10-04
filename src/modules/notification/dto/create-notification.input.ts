@@ -5,12 +5,11 @@ import { NotificationTypes } from '../enums/notification.enum';
 @InputType()
 export class CreateNotificationDto {
   @Field(() => String, { description: 'content of notification' })
-  @Prop({ required: true })
   content: string;
   @Field(() => String, { description: 'owner of notification' })
-  @Prop({ required: true })
   ownerID: string;
   @Field(() => NotificationTypes, { description: 'notification type' })
-  @Prop({ required: true })
   type: NotificationTypes;
+  @Field(() => [String], { description: 'recipients notification' })
+  recipients: string[];
 }

@@ -43,7 +43,6 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
       sortSchema: true,
       subscriptions: {
-        // 'graphql-ws': true,
         'subscriptions-transport-ws': {
           path: '/graphql',
           onConnect: (connectionParams) => {},

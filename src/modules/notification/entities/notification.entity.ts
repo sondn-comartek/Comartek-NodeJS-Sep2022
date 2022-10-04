@@ -19,5 +19,8 @@ export class Notification {
   @Field(() => NotificationTypes, { description: 'notification type' })
   @Prop({ required: true })
   type: NotificationTypes;
+  @Field(() => [String], { description: 'recipients notification' })
+  @Prop({ required: true })
+  recipients: string[];
 }
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

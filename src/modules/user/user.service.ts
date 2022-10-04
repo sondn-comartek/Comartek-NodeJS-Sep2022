@@ -32,7 +32,13 @@ export class UserService {
   async findAll() {
     return await this.userModel.find();
   }
-
+  async findByCondition(searching) {
+    try {
+      return await this.userModel.find(searching);
+    } catch (error) {
+      throw Error(error);
+    }
+  }
   findOne(email: string) {
     return this.userModel.findOne({ email: email });
   }
