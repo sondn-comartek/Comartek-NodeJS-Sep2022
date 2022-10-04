@@ -4,18 +4,16 @@ import { Admin } from './entities/admin.entity';
 import { AdminCreateBookInput, GetUserInput } from './dto/admin.input';
 import { AdminCreateBookOutPut,UserOutPut } from './entities/admin.output';
 import { UserLoader } from './admin.dataloader';
-
 import * as DataLoader from 'dataloader';
 import { Loader } from 'nestjs-dataloader';
-
 import { Role } from 'src/enum/role.enum';
 import { JWTAuthGuard } from 'src/modules/auth/auth.guard';
 import { UseGuards } from '@nestjs/common'
 import { Roles } from 'src/decorator/role.decorator';
+
 @Resolver(() => Admin)
 export class AdminResolver {
-  constructor(private readonly adminService: AdminService) {
-  }
+  constructor(private readonly adminService: AdminService) {}
   @UseGuards(JWTAuthGuard)
   @Roles(Role.Admin)
   @Mutation(() => AdminCreateBookOutPut) 
@@ -25,7 +23,6 @@ export class AdminResolver {
       bookIds: data
     }
   }
-
   @Query( () => [UserOutPut]) 
   async getUser( @Args('userids') args: GetUserInput,
                 @Loader(UserLoader) userLoader: DataLoader<string, UserOutPut>) {
@@ -35,5 +32,4 @@ export class AdminResolver {
     return user
   })
   }
- 
 }

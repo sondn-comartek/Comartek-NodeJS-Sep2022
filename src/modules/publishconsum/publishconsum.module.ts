@@ -13,10 +13,7 @@ import { MediaSchema } from 'src/modules/schema/media.schema';
       name: 'image',
       processors: [join(__dirname, 'imagies.childprocess.js')],
     }),
-    MongooseModule.forFeature(
-      [{
-        name: 'media', schema: MediaSchema
-      }]),
+    
   ],
   providers: [ImageConsumer, ImagePublish],
   exports: [ImagePublish]

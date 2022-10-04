@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BookResolver } from './book.resolver';
+import { BookResolver } from './reslover/book.resolver';
 import { BookService } from './book.service';
 
 describe('BookResolver', () => {

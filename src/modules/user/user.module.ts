@@ -8,14 +8,11 @@ import { UserSchema } from 'src/modules/schema/user.schema';
 @Module({
   imports: [ 
     MongooseModule.forFeature(
-    [
-      {
-      name: 'book', schema: BookSchema
-      },
-      {
-        name: 'user', schema: UserSchema
-      }
-    ])
+      [
+        {
+          name: 'user', schema: UserSchema
+        }
+    ]),
   ],
   providers: [UserResolver, UserService],
   exports: [UserService]
