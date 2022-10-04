@@ -36,15 +36,15 @@ export class BookResolver {
    @UseGuards(JwtGuard, RoleGuard)
    async createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
       const newBook = await this.bookService.create(createBookInput)
-      this.pubSub.publish('newBook', { newBook: newBook } )
+      this.pubSub.publish('newBook', { newBook: newBook })
       return newBook
    }
 
-   @Role( UserRole.SUBCRIBER )
+   @Role(UserRole.SUBCRIBER)
    @UseGuards(JwtGuard, RoleGuard)
-   @Subscription( () => Book )
-   newBook(){
-     return this.pubSub.asyncIterator('newBook')
+   @Subscription(() => Book)
+   newBook() {
+      return this.pubSub.asyncIterator('newBook')
    }
 
    @Query(() => [Book])

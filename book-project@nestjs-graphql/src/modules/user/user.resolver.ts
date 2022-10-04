@@ -26,7 +26,7 @@ export class UserResolver {
    constructor(
       private readonly userService: UserService,
       private readonly orderService: OrderService,
-      private readonly authService: AuthService
+      private readonly authService: AuthService,
    ) {}
 
    @Query(() => [User])
@@ -55,10 +55,8 @@ export class UserResolver {
       return this.orderService.countBooksOfCustomerByStatus(userid, status)
    }
 
-   @ResolveField('tokens', () => Token )
-   tokens(
-      @Parent() { userid }: User ,
-   ) {
+   @ResolveField('tokens', () => Token)
+   tokens(@Parent() { userid }: User) {
       return this.authService.findTokenByUserid(userid)
    }
 }
