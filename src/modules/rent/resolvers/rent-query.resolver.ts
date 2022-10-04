@@ -14,7 +14,7 @@ import { UserLoader } from 'src/modules/loader/loader.user';
 
 @Resolver(() => Rent)
 export class RentQueryResolver {
-  constructor(private readonly rentService: RentService) {}
+  constructor(private readonly rentService: RentService) { }
 
   @Query(() => [Rent])
   @UseGuards(JwtAuthGuard)
@@ -39,11 +39,12 @@ export class RentQueryResolver {
     return userLoader.load(rent.userId);
   }
 
-  @ResolveField(() => [Book])
-  async booksInfo(
-    @Parent() rent: Rent,
-    @Loader(BookLoader) bookLoader: DataLoader<Rent['bookIds'], [Book]>,
-  ): Promise<[Book]> {
-    return await bookLoader.load(rent.bookIds);
-  }
+  // Does not working?
+  // @ResolveField(() => [Book])
+  // async booksInfo(
+  //   @Parent() rent: Rent,
+  //   @Loader(BookLoader) bookLoader: DataLoader<Rent['bookIds'], [Book]>,
+  // ): Promise<[Book]> {
+  //   return await bookLoader.load(rent.bookIds);
+  // }
 }

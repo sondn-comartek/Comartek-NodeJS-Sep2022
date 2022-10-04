@@ -64,7 +64,6 @@ type Rent {
   createdAt: String!
   updatedAt: String!
   userInfo: User!
-  booksInfo: [Book!]!
 }
 
 enum RentStatusEnum {
@@ -143,4 +142,8 @@ input CreateUserInput {
 input SignInInput {
   userName: String!
   password: String!
+}
+
+type Subscription {
+  bookAdded: Book!
 }

@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MediaService } from '../media/media.service';
 import { QueryArgsInput } from 'src/common/inputs/query-args.input';
+import { PubSubService } from '../pubsub/pubsub.service';
 
 @Injectable()
 export class BookService {
@@ -17,7 +18,8 @@ export class BookService {
     @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
     private readonly categoryService: CategoryService,
     private readonly mediaService: MediaService,
-  ) {}
+    private readonly pubSubService: PubSubService
+  ) { }
 
   async findByTitle(title: string): Promise<Book> {
     return await this.bookSchema.findOne({ title });
@@ -52,7 +54,11 @@ export class BookService {
       throw new ConflictException(`Book with title ${title} is already exist`);
     }
 
-    return await this.bookSchema.create(createBookInput);
+    const book = await this.bookSchema.create(createBookInput);
+
+    await this.pubSubService.registerEvent('bookAdded', book)
+    
+    return book
   }
 
   async findAll(queryArgsInput: QueryArgsInput): Promise<Book[]> {

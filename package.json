@@ -39,6 +39,7 @@
     "dataloader": "^2.1.0",
     "dotenv": "^16.0.2",
     "graphql": "^16.6.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-upload": "14",
     "mongoose": "^6.6.1",
     "nestjs-dataloader": "^9.0.0",

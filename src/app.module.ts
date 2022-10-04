@@ -19,6 +19,7 @@ import { MediaModule } from './modules/media/media.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MigrationModule } from './modules/migration/migration.module';
+import { PubSubModule } from './modules/pubsub/pubsub.module';
 
 @Module({
   imports: [
@@ -29,16 +30,23 @@ import { MigrationModule } from './modules/migration/migration.module';
     CategoryModule,
     UploadModule,
     LoaderModule,
+    MediaModule,
+    ScheduleModule,
+    NotificationModule,
+    MigrationModule,
+    PubSubModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers: true,
       subscriptions: {
-        'graphql-ws': {
+        'subscriptions-transport-ws': {
           path: '/graphql',
-          onConnect: async (connectionParams) => {},
-        },
+          onConnect: (connectionParams) => {
+          }
+        }
       },
       include: [
         AppModule,
@@ -61,12 +69,9 @@ import { MigrationModule } from './modules/migration/migration.module';
         port: 6379,
       },
     }),
-    MediaModule,
-    ScheduleModule,
-    NotificationModule,
-    MigrationModule,
+
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule {}
+export class AppModule { }

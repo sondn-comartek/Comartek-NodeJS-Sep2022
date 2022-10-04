@@ -18,21 +18,3 @@ export class MediaLoader implements NestDataLoader<string, Media> {
   }
 }
 
-// @Injectable()
-// export class MediaBookLoader implements NestDataLoader<string, Media> {
-//   constructor(private readonly mediaService: MediaService) {}
-
-//   generateDataLoader(): DataLoader<string, Media> {
-//     return new DataLoader<string, Media>(async (categoryIds: string[]) => {
-//       const medias = await this.mediaService.findByCondition({
-//         bookId: { $in: categoryIds },
-//       });
-
-//       return sortDataByRefIds({
-//         refIdFieldName: 'categoryId',
-//         refIds: categoryIds,
-//         entities: books,
-//       });
-//     });
-//   }
-// }
