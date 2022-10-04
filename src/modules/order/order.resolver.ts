@@ -1,12 +1,11 @@
-import { OrderLoader } from './../loader/order.loader';
+import { NotificationTypes } from './../notification/enums/notification.enum';
 import {
   Resolver,
   Query,
   Mutation,
   Args,
   Int,
-  Parent,
-  ResolveField,
+  Subscription,
 } from '@nestjs/graphql';
 import { OrderService } from './order.service';
 import { OrderS } from './entities/order.entity';
@@ -17,22 +16,42 @@ import { Role } from '../user/enums/roles.enum';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import * as DataLoader from 'dataloader';
-import { Loader } from 'nestjs-dataloader';
-import { User } from '../user/entities/user.entity';
+import { PubSub } from 'graphql-subscriptions';
+import { CurrentUser } from '../auth/current.user';
+import { NotificationService } from '../notification/notification.service';
+import { Notification } from '../notification/entities/notification.entity';
+const pubSub = new PubSub();
 @Resolver(() => OrderS)
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
-
+  constructor(
+    private readonly orderService: OrderService,
+    private notificationService: NotificationService,
+  ) {}
+  @Subscription(() => Notification, {
+    resolve: (data) => data,
+  })
+  async notificationOrder() {
+    return await this.notificationService.listen('notification_order');
+  }
   @Mutation(() => OrderS, { name: 'create_order' })
   @Roles(Role.user)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createOrder(
     @Args('createOrderInput') createOrderInput: CreateOrderInput,
+    @CurrentUser() user: any,
   ) {
-    return await this.orderService.create(createOrderInput);
+    const createdOrder = await this.orderService.create(createOrderInput);
+    const createdNotification = await this.notificationService.create(
+      'notification_order',
+      {
+        ownerID: user?.userID,
+        content: 'order created',
+        type: NotificationTypes.created,
+      },
+    );
+    pubSub.publish('order_notification', createdNotification);
+    return createdOrder;
   }
-
   @Query(() => [OrderS], { name: 'orders' })
   findAll() {
     return this.orderService.findAll();

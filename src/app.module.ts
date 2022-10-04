@@ -1,3 +1,4 @@
+import { NotificationModule } from './modules/notification/notification.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -26,6 +27,7 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      // installSubscriptionHandlers: true,
       include: [
         UserModule,
         AuthModule,
@@ -34,11 +36,19 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
         MediaModule,
         OrderModule,
         StatisticalModule,
+        NotificationModule,
       ],
       debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
       sortSchema: true,
+      subscriptions: {
+        // 'graphql-ws': true,
+        'subscriptions-transport-ws': {
+          path: '/graphql',
+          onConnect: (connectionParams) => {},
+        },
+      },
     }),
     UserModule,
     AuthModule,
@@ -47,6 +57,7 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
     MediaModule,
     OrderModule,
     StatisticalModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

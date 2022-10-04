@@ -1,11 +1,10 @@
+import { NotificationService } from './../notification/notification.service';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
 import { OrderS, OrderSDocument } from './entities/order.entity';
-import { v4 as uuidV4 } from 'uuid';
-import { User } from '../user/entities/user.entity';
 import { BookService } from '../book/book.service';
 import { BookStatus } from '../book/enums/status.enum';
 @Injectable()
@@ -13,17 +12,21 @@ export class OrderService {
   constructor(
     @InjectModel(OrderS.name) private orderModel: Model<OrderSDocument>,
     private bookService: BookService,
+    private notificationService: NotificationService,
   ) {}
   async create(createOrderInput: CreateOrderInput) {
     const isBookValid = await this.bookService.bookReadyToBorrow(
       createOrderInput?.bookID,
     );
-    if (isBookValid) {
-      this.bookService.changeStatusBook(
+    if (isBookValid.length != 0) {
+      const changeStatus = await this.bookService.changeStatusBook(
         createOrderInput.bookID,
         BookStatus.unavailable,
       );
-      return await this.orderModel.create({ ...createOrderInput });
+      const createdOrder = await this.orderModel.create({
+        ...createOrderInput,
+      });
+      return createdOrder;
     }
     throw Error('book is unavailable');
   }

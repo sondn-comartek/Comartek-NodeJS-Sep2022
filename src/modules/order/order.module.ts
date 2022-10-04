@@ -1,3 +1,4 @@
+import { NotificationModule } from './../notification/notification.module';
 import { OrderLoader } from './../loader/order.loader';
 import { DataLoaderInterceptor } from 'nestjs-dataloader';
 import { Module } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { BookModule } from '../book/book.module';
   imports: [
     MongooseModule.forFeature([{ name: OrderS.name, schema: OrderSchema }]),
     BookModule,
+    NotificationModule,
   ],
   providers: [
     OrderResolver,

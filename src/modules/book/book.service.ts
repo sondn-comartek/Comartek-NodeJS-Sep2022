@@ -46,8 +46,11 @@ export class BookService {
       .find({ status: BookStatus.unavailable })
       .count();
   }
-  changeStatusBook(id: string, status: BookStatus) {
-    return this.bookModel.findOneAndUpdate({ bookID: id }, { status: status });
+  async changeStatusBook(id: string, status: BookStatus) {
+    return await this.bookModel.findOneAndUpdate(
+      { bookID: id },
+      { status: status },
+    );
   }
   findOne(id: number) {
     return `This action returns a #${id} book`;

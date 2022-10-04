@@ -175,6 +175,24 @@ type Mutation {
   upload_media(media: CreateMediaDto!): Media!
 }
 
+type Notification {
+  """content of notification"""
+  content: String!
+
+  """ID notification"""
+  notificationID: String!
+
+  """owner of notification"""
+  ownerID: String!
+
+  """notification type"""
+  type: NotificationTypes!
+}
+
+enum NotificationTypes {
+  created
+}
+
 enum Order {
   accept
   ignore
@@ -213,6 +231,10 @@ type Query {
 enum Role {
   admin
   user
+}
+
+type Subscription {
+  notificationOrder: Notification!
 }
 
 input UpdateBookInput {
