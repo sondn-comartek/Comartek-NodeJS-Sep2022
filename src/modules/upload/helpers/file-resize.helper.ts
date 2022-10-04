@@ -7,19 +7,12 @@ export class FileResizeHelper {
     height: number,
     buffer,
   ): Promise<void> {
-    console.log({ buffer });
-
-    await sharp(`src/modules/upload/store/${filename}`)
-      .resize(width, height)
+    await sharp(`store/origin/${filename}`)
       .webp()
-      .toFile(`src/modules/upload/store/${filename}.webp`);
+      .toFile(`store/webp/${filename}.webp`);
 
-    await sharp(`src/modules/upload/store/${filename}`)
+    await sharp(`store/origin/${filename}`)
       .resize(width, height)
-      .png()
-      .toFile(`src/modules/upload/store/${filename}.png`);
-
-    await sharp(buffer.data).toFile('buffer.png');
-    // console.log({ metadata });
+      .toFile(`store/resize/${filename}`);
   }
 }

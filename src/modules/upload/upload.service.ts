@@ -22,9 +22,7 @@ export class UploadService {
     return new Promise(async (resolve) => {
       createReadStream()
         .pipe(
-          createWriteStream(
-            join(process.cwd(), `src/modules/upload/store/${filename}`),
-          ),
+          createWriteStream(join(process.cwd(), `store/origin/${filename}`)),
         )
         .on('finish', async () => {
           // Add to queue
@@ -32,7 +30,7 @@ export class UploadService {
             filename,
             height,
             width,
-            buffer: readFileSync(`src/modules/upload/store/${filename}`),
+            buffer: readFileSync(`store/origin/${filename}`),
           });
 
           const createMediaInput: CreateMediaInput = {

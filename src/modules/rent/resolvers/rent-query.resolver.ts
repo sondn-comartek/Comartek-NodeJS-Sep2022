@@ -45,7 +45,7 @@ export class RentQueryResolver {
     @Parent() rent: Rent,
     @Loader(BookLoader) bookLoader: DataLoader<Rent['bookIds'], [Book]>,
   ): Promise<Book[]> {
-    return []
+    return [];
     // return await bookLoader.loadMany(rent.bookIds);
   }
 }
