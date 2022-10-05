@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate-mongo": "node ./node_modules/mongo-migrate -runmm"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.1.0",
@@ -35,7 +36,9 @@
     "bcryptjs": "^2.4.3",
     "bull": "^4.9.0",
     "class-validator": "^0.13.2",
+    "dayjs": "^1.11.5",
     "graphql": "^16.6.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-upload": "14",
     "mongoose": "^6.6.2",
     "nestjs-dataloader": "^9.0.0",

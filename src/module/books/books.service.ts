@@ -59,7 +59,7 @@ export class BooksService {
     };
   }
 
-  async findOne(id: string) {
+  async findById(id: string) {
     const book = await this.book.findOne({ _id: id });
     if (!book) {
       throw new HttpException(`Book with id ${id} not found`,HttpStatus.NOT_FOUND);

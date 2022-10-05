@@ -10,8 +10,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
 export class RolesGuard implements CanActivate {
     constructor(
         private reflector: Reflector,
-        private readonly authService: AuthService,
-        private readonly usersService: UsersService
+        private readonly authService: AuthService
     ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {

@@ -7,6 +7,9 @@ import { RentQueryResolver } from './resolvers/queries.resolver';
 import { RentMutationResolver } from './resolvers/mutations.resolver';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
+import { PubsubModule } from '../pubsub/pubsub.module';
+import { NotificationModule } from '../notification/notification.module';
+// import { RentSubscriptionsResolver } from './resolvers/subscriptions.resolver';
 
 @Module({
   imports: [
@@ -15,7 +18,9 @@ import { UsersModule } from '../users/users.module';
     ]),
     forwardRef(() => BooksModule),
     forwardRef(() => AuthModule),
-    forwardRef(() => UsersModule)
+    forwardRef(() => UsersModule),
+    forwardRef(() => PubsubModule),
+    forwardRef(() => NotificationModule)
   ],
   providers: [RentQueryResolver, RentMutationResolver, RentService],
   exports: [RentQueryResolver, RentMutationResolver, RentService]

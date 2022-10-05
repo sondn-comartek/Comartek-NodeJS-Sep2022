@@ -17,14 +17,12 @@ export class RentBook {
 
     @Field(() => String, { name: 'user', description: 'ID of user in the system', nullable: false })
     @Prop({
-        ref: User.name,
         required: true
     })
     user: string
 
     @Field(() => String, { name: 'book', description: 'ID of book in the system', nullable: false })
     @Prop({
-        ref: Book.name,
         required: true
     })
     book: string

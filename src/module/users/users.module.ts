@@ -12,12 +12,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserQueryResolver } from './resolvers/queries.resolver';
 import { UserMutationResolver } from './resolvers/mutations.resolver';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { jwtConstants } from '../auth/constants/jwt-constanst';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{name: 'User', schema: UserSchema}]),
     JwtModule.register({
-      secret: process.env.SECRET_KEY,
+      secret: jwtConstants.secret,
       signOptions: { expiresIn: '1h' },
     }),
     forwardRef(() => AuthModule),

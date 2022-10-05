@@ -28,18 +28,6 @@ type SignInResponse {
   user: User!
 }
 
-type Category {
-  _id: ID!
-
-  """Name of category in the system"""
-  categoryName: String!
-
-  """Image url of category in the system"""
-  imageUrl: String!
-  books: [Book!]!
-  statistics: CategoryStatistic!
-}
-
 type Book {
   _id: ID!
   bookName: String!
@@ -60,6 +48,18 @@ type BookList {
   countAllBook: Int!
   countBookRent: Int!
   countRestBook: Int!
+}
+
+type Category {
+  _id: ID!
+
+  """Name of category in the system"""
+  categoryName: String!
+
+  """Image url of category in the system"""
+  imageUrl: String!
+  books: [Book!]!
+  statistics: CategoryStatistic!
 }
 
 type CategoryStatistic {
@@ -88,6 +88,16 @@ type RentBook {
 
   """Expired time of renting a book"""
   expiredTime: String!
+}
+
+type Notification {
+  _id: ID!
+  type: String!
+  notificationMsg: String!
+  data: String!
+  createdAt: String!
+  rentInfo: RentBook!
+  bookInfo: RentBook!
 }
 
 type Image {
@@ -120,6 +130,7 @@ input SignInInput {
 type Mutation {
   rentBook(rentBookInput: RentBookInput!): RentBook!
   approvedRentBook(id: String!): RentBook!
+  rejectedRentBook(id: String!): RentBook!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   signUp(signUpInput: SignUpInput!): User!
@@ -272,4 +283,11 @@ input CreateImageInput {
 
   """Height of image that user want to resize"""
   height: Int!
+}
+
+type Subscription {
+  bookRentMsg: Notification!
+  approvedRentMsg: Notification!
+  rejectedRentMsg: Notification!
+  bookAddedMsg: Notification!
 }

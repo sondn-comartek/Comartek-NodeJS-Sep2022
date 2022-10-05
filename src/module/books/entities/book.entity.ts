@@ -22,7 +22,6 @@ export class Book {
 
   @Field(() => String, { name: 'categoryId', nullable: false })
   @Prop({
-    ref: Category.name,
     required: true
   })
   categoryId: string

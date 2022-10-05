@@ -37,6 +37,13 @@ export class UserMutationResolver {
     return this.rentService.approvedRentBook(id);
   }
 
+  @Mutation(() => RentBook)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async rejectedRentBook(@Args('id') id: string) {
+    return this.rentService.rejectedRentBook(id);
+  }
+
   @Mutation(() => User)
   @UseGuards(JwtAuthGuard)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
