@@ -9,8 +9,6 @@ import { UserLoader } from './admin.dataloader';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import {DataLoaderInterceptor} from 'nestjs-dataloader'
 import { GlobalModule } from 'src/global.module';
-import { BookModule } from '../book/book.module';
-import { UserModule } from '../user/user.module';
 @Module({
   imports: [
     MongooseModule.forFeature(
