@@ -21,6 +21,7 @@ import { PubSubModule } from './modules/pubsub/pubsub.module';
 import { CronModule } from './modules/cron/cron.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { QueueModule } from './modules/queue/queue.module';
+import { MigrationModule } from './modules/migration/migration.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -97,6 +98,7 @@ const jwtService = new JwtService({
     PubSubModule,
     CronModule,
     QueueModule,
+    MigrationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
