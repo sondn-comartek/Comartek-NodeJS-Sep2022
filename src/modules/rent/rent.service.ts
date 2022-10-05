@@ -22,24 +22,24 @@ export class RentService {
     private readonly bookService: BookService,
     private readonly pubSubService: PubSubService,
     private readonly notificationService: NotificationService,
-    @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
+    @InjectModel(Rent.name) private readonly rentModel: Model<Rent>,
     @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
   ) {}
 
   async findByCondition(condition: any): Promise<Rent[]> {
-    return await this.rentSchema.find({ condition });
+    return await this.rentModel.find({ condition });
   }
 
   async findById(id: string): Promise<Rent> {
-    return await this.rentSchema.findById(id);
+    return await this.rentModel.findById(id);
   }
 
   async findByIds(ids: string[]) {
-    return await this.rentSchema.find({ _id: { $in: ids } });
+    return await this.rentModel.find({ _id: { $in: ids } });
   }
 
   async findAll(queryArgsInput?: QueryArgsInput) {
-    return await this.rentSchema.find(
+    return await this.rentModel.find(
       {},
       {},
       { limit: queryArgsInput.limit, skip: queryArgsInput.skip },
@@ -59,7 +59,7 @@ export class RentService {
 
     const existedBookIds = existedBooks.map((book) => book._id.toString());
 
-    const rent = await this.rentSchema.create({
+    const rent = await this.rentModel.create({
       userId,
       bookIds: existedBookIds,
     });
@@ -146,7 +146,7 @@ export class RentService {
         );
     }
 
-    const updatedRent = await this.rentSchema.findOneAndUpdate(
+    const updatedRent = await this.rentModel.findOneAndUpdate(
       { _id: rentId },
       { $set: { status: updateStatus } },
       {

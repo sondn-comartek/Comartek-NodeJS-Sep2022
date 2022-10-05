@@ -7,10 +7,10 @@ import { Notification } from './schemas/notification.schema';
 export class NotificationService {
   constructor(
     @InjectModel(Notification.name)
-    private readonly notificationSchema: Model<Notification>,
+    private readonly notificationModel: Model<Notification>,
   ) {}
 
   async create({ type, entityId }): Promise<Notification> {
-    return await this.notificationSchema.create({ type, entityId });
+    return await this.notificationModel.create({ type, entityId });
   }
 }

@@ -18,8 +18,8 @@ import { User } from '../user/schemas/user.schema';
 @Injectable()
 export class BookService {
   constructor(
-    @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
-    @InjectModel(User.name) private readonly userSchema: Model<User>,
+    @InjectModel(Book.name) private readonly bookModel: Model<Book>,
+    @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly categoryService: CategoryService,
     private readonly mediaService: MediaService,
     private readonly pubSubService: PubSubService,
@@ -27,19 +27,19 @@ export class BookService {
   ) {}
 
   async findByTitle(title: string): Promise<Book> {
-    return await this.bookSchema.findOne({ title });
+    return await this.bookModel.findOne({ title });
   }
 
   async findById(id: string): Promise<Book> {
-    return await this.bookSchema.findById(id);
+    return await this.bookModel.findById(id);
   }
 
   async findByIds(ids: string[]): Promise<Book[]> {
-    return await this.bookSchema.find({ _id: { $in: ids } });
+    return await this.bookModel.find({ _id: { $in: ids } });
   }
 
   async findByCondition(condition: any): Promise<Book[]> {
-    return await this.bookSchema.find({ condition });
+    return await this.bookModel.find({ condition });
   }
 
   async create(createBookInput: CreateBookInput): Promise<Book> {
@@ -59,13 +59,13 @@ export class BookService {
       throw new ConflictException(`Book with title ${title} is already exist`);
     }
 
-    const book = await this.bookSchema.create(createBookInput);
+    const book = await this.bookModel.create(createBookInput);
 
     const notification = await this.notificationService.create({
       type: NotificationTypeEnum.BOOK_ADDED,
       entityId: book._id,
     });
-    const usersApplyReceiveNewBookInfo = await this.userSchema.find({
+    const usersApplyReceiveNewBookInfo = await this.userModel.find({
       isApplyReceiveNewBookInfo: true,
     });
     const userIdsApplyReceiveNewBookInfo = usersApplyReceiveNewBookInfo.map(
@@ -81,7 +81,7 @@ export class BookService {
   }
 
   async findAll(queryArgsInput: QueryArgsInput): Promise<Book[]> {
-    return await this.bookSchema.find(
+    return await this.bookModel.find(
       {},
       {},
       {

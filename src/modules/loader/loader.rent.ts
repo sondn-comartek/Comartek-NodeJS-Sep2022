@@ -24,12 +24,12 @@ export class RentLoader implements NestDataLoader<string, Rent> {
 @Injectable()
 export class UserRentLoader implements NestDataLoader<string, Rent> {
   constructor(
-    @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
+    @InjectModel(Rent.name) private readonly rentModel: Model<Rent>,
   ) {}
 
   generateDataLoader(): DataLoader<string, Rent> {
     return new DataLoader<string, Rent>(async (userIds: string[]) => {
-      const rents = await this.rentSchema.find({
+      const rents = await this.rentModel.find({
         userId: { $in: userIds },
       });
 

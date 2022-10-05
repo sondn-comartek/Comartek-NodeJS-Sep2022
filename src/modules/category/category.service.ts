@@ -14,16 +14,16 @@ import { Model } from 'mongoose';
 export class CategoryService {
   constructor(
     @InjectModel(Category.name)
-    private readonly categorySchema: Model<Category>,
+    private readonly categoryModel: Model<Category>,
     private readonly mediaService: MediaService,
   ) {}
 
   async findByIds(ids: string[]): Promise<Category[]> {
-    return await this.categorySchema.find({ _id: { $in: ids } });
+    return await this.categoryModel.find({ _id: { $in: ids } });
   }
 
   async findById(id: string): Promise<Category> {
-    return await this.categorySchema.findById(id);
+    return await this.categoryModel.findById(id);
   }
 
   async create(createCategoryInput: CreateCategoryInput): Promise<Category> {
@@ -47,19 +47,19 @@ export class CategoryService {
       );
     }
 
-    return await this.categorySchema.create(createCategoryInput);
+    return await this.categoryModel.create(createCategoryInput);
   }
 
   async findByName(name: string): Promise<Category> {
-    return await this.categorySchema.findOne({ name });
+    return await this.categoryModel.findOne({ name });
   }
 
   async findByCode(code: string): Promise<Category> {
-    return await this.categorySchema.findOne({ code });
+    return await this.categoryModel.findOne({ code });
   }
 
   async findAll(queryArgsInput?: QueryArgsInput): Promise<Category[]> {
-    return await this.categorySchema.find(
+    return await this.categoryModel.find(
       {},
       {},
       { limit: queryArgsInput.limit, skip: queryArgsInput.skip },

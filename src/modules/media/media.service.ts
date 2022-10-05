@@ -8,27 +8,27 @@ import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 @Injectable()
 export class MediaService {
   constructor(
-    @InjectModel(Media.name) private readonly mediaSchema: Model<Media>,
+    @InjectModel(Media.name) private readonly mediaModel: Model<Media>,
   ) {}
 
   async findByCondition(condition: any): Promise<Media[]> {
-    return await this.mediaSchema.find({ condition });
+    return await this.mediaModel.find({ condition });
   }
 
   async findById(id: string): Promise<Media> {
-    return await this.mediaSchema.findById(id);
+    return await this.mediaModel.findById(id);
   }
 
   async findByIds(ids: string[]): Promise<Media[]> {
-    return await this.mediaSchema.find({ _id: { $in: ids } });
+    return await this.mediaModel.find({ _id: { $in: ids } });
   }
 
   async create(createMediaInput: CreateMediaInput): Promise<Media> {
-    return await this.mediaSchema.create(createMediaInput);
+    return await this.mediaModel.create(createMediaInput);
   }
 
   async findAll(queryArgsInput?: QueryArgsInput): Promise<Media[]> {
-    return await this.mediaSchema.find(
+    return await this.mediaModel.find(
       {},
       {},
       {
