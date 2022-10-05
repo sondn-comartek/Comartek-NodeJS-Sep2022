@@ -29,7 +29,12 @@ export class UploadService {
       createReadStream()
         .pipe(
           createWriteStream(
-            join(process.cwd(), `store/origin/${media._id.toString()}.${media.mimetype.split('/')[1]}`),
+            join(
+              process.cwd(),
+              `store/origin/${media._id.toString()}.${
+                media.mimetype.split('/')[1]
+              }`,
+            ),
           ),
         )
         .on('finish', async () => {
@@ -38,7 +43,11 @@ export class UploadService {
             height,
             width,
             media,
-            buffer: readFileSync(`store/origin/${media._id.toString()}.${media.mimetype.split('/')[1]}`),
+            buffer: readFileSync(
+              `store/origin/${media._id.toString()}.${
+                media.mimetype.split('/')[1]
+              }`,
+            ),
           });
 
           return resolve(media);

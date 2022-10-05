@@ -101,6 +101,8 @@ input QueryArgsInput {
 type Mutation {
   uploadFile(uploadFileInput: UploadFileInput!): Media!
   createBook(createBookInput: CreateBookInput!): Book!
+  applyReceiveNewBookInfo: User!
+  ignoreReceiveNewBookInfo: User!
   createRent(createRentInput: CreateRentInput!): Rent!
   updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!

@@ -69,8 +69,9 @@ export class BookService {
       isApplyReceiveNewBookInfo: true,
     });
     const userIdsApplyReceiveNewBookInfo = usersApplyReceiveNewBookInfo.map(
-      (user) => user.isApplyReceiveNewBookInfo,
+      (user) => user._id.toString(),
     );
+    console.log(userIdsApplyReceiveNewBookInfo);
 
     await this.pubSubService.registerEvent('bookAdded', {
       notification,

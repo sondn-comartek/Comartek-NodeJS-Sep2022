@@ -17,11 +17,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
 import { NotificationModule } from './modules/notification/notification.module';
-import { MigrationModule } from './modules/migration/migration.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
-import { CommandModule } from './modules/command/command.module';
 import { CronModule } from './modules/cron/cron.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { QueueModule } from './modules/queue/queue.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -95,10 +94,9 @@ const jwtService = new JwtService({
     LoaderModule,
     MediaModule,
     NotificationModule,
-    MigrationModule,
     PubSubModule,
-    CommandModule,
     CronModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

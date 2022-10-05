@@ -7,6 +7,7 @@ import { UserQueryResolver } from './resolvers/user-query.resolver';
 import { User, UserSchema } from './schemas/user.schema';
 import { UserService } from './user.service';
 import { Rent, RentSchema } from '../rent/schemas/rent.schema';
+import { UserMutationResolver } from './resolvers/user-mutation.resolver';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Rent, RentSchema } from '../rent/schemas/rent.schema';
   providers: [
     UserService,
     UserQueryResolver,
+    UserMutationResolver,
     UserRentLoader,
     BookRentalCountLoader,
   ],
