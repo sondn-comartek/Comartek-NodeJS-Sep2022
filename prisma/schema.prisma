@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
+}
+
+model books {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  v          Int      @map("__v")
+  bookID     String
+  book_title String
+  category   String
+  createdAt  DateTime @db.Date
+  page       Int
+  photo_id   String
+  status     Int
+  updatedAt  DateTime @db.Date
+  volume     Int
+}
+
+model categories {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int      @map("__v")
+  createdAt DateTime @db.Date
+  name      String
+  photo_id  String
+  updatedAt DateTime @db.Date
+}
+
+model delete_me {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model media {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  v           Int      @map("__v")
+  createdAt   DateTime @db.Date
+  description String
+  mediaID     String   @unique(map: "mediaID_1")
+  media_urls  String
+  updatedAt   DateTime @db.Date
+}
+
+model notifications {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  v              Int      @map("__v")
+  content        String
+  createdAt      DateTime @db.Date
+  notificationID String   @unique(map: "notificationID_1")
+  ownerID        String
+  recipients     String[] @db.ObjectId
+  type           Int
+  updatedAt      DateTime @db.Date
+}
+
+model orders {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  v             Int      @map("__v")
+  bookID        String
+  borrowed_date DateTime @db.Date
+  createdAt     DateTime @db.Date
+  return_data   DateTime @db.Date
+  status        Int
+  updatedAt     DateTime @db.Date
+  userID        String
+}
+
+model users {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int      @map("__v")
+  createdAt DateTime @db.Date
+  email     String   @unique(map: "email_1")
+  password  String
+  role      Int
+  updatedAt DateTime @db.Date
+}

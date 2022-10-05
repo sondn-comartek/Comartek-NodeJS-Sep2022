@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "seed": "ts-node prisma/index.ts"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -31,6 +34,7 @@
     "@nestjs/mongoose": "^9.2.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.4.0",
     "apollo-server-express": "^3.10.2",
     "bcryptjs": "^2.4.3",
     "bull": "^4.10.0",
@@ -54,6 +58,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -70,6 +75,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "28.1.3",
     "prettier": "^2.3.2",
+    "prisma": "^4.4.0",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.8",
