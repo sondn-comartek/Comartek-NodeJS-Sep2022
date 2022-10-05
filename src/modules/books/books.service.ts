@@ -8,6 +8,7 @@ import {
   CategoryDocument,
 } from '../categories/entities/category.entity';
 import { LoansService } from '../loans/loans.service';
+import { PubsubService } from '../pubsub/pubsub.service';
 import { UploadService } from '../upload/upload.service';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
@@ -23,6 +24,7 @@ export class BooksService {
     @InjectQueue('book') private bookQueue: Queue,
     private readonly uploadService: UploadService,
     private readonly loansService: LoansService,
+    private readonly pubsubService: PubsubService,
   ) {}
 
   async create(createBookInput: CreateBookInput) {
@@ -56,9 +58,16 @@ export class BooksService {
 
         return true;
       };
-      return await new this.bookModel({
+
+      const newBook = await new this.bookModel({
         ...createBookInput,
       }).save();
+
+      await this.pubsubService.publishEvent('createNewBook', {
+        createNewBook: newBook,
+      });
+
+      return newBook;
     } catch (e) {
       throw new Error(e);
     }

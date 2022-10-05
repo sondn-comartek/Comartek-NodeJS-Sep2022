@@ -14,12 +14,18 @@ import { CreateBookItemInput } from './dto/create-book-item.input';
 import { UpdateBookItemInput } from './dto/update-book-item.input';
 import { Book } from '../books/entities/book.entity';
 import { IDataloaders } from '../dataloader/dataloader.interface';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/enums/role.enum';
 
 @Resolver(() => BookItem)
 export class BookItemsResolver {
   constructor(private readonly bookItemsService: BookItemsService) {}
 
   @Mutation(() => BookItem)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async createBookItem(
     @Args('createBookItemInput') createBookItemInput: CreateBookItemInput,
   ) {
@@ -45,6 +51,8 @@ export class BookItemsResolver {
   }
 
   @Mutation(() => BookItem)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   updateBookItem(
     @Args('updateBookItemInput') updateBookItemInput: UpdateBookItemInput,
   ) {
@@ -55,6 +63,8 @@ export class BookItemsResolver {
   }
 
   @Mutation(() => BookItem)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   removeBookItem(@Args('id', { type: () => Int }) id: number) {
     return this.bookItemsService.remove(id);
   }

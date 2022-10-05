@@ -9,6 +9,7 @@ import {
 } from '../book-items/entities/book-item.entity';
 import { Loan, LoanSchema } from './entities/loan.entity';
 import { UsersModule } from '../users/users.module';
+import { PubsubModule } from '../pubsub/pubsub.module';
 
 @Module({
   providers: [LoansResolver, LoansService],
@@ -19,6 +20,8 @@ import { UsersModule } from '../users/users.module';
     ]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     forwardRef(() => UsersModule),
+    LoansModule,
+    PubsubModule,
   ],
   exports: [LoansService],
 })

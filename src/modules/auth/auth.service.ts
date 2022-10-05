@@ -70,12 +70,10 @@ export class AuthService {
   }
 
   async login(createAuthInput: CreateAuthInput) {
-    const { username, password } = createAuthInput;
+    const { username } = createAuthInput;
     const user = await this.userModel.findOne({ username });
-    const access_token = await this.jwtService.sign({
-      username,
-      password,
-    });
+    const { id, role } = user;
+    const access_token = await this.jwtService.sign({ id, role });
 
     return { access_token, user };
   }

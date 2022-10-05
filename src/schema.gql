@@ -43,6 +43,17 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Book {
+  id: String!
+  categoryId: String!
+  name: String!
+  part: Int!
+  numberOfPages: Int!
+  quantity: Int!
+  imageId: String!
+  listBooks: ListBook!
+}
+
 type Category {
   id: String!
   name: String!
@@ -53,17 +64,6 @@ type Category {
 type UploadImage {
   id: String!
   filename: String!
-}
-
-type Book {
-  id: String!
-  categoryId: String!
-  name: String!
-  part: Int!
-  numberOfPages: Int!
-  quantity: Int!
-  imageId: String!
-  listBooks: ListBook!
 }
 
 type ListBook {
@@ -199,4 +199,10 @@ input UpdateCategoryInput {
   imageId: String
   widthImage: Int
   id: Int!
+}
+
+type Subscription {
+  requestBorrow: String!
+  responseBorrow: String!
+  createNewBook: Book!
 }

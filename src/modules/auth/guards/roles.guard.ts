@@ -27,9 +27,7 @@ export class RolesGuard implements CanActivate {
     const token = ctx.getContext().req.headers.authorization;
 
     const decoded = await this.authService.verifyToken(token);
-    const roleUser = await this.usersService.getRoleByUsername(
-      decoded.username,
-    );
+    const { role: roleUser } = decoded;
 
     return requiredRoles.some((role) => roleUser.includes(role));
   }

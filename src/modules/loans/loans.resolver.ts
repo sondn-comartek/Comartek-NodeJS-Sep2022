@@ -15,13 +15,26 @@ import { UpdateLoanInput } from './dto/update-loan.input';
 import { User } from '../users/entities/user.entity';
 import { IDataloaders } from '../dataloader/dataloader.interface';
 import { BookItem } from '../book-items/entities/book-item.entity';
+import { PubsubService } from '../pubsub/pubsub.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/enums/role.enum';
 
 @Resolver(() => Loan)
 export class LoansResolver {
-  constructor(private readonly loansService: LoansService) {}
+  constructor(
+    private readonly loansService: LoansService,
+    private readonly pubsubService: PubsubService,
+  ) {}
 
   @Mutation(() => Loan)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Customer)
   async createLoan(@Args('createLoanInput') createLoanInput: CreateLoanInput) {
+    await this.pubsubService.publishEvent('requestBorrow', {
+      requestBorrow: 'I want to borrow this book',
+    });
     return await this.loansService.create(createLoanInput);
   }
 
@@ -52,11 +65,15 @@ export class LoansResolver {
   }
 
   @Mutation(() => Loan)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   updateLoan(@Args('updateLoanInput') updateLoanInput: UpdateLoanInput) {
     return this.loansService.update(updateLoanInput.id, updateLoanInput);
   }
 
   @Mutation(() => Loan)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   removeLoan(@Args('id', { type: () => Int }) id: number) {
     return this.loansService.remove(id);
   }

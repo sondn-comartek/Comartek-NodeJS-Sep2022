@@ -19,7 +19,9 @@ import { LoansModule } from './modules/loans/loans.module';
 import { DataloaderModule } from './modules/dataloader/dataloader.module';
 import { DataloaderService } from './modules/dataloader/dataloader.service';
 import { UploadModule } from './modules/upload/upload.module';
+import { JwtService } from '@nestjs/jwt';
 
+const jwtService = new JwtService();
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/nestjs-library'),
@@ -31,6 +33,30 @@ import { UploadModule } from './modules/upload/upload.module';
       useFactory: (dataloaderService: DataloaderService) => {
         return {
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+          subscriptions: {
+            'subscriptions-transport-ws': {
+              path: '/graphql',
+            },
+            onConnect: async (connectionParams) => {
+              const authToken = connectionParams?.authorization;
+              if (!authToken) {
+                throw new Error(`Token is not provided`);
+              }
+
+              const decoded = await jwtService.verify(authToken);
+              if (decoded.id && decoded.role) {
+                return { user: decoded };
+              }
+              throw new Error(`Authentication failed`);
+              // return {
+              //   req: {
+              //     headers: {
+              //       authorization: authToken,
+              //     },
+              //   },
+              // };
+            },
+          },
           context: () => ({
             loaders: dataloaderService.createLoaders(),
           }),

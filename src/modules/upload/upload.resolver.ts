@@ -3,12 +3,18 @@ import { UploadService } from './upload.service';
 import { UploadImage } from './entities/upload.entity';
 import { CreateUploadInput } from './dto/create-upload.input';
 import { UpdateUploadInput } from './dto/update-upload.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/enums/role.enum';
 
 @Resolver(() => UploadImage)
 export class UploadResolver {
   constructor(private readonly uploadService: UploadService) {}
 
   @Mutation(() => UploadImage)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async createUpload(
     @Args('createUploadInput') createUploadInput: CreateUploadInput,
   ) {
@@ -26,6 +32,8 @@ export class UploadResolver {
   }
 
   @Mutation(() => UploadImage)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   updateUpload(
     @Args('updateUploadInput') updateUploadInput: UpdateUploadInput,
   ) {
@@ -33,6 +41,8 @@ export class UploadResolver {
   }
 
   @Mutation(() => UploadImage)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   removeUpload(@Args('id', { type: () => Int }) id: number) {
     return this.uploadService.remove(id);
   }

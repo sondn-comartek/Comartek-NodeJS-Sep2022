@@ -10,6 +10,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { CreateLoanInput } from './dto/create-loan.input';
 import { UpdateLoanInput } from './dto/update-loan.input';
 import { Loan, LoanDocument } from './entities/loan.entity';
+import { PubsubService } from '../pubsub/pubsub.service';
 
 @Injectable()
 export class LoansService {
@@ -20,34 +21,63 @@ export class LoansService {
     private readonly bookItemModel: Model<BookItemDocument>,
     @InjectModel(Loan.name)
     private readonly loanModel: Model<LoanDocument>,
+    private readonly pubsubService: PubsubService,
   ) {}
 
   async create(createLoanInput: CreateLoanInput) {
-    const { userId, bookItemId } = createLoanInput;
-    const userExist = await this.userModel.findOne({ id: userId });
-    if (!userExist) return new Error(`This user does not exist`);
+    try {
+      const { userId, bookItemId } = createLoanInput;
+      const userExist = await this.userModel.findOne({ id: userId });
+      if (!userExist) return new Error(`This user does not exist`);
 
-    const bookItemExist = await this.bookItemModel.findOne({ id: bookItemId });
-    if (!bookItemExist) return new Error(`This book item does not exist`);
+      const bookItemExist = await this.bookItemModel.findOne({
+        id: bookItemId,
+      });
+      if (!bookItemExist) {
+        await this.pubsubService.publishEvent('responseBorrow', {
+          responseBorrow:
+            'This book item does not exist. You can not borrow this book',
+        });
+        return new Error(`This book item does not exist`);
+      }
 
-    const bookItemAvailable =
-      bookItemExist.status === 'available' ? true : false;
-    if (!bookItemAvailable) return new Error(`Book item is not available`);
+      const bookItemAvailable =
+        bookItemExist.status === 'available' ? true : false;
+      if (!bookItemAvailable) {
+        await this.pubsubService.publishEvent('responseBorrow', {
+          responseBorrow:
+            'Book item is not available. You can not borrow this book',
+        });
+        return new Error(`Book item is not available`);
+      }
 
-    const loanExist = await this.loanModel.findOne({ userId, bookItemId });
-    if (loanExist) return new Error(`This loan already exists`);
+      const loanExist = await this.loanModel.findOne({ userId, bookItemId });
+      if (loanExist) {
+        await this.pubsubService.publishEvent('responseBorrow', {
+          responseBorrow:
+            'This loan already exists. You can not borrow this book',
+        });
+        return new Error(`This loan already exists`);
+      }
 
-    await this.bookItemModel.findOneAndUpdate(
-      { id: bookItemId },
-      { $set: { status: StatusBookItem.Unavailable } },
-      {
-        new: true,
-      },
-    );
+      await this.pubsubService.publishEvent('responseBorrow', {
+        responseBorrow: 'You can borrow this book',
+      });
 
-    return await new this.loanModel({
-      ...createLoanInput,
-    }).save();
+      await this.bookItemModel.findOneAndUpdate(
+        { id: bookItemId },
+        { $set: { status: StatusBookItem.Unavailable } },
+        {
+          new: true,
+        },
+      );
+
+      return await new this.loanModel({
+        ...createLoanInput,
+      }).save();
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
   async getTotalBorrowed() {
