@@ -8,7 +8,9 @@ import { ObjectType, Field } from '@nestjs/graphql';
 export type UserDocument = User & Document;
 
 @ObjectType()
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class User {
   @Field(() => String)
   @Prop({

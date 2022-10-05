@@ -20,6 +20,9 @@ import { DataloaderModule } from './modules/dataloader/dataloader.module';
 import { DataloaderService } from './modules/dataloader/dataloader.service';
 import { UploadModule } from './modules/upload/upload.module';
 import { JwtService } from '@nestjs/jwt';
+import { CommandModule } from 'nestjs-command';
+import { MigrationModule } from './commands/migrations/migrations.module';
+import { PubsubModule } from './modules/pubsub/pubsub.module';
 
 const jwtService = new JwtService();
 @Module({
@@ -82,6 +85,9 @@ const jwtService = new JwtService();
     LoansModule,
     DataloaderModule,
     UploadModule,
+    PubsubModule,
+    CommandModule,
+    MigrationModule,
   ],
   controllers: [AppController],
   providers: [
