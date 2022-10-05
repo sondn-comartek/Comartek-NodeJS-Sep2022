@@ -40,6 +40,6 @@ export class CategoryQueryResolver {
     @Loader(BookCategoryLoader)
     bookCategoryLoader: DataLoader<Category['_id'], [Book]>,
   ): Promise<[Book]> {
-    return await bookCategoryLoader.load(category._id);
+    return await bookCategoryLoader.load(category._id.toString());
   }
 }

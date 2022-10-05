@@ -17,10 +17,9 @@ export class BookSubscriptionResolver {
   @Subscription(() => Notification, {
     resolve: (payload) => payload?.notification,
     filter: async (payload, variables, context) => {
-      const userId: string = context?.user?._id;
-      // Kiểm tra user có đăng ký nhận thông báo hay không
-
-      return true;
+      return payload?.userIdsApplyReceiveNewBookInfo?.includes(
+        context?.user?._id,
+      );
     },
   })
   async getBookAddedNotification() {

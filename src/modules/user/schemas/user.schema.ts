@@ -54,6 +54,14 @@ export class User {
     default: UserRoleEnum.USER,
   })
   readonly role: UserRoleEnum;
+
+  @Field(() => Boolean)
+  @Prop({
+    type: Boolean,
+    required: true,
+    default: false,
+  })
+  readonly isApplyReceiveNewBookInfo: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

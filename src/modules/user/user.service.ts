@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { QueryArgsInput } from 'src/common/inputs/query-args.input';
@@ -10,6 +10,10 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userSchema: Model<User>,
   ) {}
+
+  async findByCondition(condition: any): Promise<User[]> {
+    return await this.userSchema.find(condition);
+  }
 
   async findAll(queryArgsInput?: QueryArgsInput): Promise<User[]> {
     return await this.userSchema.find(
@@ -48,5 +52,33 @@ export class UserService {
       userName,
       email,
     });
+  }
+
+  async applyReceiveNewBookInfo(userId: string): Promise<User> {
+    const isApply = (await this.userSchema.findById(userId))
+      .isApplyReceiveNewBookInfo;
+    if (isApply) {
+      throw new BadRequestException('Already apply');
+    }
+
+    return await this.userSchema.findOneAndUpdate(
+      { _id: userId },
+      { $set: { isApplyReceiveNewBookInfo: true } },
+      { new: true },
+    );
+  }
+
+  async ignoreReceiveNewBookInfo(userId: string): Promise<User> {
+    const isApply = (await this.userSchema.findById(userId))
+      .isApplyReceiveNewBookInfo;
+    if (isApply) {
+      return await this.userSchema.findOneAndUpdate(
+        { _id: userId },
+        { $set: { isApplyReceiveNewBookInfo: false } },
+        { new: true },
+      );
+    }
+
+    throw new BadRequestException('Already ignore');
   }
 }

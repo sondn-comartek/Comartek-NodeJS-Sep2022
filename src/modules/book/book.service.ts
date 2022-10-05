@@ -13,11 +13,13 @@ import { QueryArgsInput } from 'src/common/inputs/query-args.input';
 import { PubSubService } from '../pubsub/pubsub.service';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationTypeEnum } from '../notification/enums/notification-type.enum';
+import { User } from '../user/schemas/user.schema';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectModel(Book.name) private readonly bookSchema: Model<Book>,
+    @InjectModel(User.name) private readonly userSchema: Model<User>,
     private readonly categoryService: CategoryService,
     private readonly mediaService: MediaService,
     private readonly pubSubService: PubSubService,
@@ -63,7 +65,17 @@ export class BookService {
       type: NotificationTypeEnum.BOOK_ADDED,
       entityId: book._id,
     });
-    await this.pubSubService.registerEvent('bookAdded', { notification });
+    const usersApplyReceiveNewBookInfo = await this.userSchema.find({
+      isApplyReceiveNewBookInfo: true,
+    });
+    const userIdsApplyReceiveNewBookInfo = usersApplyReceiveNewBookInfo.map(
+      (user) => user.isApplyReceiveNewBookInfo,
+    );
+
+    await this.pubSubService.registerEvent('bookAdded', {
+      notification,
+      userIdsApplyReceiveNewBookInfo,
+    });
 
     return book;
   }

@@ -5,7 +5,8 @@ import { NestDataLoader } from 'nestjs-dataloader';
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { sortDataByIds, sortDataByRefIds } from './loader.sort';
-import { RentStatusEnum } from '../rent/enums/rent-status.enum';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class RentLoader implements NestDataLoader<string, Rent> {
@@ -22,13 +23,14 @@ export class RentLoader implements NestDataLoader<string, Rent> {
 
 @Injectable()
 export class UserRentLoader implements NestDataLoader<string, Rent> {
-  constructor(private readonly rentService: RentService) {}
+  constructor(
+    @InjectModel(Rent.name) private readonly rentSchema: Model<Rent>,
+  ) {}
 
   generateDataLoader(): DataLoader<string, Rent> {
     return new DataLoader<string, Rent>(async (userIds: string[]) => {
-      const rents = await this.rentService.findByCondition({
+      const rents = await this.rentSchema.find({
         userId: { $in: userIds },
-        status: RentStatusEnum.ACCEPTED,
       });
 
       return sortDataByRefIds({

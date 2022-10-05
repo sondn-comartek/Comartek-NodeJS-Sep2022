@@ -9,6 +9,7 @@ type User {
   fullName: String!
   phoneNumber: String!
   role: UserRoleEnum!
+  isApplyReceiveNewBookInfo: Boolean!
   rents: [Rent!]!
   bookRentalCount: Int
   bookRentalInfo: [Book!]
@@ -23,15 +24,6 @@ type AuthResponseType {
   accessToken: String!
   refreshToken: String!
   user: User
-}
-
-type Notification {
-  _id: ID!
-  type: String!
-  entityId: String!
-  createdAt: String!
-  bookInfo: Book!
-  rentInfo: Rent!
 }
 
 type Media {
@@ -81,6 +73,15 @@ enum RentStatusEnum {
   ACCEPTED
   DENIED
   DONE
+}
+
+type Notification {
+  _id: ID!
+  type: String!
+  entityId: String!
+  createdAt: String!
+  bookInfo: Book!
+  rentInfo: Rent!
 }
 
 type Query {

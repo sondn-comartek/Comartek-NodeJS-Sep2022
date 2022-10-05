@@ -1,3 +1,4 @@
+import { UserSchema } from './../user/schemas/user.schema';
 import { UserModule } from './../user/user.module';
 import { BookQueryResolver } from './resolvers/book-query.resolver';
 import { Book, BookSchema } from './schemas/book.schema';
@@ -9,6 +10,7 @@ import { MediaModule } from '../media/media.module';
 import { BookMutationResolver } from './resolvers/book-mutation.resolver';
 import { PubSubModule } from '../pubsub/pubsub.module';
 import { BookSubscriptionResolver } from './resolvers/book-subscription.resolver';
+import { User } from '../user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -20,6 +22,10 @@ import { BookSubscriptionResolver } from './resolvers/book-subscription.resolver
       {
         name: Book.name,
         schema: BookSchema,
+      },
+      {
+        name: User.name,
+        schema: UserSchema,
       },
     ]),
   ],

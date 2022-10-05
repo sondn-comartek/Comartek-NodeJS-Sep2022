@@ -46,7 +46,7 @@ export class UserQueryResolver {
     @Parent() user: User,
     @Loader(UserRentLoader) userRentLoader: DataLoader<User['_id'], Rent>,
   ): Promise<Rent> {
-    return await userRentLoader.load(user._id);
+    return await userRentLoader.load(user._id.toString());
   }
 
   @ResolveField(() => Int, { nullable: true })

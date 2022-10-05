@@ -1,7 +1,4 @@
-import {
-  BookRentalCountLoader,
-  BookRentalInfoLoader,
-} from './../loader/loader.rent';
+import { BookRentalCountLoader } from './../loader/loader.rent';
 import { RentModule } from './../rent/rent.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,6 +6,7 @@ import { UserRentLoader } from '../loader/loader.rent';
 import { UserQueryResolver } from './resolvers/user-query.resolver';
 import { User, UserSchema } from './schemas/user.schema';
 import { UserService } from './user.service';
+import { Rent, RentSchema } from '../rent/schemas/rent.schema';
 
 @Module({
   imports: [
@@ -18,6 +16,10 @@ import { UserService } from './user.service';
         name: User.name,
         schema: UserSchema,
       },
+      {
+        name: Rent.name,
+        schema: RentSchema,
+      },
     ]),
   ],
   providers: [
@@ -25,7 +27,6 @@ import { UserService } from './user.service';
     UserQueryResolver,
     UserRentLoader,
     BookRentalCountLoader,
-    BookRentalInfoLoader,
   ],
   exports: [UserService],
 })
