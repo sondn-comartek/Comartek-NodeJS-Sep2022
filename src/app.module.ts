@@ -20,6 +20,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MigrationModule } from './modules/migration/migration.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
+import { CommandModule } from './modules/command/command.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -95,6 +96,7 @@ const jwtService = new JwtService({
         port: 6379,
       },
     }),
+    CommandModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
