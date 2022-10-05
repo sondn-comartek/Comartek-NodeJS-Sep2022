@@ -8,10 +8,10 @@ export class FileResizeProcessor {
 
   @Process('resize')
   async resizeFile(job: Job) {
-    const { filename, width, height, buffer } = job.data;
+    const { media, width, height, buffer } = job.data;
     console.log(job.data);
 
-    await this.fileResizeHelper.resizeFile(filename, width, height, buffer);
+    await this.fileResizeHelper.resizeFile(media, width, height, buffer);
 
     return 'DONE';
   }

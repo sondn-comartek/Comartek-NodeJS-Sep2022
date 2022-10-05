@@ -16,11 +16,12 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { MediaModule } from './modules/media/media.module';
-import { ScheduleModule } from './modules/schedule/schedule.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MigrationModule } from './modules/migration/migration.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
 import { CommandModule } from './modules/command/command.module';
+import { CronModule } from './modules/cron/cron.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -28,18 +29,6 @@ const jwtService = new JwtService({
 
 @Module({
   imports: [
-    AuthModule,
-    UserModule,
-    RentModule,
-    BookModule,
-    CategoryModule,
-    UploadModule,
-    LoaderModule,
-    MediaModule,
-    ScheduleModule,
-    NotificationModule,
-    MigrationModule,
-    PubSubModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       debug: false,
@@ -96,7 +85,20 @@ const jwtService = new JwtService({
         port: 6379,
       },
     }),
+    ScheduleModule.forRoot(),
+    AuthModule,
+    UserModule,
+    RentModule,
+    BookModule,
+    CategoryModule,
+    UploadModule,
+    LoaderModule,
+    MediaModule,
+    NotificationModule,
+    MigrationModule,
+    PubSubModule,
     CommandModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

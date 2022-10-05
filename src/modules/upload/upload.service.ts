@@ -19,25 +19,27 @@ export class UploadService {
     const { filename, mimetype, createReadStream } = await uploadFileInput.file;
     const { height, width } = uploadFileInput;
 
+    const createMediaInput: CreateMediaInput = {
+      filename,
+      mimetype,
+    };
+    const media = await this.mediaService.create(createMediaInput);
+
     return new Promise(async (resolve) => {
       createReadStream()
         .pipe(
-          createWriteStream(join(process.cwd(), `store/origin/${filename}`)),
+          createWriteStream(
+            join(process.cwd(), `store/origin/${media._id.toString()}.${media.mimetype.split('/')[1]}`),
+          ),
         )
         .on('finish', async () => {
           // Add to queue
           await this.fileQueue.add('resize', {
-            filename,
             height,
             width,
-            buffer: readFileSync(`store/origin/${filename}`),
+            media,
+            buffer: readFileSync(`store/origin/${media._id.toString()}.${media.mimetype.split('/')[1]}`),
           });
-
-          const createMediaInput: CreateMediaInput = {
-            filename,
-            mimetype,
-          };
-          const media = await this.mediaService.create(createMediaInput);
 
           return resolve(media);
         })
