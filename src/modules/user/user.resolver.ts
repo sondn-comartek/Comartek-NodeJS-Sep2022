@@ -15,6 +15,7 @@ import { OrderS } from '../order/entities/order.entity';
 import { OrderLoader } from '../loader/order.loader';
 import { Loader } from 'nestjs-dataloader';
 import * as DataLoader from 'dataloader';
+import * as _ from 'lodash';
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
@@ -32,8 +33,10 @@ export class UserResolver {
   async getAmountBooksBorrowedUser(
     @Parent() user: User,
     @Loader(OrderLoader) orderLoader: DataLoader<User['_id'], OrderS>,
-  ): Promise<OrderS | Error> {
-    return await orderLoader.load(user._id);
+  ) {
+    const dataLoader = await orderLoader.load(user._id);
+    console.log(dataLoader);
+    return dataLoader;
   }
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', { type: () => Int }) id: number) {

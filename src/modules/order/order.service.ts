@@ -60,7 +60,8 @@ export class OrderService {
     return updatedOrder;
   }
   async findByIds(ids) {
-    return await this.orderModel.find({ userID: { $in: ids } });
+    const orders = await this.orderModel.find({ userID: { $in: ids } });
+    return orders;
   }
   async findByCondition(condition: any) {
     const orders = await this.orderModel.find({ condition });
