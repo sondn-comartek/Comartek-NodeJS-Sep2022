@@ -53,7 +53,7 @@ export class RentService {
       throw new Error(`Can not create a new RentBook`);
     }
     await book.save();
-    let notification = await this.notificationService.create(NotificationType.BOOK_RENT, NotificationMsg.BOOK_RENT);
+    const notification = await this.notificationService.create(NotificationType.BOOK_RENT, NotificationMsg.BOOK_RENT);
     notification['data'] = createdRentBook._id;
     this.pubSubService.publicEvent(NotificationType.BOOK_RENT, notification);
     return createdRentBook;
@@ -75,6 +75,7 @@ export class RentService {
 
     await rentBook.save();
     const notification = await this.notificationService.create(NotificationType.RENT_ACCEPTED, NotificationMsg.RENT_ACCEPTED);
+    notification['data'] = rentBook._id;
     this.pubSubService.publicEvent(NotificationType.RENT_ACCEPTED, notification);
     return rentBook;
   }
@@ -95,11 +96,13 @@ export class RentService {
 
     await rentBook.save();
     const notification = await this.notificationService.create(NotificationType.RENT_REJECTED, NotificationMsg.RENT_REJECTED);
+    notification['data'] = rentBook._id;
     this.pubSubService.publicEvent(NotificationType.RENT_REJECTED, notification);
     return rentBook;
   }
 
   async findById(id: string): Promise<RentBook> {
+    console.log(id)
     const rentBook = await this.rentBook.findOne({ _id: id });
     if (!rentBook) {
       throw new HttpException("Error in get a rent book", HttpStatus.BAD_REQUEST);

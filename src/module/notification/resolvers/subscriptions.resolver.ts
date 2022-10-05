@@ -33,7 +33,10 @@ export class NotificationSubscriptionsResolver {
 
   @Subscription(() => Notification, {
     name: 'approvedRentMsg',
-    resolve: (payload: any) => payload
+    resolve(payload) {
+      console.log(payload)
+      return payload
+    }
   })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.USER)
@@ -53,6 +56,7 @@ export class NotificationSubscriptionsResolver {
 
   @ResolveField(() => RentBook, { name: 'rentInfo' })
   async getRentInfo(@Parent() notification: Notification) {
+    console.log(notification)
     return await this.rentService.findById(notification.data);
   }
 

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CommandModule } from 'nestjs-command';
 import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppController } from './app.controller';
@@ -20,6 +21,7 @@ import { NotificationModule } from './module/notification/notification.module';
 import { UsersService } from './module/users/users.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './module/auth/constants/jwt-constanst';
+import { MigrationModule } from './commands/migrations/migrations.module';
 
 const jwtService = new JwtService({
   secret: jwtConstants.secret,
@@ -62,7 +64,9 @@ const jwtService = new JwtService({
     RentModule,
     AuthModule,
     PubsubModule,
-    NotificationModule
+    NotificationModule,
+    CommandModule,
+    MigrationModule
   ],
   controllers: [AppController],
   providers: [  
