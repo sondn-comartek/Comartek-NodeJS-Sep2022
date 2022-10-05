@@ -30,7 +30,6 @@ export class OrderResolver {
    constructor(
       private readonly orderService: OrderService,
       private readonly userService: UserService,
-      private readonly bookService: BookService,
       private readonly pubSub: PubSub,
    ) {}
    @Mutation(() => Order)
@@ -63,11 +62,10 @@ export class OrderResolver {
 
    @Subscription(() => Order, {
       filter: (payload, variables) => {
-        return payload.orderApproved.customer === variables.userid
-      }
+         return payload.orderApproved.customer === variables.userid
+      },
    })
-   
-   @Role(UserRole.MEMBER , UserRole.SUBCRIBER )
+   @Role(UserRole.MEMBER, UserRole.SUBCRIBER)
    @UseGuards(JwtGuard, RoleGuard)
    orderApproved(@Args('userid', { type: () => ID }) userid: string) {
       return this.pubSub.asyncIterator('orderApproved')

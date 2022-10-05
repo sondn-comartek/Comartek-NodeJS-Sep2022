@@ -12,6 +12,9 @@ import { ImageModule } from './image/image.module'
 import { BullModule } from '@nestjs/bull'
 import { DataloaderModule } from './dataloader/dataloader.module'
 import { subscriptionConfig, redisConfig, mongoConfig } from 'src/configs'
+import { PubSub } from 'graphql-subscriptions'
+import { MigrationModule } from 'bin/commands/migrations/migration.module'
+import { CommandModule } from 'nestjs-command'
 
 @Module({
    imports: [
@@ -43,6 +46,8 @@ import { subscriptionConfig, redisConfig, mongoConfig } from 'src/configs'
       OrderModule,
       ImageModule,
       DataloaderModule,
+      CommandModule ,
+      MigrationModule
    ],
 })
 export class AppModule {}

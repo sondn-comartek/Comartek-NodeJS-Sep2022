@@ -83,13 +83,18 @@ export class AuthService {
          role: user.role,
          status: user.status,
       })
-      await this.tokenRepository.FindOneAndUpdate(
+      const tokens = await this.tokenRepository.FindOneAndUpdate(
          {
             userid: user.userid,
          },
          { accessToken, refreshToken },
          { new: true },
       )
+      if(!tokens) await this.tokenRepository.Create({
+        userid: user.userid,
+        accessToken,
+        refreshToken,
+     })
       return user
    }
 }
