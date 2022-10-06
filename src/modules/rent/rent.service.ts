@@ -42,7 +42,7 @@ export class RentService {
     return await this.rentModel.find(
       {},
       {},
-      { limit: queryArgsInput.limit, skip: queryArgsInput.skip },
+      { limit: queryArgsInput?.limit, skip: queryArgsInput?.skip },
     );
   }
 

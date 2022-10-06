@@ -11,12 +11,12 @@ export class Media {
   @Field(() => ID)
   readonly _id: string;
 
-  @Field(() => String)
-  @Prop({
-    type: String,
-    required: true,
-  })
-  readonly filename: string;
+  // @Field(() => String)
+  // @Prop({
+  //   type: String,
+  //   required: true,
+  // })
+  // readonly filename: string;
 
   @Field(() => String)
   @Prop({

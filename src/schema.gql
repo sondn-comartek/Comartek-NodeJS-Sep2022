@@ -28,7 +28,6 @@ type AuthResponseType {
 
 type Media {
   _id: ID!
-  filename: String!
   mimetype: String!
 }
 
@@ -51,8 +50,6 @@ type Book {
   pageTotal: Int!
   quantity: Int!
   available: Int!
-  createdAt: String!
-  updatedAt: String!
   thumbnail: Media!
   categoryInfo: Category!
 }
@@ -86,10 +83,10 @@ type Notification {
 
 type Query {
   findAllMedia(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Media!]!
+  findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
   findAllBook(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Book!]!
   findAllUser(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [User!]!
   findAllRent(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Rent!]!
-  findAllCategory(queryArgsInput: QueryArgsInput = {limit: 0, skip: 0}): [Category!]!
   getHello: String!
 }
 
@@ -99,25 +96,23 @@ input QueryArgsInput {
 }
 
 type Mutation {
-  uploadFile(uploadFileInput: UploadFileInput!): Media!
+  extractBookData: Media!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createBook(createBookInput: CreateBookInput!): Book!
   applyReceiveNewBookInfo: User!
   ignoreReceiveNewBookInfo: User!
   createRent(createRentInput: CreateRentInput!): Rent!
   updateRentStatus(updateRentStatusInput: UpdateRentStatusInput!): Rent!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  uploadFile(uploadFileInput: UploadFileInput!): Media!
   signUp(createUserInput: CreateUserInput!): AuthResponseType!
   signIn(signInInput: SignInInput!): AuthResponseType!
 }
 
-input UploadFileInput {
-  file: Upload!
-  width: Int!
-  height: Int!
+input CreateCategoryInput {
+  name: String!
+  code: String!
+  mediaId: String!
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input CreateBookInput {
   categoryId: String!
@@ -138,11 +133,14 @@ input UpdateRentStatusInput {
   updateStatus: RentStatusEnum!
 }
 
-input CreateCategoryInput {
-  name: String!
-  code: String!
-  mediaId: String!
+input UploadFileInput {
+  file: Upload!
+  width: Int!
+  height: Int!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input CreateUserInput {
   userName: String!
@@ -158,6 +156,7 @@ input SignInInput {
 }
 
 type Subscription {
+  getExcelDataByMediaId: [String!]!
   getBookAddedNotification: Notification!
   getRentUpdatedNotification: Notification!
   getRentCreatedNotification: Notification!

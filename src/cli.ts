@@ -7,7 +7,6 @@ async function bootstrap() {
     logger: false,
   });
 
-
   try {
     await app.select(CommandModule).get(CommandService).exec();
     await app.close();

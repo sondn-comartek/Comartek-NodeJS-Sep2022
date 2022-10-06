@@ -31,11 +31,7 @@ export class Migration {
     readonly bookModel: Model<Book>,
     @InjectModel(Category.name)
     readonly categoryModel: Model<Category>,
-  ) {
-    mongoose.connect('mongodb://localhost:27017').catch((e) => {
-      console.log(e);
-    });
-  }
+  ) {}
 
   run = async (migrationName?: string) => {
     console.log(

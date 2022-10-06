@@ -44,7 +44,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-upload": "14",
     "migrate-mongo": "^9.0.0",
-    "mongoose": "^6.6.1",
+    "mongoose": "^6.6.5",
     "mustache": "^4.2.0",
     "nestjs-command": "^3.1.2",
     "nestjs-dataloader": "^9.0.0",

@@ -1,12 +1,17 @@
+import { Media } from 'src/modules/media/schemas/media.schema';
+import { UseGuards } from '@nestjs/common';
+import { ExtractDataService } from './../extract-data.service';
 import { Int, Mutation, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
-@Resolver(() => Int)
+@Resolver(() => Media)
 export class ExtractDataMutationResolver {
-  constructor() {}
+  constructor(private readonly extractDataService: ExtractDataService) {}
 
-  @Mutation(() => Int)
-  async extractBookData() {
-    // Return job ID
-    return;
+  // return job ID
+  @Mutation(() => Media)
+  @UseGuards(JwtAuthGuard)
+  async extractBookData(): Promise<Media> {
+    return await this.extractDataService.extractBookData();
   }
 }

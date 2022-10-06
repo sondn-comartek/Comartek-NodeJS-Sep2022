@@ -76,11 +76,11 @@ export class Book {
   })
   readonly available: number;
 
-  @Field(() => String)
-  readonly createdAt: Date;
+  // @Field(() => String)
+  // readonly createdAt: Date;
 
-  @Field(() => String)
-  readonly updatedAt: Date;
+  // @Field(() => String)
+  // readonly updatedAt: Date;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

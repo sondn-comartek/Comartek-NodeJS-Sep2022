@@ -86,8 +86,8 @@ export class BookService {
       {},
       {},
       {
-        limit: queryArgsInput.limit,
-        skip: queryArgsInput.skip,
+        limit: queryArgsInput?.limit,
+        skip: queryArgsInput?.skip,
       },
     );
   }

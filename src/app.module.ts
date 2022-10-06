@@ -23,6 +23,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ExtractDataModule } from './modules/extract-data/extract-data.module';
 import { CommandModule } from 'nestjs-command';
 import { MigrationsModule } from './commands/migrations/migrations.module';
+import { ExcelModule } from './modules/excel/excel.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -31,11 +32,9 @@ const jwtService = new JwtService({
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017'),
-    MigrationsModule,
-    CommandModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      debug: false,
+      debug: true,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       installSubscriptionHandlers: true,
@@ -77,6 +76,8 @@ const jwtService = new JwtService({
         UploadModule,
         MediaModule,
         NotificationModule,
+        ExtractDataModule,
+        ExcelModule,
       ],
     }),
     JwtModule.register({
@@ -89,7 +90,8 @@ const jwtService = new JwtService({
       },
     }),
     ScheduleModule.forRoot(),
-
+    MigrationsModule,
+    CommandModule,
     AuthModule,
     UserModule,
     RentModule,
@@ -102,6 +104,7 @@ const jwtService = new JwtService({
     PubSubModule,
     CronModule,
     ExtractDataModule,
+    ExcelModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

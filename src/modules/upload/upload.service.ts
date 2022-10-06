@@ -16,11 +16,10 @@ export class UploadService {
   ) {}
 
   async upload(uploadFileInput: UploadFileInput): Promise<Media> {
-    const { filename, mimetype, createReadStream } = await uploadFileInput.file;
+    const { mimetype, createReadStream } = await uploadFileInput.file;
     const { height, width } = uploadFileInput;
 
     const createMediaInput: CreateMediaInput = {
-      filename,
       mimetype,
     };
     const media = await this.mediaService.create(createMediaInput);

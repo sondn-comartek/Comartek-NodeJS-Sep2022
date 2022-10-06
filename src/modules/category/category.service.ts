@@ -62,7 +62,7 @@ export class CategoryService {
     return await this.categoryModel.find(
       {},
       {},
-      { limit: queryArgsInput.limit, skip: queryArgsInput.skip },
+      { limit: queryArgsInput?.limit, skip: queryArgsInput?.skip },
     );
   }
 }
