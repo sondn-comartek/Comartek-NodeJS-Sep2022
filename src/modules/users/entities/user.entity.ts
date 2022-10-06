@@ -4,13 +4,12 @@ import { UserStatus } from '../enums/status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Role } from '../enums/role.enum';
 import { ObjectType, Field } from '@nestjs/graphql';
+import * as dayjs from 'dayjs';
 
 export type UserDocument = User & Document;
 
 @ObjectType()
-@Schema({
-  timestamps: true,
-})
+@Schema()
 export class User {
   @Field(() => String)
   @Prop({
@@ -52,6 +51,12 @@ export class User {
   @Field(() => String)
   @Prop({ type: String, default: Role.Customer, required: true })
   role: Role;
+
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
+  createdAt: string;
+
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
+  updatedAt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

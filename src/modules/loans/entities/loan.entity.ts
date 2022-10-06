@@ -3,13 +3,12 @@ import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { LoanStatus } from '../enums/status.enum';
 import { ObjectType, Field } from '@nestjs/graphql';
+import * as dayjs from 'dayjs';
 
 export type LoanDocument = Loan & Document;
 
 @ObjectType()
-@Schema({
-  timestamps: true,
-})
+@Schema()
 export class Loan {
   @Field(() => String)
   @Prop({
@@ -35,6 +34,12 @@ export class Loan {
   @Field(() => String)
   @Prop({ required: true, type: String, default: LoanStatus.Borrowing })
   status: LoanStatus;
+
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
+  createdAt: string;
+
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
+  updatedAt: string;
 }
 
 export const LoanSchema = SchemaFactory.createForClass(Loan);
