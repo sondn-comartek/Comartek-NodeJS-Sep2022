@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 
 import { genCode } from 'src/ultils'
-export const database = {
+export const databaseInit = {
    userData: [
       {
          userid: v4(),

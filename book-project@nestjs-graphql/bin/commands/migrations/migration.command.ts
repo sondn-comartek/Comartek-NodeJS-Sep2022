@@ -5,6 +5,8 @@ import { BookRepository } from 'src/modules/book/book.repository'
 import { CategoryRepository } from 'src/modules/category/category.repository'
 import { UserRepository } from 'src/modules/user/user.repository'
 import { MigrationRepository } from './migration.repository'
+import { ImageRepository } from 'src/modules/image/image.repository'
+import { OrderRepository } from 'src/modules/order/order.repository'
 
 @Injectable()
 export class MigrationCommand extends MigrationStrategy {
@@ -12,17 +14,18 @@ export class MigrationCommand extends MigrationStrategy {
       userRepository: UserRepository,
       bookRepository: BookRepository,
       categoryRepository: CategoryRepository,
-      migrationRepository: MigrationRepository , 
+      migrationRepository: MigrationRepository,
+      imageRepository: ImageRepository,
+      orderRepository: OrderRepository,
    ) {
-      super(
-         migrationRepository ,
-         {
-            userRepository: userRepository,
-            bookRepository: bookRepository,
-            categoryRepository: categoryRepository,
-         },
-         ['user', 'book', 'category'],
-      )
+      super({
+         userRepository: userRepository,
+         bookRepository: bookRepository,
+         categoryRepository: categoryRepository,
+         imageRepository: imageRepository,
+         orderRepository: orderRepository,
+         migrationRepository: migrationRepository,
+      })
    }
 
    @Command({

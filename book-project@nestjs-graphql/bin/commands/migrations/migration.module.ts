@@ -12,7 +12,11 @@ import { BookRepository } from 'src/modules/book/book.repository'
 import { CategoryRepository } from 'src/modules/category/category.repository'
 import { MigrationRepository } from './migration.repository'
 import { MigrationCommand } from './migration.command'
-import { MigrationStrategy } from './migration.strategy'
+import { OrderModule } from 'src/modules/order/order.module'
+import { Image } from 'src/modules/image/models'
+import { ImageModule } from 'src/modules/image/image.module'
+import { OrderRepository } from 'src/modules/order/order.repository'
+import { ImageRepository } from 'src/modules/image/image.repository'
 
 @Module({
    imports: [
@@ -36,13 +40,17 @@ import { MigrationStrategy } from './migration.strategy'
       ]),
       UserModule,
       BookModule,
-      CategoryModule
+      CategoryModule,
+      OrderModule ,
+      ImageModule ,
    ],
    providers: [
       UserRepository,
       BookRepository,
       CategoryRepository,
       MigrationRepository,
+      OrderRepository ,
+      ImageRepository ,
       MigrationCommand 
    ],
 })

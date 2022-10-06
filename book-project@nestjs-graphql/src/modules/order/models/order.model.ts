@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectType, Field, ID, GraphQLTimestamp } from '@nestjs/graphql'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { Book } from 'src/modules/book/models'
@@ -37,11 +37,17 @@ export class Order {
    })
    status: OrderStatus
 
-   @Field(() => Date)
-   createdAt?: Date
+   @Field( () => GraphQLTimestamp , { nullable : true } )
+    @Prop({
+        default : new Date()
+    })
+    createdAt? : number
 
-   @Field(() => Date)
-   updatedAt?: Date
+    @Field( () => GraphQLTimestamp , { nullable : true} )
+    @Prop({
+        default : new Date()
+    })
+    updatedAt? : number
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order)

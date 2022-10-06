@@ -1,5 +1,5 @@
 
-import { ObjectType , Field  , Int, ID } from '@nestjs/graphql'
+import { ObjectType , Field  , Int, ID, GraphQLTimestamp } from '@nestjs/graphql'
 import { Prop , Schema , SchemaFactory } from '@nestjs/mongoose' 
 import { Document, Types } from 'mongoose' 
 import { Category } from 'src/modules/category/models'
@@ -59,11 +59,19 @@ export class Book {
     @Prop({ default : null })
     image_url : string 
 
-    @Field( () => Date )
-    createdAt? : Date
+    @Field( () => GraphQLTimestamp , { nullable : true } )
+    @Prop({
+        default : new Date() ,
+        type : Number
+    })
+    createdAt? : number | Date | string
 
-    @Field( () => Date )
-    updatedAt? : Date
+    @Field( () => GraphQLTimestamp , { nullable : true} )
+    @Prop({
+        default : new Date(),
+        type : Number
+    })
+    updatedAt? : number | Date | string
 
     @Field( () => Int )
     total? : number 

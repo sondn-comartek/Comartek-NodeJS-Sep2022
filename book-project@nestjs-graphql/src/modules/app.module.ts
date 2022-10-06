@@ -15,6 +15,7 @@ import { subscriptionConfig, redisConfig, mongoConfig } from 'src/configs'
 import { PubSub } from 'graphql-subscriptions'
 import { MigrationModule } from 'bin/commands/migrations/migration.module'
 import { CommandModule } from 'nestjs-command'
+import { ExcelModule } from './excel/excel.module';
 
 @Module({
    imports: [
@@ -47,7 +48,8 @@ import { CommandModule } from 'nestjs-command'
       ImageModule,
       DataloaderModule,
       CommandModule ,
-      MigrationModule
+      MigrationModule,
+      ExcelModule
    ],
 })
 export class AppModule {}

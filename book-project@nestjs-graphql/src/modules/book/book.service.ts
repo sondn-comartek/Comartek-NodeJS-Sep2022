@@ -7,11 +7,13 @@ import { CreateBookInput } from './dto'
 import { GetListArg } from './dto/get-list.arg'
 import { BookDocument } from './models'
 
+
 @Injectable()
 export class BookService {
+    
    constructor(
       private readonly bookRepository: BookRepository,
-      private readonly categoryService: CategoryService
+      private readonly categoryService: CategoryService,
    ) {}
 
    calculateTotalCountBooks(
@@ -41,7 +43,7 @@ export class BookService {
    }
 
    async findBooksByBookIds(ids: string[]): Promise<BookDocument[]> {
-     console.log(`find >>> [${ids}]`)
+      console.log(`find >>> [${ids}]`)
       return await this.bookRepository.FindAll({ bookid: { $in: ids } }, null, {
          lean: true,
       })
@@ -49,7 +51,9 @@ export class BookService {
 
    async create(createBookInput: CreateBookInput): Promise<BookDocument> {
       const { title, part, categories } = createBookInput
-      const listCategory = await this.categoryService.findCategoriesByCodes(categories)
+      const listCategory = await this.categoryService.findCategoriesByCodes(
+         categories,
+      )
       if (listCategory.length < categories.length)
          throw new BadRequestException('the category is undefined!')
       return await this.bookRepository.Create({

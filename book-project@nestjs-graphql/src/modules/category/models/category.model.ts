@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql'
+import { ObjectType, Field, Int, GraphQLTimestamp } from '@nestjs/graphql'
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { Book } from 'src/modules/book/models'
@@ -38,6 +38,21 @@ export class Category extends Document {
 
    @Field(() => Int)
    count_avaiableBook?: number
+
+
+   @Field( () => GraphQLTimestamp , { nullable : true } )
+    @Prop({
+        default : new Date() ,
+        type : Number
+    })
+    createdAt? : number | Date | string
+
+    @Field( () => GraphQLTimestamp , { nullable : true} )
+    @Prop({
+        default : new Date(),
+        type : Number
+    })
+    updatedAt? : number | Date | string
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category)

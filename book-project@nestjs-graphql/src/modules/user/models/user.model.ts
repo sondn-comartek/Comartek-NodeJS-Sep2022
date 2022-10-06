@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose'
 import { Schema , Prop , SchemaFactory } from "@nestjs/mongoose"
-import { Field  , ID , Int, ObjectType } from '@nestjs/graphql'
+import { Field  , GraphQLTimestamp, ID , Int, ObjectType } from '@nestjs/graphql'
 import { UserRole, UserStatus } from "../types" ;
 import { Order } from 'src/modules/order/models';
 import { Token } from 'src/modules/auth/models';
@@ -10,9 +10,7 @@ import { Token } from 'src/modules/auth/models';
 export type UserDocument = User & Document
 
 @ObjectType({description : "user"})
-@Schema({
-    timestamps : true 
-})
+@Schema()
 export class User extends Document {
 
     @Field( () => ID )
@@ -51,12 +49,6 @@ export class User extends Document {
     })
     role : UserRole
 
-    @Field( () => Date)
-    createdAt? : Date
-
-    @Field( () => Date )
-    updatedAt? : Date
-
     @Field( () => [Order])
     orders? : Order[]
 
@@ -65,6 +57,21 @@ export class User extends Document {
 
     @Field( () => Token  , { nullable : true })
     tokens? : Token
+
+    @Field( () => GraphQLTimestamp , { nullable : true } )
+    @Prop({
+        default : new Date() ,
+        type : Number
+    })
+    createdAt? : number | Date | string
+
+    @Field( () => GraphQLTimestamp , { nullable : true} )
+    @Prop({
+        default : new Date(),
+        type : Number
+    })
+    updatedAt? : number | Date | string
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User) 

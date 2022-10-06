@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, GraphQLTimestamp, ID, ObjectType } from "@nestjs/graphql";
 import { Schema , Prop , SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 import { ShapeImage } from "../types";
@@ -36,6 +36,20 @@ export class Image {
             isRequired : true
         })
     shape : ShapeImage
+
+    @Field( () => GraphQLTimestamp , { nullable : true } )
+    @Prop({
+        default : new Date() ,
+        type : Number
+    })
+    createdAt? : number | Date | string
+
+    @Field( () => GraphQLTimestamp , { nullable : true} )
+    @Prop({
+        default : new Date(),
+        type : Number
+    })
+    updatedAt? : number | Date | string
 }
 
 
