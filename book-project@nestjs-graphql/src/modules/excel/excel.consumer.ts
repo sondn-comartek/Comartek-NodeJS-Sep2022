@@ -1,13 +1,20 @@
 import { Process, Processor } from '@nestjs/bull'
 import { Job } from 'bull'
+import { PubSub } from 'graphql-subscriptions'
 import { exportHelper } from './helpers'
 
 @Processor('excel')
 export class ExcelConsumer {
    private exportHelper = exportHelper
-   constructor() {}
+   constructor(
+    private readonly pubSub: PubSub,
+   ) {}
    @Process('export')
-   export( { data }: Job<any>) {
-      return this.exportHelper(data.docs, data.id, data.columnTemplate)
+    async export( { data }: Job<any>) {
+        const excelId = await this.exportHelper(data.docs, data.id, data.columnTemplate) ;
+        this.pubSub.publish('excelExported' , {
+            excelId : excelId ,
+            message : `export ${excelId} done!`
+        }) 
    }
 }

@@ -13,6 +13,7 @@ import { ImageRepository } from '../image/image.repository'
 import { BullModule } from '@nestjs/bull'
 import { ExcelConsumer } from './excel.consumer'
 import { ConfigModule } from '@nestjs/config'
+import { PubSub } from 'graphql-subscriptions'
 
 @Module({
    imports: [
@@ -34,7 +35,7 @@ import { ConfigModule } from '@nestjs/config'
       UserRepository,
       OrderRepository,
       ImageRepository,
-      
+      PubSub
    ],
 })
 export class ExcelModule {}

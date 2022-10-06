@@ -8,12 +8,12 @@ export const exportHelper = async (
    columnTemplate: Record<string, unknown>[],
 ) => {
    const excelOriginPath = process.cwd() + '/src/excel/'
+   await fse.ensureDir(excelOriginPath)
    const workbook = new Excel.Workbook()
    const worksheet = workbook.addWorksheet('book list')
    worksheet.columns = columnTemplate
-   docs.forEach( (doc) => {
+   docs.forEach((doc) => {
       worksheet.addRow(doc)
    })
-   const result = await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
-   return result
+   return await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
 }
