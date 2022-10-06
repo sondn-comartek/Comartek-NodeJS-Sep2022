@@ -18,10 +18,9 @@ export class ExcelResolver {
       private readonly pubSub: PubSub,
    ) {}
 
-   @Query(() => String)
-   async exportExcelBooks() {
-      const excelId = await this.excelService.exportListBook()
-      return excelId;
+   @Query(() => String )
+   exportExcelBooks() {
+      return this.excelService.exportListBook()
    }
 
    @Subscription(() => String, {
