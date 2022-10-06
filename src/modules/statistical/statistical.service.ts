@@ -2,13 +2,21 @@ import { ExportFields } from './dto/export-fields.input';
 import { CategoryService } from './../category/category.service';
 import { Injectable } from '@nestjs/common';
 import { BookService } from '../book/book.service';
+import { v4 as uuidV4 } from 'uuid';
 import * as _ from 'lodash';
-import { Args } from '@nestjs/graphql';
+import { faker } from '@faker-js/faker';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { InjectModel } from '@nestjs/mongoose';
+import { Media, MediaDocument } from '../media/entities/media.entity';
+import { Model } from 'mongoose';
 @Injectable()
 export class StatisticalService {
   constructor(
+    @InjectQueue('excel') private excelQueue: Queue,
     private categoryService: CategoryService,
     private bookService: BookService,
+    @InjectModel(Media.name) private mediaModel: Model<MediaDocument>,
   ) {}
   async findTotalBookEachCategory(page: number, record: number): Promise<any> {
     const categories = await this.categoryService.findAll();
@@ -39,9 +47,20 @@ export class StatisticalService {
 
     return { total: total, book_valid: available, book_invalid: unAvailable };
   }
-
-  async exportData(exportFields: ExportFields): Promise<String> {
-    // await this.
-    return 'hello world';
+  async exportData(exportFields: ExportFields) {
+    const books = await this.bookService.findAllByField(
+      'status',
+      exportFields.category,
+    );
+    const filename = `${
+      process.env.EXCEL_FILES_PATH
+    }${faker.internet.userName()}.xlsx`;
+    const createdFile = await this.mediaModel.create({
+      mediaID: uuidV4(),
+      description: filename,
+      media_urls: filename,
+    });
+    this.excelQueue.add('export', { filename: filename, books: books });
+    return createdFile;
   }
 }

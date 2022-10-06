@@ -55,8 +55,10 @@ export class BookService {
   findOne(id: number) {
     return `This action returns a #${id} book`;
   }
-  async findAllByField(field, value) {
-    return await this.bookModel.find({ field: value });
+  async findAllByField(field, values): Promise<Book[] | null> {
+    return await this.bookModel
+      .find({ category: { $in: values } })
+      .sort({ status: 1 })
   }
   async findGroupBookByCategory(page = 1, record = 5) {
     return await this.bookModel

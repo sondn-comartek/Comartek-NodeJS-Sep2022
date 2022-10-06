@@ -17,6 +17,7 @@ import { MediaModule } from './modules/media/media.module';
 import { OrderModule } from './modules/order/order.module';
 import { StatisticalModule } from './modules/statistical/statistical.module';
 import { CommandModule } from 'nestjs-command';
+import { HelperModule } from './helper/helper.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -70,6 +71,7 @@ import { CommandModule } from 'nestjs-command';
     NotificationModule,
     CommandModule,
     MigrationModule,
+    HelperModule
   ],
   controllers: [AppController],
   providers: [AppService],

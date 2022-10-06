@@ -1,9 +1,11 @@
+import { Media } from './../media/entities/media.entity';
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../auth/current.user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { Book } from '../book/entities/book.entity';
 import { User } from '../user/entities/user.entity';
 import { Role } from '../user/enums/roles.enum';
 import { ExportFields } from './dto/export-fields.input';
@@ -31,7 +33,7 @@ export class StatisticalResolver {
   ) {
     return await this.statisticalService.bookInStore(page, record);
   }
-  @Mutation(() => String, { name: 'export_excel' })
+  @Mutation(() => Media, { name: 'export_excel' })
   @Roles(Role.user)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateBook(

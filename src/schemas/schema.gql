@@ -150,7 +150,7 @@ scalar DateTime
 
 input ExportFields {
   """category"""
-  category: String!
+  category: [String!]!
 }
 
 type Media {
@@ -169,7 +169,7 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
   create_order(createOrderInput: CreateOrderInput!): OrderS!
-  export_excel(exportFields: ExportFields!): String!
+  export_excel(exportFields: ExportFields!): Media!
   removeBook(id: Int!): Book!
   removeCategory(id: Int!): Category!
   removeOrder(id: Int!): OrderS!

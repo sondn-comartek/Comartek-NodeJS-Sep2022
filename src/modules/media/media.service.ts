@@ -37,4 +37,8 @@ export class MediaService {
     });
     return createdMedia;
   }
+  async upload_file() {
+    const createdFile = '';
+    return createdFile;
+  }
 }
