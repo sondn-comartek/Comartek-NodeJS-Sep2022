@@ -10,6 +10,7 @@ import {
 } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
 import { ExcelService } from './excel.service'
+import { ExportResonpse } from './models'
 
 @Resolver()
 export class ExcelResolver {
@@ -18,14 +19,17 @@ export class ExcelResolver {
       private readonly pubSub: PubSub,
    ) {}
 
-   @Query(() => String )
+   @Query(() => String)
    exportExcelBooks() {
       return this.excelService.exportListBook()
    }
 
-   @Subscription(() => String, {
+   @Subscription(() => Boolean, {
       filter: (payload, variables) => {
          return payload.excelId === variables.excelId
+      },
+      resolve: ({ success }) => {
+         return success
       },
    })
    excelExported(@Args('excelId', { type: () => ID }) excelId: string) {

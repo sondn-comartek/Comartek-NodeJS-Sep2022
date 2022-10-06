@@ -15,5 +15,6 @@ export const exportHelper = async (
    docs.forEach((doc) => {
       worksheet.addRow(doc)
    })
-   return await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
+    await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
+    return id
 }
