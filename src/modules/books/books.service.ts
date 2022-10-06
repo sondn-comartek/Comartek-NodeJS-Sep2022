@@ -45,19 +45,15 @@ export class BooksService {
       const imageExist = await this.uploadService.findOne(imageId);
       if (!imageExist) return new Error(`Image doesn't not exist`);
 
-      async () => {
-        await this.bookQueue.add(
-          'convertBookImage',
-          {
-            filename: imageExist.filename,
-            name,
-            widthImage,
-          },
-          { delay: 3000 },
-        );
-
-        return true;
-      };
+      await this.bookQueue.add(
+        'convertBookImage',
+        {
+          filename: imageExist.filename,
+          name,
+          widthImage,
+        },
+        { delay: 3000 },
+      );
 
       const newBook = await new this.bookModel({
         ...createBookInput,
@@ -136,6 +132,25 @@ export class BooksService {
     );
     // console.log('mappedBooks', mappedBooks);
     return mappedBooks;
+  }
+
+  async exportBook() {
+    const books = await this.bookModel.find();
+    await this.bookQueue.add(
+      'exportBooks',
+      {
+        books,
+      },
+      { delay: 3000 },
+    );
+
+    const exportPath = './src/stores/exports/books/books.xlsx';
+
+    await this.pubsubService.publishEvent('exportBooks', {
+      exportBooks: exportPath,
+    });
+
+    return `Export book completed `;
   }
 
   update(id: number, updateBookInput: UpdateBookInput) {

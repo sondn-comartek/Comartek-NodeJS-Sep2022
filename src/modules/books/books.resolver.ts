@@ -50,6 +50,13 @@ export class BooksResolver {
     return await this.booksService.listBooks(book.id);
   }
 
+  @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
+  async export() {
+    return await this.booksService.exportBook();
+  }
+
   @Mutation(() => Book)
   @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)

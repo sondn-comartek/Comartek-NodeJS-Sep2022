@@ -41,23 +41,24 @@ const jwtService = new JwtService();
               path: '/graphql',
             },
             onConnect: async (connectionParams) => {
-              const authToken = connectionParams?.authorization;
-              if (!authToken) {
-                throw new Error(`Token is not provided`);
-              }
+              const authToken = connectionParams.authorization;
+              // if (!authToken) {
+              //   throw new Error(`Token is not provided`);
+              // }
 
-              const decoded = await jwtService.verify(authToken);
-              if (decoded.id && decoded.role) {
-                return { user: decoded };
-              }
-              throw new Error(`Authentication failed`);
-              // return {
-              //   req: {
-              //     headers: {
-              //       authorization: authToken,
-              //     },
-              //   },
-              // };
+              // const decoded = await jwtService.verify(authToken);
+              // if (decoded.id && decoded.role) {
+              //   return { user: decoded };
+              // }
+              // throw new Error(`Authentication failed`);
+              console.log('connectionParams', connectionParams);
+              return {
+                req: {
+                  headers: {
+                    authorization: authToken,
+                  },
+                },
+              };
             },
           },
           context: () => ({

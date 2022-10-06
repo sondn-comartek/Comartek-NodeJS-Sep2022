@@ -52,6 +52,15 @@ export class UsersResolver {
     return this.pubsubService.subscribeEvent('createNewBook');
   }
 
+  @Subscription(() => String, {
+    resolve: (value) => value.exportBooks,
+  })
+  // @UseGuards(JwtAuthGuard)
+  // @Roles(Role.Admin)
+  exportBooks() {
+    return this.pubsubService.subscribeEvent('exportBooks');
+  }
+
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
   whoAmI(@CurrentUser() user: User) {

@@ -99,6 +99,7 @@ type Mutation {
   updateBookItem(updateBookItemInput: UpdateBookItemInput!): BookItem!
   removeBookItem(id: Int!): BookItem!
   createBook(createBookInput: CreateBookInput!): Book!
+  export: String!
   updateBook(updateBookInput: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
   createUpload(createUploadInput: CreateUploadInput!): UploadImage!
@@ -205,4 +206,5 @@ type Subscription {
   requestBorrow: String!
   responseBorrow: String!
   createNewBook: Book!
+  exportBooks: String!
 }
