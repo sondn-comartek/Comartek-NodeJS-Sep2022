@@ -1,3 +1,4 @@
+import { ExportFields } from './dto/export-fields.input';
 import { CategoryService } from './../category/category.service';
 import { Injectable } from '@nestjs/common';
 import { BookService } from '../book/book.service';
@@ -35,7 +36,12 @@ export class StatisticalService {
     const total = await this.bookService.totalBook();
     const unAvailable = await this.bookService.bookInValid();
     const available = await this.bookService.bookValid();
-    
+
     return { total: total, book_valid: available, book_invalid: unAvailable };
+  }
+
+  async exportData(exportFields: ExportFields): Promise<String> {
+    // await this.
+    return 'hello world';
   }
 }

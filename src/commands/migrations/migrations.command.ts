@@ -19,7 +19,7 @@ interface Migrations {
 export class Migration {
   constructor(
     @InjectModel('Migration')
-    readonly migrationModel: Model<MigrationInterface>,
+    private migrationModel: Model<MigrationInterface>,
     @InjectModel('User')
     readonly userModel: Model<User>,
   ) {}
@@ -27,7 +27,6 @@ export class Migration {
     console.log(
       '!!!!!!!!!!!!!!!!!!!!!!!!! STARTED MIGRATE !!!!!!!!!!!!!!!!!!!!!!!!!',
     );
-
     const modules: Migrations = requireDir('./steps');
     const keys = [];
     for (const key in modules) {

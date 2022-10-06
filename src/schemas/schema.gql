@@ -148,6 +148,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input ExportFields {
+  """category"""
+  category: String!
+}
+
 type Media {
   """description of media"""
   description: String!
@@ -164,6 +169,7 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createUser(createUserInput: CreateUserInput!): User!
   create_order(createOrderInput: CreateOrderInput!): OrderS!
+  export_excel(exportFields: ExportFields!): String!
   removeBook(id: Int!): Book!
   removeCategory(id: Int!): Category!
   removeOrder(id: Int!): OrderS!

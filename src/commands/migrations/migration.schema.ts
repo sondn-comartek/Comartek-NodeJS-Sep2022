@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export const MigrationSchema = new Schema({
+export const MigrationSchema = new mongoose.Schema({
   key: String,
   createdAt: Date,
 });
