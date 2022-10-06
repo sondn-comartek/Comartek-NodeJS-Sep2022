@@ -9,7 +9,7 @@ const argv = yargs.argv;
 // @ts-ignore
 const migrationName: any = argv.name;
 
-const rootPath = './src/commands/migrations/steps/';
+const rootPath = './migrations/steps/';
 const pageSequence = ['Migration'];
 
 // Error strings

@@ -20,8 +20,9 @@ import { NotificationModule } from './modules/notification/notification.module';
 import { PubSubModule } from './modules/pubsub/pubsub.module';
 import { CronModule } from './modules/cron/cron.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { QueueModule } from './modules/queue/queue.module';
-import { MigrationModule } from './modules/migration/migration.module';
+import { ExtractDataModule } from './modules/extract-data/extract-data.module';
+import { CommandModule } from 'nestjs-command';
+import { MigrationsModule } from './commands/migrations/migrations.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -29,6 +30,9 @@ const jwtService = new JwtService({
 
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017'),
+    MigrationsModule,
+    CommandModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       debug: false,
@@ -78,7 +82,6 @@ const jwtService = new JwtService({
     JwtModule.register({
       secret: 'Your secret string',
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017'),
     BullModule.forRoot({
       redis: {
         host: 'localhost',
@@ -86,6 +89,7 @@ const jwtService = new JwtService({
       },
     }),
     ScheduleModule.forRoot(),
+
     AuthModule,
     UserModule,
     RentModule,
@@ -97,8 +101,7 @@ const jwtService = new JwtService({
     NotificationModule,
     PubSubModule,
     CronModule,
-    QueueModule,
-    MigrationModule,
+    ExtractDataModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

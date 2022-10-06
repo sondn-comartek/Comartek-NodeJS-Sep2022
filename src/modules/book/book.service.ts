@@ -81,7 +81,7 @@ export class BookService {
     return book;
   }
 
-  async findAll(queryArgsInput: QueryArgsInput): Promise<Book[]> {
+  async findAll(queryArgsInput?: QueryArgsInput): Promise<Book[]> {
     return await this.bookModel.find(
       {},
       {},

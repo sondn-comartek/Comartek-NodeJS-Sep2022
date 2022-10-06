@@ -1,39 +1,53 @@
-import { Command, Positional } from 'nestjs-command';
-import { Category } from './../category/schemas/category.schema';
 import { Injectable } from '@nestjs/common';
-import * as Commands from '../../commands/base';
-import { MigrationStep } from './interfaces/migration-step.interface';
-import * as requireDir from 'require-dir';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../user/schemas/user.schema';
-import { Book } from '../book/schemas/book.schema';
-import { Media } from '../media/schemas/media.schema';
-import { Migration } from './schemas/migration.schema';
+import { Migration as MigrationInterface } from './migrations.interface';
+import { Command, Positional } from 'nestjs-command';
+import * as requireDir from 'require-dir';
+import { Book } from 'src/modules/book/schemas/book.schema';
+import { Category } from 'src/modules/category/schemas/category.schema';
+import { User } from 'src/modules/user/schemas/user.schema';
+import * as Commands from '../base';
+import * as mongoose from 'mongoose';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+export interface MigrationStep {
+  name: string;
+  up(migration: Migration): Promise<any>;
+}
 
 interface Migrations {
   [key: string]: MigrationStep;
 }
 
 @Injectable()
-export class MigrationCommand {
+export class Migration {
   constructor(
-    @InjectModel(Migration.name)
-    readonly migrationModel: Model<Migration>,
+    @InjectModel('Migration')
+    readonly migrationModel: Model<MigrationInterface>,
     @InjectModel(User.name)
     readonly userModel: Model<User>,
     @InjectModel(Book.name)
     readonly bookModel: Model<Book>,
     @InjectModel(Category.name)
     readonly categoryModel: Model<Category>,
-    @InjectModel(Media.name)
-    readonly mediaModel: Model<Media>,
-  ) {}
+  ) {
+    mongoose.connect('mongodb://localhost:27017').catch((e) => {
+      console.log(e);
+    });
+  }
 
   run = async (migrationName?: string) => {
     console.log(
       '!!!!!!!!!!!!!!!!!!!!!!!!! STARTED MIGRATE !!!!!!!!!!!!!!!!!!!!!!!!!',
     );
+
+    // try {
+    //   await mongoose.connect('mongodb://localhost:27017')
+    // } catch (error) {
+    //   console.error(error);
+    //   throw error;
+    // }
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // const modules = require('require-dir-all')('./');
@@ -44,6 +58,13 @@ export class MigrationCommand {
         keys.push(key);
       }
     }
+
+    console.log('ADU');
+
+    const users = await this.userModel.find({});
+    console.log({ users });
+
+    console.log('ADU đằng sau Users');
 
     // check script need to run
     let ranKeys = [];

@@ -1,0 +1,6 @@
+import { Migration } from "../migrations.command";
+
+export const name = '{{migrationName}}';
+export const up = async (migration: Migration) => {
+  console.log('migrate {{migrationName}}: {{fileName}}');
+};
