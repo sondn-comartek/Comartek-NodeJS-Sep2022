@@ -5,27 +5,29 @@ import { Command, Positional } from 'nestjs-command';
 import { Migration as MigrationInterface } from '../migration.interface';
 import * as requireDir from 'require-dir';
 import Commands from '../base';
+import { User } from 'src/modules/user/entities/user.entity';
+
 export interface MigrationStep {
   name: string;
-  up(migration: MigrationService): Promise<any>;
+  up(migration: Migration): Promise<any>;
 }
 
 interface Migrations {
   [key: string]: MigrationStep;
 }
 @Injectable()
-export class MigrationService {
+export class Migration {
   constructor(
     @InjectModel('Migration')
     readonly migrationModel: Model<MigrationInterface>,
+    @InjectModel('User')
+    readonly userModel: Model<User>,
   ) {}
   run = async (migrationName?: string) => {
     console.log(
       '!!!!!!!!!!!!!!!!!!!!!!!!! STARTED MIGRATE !!!!!!!!!!!!!!!!!!!!!!!!!',
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    // const modules = require('require-dir-all')('./');
     const modules: Migrations = requireDir('./steps');
     const keys = [];
     for (const key in modules) {
@@ -69,21 +71,21 @@ export class MigrationService {
       '!!!!!!!!!!!!!!!!!!!!!!!!! MIGRATE DONE !!!!!!!!!!!!!!!!!!!!!!!!!',
     );
   };
-
   @Command({
     command: 'database:migrate:one <migrationName>',
     describe: 'migrate database',
-    autoExit: false,
   })
   async migrateOne(
     @Positional({
       name: 'migrationName',
       describe: 'name of specific migratioan to run',
-      type: 'string',
+      // type: 'string',
     })
     migrationName?: string,
   ) {
     Commands.run(() => {
+      console.log('hello world');
+
       this.run(migrationName)
         .then(() => {
           process.exit(0);
@@ -101,7 +103,6 @@ export class MigrationService {
   @Command({
     command: 'database:migrate:all',
     describe: 'migrate database',
-    autoExit: false,
   })
   async migrateAll() {
     Commands.run(() => {

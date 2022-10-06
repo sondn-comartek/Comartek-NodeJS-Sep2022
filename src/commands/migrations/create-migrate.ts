@@ -4,7 +4,7 @@ import * as fse from 'fs-extra';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import * as yargs from 'yargs';
 const argv = yargs.argv;
-
+// @ts-ignore
 const migrationName: any = argv.name;
 
 const rootPath = './src/commands/migrations/steps/';

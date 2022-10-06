@@ -8,6 +8,7 @@ import { UpdateOrderInput } from './dto/update-order.input';
 import { OrderS, OrderSDocument } from './entities/order.entity';
 import { BookService } from '../book/book.service';
 import { BookStatus } from '../book/enums/status.enum';
+import * as dayjs from 'dayjs';
 @Injectable()
 export class OrderService {
   constructor(
@@ -26,6 +27,7 @@ export class OrderService {
       );
       const createdOrder = await this.orderModel.create({
         ...createOrderInput,
+        // borrowed_date: dayjs(new Date()),
       });
       return createdOrder;
     }

@@ -1,5 +1,6 @@
+import { MigrationModule } from './commands/migrations/migration.module';
 import { NotificationModule } from './modules/notification/notification.module';
-import { BadRequestException, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,6 +16,7 @@ import { BookModule } from './modules/book/book.module';
 import { MediaModule } from './modules/media/media.module';
 import { OrderModule } from './modules/order/order.module';
 import { StatisticalModule } from './modules/statistical/statistical.module';
+import { CommandModule } from 'nestjs-command';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -66,6 +68,8 @@ import { StatisticalModule } from './modules/statistical/statistical.module';
     OrderModule,
     StatisticalModule,
     NotificationModule,
+    CommandModule,
+    MigrationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
