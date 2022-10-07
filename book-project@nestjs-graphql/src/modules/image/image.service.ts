@@ -11,45 +11,45 @@ import { Image, ImageDocument } from './models'
 
 @Injectable()
 export class ImageService {
-    private uploadPath = process.cwd() + '/src/uploads/'
-    constructor(
-        @InjectQueue('image') private imageQueue: Queue,
-        private configService: ConfigService,
-        private imageRepository: ImageRepository,
-    ) {}
-    async upload({
-        description,
-        file,
-        shape,
-    }: UploadImageInput): Promise<ImageDocument> {
-        const { filename, createReadStream } = await file
-        const image_id = genFileId(description)
-        const imageOriginPath = await new Promise((resolve, reject) => {
-            open(this.uploadPath, (err) => {
-                if (err) mkdirSync(this.uploadPath)
-                createReadStream()
-                    .pipe(
-                        createWriteStream(
-                            this.uploadPath + image_id + extname(filename),
-                        ),
-                    )
-                    .on('finish', () => {
-                        resolve(this.uploadPath + image_id + extname(filename))
-                    })
-                    .on('error', (err) => {
-                        reject(err)
-                    })
-            })
-        })
-        this.imageQueue.add('resize', {
-            imageOriginPath,
-            shape,
-        })
-        return await this.imageRepository.Create({
-            image_id,
-            image_url: this.configService.get<string>('HOST_URL') + image_id,
-            description,
-            shape,
-        })
-    }
+   private uploadPath = process.cwd() + '/src/uploads/'
+   constructor(
+      @InjectQueue('image') private imageQueue: Queue,
+      private configService: ConfigService,
+      private imageRepository: ImageRepository,
+   ) {}
+   async upload({
+      description,
+      file,
+      shape,
+   }: UploadImageInput): Promise<ImageDocument> {
+      const { filename, createReadStream } = await file
+      const image_id = genFileId(description)
+      const imageOriginPath = await new Promise((resolve, reject) => {
+         open(this.uploadPath, (err) => {
+            if (err) mkdirSync(this.uploadPath)
+            createReadStream()
+               .pipe(
+                  createWriteStream(
+                     this.uploadPath + image_id + extname(filename),
+                  ),
+               )
+               .on('finish', () => {
+                  resolve(this.uploadPath + image_id + extname(filename))
+               })
+               .on('error', (err) => {
+                  reject(err)
+               })
+         })
+      })
+      this.imageQueue.add('resize', {
+         imageOriginPath,
+         shape,
+      })
+      return await this.imageRepository.Create({
+         image_id,
+         image_url: this.configService.get<string>('HOST_URL') + image_id,
+         description,
+         shape,
+      })
+   }
 }

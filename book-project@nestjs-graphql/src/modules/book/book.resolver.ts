@@ -9,7 +9,7 @@ import {
    Int,
    Subscription,
 } from '@nestjs/graphql'
-import { Role } from '../auth/decorators'
+import { Role } from '../user/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
 import { CategoryService } from '../category/category.service'
 import { Category, CategoryDocument } from '../category/models'

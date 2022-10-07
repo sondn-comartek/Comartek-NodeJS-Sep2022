@@ -1,4 +1,4 @@
-import { ExecutionContext } from '@nestjs/common'
+import { ExecutionContext, UseGuards } from '@nestjs/common'
 import {
    Resolver,
    Query,
@@ -9,8 +9,9 @@ import {
    ID,
 } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
+import { JwtGuard } from '../auth/guards'
+import { Mine } from '../user/decorators'
 import { ExcelService } from './excel.service'
-import { ExportResonpse } from './models'
 
 @Resolver()
 export class ExcelResolver {
@@ -20,10 +21,12 @@ export class ExcelResolver {
    ) {}
 
    @Query(() => String)
+   @UseGuards(JwtGuard)
    exportExcelBooks() {
       return this.excelService.exportListBook()
    }
 
+   @UseGuards(JwtGuard)
    @Subscription(() => Boolean, {
       filter: (payload, variables) => {
          return payload.excelId === variables.excelId

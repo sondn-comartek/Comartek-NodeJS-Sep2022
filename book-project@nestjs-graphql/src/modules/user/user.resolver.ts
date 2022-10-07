@@ -10,7 +10,7 @@ import {
 } from '@nestjs/graphql'
 import { Resolver } from '@nestjs/graphql'
 import { AuthService } from '../auth/auth.service'
-import { Role } from '../auth/decorators'
+import { Role } from '../user/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
 import { Token } from '../auth/models'
 import { Order } from '../order/models'

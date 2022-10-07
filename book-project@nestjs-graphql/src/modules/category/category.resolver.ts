@@ -8,7 +8,7 @@ import {
    Parent,
    Int,
 } from '@nestjs/graphql'
-import { Role } from '../auth/decorators'
+import { Role } from '../user/decorators'
 import { JwtGuard, RoleGuard } from '../auth/guards'
 import { BookService } from '../book/book.service'
 import { Book } from '../book/models'
