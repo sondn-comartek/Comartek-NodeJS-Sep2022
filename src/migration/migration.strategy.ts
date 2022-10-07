@@ -1,4 +1,4 @@
-import { EnityRepository } from 'src/abstract-entites'
+import { EnityRepository } from 'src/abstract'
 import { MigrationSteps } from './migration.interface'
 import { convertToTimestamp, initBook, initCategory, initUser } from './steps'
 

@@ -1,5 +1,5 @@
 import { Injectable} from "@nestjs/common";
-import { EnityRepository } from "src/abstract-entites";
+import { EnityRepository } from "src/abstract";
 import { Book, BookDocument } from "./models";
 import { InjectModel } from "@nestjs/mongoose" ;
 import { Model } from 'mongoose'

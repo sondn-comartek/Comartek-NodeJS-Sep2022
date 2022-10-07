@@ -1,4 +1,4 @@
-import { EnityRepository } from 'src/abstract-entites'
+import { EnityRepository } from 'src/abstract'
 import { databaseInit } from '../database-init'
 
 export const initCategory = async (

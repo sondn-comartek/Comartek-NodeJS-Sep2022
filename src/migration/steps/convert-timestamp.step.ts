@@ -1,4 +1,4 @@
-import { EnityRepository } from 'src/abstract-entites'
+import { EnityRepository } from 'src/abstract'
 import * as dayjs from 'dayjs'
 
 export const convertToTimestamp = async (
