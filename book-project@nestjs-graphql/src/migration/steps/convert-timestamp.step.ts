@@ -3,6 +3,6 @@ import * as dayjs from 'dayjs'
 
 export const convertToTimestamp = async (
    repositories: Record<string, EnityRepository<any>>,
-) => {
-    return convertToTimestamp.name + " successfully"
+): Promise<any> => {
+    return convertToTimestamp.name + " successfully";
 }

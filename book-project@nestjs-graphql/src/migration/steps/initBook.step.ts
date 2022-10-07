@@ -3,7 +3,7 @@ import { databaseInit } from '../database-init'
 
 export const initBook = async (
    repositories: Record<string, EnityRepository<any>>,
-) => {
+):Promise<any> => {
    const { bookRepository, migrationRepository } = repositories
    await bookRepository.Remove({})
    await bookRepository.InsertMany(

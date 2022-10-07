@@ -8,10 +8,11 @@ import { genFileId } from 'src/ultils'
 import { UploadImageInput } from './dto'
 import { ImageRepository } from './image.repository'
 import { Image, ImageDocument } from './models'
+import * as fse from 'fs-extra'
 
 @Injectable()
 export class ImageService {
-   private uploadPath = process.cwd() + '/src/uploads/'
+   private uploadPath = process.cwd() + '/src/storage/images/'
    constructor(
       @InjectQueue('image') private imageQueue: Queue,
       private configService: ConfigService,
@@ -24,10 +25,9 @@ export class ImageService {
    }: UploadImageInput): Promise<ImageDocument> {
       const { filename, createReadStream } = await file
       const image_id = genFileId(description)
-      const imageOriginPath = await new Promise((resolve, reject) => {
-         open(this.uploadPath, (err) => {
-            if (err) mkdirSync(this.uploadPath)
-            createReadStream()
+      const imageOriginPath = await new Promise(async (resolve, reject) => {
+      await fse.ensureDir(this.uploadPath)
+      createReadStream()
                .pipe(
                   createWriteStream(
                      this.uploadPath + image_id + extname(filename),
@@ -40,7 +40,6 @@ export class ImageService {
                   reject(err)
                })
          })
-      })
       this.imageQueue.add('resize', {
          imageOriginPath,
          shape,

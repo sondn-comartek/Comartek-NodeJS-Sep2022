@@ -1,8 +1,9 @@
 import { EnityRepository } from 'src/abstract-entites'
+import { MigrationSteps } from './migration.interface'
 import { convertToTimestamp, initBook, initCategory, initUser } from './steps'
 
 export class MigrationStrategy {
-   private migrations = {
+   private migrations: MigrationSteps = {
       initUser: initUser,
       initBook: initBook,
       initCategory: initCategory,
@@ -10,10 +11,10 @@ export class MigrationStrategy {
    }
    constructor(private repositories: Record<string, EnityRepository<any>>) {}
 
-   private async run(migrateName?: string | any) {
+   private async run(migrateName?: string | any):Promise<Promise<any>[]>{
       const migrationKeys = Object.keys(this.migrations)
-      const keysRan = []
-      const keysNeededRun = []
+      const keysRan:string[] = []
+      const keysNeededRun:string[] = []
       if (!migrateName) {
          const migrations = await this.repositories[
             'migrationRepository'
@@ -42,7 +43,7 @@ export class MigrationStrategy {
          }),
       )
    }
-   async migrate(migrateName?: string) {
+   async migrate(migrateName?: string):Promise<any>{
       return this.run(migrateName)
    }
 }

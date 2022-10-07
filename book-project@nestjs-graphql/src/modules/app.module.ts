@@ -13,7 +13,7 @@ import { BullModule } from '@nestjs/bull'
 import { DataloaderModule } from './dataloader/dataloader.module'
 import { subscriptionConfig, redisConfig, mongoConfig } from 'src/configs'
 import { PubSub } from 'graphql-subscriptions'
-import { MigrationModule } from 'bin/commands/migrations/migration.module'
+import { MigrationModule } from 'src/migration/migration.module'
 import { CommandModule } from 'nestjs-command'
 import { ExcelModule } from './excel/excel.module';
 

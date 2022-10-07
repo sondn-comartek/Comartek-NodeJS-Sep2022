@@ -25,7 +25,7 @@ import { ImageRepository } from './image.repository';
      ImageService , 
      ImageConsumer , 
      ResizeHelper ,
-     ImageRepository
+     ImageRepository 
     ] ,
   exports : [ImageRepository , ImageService , MongooseModule]
 })

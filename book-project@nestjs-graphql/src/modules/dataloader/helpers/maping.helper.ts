@@ -1,3 +1,5 @@
+
+
 export const maping = <T>(
    property : string,
    keys: string[],

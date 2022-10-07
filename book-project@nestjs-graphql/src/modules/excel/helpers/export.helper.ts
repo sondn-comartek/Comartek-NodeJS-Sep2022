@@ -7,7 +7,7 @@ export const exportHelper = async (
    id: string,
    columnTemplate: Record<string, unknown>[],
 ) => {
-   const excelOriginPath = process.cwd() + '/src/excel/'
+   const excelOriginPath = process.cwd() + '/src/storage/excels/'
    await fse.ensureDir(excelOriginPath)
    const workbook = new Excel.Workbook()
    const worksheet = workbook.addWorksheet('book list')
