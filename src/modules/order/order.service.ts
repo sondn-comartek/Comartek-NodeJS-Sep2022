@@ -27,7 +27,6 @@ export class OrderService {
       );
       const createdOrder = await this.orderModel.create({
         ...createOrderInput,
-        // borrowed_date: dayjs(new Date()),
       });
       return createdOrder;
     }

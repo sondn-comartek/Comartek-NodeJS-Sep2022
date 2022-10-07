@@ -3,7 +3,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { User } from 'src/modules/user/entities/user.entity';
-
+import * as dayjs from 'dayjs';
 export type OrderSDocument = OrderS & Document;
 @Schema({ timestamps: true })
 @ObjectType()
@@ -15,7 +15,7 @@ export class OrderS {
   @Prop({ required: true })
   bookID: string;
   @Field(() => Date, { description: 'borrowed date' })
-  @Prop({ required: true, default: new Date().toISOString().split('T')[0] })
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
   borrowed_date: Date;
   @Field(() => Date, { description: 'return data' })
   @Prop({ required: true })
