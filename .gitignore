@@ -1,8 +1,10 @@
 # compiled output
-/csv/*
+
 /dist
 /node_modules
 /upload/*
+/csv/*
+
 # Logs
 logs
 *.log
