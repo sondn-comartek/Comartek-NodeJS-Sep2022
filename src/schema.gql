@@ -24,6 +24,16 @@ type Auth {
   user: UserInfo!
 }
 
+type FileMessageOutput {
+  fileId: String!
+  message: String!
+}
+
+type RequireCSVOutput {
+  status: Int!
+  message: String!
+}
+
 type AdminCreateBookOutPut {
   bookIds: [String!]!
 }
@@ -67,6 +77,7 @@ type Mutation {
   processOrder(borrowbook: OrderAction!): BorrowBookOutput!
   signUp(signUpData: SignUpInput!): Auth!
   signIn(loginData: SignInInput!): Auth!
+  requireCSVUsers: RequireCSVOutput!
   createBook(createbook: AdminCreateBookInput!): AdminCreateBookOutPut!
 }
 
@@ -108,4 +119,5 @@ type Subscription {
   addBook: BorrowOrderBook!
   orderStatus: BorrowOrderBook!
   newBook: [String!]!
+  onFileProcessScuccess: FileMessageOutput!
 }

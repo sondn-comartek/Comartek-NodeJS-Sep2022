@@ -5,12 +5,14 @@ import { BookBorrowed } from '../exception/bookBorrowed';
 import { BookNotExist } from '../exception/booknotexist';
 import { OrderService } from '../order/order.service';
 import { BookDocument } from './model/book.schema';
-
+import * as dayjs from 'dayjs'
 @Injectable()
 export class BookService {
   constructor (@InjectModel('book') private bookModel: Model<BookDocument>,
                private readonly orderService: OrderService) {}
-
+  hello() {
+    return "hello"
+  }
   public async requireBorrowBook(userid: String, BookID: string) {
     const orderModel = this.orderService.getOrderModel();
     const book = await this.bookModel.findOne({_id: BookID})
@@ -19,7 +21,16 @@ export class BookService {
     }
     if(book.borrowed)
       throw new Error("Book is borrowed")
-    return await (await orderModel.create({userid: userid, bookid: BookID})).save()
+    const order = await (await orderModel.create({userid: userid, bookid: BookID})).save()
+    await this.convertOrderCreateAtToNumber(order)
+    return order
+  }
+  public async convertOrderCreateAtToNumber(order: any) {
+    const newValueDate = String(dayjs(new Date().toString()).valueOf() / 1000)
+    order.createdAt = newValueDate
+    await this.orderService.getOrderModel()
+    .updateOne({_id: order.id}, {$set: {createdAt: newValueDate}})
+    return
   }
   public async accepBorrowBook(orderID: String) {
     let order = await this.orderService.getOrderModel().findOne({_id: orderID})
@@ -50,7 +61,7 @@ export class BookService {
     await this.bookModel.updateOne({_id: bookID}, {$set: {borrowed: true, userborrow: userid}})
   }
 
-  async getBookModel() {
+  getBookModel() {
     return this.bookModel;
   }
 

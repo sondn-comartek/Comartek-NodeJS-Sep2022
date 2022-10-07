@@ -14,6 +14,12 @@ export class Order extends Document {
 
   @Prop({default: "processing"})
   status: string
+
+  @Prop()
+  createdAt: string
+
+  @Prop()
+  updatedAt: string
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

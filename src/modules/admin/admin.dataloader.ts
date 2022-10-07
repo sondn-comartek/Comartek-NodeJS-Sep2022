@@ -1,9 +1,9 @@
 import * as DataLoader from 'dataloader';
 import { Injectable } from '@nestjs/common';
 import { NestDataLoader } from 'nestjs-dataloader';
-import { User } from 'src/modules/schema/user.schema';
+import { User } from '../schema/user.schema';
 import { AdminService } from './admin.service';
-import {  } from 'src/modules/schema/book.schema';
+import {  } from '../schema/book.schema';
 import { BookOutPut, UserOutPut } from './entities/admin.output';
 
 @Injectable()

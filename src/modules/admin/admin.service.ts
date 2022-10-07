@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {  BookDocument } from '../schema/book.schema';
 import { AdminCreateBookInput } from './dto/admin.input';
-import { FileUpload } from 'src/modules/interface/FileUpload.interface';
-import { ImagePublish } from 'src/modules/publishconsum/image.publish';
-import { UserDocument } from 'src/modules/schema/user.schema';
+import { FileUpload } from '../interface/FileUpload.interface';
+import { ImagePublish } from '../publishconsum/image.publish';
+import { UserDocument } from '../schema/user.schema';
 @Injectable()
 export class AdminService {
   constructor(@InjectModel('book') private bookModel: Model<BookDocument>,

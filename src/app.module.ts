@@ -7,20 +7,28 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminModule } from './modules/admin/admin.module';
-import { HelperModule } from './modules/helper/helper.module';
 import { PublishConsumModule } from './modules/publishconsum/publishconsum.module';
 import { UserModule } from './modules/user/user.module';
 import { GlobalModule } from './global.module';
 import { BookModule } from './modules/book/book.module';
 import { PubSubModule } from './modules/pubSub/pubSub.module';
 import { OrderModule } from './modules/order/order.module';
+import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bull';
+import { HelperModule } from './modules/helper/helper.module';
 
 
 @Module({
   providers: [AppService],
   imports: [
+
+  GlobalModule.register({env: "dev"}),
+  ConfigModule.forRoot({
+    envFilePath: '.env',
+  }),
+  PublishConsumModule.register({env: "dev"}),
   PubSubModule,
-  GlobalModule,
+ 
   AuthModule,
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
@@ -43,16 +51,16 @@ import { OrderModule } from './modules/order/order.module';
     playground: true,
     include: [AuthModule, AdminModule, UserModule, BookModule ]
   }),
-  MongooseModule.forRoot(process.env.DB),
+
   AdminModule,
-  HelperModule,
+  
   PublishConsumModule,
   UserModule,
   BookModule,
   OrderModule,
   ],
   controllers: [AppController],
-  exports: []
+  exports: [AppService]
 })
 export class AppModule {}
 

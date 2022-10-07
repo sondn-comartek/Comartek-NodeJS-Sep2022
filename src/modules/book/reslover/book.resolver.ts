@@ -1,19 +1,18 @@
 import { Resolver, Query, Mutation, Args, Int, Subscription, GraphQLExecutionContext } from '@nestjs/graphql';
 import { BookService } from '../book.service';
 import { Book, BorrowBookOutput } from '../entities/book.entity';
-import { JWTAuthGuard } from 'src/modules/auth/auth.guard';
-import { Roles } from 'src/decorator/role.decorator';
-import { Role } from 'src/enum/role.enum';
-import { User } from 'src/decorator/user.decorator';
+import { Roles } from '../../../decorator/role.decorator';
+import { Role } from '../../../enum/role.enum';
+import { User } from '../../../decorator/user.decorator';
 import { UseGuards } from '@nestjs/common'
 import { BorrowBookInput } from '../dto/user.input';
 
 import { Inject } from '@nestjs/common';
 
-import { PUB_SUB } from 'src/modules/pubSub/pubSub.module';
+import { PUB_SUB } from '../../../modules/pubSub/pubSub.module';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { SignInOutput } from 'src/modules/auth/model/auth.output';
-import { RolesGuard } from 'src/modules/auth/role.guard';
+import { SignInOutput } from '../../../modules/auth/model/auth.output';
+import { RolesGuard } from '../../../modules/auth/role.guard';
 import { BorrowOrderBook } from '../entities/book-order.entity';
 import { OrderAction } from '../dto/order-action.input';
 

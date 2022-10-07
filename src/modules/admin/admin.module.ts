@@ -3,14 +3,17 @@ import { AdminService } from './admin.service';
 import { AdminResolver } from './admin.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookSchema } from '../schema/book.schema';
-import { PublishConsumModule } from 'src/modules/publishconsum/publishconsum.module';
-import { UserSchema } from 'src/modules/schema/user.schema';
+import { PublishConsumModule } from '../publishconsum/publishconsum.module';
+import { UserSchema } from '../schema/user.schema';
 import { UserLoader } from './admin.dataloader';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import {DataLoaderInterceptor} from 'nestjs-dataloader'
-import { GlobalModule } from 'src/global.module';
+import { GlobalModule } from '../../global.module';
+import { JwtService } from '@nestjs/jwt';
+import { ImagePublish } from '../publishconsum/image.publish';
 @Module({
   imports: [
+    // PublishConsumModule.register({env: "dev"}),
     MongooseModule.forFeature(
       [
         {
@@ -20,10 +23,8 @@ import { GlobalModule } from 'src/global.module';
           name: 'user', schema: UserSchema
         }
     ]),
-    GlobalModule, 
-    PublishConsumModule
   ],
-  providers: [AdminResolver, AdminService, 
+  providers: [AdminResolver, AdminService, JwtService,
     UserLoader,
     {
     provide: APP_INTERCEPTOR,

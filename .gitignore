@@ -1,4 +1,5 @@
 # compiled output
+/csv/*
 /dist
 /node_modules
 /upload/*

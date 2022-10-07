@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus} from '@nestjs/common';
-import { UserDocument } from 'src/modules/schema/user.schema';
+import { UserDocument } from '../schema/user.schema';
 import { SignUpInput } from './dto/signup.input';
 import { hashSync, compareSync } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';

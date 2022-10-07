@@ -19,6 +19,7 @@ import { BookResolver } from './reslover/book.resolver';
         }
     ]),
   ],
-  providers: [BookResolver, BookService , RolesGuard, JwtService]
+  providers: [BookResolver, BookService , RolesGuard, JwtService],
+  exports: [BookService]
 })
 export class BookModule {}
