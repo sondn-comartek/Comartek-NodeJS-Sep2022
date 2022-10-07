@@ -1,10 +1,10 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateLoanInput {
-  @Field()
+  @Field(() => String)
   userId: string;
 
-  @Field()
+  @Field(() => String)
   bookItemId: string;
 }

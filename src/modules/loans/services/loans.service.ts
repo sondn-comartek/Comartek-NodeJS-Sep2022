@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { StatusBookItem } from '../book-items/enums/status.enum';
+import { StatusBookItem } from '../../book-items/enums/status.enum';
 import {
   BookItem,
   BookItemDocument,
-} from '../book-items/entities/book-item.entity';
-import { User, UserDocument } from '../users/entities/user.entity';
-import { CreateLoanInput } from './dto/create-loan.input';
-import { UpdateLoanInput } from './dto/update-loan.input';
-import { Loan, LoanDocument } from './entities/loan.entity';
-import { PubsubService } from '../pubsub/pubsub.service';
+} from '../../book-items/entities/book-item.entity';
+import { User, UserDocument } from '../../users/entities/user.entity';
+import { CreateLoanInput } from '../dto/create-loan.input';
+import { UpdateLoanInput } from '../dto/update-loan.input';
+import { Loan, LoanDocument } from '../entities/loan.entity';
+import { PubsubService } from '../../pubsub/pubsub.service';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class LoansService {
@@ -66,7 +67,12 @@ export class LoansService {
 
       await this.bookItemModel.findOneAndUpdate(
         { id: bookItemId },
-        { $set: { status: StatusBookItem.Unavailable } },
+        {
+          $set: {
+            status: StatusBookItem.Unavailable,
+            updatedAt: dayjs(new Date()).unix(),
+          },
+        },
         {
           new: true,
         },
@@ -118,15 +124,26 @@ export class LoansService {
     return await this.loanModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} loan`;
+  async findOne(id: string) {
+    return await this.loanModel.findOne({ id });
   }
 
-  update(id: number, updateLoanInput: UpdateLoanInput) {
-    return `This action updates a #${id} loan`;
+  async update(id: string, updateLoanInput: UpdateLoanInput) {
+    return await this.loanModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateLoanInput, updatedAt: dayjs(new Date()).unix() } },
+      {
+        new: true,
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} loan`;
+  async remove(id: string) {
+    const loanExist = await this.loanModel.findOne({ id });
+    if (!loanExist) {
+      return new Error(`Loan does not exist`);
+    }
+
+    return await this.loanModel.deleteOne({ id });
   }
 }

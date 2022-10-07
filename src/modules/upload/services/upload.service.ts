@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUploadInput } from './dto/create-upload.input';
-import { UpdateUploadInput } from './dto/update-upload.input';
+import { CreateUploadInput } from '../dto/create-upload.input';
+import { UpdateUploadInput } from '../dto/update-upload.input';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import { join } from 'path';
 import { InjectModel } from '@nestjs/mongoose';
-import { UploadImage, UploadImageDocument } from './entities/upload.entity';
+import { UploadImage, UploadImageDocument } from '../entities/upload.entity';
 import { Model } from 'mongoose';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class UploadService {
@@ -52,11 +53,22 @@ export class UploadService {
     return await this.uploadModel.findOne({ id });
   }
 
-  update(id: number, updateUploadInput: UpdateUploadInput) {
-    return `This action updates a #${id} upload`;
+  async update(id: string, updateUploadInput: UpdateUploadInput) {
+    return await this.uploadModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateUploadInput, updatedAt: dayjs(new Date()).unix() } },
+      {
+        new: true,
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} upload`;
+  async remove(id: string) {
+    const imageExist = await this.uploadModel.findOne({ id });
+    if (!imageExist) {
+      return null;
+    }
+
+    return await this.uploadModel.deleteOne({ id });
   }
 }

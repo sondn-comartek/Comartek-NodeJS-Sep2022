@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/services/users.service';
 import { IDataloaders } from './dataloader.interface';
 import * as DataLoader from 'dataloader';
 import { Loan } from '../loans/entities/loan.entity';
-import { LoansService } from '../loans/loans.service';
-import { BookItemsService } from '../book-items/book-items.service';
+import { LoansService } from '../loans/services/loans.service';
+import { BookItemsService } from '../book-items/services/book-items.service';
 import { BookItem } from '../book-items/entities/book-item.entity';
 import { Book } from '../books/entities/book.entity';
-import { BooksService } from '../books/books.service';
+import { BooksService } from '../books/services/books.service';
 
 @Injectable()
 export class DataloaderService {

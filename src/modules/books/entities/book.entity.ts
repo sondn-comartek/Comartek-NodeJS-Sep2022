@@ -9,7 +9,7 @@ export type BookDocument = Book & Document;
 @ObjectType()
 @Schema()
 export class Book {
-  @Field()
+  @Field(() => String)
   @Prop({
     type: String,
     default: function genUUID() {

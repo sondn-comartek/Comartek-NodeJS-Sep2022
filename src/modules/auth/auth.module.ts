@@ -4,11 +4,13 @@ import { AuthResolver } from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
-import { jwtConstants } from './constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/entities/user.entity';
+import { ConfigModule } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
@@ -16,10 +18,11 @@ import { User, UserSchema } from '../users/entities/user.entity';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '1h' },
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ConfigModule,
   ],
   exports: [AuthService],
 })

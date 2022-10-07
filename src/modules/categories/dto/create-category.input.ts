@@ -2,10 +2,10 @@ import { InputType, Field, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateCategoryInput {
-  @Field()
+  @Field(() => String)
   name: string;
 
-  @Field()
+  @Field(() => String)
   imageId: string;
 
   @Field(() => Int)

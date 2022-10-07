@@ -6,13 +6,14 @@ import { Model } from 'mongoose';
 import {
   Category,
   CategoryDocument,
-} from '../categories/entities/category.entity';
-import { LoansService } from '../loans/loans.service';
-import { PubsubService } from '../pubsub/pubsub.service';
-import { UploadService } from '../upload/upload.service';
-import { CreateBookInput } from './dto/create-book.input';
-import { UpdateBookInput } from './dto/update-book.input';
-import { Book, BookDocument } from './entities/book.entity';
+} from '../../categories/entities/category.entity';
+import { LoansService } from '../../loans/services/loans.service';
+import { PubsubService } from '../../pubsub/pubsub.service';
+import { UploadService } from '../../upload/services/upload.service';
+import { CreateBookInput } from '../dto/create-book.input';
+import { UpdateBookInput } from '../dto/update-book.input';
+import { Book, BookDocument } from '../entities/book.entity';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class BooksService {
@@ -73,8 +74,8 @@ export class BooksService {
     return await this.bookModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findOne(id: string) {
+    return await this.bookModel.findOne({ id });
   }
 
   async getTotalBook() {
@@ -153,11 +154,22 @@ export class BooksService {
     return `Export book completed `;
   }
 
-  update(id: number, updateBookInput: UpdateBookInput) {
-    return `This action updates a #${id} book`;
+  async update(id: string, updateBookInput: UpdateBookInput) {
+    return await this.bookModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateBookInput, updatedAt: dayjs(new Date()).unix() } },
+      {
+        new: true,
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: string) {
+    const bookExist = await this.bookModel.findOne({ id });
+    if (!bookExist) {
+      return new Error(`Book does not exist`);
+    }
+
+    return await this.bookModel.deleteOne({ id });
   }
 }

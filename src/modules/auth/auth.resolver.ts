@@ -6,7 +6,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { CreateUserInput } from './dto/register-auth.input';
 import { User } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/services/users.service';
 
 @Resolver(() => Auth)
 export class AuthResolver {

@@ -1,11 +1,9 @@
 import { OnGlobalQueueCompleted, Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { HelpersService } from '../../helpers/helpers.service';
+import { convertImage } from 'src/utils/image';
 
 @Processor('category')
 export class CategoryConsumer {
-  constructor(private readonly helpersService: HelpersService) {}
-
   @OnGlobalQueueCompleted()
   async onGlobalCompleted(jobId: number, result: any) {
     // console.log('result: ' + result);
@@ -16,6 +14,6 @@ export class CategoryConsumer {
   async convertImage(job: Job) {
     // console.log('job data: ', job.data);
     const { filename, name, widthImage } = job.data;
-    await this.helpersService.convertImage(filename, name, widthImage);
+    await convertImage(filename, name, widthImage);
   }
 }

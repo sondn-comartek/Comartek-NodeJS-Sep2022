@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
-import { Category, CategoryDocument } from './entities/category.entity';
+import { CreateCategoryInput } from '../dto/create-category.input';
+import { UpdateCategoryInput } from '../dto/update-category.input';
+import { Category, CategoryDocument } from '../entities/category.entity';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
-import { BooksService } from '../books/books.service';
-import { UploadService } from '../upload/upload.service';
+import { BooksService } from '../../books/services/books.service';
+import { UploadService } from '../../upload/services/upload.service';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class CategoriesService {
@@ -54,15 +55,26 @@ export class CategoriesService {
     return await this.categoryModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string) {
+    return await this.categoryModel.findOne({ id });
   }
 
-  update(id: number, updateCategoryInput: UpdateCategoryInput) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryInput: UpdateCategoryInput) {
+    return await this.categoryModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateCategoryInput, updatedAt: dayjs(new Date()).unix() } },
+      {
+        new: true,
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string) {
+    const categoryExist = await this.categoryModel.findOne({ id });
+    if (!categoryExist) {
+      return new Error(`Category does not exist`);
+    }
+
+    return await this.categoryModel.deleteOne({ id });
   }
 }

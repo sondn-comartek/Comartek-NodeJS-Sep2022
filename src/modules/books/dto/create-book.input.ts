@@ -2,10 +2,10 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateBookInput {
-  @Field()
+  @Field(() => String)
   categoryId: string;
 
-  @Field()
+  @Field(() => String)
   name: string;
 
   @Field(() => Int)

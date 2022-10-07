@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as dayjs from 'dayjs';
 import { Model } from 'mongoose';
-import { Book, BookDocument } from '../books/entities/book.entity';
-import { CreateBookItemInput } from './dto/create-book-item.input';
-import { UpdateBookItemInput } from './dto/update-book-item.input';
-import { BookItem, BookItemDocument } from './entities/book-item.entity';
+import { Book, BookDocument } from '../../books/entities/book.entity';
+import { CreateBookItemInput } from '../dto/create-book-item.input';
+import { UpdateBookItemInput } from '../dto/update-book-item.input';
+import { BookItem, BookItemDocument } from '../entities/book-item.entity';
 
 @Injectable()
 export class BookItemsService {
@@ -22,7 +23,12 @@ export class BookItemsService {
 
     await this.bookModel.findOneAndUpdate(
       { id: bookId },
-      { $set: { quantity: bookExist.quantity + 1 } },
+      {
+        $set: {
+          quantity: bookExist.quantity + 1,
+          updatedAt: dayjs(new Date()).unix(),
+        },
+      },
       {
         new: true,
       },
@@ -33,12 +39,12 @@ export class BookItemsService {
     }).save();
   }
 
-  findAll() {
-    return `This action returns all bookItems`;
+  async findAll() {
+    return await this.bookItemModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookItem`;
+  async findOne(id: string) {
+    return await this.bookItemModel.findOne({ id });
   }
 
   async getBookItemsByBatch(
@@ -54,11 +60,22 @@ export class BookItemsService {
     return mappedBookItems;
   }
 
-  update(id: number, updateBookItemInput: UpdateBookItemInput) {
-    return `This action updates a #${id} bookItem`;
+  async update(id: string, updateBookItemInput: UpdateBookItemInput) {
+    return await this.bookItemModel.findOneAndUpdate(
+      { id },
+      { $set: { ...updateBookItemInput, updatedAt: dayjs(new Date()).unix() } },
+      {
+        new: true,
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bookItem`;
+  async remove(id: string) {
+    const bookItemExist = await this.bookItemModel.findOne({ id });
+    if (!bookItemExist) {
+      return new Error(`Book item does not exist`);
+    }
+
+    return await this.bookItemModel.deleteOne({ id });
   }
 }

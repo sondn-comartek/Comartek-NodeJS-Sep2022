@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInput } from '../dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from './entities/user.entity';
+import { User, UserDocument } from '../entities/user.entity';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class UsersService {
@@ -42,7 +43,7 @@ export class UsersService {
   async update(id: string, updateUserInput: UpdateUserInput) {
     return await this.userModel.findOneAndUpdate(
       { id },
-      { $set: { ...updateUserInput } },
+      { $set: { ...updateUserInput, updatedAt: dayjs(new Date()).unix() } },
       {
         new: true,
       },

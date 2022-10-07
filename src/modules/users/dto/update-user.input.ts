@@ -3,7 +3,7 @@ import { CreateUserInput } from '../../auth/dto/register-auth.input';
 
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field()
+  @Field(() => String)
   id: string;
 
   @Field({ nullable: true })
