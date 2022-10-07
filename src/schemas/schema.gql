@@ -243,6 +243,7 @@ enum Role {
 }
 
 type Subscription {
+  notificationExport(userID: String!): Notification!
   notificationOrder(userID: String!): Notification!
 }
 

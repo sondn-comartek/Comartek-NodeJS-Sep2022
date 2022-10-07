@@ -54,5 +54,6 @@ export class Excel {
       };
     });
     await this.workbook.xlsx.writeFile(this.filename);
+    return this.filename;
   }
 }

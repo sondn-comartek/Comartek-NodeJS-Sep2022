@@ -46,6 +46,7 @@ import { HelperModule } from './helper/helper.module';
       autoSchemaFile: join(process.cwd(), 'src/schemas/schema.gql'),
       sortSchema: true,
       subscriptions: {
+        'graphql-ws': true,
         'subscriptions-transport-ws': {
           path: '/graphql',
           onConnect: (connectionParams) => {
@@ -71,7 +72,7 @@ import { HelperModule } from './helper/helper.module';
     NotificationModule,
     CommandModule,
     MigrationModule,
-    HelperModule
+    HelperModule,
   ],
   controllers: [AppController],
   providers: [AppService],

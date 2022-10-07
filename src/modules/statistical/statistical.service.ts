@@ -47,7 +47,7 @@ export class StatisticalService {
 
     return { total: total, book_valid: available, book_invalid: unAvailable };
   }
-  async exportData(exportFields: ExportFields) {
+  async exportData(exportFields: ExportFields, user) {
     const books = await this.bookService.findAllByField(
       'status',
       exportFields.category,
@@ -60,7 +60,11 @@ export class StatisticalService {
       description: filename,
       media_urls: filename,
     });
-    this.excelQueue.add('export', { filename: filename, books: books });
+    this.excelQueue.add('export', {
+      filename: filename,
+      books: books,
+      user: user,
+    });
     return createdFile;
   }
 }

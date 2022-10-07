@@ -1,3 +1,4 @@
+import { NotificationModule } from './../notification/notification.module';
 import { BullModule } from '@nestjs/bull';
 import { CategoryModule } from './../category/category.module';
 import { BookModule } from './../book/book.module';
@@ -14,6 +15,7 @@ import { Media, MediaSchema } from '../media/entities/media.entity';
     BookModule,
     CategoryModule,
     HelperModule,
+    NotificationModule,
     MongooseModule.forFeature([{ name: Media.name, schema: MediaSchema }]),
     BullModule.registerQueue({
       name: 'excel',

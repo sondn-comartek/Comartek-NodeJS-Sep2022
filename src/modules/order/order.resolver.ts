@@ -43,7 +43,6 @@ export class OrderResolver {
       return isMatch;
     },
   })
-  // @Roles(Role.user)
   @UseGuards(JwtAuthGuard)
   async notificationOrder(@Args('userID') userID: string) {
     return await this.notificationService.listen('notification_order');
@@ -70,7 +69,6 @@ export class OrderResolver {
         recipients: recipientsIds,
       },
     );
-    pubSub.publish('order_notification', createdNotification);
     return createdOrder;
   }
   @Query(() => [OrderS], { name: 'orders' })
