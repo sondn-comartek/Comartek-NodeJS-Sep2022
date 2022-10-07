@@ -3,7 +3,7 @@ import { BookRepository } from '../book/book.repository'
 import { bookExcelColumn } from './templates'
 import { InjectQueue } from '@nestjs/bull'
 import { Queue } from 'bull'
-import { genImageId } from 'src/ultils'
+import { genFileId } from 'src/ultils'
 
 @Injectable()
 export class ExcelService {
@@ -13,7 +13,7 @@ export class ExcelService {
    ) {}
 
    async exportListBook() {
-      const excelId = genImageId('book')
+      const excelId = genFileId('book')
       const books = await this.bookRepository.FindAll({})
       books.forEach( book => {
         book.createdAt = new Date(book.createdAt)

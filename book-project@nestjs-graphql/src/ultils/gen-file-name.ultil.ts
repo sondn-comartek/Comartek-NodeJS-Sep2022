@@ -1,4 +1,4 @@
-export const genImageId = (str: string) => {
+export const genFileId = (str: string) => {
    return (
       str.replace(/ /g, '-').toLowerCase() +
       '-' +

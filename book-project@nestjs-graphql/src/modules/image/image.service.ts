@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { Queue } from 'bull'
 import { createWriteStream, mkdirSync, open } from 'fs'
 import { extname } from 'path'
-import { genImageId } from 'src/ultils'
+import { genFileId } from 'src/ultils'
 import { UploadImageInput } from './dto'
 import { ImageRepository } from './image.repository'
 import { Image, ImageDocument } from './models'
@@ -23,7 +23,7 @@ export class ImageService {
         shape,
     }: UploadImageInput): Promise<ImageDocument> {
         const { filename, createReadStream } = await file
-        const image_id = genImageId(description)
+        const image_id = genFileId(description)
         const imageOriginPath = await new Promise((resolve, reject) => {
             open(this.uploadPath, (err) => {
                 if (err) mkdirSync(this.uploadPath)
@@ -42,7 +42,7 @@ export class ImageService {
             })
         })
         this.imageQueue.add('resize', {
-         imageOriginPath,
+            imageOriginPath,
             shape,
         })
         return await this.imageRepository.Create({
