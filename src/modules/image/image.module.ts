@@ -3,7 +3,6 @@ import { ImageService } from './image.service';
 import { ImageResolver } from './image.resolver';
 import { BullModule } from '@nestjs/bull';
 import { ImageConsumer } from './image.consumer';
-import { ResizeHelper } from './helpers';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Image, ImageSchema } from './models';
@@ -24,7 +23,6 @@ import { ImageRepository } from './image.repository';
      ImageResolver,
      ImageService , 
      ImageConsumer , 
-     ResizeHelper ,
      ImageRepository 
     ] ,
   exports : [ImageRepository , ImageService , MongooseModule]

@@ -7,14 +7,14 @@ export const exportHelper = async (
    id: string,
    columnTemplate: Record<string, unknown>[],
 ) => {
-   const excelOriginPath = process.cwd() + '/src/storage/excels/'
-   await fse.ensureDir(excelOriginPath)
+   const excelStoragePath = process.cwd() + '/src/storage/excels/'
+   await fse.ensureDir(excelStoragePath)
    const workbook = new Excel.Workbook()
    const worksheet = workbook.addWorksheet(`${id} list`)
    worksheet.columns = columnTemplate
    docs.forEach((doc) => {
       worksheet.addRow(doc)
    })
-   await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
+   await workbook.xlsx.writeFile(excelStoragePath + id + '.xlsx')
    return id
 }

@@ -12,7 +12,7 @@ import * as fse from 'fs-extra'
 
 @Injectable()
 export class ImageService {
-   private uploadPath = process.cwd() + '/src/storage/images/'
+   private imageStoragePath = process.cwd() + '/src/storage/images/'
    constructor(
       @InjectQueue('image') private imageQueue: Queue,
       private configService: ConfigService,
@@ -25,28 +25,21 @@ export class ImageService {
    }: UploadImageInput): Promise<ImageDocument> {
       const { filename, createReadStream } = await file
       const image_id = genFileId(description)
-      const imageOriginPath = await new Promise(async (resolve, reject) => {
-      await fse.ensureDir(this.uploadPath)
+      const imageOriginPath = this.imageStoragePath + image_id + extname(filename)
+      await fse.ensureDir(this.imageStoragePath)
       createReadStream()
-               .pipe(
-                  createWriteStream(
-                     this.uploadPath + image_id + extname(filename),
-                  ),
-               )
-               .on('finish', () => {
-                  resolve(this.uploadPath + image_id + extname(filename))
-               })
-               .on('error', (err) => {
-                  reject(err)
-               })
+         .pipe(createWriteStream(imageOriginPath))
+         .on('finish', () => {
+            this.imageQueue.add('resize', {
+               imageOriginPath,
+               shape,
+            })
          })
-      this.imageQueue.add('resize', {
-         imageOriginPath,
-         shape,
-      })
+         .on('error', (err) => console.log(err))
       return await this.imageRepository.Create({
          image_id,
-         image_url: this.configService.get<string>('HOST_URL') + image_id,
+         image_url:
+            this.configService.get<string>('HOST_URL') + 'images/' + image_id,
          description,
          shape,
       })
