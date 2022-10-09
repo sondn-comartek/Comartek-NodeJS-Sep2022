@@ -15,7 +15,7 @@ export class ExcelConsumer {
          data.columnTemplate,
       )
       this.pubSub.publish('excelExported', {
-         excelId: excelId ,
+         excelId: excelId,
          success: true,
       })
    }

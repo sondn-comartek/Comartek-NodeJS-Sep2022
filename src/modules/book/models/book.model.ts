@@ -8,10 +8,7 @@ import { Category } from 'src/modules/category/models'
 export type BookDocument = Book & Document 
 
 @ObjectType()
-@Schema({
-    timestamps : true ,
-    autoIndex  : true
-})
+@Schema()
 export class Book {
     @Field( () => ID )
     @Prop({

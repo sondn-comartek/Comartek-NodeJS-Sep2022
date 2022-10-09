@@ -11,10 +11,10 @@ export class MigrationStrategy {
    }
    constructor(private repositories: Record<string, EnityRepository<any>>) {}
 
-   private async run(migrateName?: string | any):Promise<Promise<any>[]>{
+   private async run(migrateName?: string | any): Promise<Promise<any>[]> {
       const migrationKeys = Object.keys(this.migrations)
-      const keysRan:string[] = []
-      const keysNeededRun:string[] = []
+      const keysRan: string[] = []
+      const keysNeededRun: string[] = []
       if (!migrateName) {
          const migrations = await this.repositories[
             'migrationRepository'
@@ -35,7 +35,9 @@ export class MigrationStrategy {
             })
          }
       } else {
-         keysNeededRun.push(migrateName)
+         if (migrationKeys.includes(migrateName))
+            keysNeededRun.push(migrateName)
+         throw new Error(`migrateName must be in [ ${migrationKeys} ]`)
       }
       return Promise.all(
          keysNeededRun.map((key) => {
@@ -43,7 +45,7 @@ export class MigrationStrategy {
          }),
       )
    }
-   async migrate(migrateName?: string):Promise<any>{
+   async migrate(migrateName?: string): Promise<any> {
       return this.run(migrateName)
    }
 }

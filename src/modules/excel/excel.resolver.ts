@@ -12,21 +12,22 @@ import { PubSub } from 'graphql-subscriptions'
 import { JwtGuard } from '../auth/guards'
 import { Mine } from '../user/decorators'
 import { ExcelService } from './excel.service'
+import { Excel } from './models'
+import { Entity } from './types'
 
 @Resolver()
 export class ExcelResolver {
    constructor(
       private readonly excelService: ExcelService,
       private readonly pubSub: PubSub,
-   ) {}  
+   ) {}
 
-   @Query(() => String)
+   @Query(() => Excel)
    @UseGuards(JwtGuard)
-   exportExcelBooks() {
-      return this.excelService.exportListBook()
+   exportExcel(@Args('entity', { type: () => Entity }) entity: Entity) {
+      return this.excelService.export(entity)
    }
 
-   @UseGuards(JwtGuard)
    @Subscription(() => Boolean, {
       filter: (payload, variables) => {
          return payload.excelId === variables.excelId
@@ -35,6 +36,7 @@ export class ExcelResolver {
          return success
       },
    })
+   @UseGuards(JwtGuard)
    excelExported(@Args('excelId', { type: () => ID }) excelId: string) {
       return this.pubSub.asyncIterator('excelExported')
    }

@@ -9,7 +9,7 @@ import { Token } from 'src/modules/auth/models';
 
 export type UserDocument = User & Document
 
-@ObjectType({description : "user"})
+@ObjectType()
 @Schema()
 export class User extends Document {
 

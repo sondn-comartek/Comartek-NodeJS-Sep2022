@@ -8,9 +8,7 @@ import { OrderStatus } from '../types'
 export type OrderDocument = Order & Document
 
 @ObjectType()
-@Schema({
-   timestamps: true,
-})
+@Schema()
 export class Order {
    @Field(() => ID)
    @Prop({
@@ -38,16 +36,18 @@ export class Order {
    status: OrderStatus
 
    @Field( () => GraphQLTimestamp , { nullable : true } )
-    @Prop({
-        default : new Date()
-    })
-    createdAt? : number
+   @Prop({
+       default : new Date() ,
+       type : Number
+   })
+   createdAt? : number | Date | string
 
-    @Field( () => GraphQLTimestamp , { nullable : true} )
-    @Prop({
-        default : new Date()
-    })
-    updatedAt? : number
+   @Field( () => GraphQLTimestamp , { nullable : true} )
+   @Prop({
+       default : new Date(),
+       type : Number
+   })
+   updatedAt? : number | Date | string
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order)

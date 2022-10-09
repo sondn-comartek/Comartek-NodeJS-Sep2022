@@ -28,7 +28,7 @@ export const bookExcelColumn = [
        header: 'COUNT BOOK AVAIABLE',
     },
     {
-       key: 'count_unavaiale',
+       key: 'count_unavaiable',
        header: 'COUNT BOOK UNAVAIABLE',
     },
     {

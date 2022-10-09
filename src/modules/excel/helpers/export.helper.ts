@@ -10,11 +10,11 @@ export const exportHelper = async (
    const excelOriginPath = process.cwd() + '/src/storage/excels/'
    await fse.ensureDir(excelOriginPath)
    const workbook = new Excel.Workbook()
-   const worksheet = workbook.addWorksheet('book list')
+   const worksheet = workbook.addWorksheet(`${id} list`)
    worksheet.columns = columnTemplate
    docs.forEach((doc) => {
       worksheet.addRow(doc)
    })
-    await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
-    return id
+   await workbook.xlsx.writeFile(excelOriginPath + id + '.xlsx')
+   return id
 }
