@@ -20,6 +20,7 @@ import { PubsubModule } from './module/pubsub/pubsub.module';
 import { NotificationModule } from './module/notification/notification.module';
 import { MigrationModule } from './commands/migrations/migrations.module';
 import { ExportModule } from './module/export/export.module';
+import { FileModule } from './module/file/file.module';
 
 @Module({
   imports: [
@@ -60,7 +61,8 @@ import { ExportModule } from './module/export/export.module';
     NotificationModule,
     ExportModule,
     CommandModule,
-    MigrationModule
+    MigrationModule,
+    FileModule
   ],
   controllers: [AppController],
   providers: [  
