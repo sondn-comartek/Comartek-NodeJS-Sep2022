@@ -1,10 +1,12 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Types, ObjectId } from "mongoose";
+import { Types, ObjectId, Date } from "mongoose";
 import { Book } from "src/modules/book/model/book.model";
 import { User } from "src/modules/user/model/user.model";
 
-@Schema()
+@Schema({
+    timestamps: true
+})
 @ObjectType()
 export class Order {
     @Field()
@@ -24,15 +26,30 @@ export class Order {
 
     @Field()
     @Prop()
-    dateBorrow: string
+    dateBorrow: number
 
     @Field()
     @Prop()
-    dateReturn: string
+    dateReturn: number
 
     @Field()
     @Prop({ default: 'processing' })
     status: string
+
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    createdAt: number
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    updatedAt: number
 }
 
-export const orderSchema = SchemaFactory.createForClass(Order)
+const orderSchema = SchemaFactory.createForClass(Order)
+
+
+
+export { orderSchema }

@@ -26,4 +26,8 @@ export class CategoryService {
         // console.log('mappedUsers', mappedUsers);
         return mappedCategories;
     }
+
+    async findCategoryByIDs(ids: readonly string[]) {
+        return await this.categoryModel.find({ _id: { $in: ids } })
+    }
 }

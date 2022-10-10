@@ -56,6 +56,22 @@ export class FileUploadService {
             type
         })
     }
+
+    async findImgsByIds(ids: readonly string[]) {
+
+        const fileUploads = await this.fileUploadModel.find({ _id: { $in: ids } })
+        const mappedfileUploads = ids.map(
+            (id) =>
+                fileUploads.find((fileUpload) => fileUpload.id === id) ||
+                new Error(`Could not load fileUpload ${id}`),
+        );
+        // console.log('mappedUsers', mappedUsers);
+        return mappedfileUploads
+    }
+
+    async findImgsByIDs(ids: readonly string[]) {
+        return await this.fileUploadModel.find({ _id: { $in: ids } })
+    }
 }
 
 

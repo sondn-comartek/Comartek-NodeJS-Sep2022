@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UserLoginInput, UserSignupInput } from "./input/user.input";
@@ -10,6 +10,10 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<User>
     ) { }
     async signup(userSignupInput: UserSignupInput) {
+        const check = await this.userModel.findOne({ gmail: userSignupInput.gmail })
+        if (check) {
+            throw new BadRequestException('This gmail have already used')
+        }
         return await this.userModel.create(userSignupInput)
     }
 

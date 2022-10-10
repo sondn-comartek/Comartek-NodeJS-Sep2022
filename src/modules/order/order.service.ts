@@ -4,6 +4,7 @@ import { Model, ObjectId, Types } from "mongoose";
 import { BookService } from "src/modules/book/book.service";
 import { UserService } from "src/modules/user/user.service";
 import { Order } from "./model/order.model";
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class OrderService {
@@ -16,26 +17,21 @@ export class OrderService {
     async createOrder(userId: string, bookId: string, dateBorrow: string, dateReturn: string) {
         let UserId = new Types.ObjectId(userId)
         let BookId = new Types.ObjectId(bookId)
+        const [currentBook, currentUser] = await Promise.all([this.bookService.findBookById(bookId), this.userService.findUserById(userId)])
+        if (currentBook.quanities === currentBook.borrowed) {
+            throw new BadRequestException('This book is not enough')
+        }
+        const dateBorrowTimeStamp = dayjs(dateBorrow).unix()
+        const dateReturnTimeStamp = dayjs(dateReturn).unix()
+
         const newOrder = await this.orderModel.create({
             User: UserId,
             Book: BookId,
-            dateBorrow,
-            dateReturn
+            dateBorrow: dateBorrowTimeStamp,
+            dateReturn: dateReturnTimeStamp
         })
-        return newOrder.populate([
-            {
 
-                path: 'User',
-            },
-            {
-                path: 'Book',
-
-                populate: {
-                    path: 'Category',
-                },
-            },
-
-        ])
+        return newOrder
 
 
     }
@@ -45,20 +41,7 @@ export class OrderService {
         if (status === 'denied') {
             currentOrder.status = 'denied'
             await currentOrder.save()
-            return currentOrder.populate([
-                {
-
-                    path: 'User',
-                },
-                {
-                    path: 'Book',
-
-                    populate: {
-                        path: 'Category',
-                    },
-                },
-
-            ])
+            return currentOrder
         }
         if (status === 'accepted') {
             const bookId = currentOrder.Book.toString()
@@ -66,11 +49,7 @@ export class OrderService {
 
             const [currentBook, currentUser] = await Promise.all([this.bookService.findBookById(bookId), this.userService.findUserById(userId)])
 
-            if (currentBook.quanities === currentBook.borrowed) {
-                currentOrder.status === 'denied'
-                await currentOrder.save()
-                throw new BadRequestException('This book is not enough')
-            }
+
             currentBook.borrowed++;
             const bookObjId = new Types.ObjectId(bookId)
             currentUser.ListBooksBorrow.push(bookObjId)
@@ -78,21 +57,24 @@ export class OrderService {
 
 
             await Promise.all([currentBook.save(), currentUser.save(), currentOrder.save()])
+            return currentOrder
+        }
 
-            return currentOrder.populate([
-                {
+        if (status === 'done') {
+            const bookId = currentOrder.Book.toString()
+            const userId = currentOrder.User.toString()
 
-                    path: 'User',
-                },
-                {
-                    path: 'Book',
+            const [currentBook, currentUser] = await Promise.all([this.bookService.findBookById(bookId), this.userService.findUserById(userId)])
 
-                    populate: {
-                        path: 'Category',
-                    },
-                },
 
-            ])
+            currentBook.borrowed--;
+            const bookObjId = new Types.ObjectId(bookId)
+            currentUser.update({ $pull: { 'ListBooksBorrow': bookObjId } })
+            currentOrder.status = 'done'
+
+
+            await Promise.all([currentBook.save(), currentUser.save(), currentOrder.save()])
+            return currentOrder
         }
     }
     async findOrderByIds(ids: readonly string[]) {

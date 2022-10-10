@@ -26,6 +26,16 @@ export class User {
         ref: Book.name
     })
     ListBooksBorrow: [Types.ObjectId]
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    createdAt: number
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    updatedAt: number
 
 }
 const UserSchema = SchemaFactory.createForClass(User)

@@ -43,38 +43,13 @@ export class UserResolver {
         return true
     }
 
-    @Mutation(() => Order)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.User)
-    async sendRequestBorrowBook(@Args('CreateOrderRequestInput') createOrderRequestInput: CreateOrderRequestInput, @CurrentUser() user: any) {
-        const { bookId, dateBorrow, dateReturn } = createOrderRequestInput
-        const { id, role } = user
-        return await this.orderService.createOrder(id, bookId, dateBorrow, dateReturn)
-    }
-
-    @Mutation(() => Order)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
-    async updateRequest(@Args('UpdateOrderRequestInput') { orderId, status }: UpdateOrderRequestInput) {
-        return await this.orderService.updateOrder(orderId, status)
-    }
-
     @Query(() => User)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
     async getUser(@Args('userId') userId: string) {
         const user = await this.userService.findUserById(userId)
 
-        return await user.populate([
-            {
-                path: 'ListBooksBorrow',
-
-                populate: {
-                    path: 'Category',
-                },
-            },
-
-        ])
+        return await user
     }
 
     @Query(() => [User])
@@ -83,6 +58,7 @@ export class UserResolver {
     async getUsers() {
         const users = await this.userService.findUsers()
         return users
+
     }
 
     @ResolveField('listBooksBorrow', () => [Book])
@@ -90,19 +66,12 @@ export class UserResolver {
         @Parent() user: User,
         @Context() { loaders }: { loaders: IDataloaders },
     ) {
-
         const listBooksId = user.ListBooksBorrow.map((bookId) => bookId.toString())
-        console.log(listBooksId)
+
         return await loaders.bookLoader.loadMany(listBooksId);
     }
 
-    @ResolveField(() => Category, { name: 'category' })
-    async getBookBorrowed(
-        @Parent() book: Book,
-        @Context() { loaders }: { loaders: IDataloaders },
-    ) {
 
-        const categoryId = book.Category.toString()
-        return await loaders.categoryLoader.load(categoryId);
-    }
+
+
 }

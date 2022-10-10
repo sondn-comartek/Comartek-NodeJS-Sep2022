@@ -17,5 +17,15 @@ export class Category {
         ref: FileUploadModel.name
     })
     imgId: Types.ObjectId | string
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    createdAt: number
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    updatedAt: number
 }
 export const categorySchema = SchemaFactory.createForClass(Category)

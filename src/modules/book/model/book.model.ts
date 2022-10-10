@@ -42,5 +42,24 @@ export class Book {
     @Field()
     @Prop()
     pages: number
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    createdAt: number
+    @Field()
+    @Prop({
+        default: Date.now
+    })
+    updatedAt: number
 }
+
+@ObjectType()
+export class ExcelFile {
+    @Field()
+    path: string
+    @Field()
+    userId: string
+}
+
 export const bookSchema = SchemaFactory.createForClass(Book)
