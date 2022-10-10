@@ -6,7 +6,6 @@ import { Category } from 'src/module/categories/entities/category.entity';
 export type BookDocument = Book & Document;
 
 @Schema({
-  timestamps: true,
   collection: 'books'
 })
 @ObjectType()
@@ -55,6 +54,18 @@ export class Book {
     required: true
   })
   availableBook: number;
+
+  @Field(() => Int, { name: 'createdAt', description: "The create time of book", nullable: false})
+  @Prop({
+    required: true
+  })
+  createdAt: number
+  
+  @Field(() => Int, { name: 'updatedAt', description: "The nearest update time of book", nullable: false})
+  @Prop({
+    required: true
+  })
+  updatedAt: number
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book)

@@ -27,7 +27,7 @@ interface Migrations {
 export class Migration {
   constructor(
     @InjectModel('Migration')
-    readonly migrationModel: Model<MigrationInterface>,
+    readonly migrationModel: Model<Migration>,
     @InjectModel('User')
     readonly userModel: Model<User>,
     @InjectModel(Book.name)
@@ -50,7 +50,6 @@ export class Migration {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // const modules = require('require-dir-all')('./');
     const modules: Migrations = requireDir('./steps');
-    console.log("modules: ", modules)
     const keys = [];
     for (const key in modules) {
       if (modules.hasOwnProperty(key)) {

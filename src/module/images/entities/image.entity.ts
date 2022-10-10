@@ -3,9 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ImageDocument = Image & Document;
 
-@Schema({
-  timestamps: true
-})
+@Schema()
 @ObjectType()
 export class Image {
   @Field(() => String)
@@ -25,6 +23,18 @@ export class Image {
     required: true
   })
   thumbnailFilePath: string
+
+  @Field(() => Number)
+  @Prop({
+    required: true
+  })
+  createdAt: number
+
+  @Field(() => Number)
+  @Prop({
+    required: true
+  })
+  updatedAt: number
 }
 
 export const ImageSchema = SchemaFactory.createForClass(Image);

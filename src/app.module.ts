@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommandModule } from 'nestjs-command';
-import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,21 +18,14 @@ import { RolesGuard } from './module/auth/guards/roles.guard';
 import { AuthModule } from './module/auth/auth.module';
 import { PubsubModule } from './module/pubsub/pubsub.module';
 import { NotificationModule } from './module/notification/notification.module';
-import { UsersService } from './module/users/users.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './module/auth/constants/jwt-constanst';
 import { MigrationModule } from './commands/migrations/migrations.module';
-
-const jwtService = new JwtService({
-  secret: jwtConstants.secret,
-  signOptions: { expiresIn: '1h' }
-});
+import { ExportModule } from './module/export/export.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb+srv://phuctran125:WdVjwtzAaH5d015S@cluster0.rzaddwg.mongodb.net/bookStore?retryWrites=true&w=majority`
+      `mongodb+srv://phuctran125:fRXzO1Or7evFLsXd@cluster0.rzaddwg.mongodb.net/bookStore?retryWrites=true&w=majority`
     ),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -65,6 +58,7 @@ const jwtService = new JwtService({
     AuthModule,
     PubsubModule,
     NotificationModule,
+    ExportModule,
     CommandModule,
     MigrationModule
   ],

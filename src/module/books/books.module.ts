@@ -8,6 +8,7 @@ import { UsersModule } from '../users/users.module';
 import { BookQueryResolver } from './resolvers/queries.resolver';
 import { BookMutationResolver } from './resolvers/mutations.resolver';
 import { CategoriesModule } from '../categories/categories.module';
+import { ExportModule } from '../export/export.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { CategoriesModule } from '../categories/categories.module';
     }),
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
-    forwardRef(() => CategoriesModule)
+    forwardRef(() => CategoriesModule),
+    forwardRef(() => ExportModule)
   ],
   providers: [BookQueryResolver, BookMutationResolver, BooksService],
   exports: [BookQueryResolver, BookMutationResolver, BooksService]

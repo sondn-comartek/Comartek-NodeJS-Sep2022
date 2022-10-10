@@ -5,6 +5,7 @@ import { ImageSchema } from './entities/image.entity';
 import { BullModule } from '@nestjs/bull';
 import { ImageQueryResolver } from './resolvers/queries.resolver';
 import { ImageMutationResolver } from './resolvers/mutations.resolver';
+import { ProcessUploadImageProcessor } from './images.processor';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { ImageMutationResolver } from './resolvers/mutations.resolver';
       name: 'uploadImage',
     }),
   ],
-  providers: [ImageQueryResolver, ImageMutationResolver, ImagesService],
+  providers: [ImageQueryResolver, ImageMutationResolver, ImagesService, ProcessUploadImageProcessor],
   exports: [ImageQueryResolver, ImageMutationResolver, ImagesService]
 })
 export class ImagesModule {}

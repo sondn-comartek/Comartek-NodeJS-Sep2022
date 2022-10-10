@@ -4,7 +4,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export type UserDocument = User & Document;
 
 @Schema({
-  timestamps: true,
   collection: 'users'
 })
 @ObjectType()
@@ -59,6 +58,19 @@ export class User {
     required: true
   })
   city: string;
+
+  @Field(() => Number)
+  @Prop({
+    required: true
+  })
+  createdAt: number;
+  
+  @Field(() => Number)
+  @Prop({
+    required: true
+  })
+  updatedAt: number;
+  
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

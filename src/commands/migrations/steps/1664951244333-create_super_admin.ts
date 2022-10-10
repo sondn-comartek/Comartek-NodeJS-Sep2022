@@ -1,6 +1,7 @@
 import { Migration } from "../migrations.command";
 import { hashPassword } from "src/utils/hash-password";
 import { Role } from "src/module/auth/enums/role.enum";
+import * as dayjs from 'dayjs';
 
 export const name = 'create_super_admin';
 export const up = async (migration: Migration) => {
@@ -13,6 +14,8 @@ export const up = async (migration: Migration) => {
     phone: '0000-000-000',
     email: 'admin@comartek.com',
     password: await hashPassword('admin123'),
-    city: 'Ha Noi'
+    city: 'Ha Noi',
+    createdAt: dayjs().unix(),
+    updatedAt: dayjs().unix()
   });
 };

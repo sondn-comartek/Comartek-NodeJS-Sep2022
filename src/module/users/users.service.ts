@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassword, isMatchPassword } from 'src/utils/hash-password';
 import { Role } from '../auth/enums/role.enum';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class UsersService {
@@ -28,7 +29,9 @@ export class UsersService {
 
     const newUser = {
       userRole: Role.USER,
-      ...createUserInput
+      ...createUserInput,
+      createdAt: dayjs().unix(),
+      updatedAt: dayjs().unix()
     };
 
     const createdUser = await this.user.create(newUser);

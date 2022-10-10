@@ -12,18 +12,15 @@ import { MigrationSchema } from './migrations.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Migration', schema: MigrationSchema }]),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-    MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }]),
-    MongooseModule.forFeature([{name: 'Category', schema: CategorySchema}]),
-    MongooseModule.forFeature([{name: 'Image', schema: ImageSchema}]),
-    MongooseModule.forFeature([{name: 'Notification', schema: NotificationSchema}]),
     MongooseModule.forFeature([
-      {name: 'RentBook', schema: RentBookSchema}
+      { name: 'Migration', schema: MigrationSchema },
+      { name: 'User', schema: UserSchema },
+      { name: 'Book', schema: BookSchema },
+      { name: 'Category', schema: CategorySchema },
+      { name: 'Image', schema: ImageSchema },
+      { name: 'Notification', schema: NotificationSchema },
+      { name: 'RentBook', schema: RentBookSchema }
     ]),
-    
-    // forwardRef(() => ReportsModule),
-    // forwardRef(() => RestaurantModule),
     BullModule.registerQueue({
       name: 'migrateData',
     }),

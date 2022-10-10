@@ -18,6 +18,8 @@ type User {
   email: String!
   password: String!
   city: String!
+  createdAt: Float!
+  updatedAt: Float!
   borrowed: [RentBook!]!
   totalBorrowed: Float!
 }
@@ -41,6 +43,12 @@ type Book {
 
   """The number of available book in the book's store"""
   availableBook: Int!
+
+  """The create time of book"""
+  createdAt: Int!
+
+  """The nearest update time of book"""
+  updatedAt: Int!
 }
 
 type BookList {
@@ -104,6 +112,8 @@ type Image {
   imageId: String!
   originalFilePath: String!
   thumbnailFilePath: String!
+  createdAt: Float!
+  updatedAt: Float!
 }
 
 type Query {
@@ -117,6 +127,7 @@ type Query {
   category(id: Int!): Category!
   images: [Image!]!
   image(id: Int!): Image!
+  exportAllBook(offset: Float!, limit: Float!): String!
 }
 
 input SignInInput {
@@ -290,4 +301,5 @@ type Subscription {
   approvedRentMsg: Notification!
   rejectedRentMsg: Notification!
   bookAddedMsg: Notification!
+  csvExportSuccessfulMsg: Notification!
 }

@@ -74,4 +74,13 @@ export class NotificationSubscriptionsResolver {
   async getBookInfo(@Parent() notification: Notification) {
     return await this.booksService.findById(notification.data);
   }
+
+  @Subscription(() => Notification, {
+    name: 'csvExportSuccessfulMsg',
+    resolve: (payload: any) => payload
+  })
+  @UseGuards(JwtAuthGuard)
+  async getCsvExportSuccessfulMsg() {
+    return this.pubSubService.subscribeEvent(NotificationType.CSV_EXPORT_SUCCESSFUL)
+  }
 }

@@ -9,6 +9,7 @@ import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { Image } from './entities/image.entity';
 import { createWriteStream } from 'fs';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class ImagesService {
@@ -44,7 +45,9 @@ export class ImagesService {
     const newImage = {
       imageId: uuidv4(),
       originalFilePath: originalImageFilePath,
-      thumbnailFilePath: thumbnailImageFilePath
+      thumbnailFilePath: thumbnailImageFilePath,
+      createdAt: dayjs().unix(),
+      updatedAt: dayjs().unix()
     }
 
     const createdImage = await this.image.create(newImage);
