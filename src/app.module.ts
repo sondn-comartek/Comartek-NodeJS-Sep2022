@@ -24,6 +24,7 @@ import { ExtractDataModule } from './modules/extract-data/extract-data.module';
 import { CommandModule } from 'nestjs-command';
 import { MigrationsModule } from './commands/migrations/migrations.module';
 import { ExcelModule } from './modules/excel/excel.module';
+import { SocketModule } from './modules/socket/socket.module';
 
 const jwtService = new JwtService({
   secret: 'Your secret string',
@@ -31,7 +32,7 @@ const jwtService = new JwtService({
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017'),
+    MongooseModule.forRoot('mongodb://localhost:27017/test'),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       debug: true,
@@ -105,6 +106,7 @@ const jwtService = new JwtService({
     CronModule,
     ExtractDataModule,
     ExcelModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

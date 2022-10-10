@@ -50,6 +50,8 @@ type Book {
   pageTotal: Int!
   quantity: Int!
   available: Int!
+  createdAt: String!
+  updatedAt: String!
   thumbnail: Media!
   categoryInfo: Category!
 }

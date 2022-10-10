@@ -4,11 +4,12 @@ import { Field, ObjectType, ID, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { CodeHelper } from '../helpers/code.helper';
+import * as dayjs from 'dayjs';
 
 @ObjectType()
 @Schema({
   collection: 'books',
-  timestamps: true,
+  timestamps: false,
 })
 export class Book {
   @Field(() => ID)
@@ -76,11 +77,19 @@ export class Book {
   })
   readonly available: number;
 
-  // @Field(() => String)
-  // readonly createdAt: Date;
+  @Field(() => String)
+  @Prop({
+    type: String,
+    default: dayjs(new Date()).unix()
+  })
+  readonly createdAt: Date;
 
-  // @Field(() => String)
-  // readonly updatedAt: Date;
+  @Field(() => String)
+  @Prop({
+    type: String,
+    default: dayjs(new Date()).unix()
+  })
+  readonly updatedAt: Date;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

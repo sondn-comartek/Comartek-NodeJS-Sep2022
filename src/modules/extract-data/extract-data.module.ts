@@ -11,6 +11,7 @@ import { CategoryModule } from '../category/category.module';
 import { ExtractDataProcessor } from './processors/extract-data.processor';
 import { ExtractDataMutationResolver } from './resolvers/extract-data-mutation.resolver';
 import { ExtractDataSubscriptionResolver } from './resolvers/extract-data-subscription.resolver';
+import { ExtractDataController } from './controllers/extract-data.controller';
 
 @Module({
   imports: [
@@ -31,5 +32,6 @@ import { ExtractDataSubscriptionResolver } from './resolvers/extract-data-subscr
     ExtractDataMutationResolver,
     ExtractDataSubscriptionResolver,
   ],
+  controllers: [ExtractDataController],
 })
 export class ExtractDataModule {}

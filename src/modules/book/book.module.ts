@@ -11,6 +11,7 @@ import { BookMutationResolver } from './resolvers/book-mutation.resolver';
 import { PubSubModule } from '../pubsub/pubsub.module';
 import { BookSubscriptionResolver } from './resolvers/book-subscription.resolver';
 import { User } from '../user/schemas/user.schema';
+import { BookController } from './controllers/book.controller';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { User } from '../user/schemas/user.schema';
   ],
   providers: [
     BookService,
+    BookController,
     BookMutationResolver,
     BookQueryResolver,
     BookSubscriptionResolver,

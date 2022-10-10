@@ -5,7 +5,7 @@ import { Workbook } from 'exceljs';
 export class ExcelService {
   constructor() {}
 
-  async createExcelFile(data: any[], media): Promise<Workbook> {
+  async createExcelFile(data: any[], media): Promise<any> {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('EXTRACTED DATA');
 
@@ -24,7 +24,5 @@ export class ExcelService {
     await workbook.xlsx.writeFile(
       `store/excel/${media._id.toString()}.${media.mimetype}`,
     );
-
-    return;
   }
 }
