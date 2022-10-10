@@ -1,5 +1,5 @@
 
-export * from './initBook.step' ;
-export * from './initCategory.step' ;
-export * from './initUser.step'
+export * from './init-book.step' ;
+export * from './init-category.step' ;
+export * from './init-user.step'
 export * from './convert-timestamp.step'

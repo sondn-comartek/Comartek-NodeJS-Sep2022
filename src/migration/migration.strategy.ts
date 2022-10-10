@@ -1,5 +1,5 @@
 import { EnityRepository } from 'src/abstract'
-import { MigrationSteps } from './migration.interface'
+import { MigrationSteps } from './migration.type'
 import { convertToTimestamp, initBook, initCategory, initUser } from './steps'
 
 export class MigrationStrategy {
@@ -9,6 +9,7 @@ export class MigrationStrategy {
       initCategory: initCategory,
       convertToTimestamp: convertToTimestamp,
    }
+
    constructor(private repositories: Record<string, EnityRepository<any>>) {}
 
    private async run(migrateName?: string | any): Promise<Promise<any>[]> {

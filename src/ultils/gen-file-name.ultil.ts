@@ -8,5 +8,5 @@ export const genFileId = (str: string) => {
          .normalize('NFD')
          .replace(/[\u0300-\u036f]/g, '')
          .replace(/đ/g, 'd')
-         .replace(/Đ/g, 'D')) as string
+         .replace(/Đ/g, 'D')) as String
 }

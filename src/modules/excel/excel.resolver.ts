@@ -11,6 +11,7 @@ import {
 import { PubSub } from 'graphql-subscriptions'
 import { JwtGuard } from '../auth/guards'
 import { Mine } from '../user/decorators'
+import { User } from '../user/models'
 import { ExcelService } from './excel.service'
 import { Excel } from './models'
 import { Entity } from './types'
@@ -22,18 +23,15 @@ export class ExcelResolver {
       private readonly pubSub: PubSub,
    ) {}
 
-   @Query(() => Excel)
+   @Query(() => Excel )
    @UseGuards(JwtGuard)
-   exportExcel(@Args('entity', { type: () => Entity }) entity: Entity) {
-      return this.excelService.export(entity)
+   exportExcel(@Args('entity', { type: () => Entity }) entity: Entity , @Mine() mine: User) {
+      return this.excelService.export(entity,mine.userid)
    }
 
-   @Subscription(() => Boolean, {
+   @Subscription(() => Excel , {
       filter: (payload, variables) => {
          return payload.excelId === variables.excelId
-      },
-      resolve: ({ success }) => {
-         return success
       },
    })
    @UseGuards(JwtGuard)

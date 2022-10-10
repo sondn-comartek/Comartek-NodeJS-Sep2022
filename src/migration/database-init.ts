@@ -17,6 +17,13 @@ export const databaseInit = {
          role: 'superadmin',
          email: 'dung2@gmail.com',
       },
+      {
+         userid: v4(),
+         username: 'dung3',
+         hash: '$argon2id$v=19$m=4096,t=3,p=1$t4RU6yVWx+p5wZfAZxP5tQ$i+3nOgpPp/EMtii3jPGZYmx5fn8Rr/rPvOfYyVUk7UY',
+         role: 'member',
+         email: 'dung3@gmail.com',
+      },
    ],
    bookData: [
       {

@@ -14,28 +14,40 @@ import { BullModule } from '@nestjs/bull'
 import { ExcelConsumer } from './excel.consumer'
 import { ConfigModule } from '@nestjs/config'
 import { PubSub } from 'graphql-subscriptions'
+import { ExcelController } from './excel.controller'
+import { MongooseModule } from '@nestjs/mongoose'
+import { Excel, ExcelSchema } from './models'
+import { ExcelRepository } from './excel.repository'
 
 @Module({
    imports: [
       BullModule.registerQueue({
          name: 'excel',
       }),
+      MongooseModule.forFeature([{
+         name : Excel.name ,
+         schema : ExcelSchema
+      }]) ,
       UserModule,
       BookModule,
       CategoryModule,
       ImageModule,
       OrderModule,
-      ConfigModule ,
+      ConfigModule,
+   ],
+   controllers: [
+      ExcelController
    ],
    providers: [
-      ExcelConsumer ,
+      ExcelConsumer,
       ExcelResolver,
       ExcelService,
       BookRepository,
       UserRepository,
       OrderRepository,
       ImageRepository,
-      PubSub
+      PubSub,
+      ExcelRepository
    ],
 })
 export class ExcelModule {}
