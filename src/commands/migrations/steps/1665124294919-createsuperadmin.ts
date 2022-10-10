@@ -4,7 +4,7 @@ import { Migration } from '../migrations.command';
 
 export const name = 'createSuperAdmin';
 export const up = async (migration: Migration) => {
-  console.log('migrate createSuperAdmin: 1622773811519-createsuperadmin');
+  console.log('migrate createSuperAdmin: 1665124294919-createsuperadmin');
   migration.userModel.create({
     username: 'superadmin',
     firstName: 'Super',

@@ -45,8 +45,8 @@ export class UploadService {
     }
   }
 
-  findAll() {
-    return `This action returns all upload`;
+  async findAll() {
+    return await this.uploadModel.find();
   }
 
   async findOne(id: string) {

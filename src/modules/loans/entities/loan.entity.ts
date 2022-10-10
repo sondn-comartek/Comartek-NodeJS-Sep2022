@@ -28,8 +28,8 @@ export class Loan {
   bookItemId: string;
 
   @Field(() => Date)
-  @Prop({ required: true, default: new Date() })
-  dateBorrow: Date;
+  @Prop({ required: true, default: dayjs(new Date()).unix() })
+  dateBorrow: string;
 
   @Field(() => String)
   @Prop({ required: true, type: String, default: LoanStatus.Borrowing })

@@ -3,13 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Command, Positional } from 'nestjs-command';
 import * as requireDir from 'require-dir';
-import { BooksService } from 'src/modules/books/services/books.service';
 import { BookDocument } from 'src/modules/books/entities/book.entity';
-import { CategoriesService } from 'src/modules/categories/services/categories.service';
 import { CategoryDocument } from 'src/modules/categories/entities/category.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 import Commands from '../base';
 import { Migration as MigrationInterface } from './migrations.interface';
+import * as dayjs from 'dayjs';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 export interface MigrationStep {
@@ -74,7 +73,7 @@ export class Migration {
       if (key !== '0-before-all') {
         await this.migrationModel.create({
           key,
-          createdAt: new Date(),
+          createdAt: dayjs(new Date()).unix(),
         });
       }
       console.log(`MIGRATE ${modules[key].name}: ${key} COMPLETED`);
