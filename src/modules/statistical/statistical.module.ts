@@ -9,6 +9,7 @@ import { HelperModule } from 'src/helper/helper.module';
 import { ExcelConsumer } from './consumers/excel.consumer';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Media, MediaSchema } from '../media/entities/media.entity';
+import { StatisticalController } from './statistical.controller';
 
 @Module({
   imports: [
@@ -22,5 +23,6 @@ import { Media, MediaSchema } from '../media/entities/media.entity';
     }),
   ],
   providers: [StatisticalResolver, StatisticalService, ExcelConsumer],
+  controllers: [StatisticalController],
 })
 export class StatisticalModule {}

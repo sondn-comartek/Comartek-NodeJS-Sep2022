@@ -1,6 +1,6 @@
 import { ExportFields } from './dto/export-fields.input';
 import { CategoryService } from './../category/category.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { BookService } from '../book/book.service';
 import { v4 as uuidV4 } from 'uuid';
 import * as _ from 'lodash';
@@ -10,6 +10,8 @@ import { Queue } from 'bull';
 import { InjectModel } from '@nestjs/mongoose';
 import { Media, MediaDocument } from '../media/entities/media.entity';
 import { Model } from 'mongoose';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 @Injectable()
 export class StatisticalService {
   constructor(
@@ -66,5 +68,9 @@ export class StatisticalService {
       user: user,
     });
     return createdFile;
+  }
+  streamRender(filePath) {
+    const file = createReadStream(join(process.cwd(), filePath));
+    return new StreamableFile(file);
   }
 }

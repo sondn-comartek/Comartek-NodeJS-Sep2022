@@ -39,7 +39,6 @@ export class StatisticalResolver {
       console.log([recipientsConverter, userID]);
       const isMatch = _.includes(recipientsConverter, userID);
       console.log(isMatch);
-
       return isMatch;
     },
   })
