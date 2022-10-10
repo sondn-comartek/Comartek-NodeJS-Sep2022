@@ -12,6 +12,7 @@ import { LoansModule } from '../loans/loans.module';
 import { UploadModule } from '../upload/upload.module';
 import { BooksMutation } from './resolvers/mutations.resolver';
 import { BooksQuery } from './resolvers/queries.resolver';
+import { BooksController } from './controllers/books.controller';
 
 @Module({
   providers: [BooksQuery, BooksMutation, BooksService, BookConsumer],
@@ -27,5 +28,6 @@ import { BooksQuery } from './resolvers/queries.resolver';
     LoansModule,
   ],
   exports: [BooksService],
+  controllers: [BooksController],
 })
 export class BooksModule {}
