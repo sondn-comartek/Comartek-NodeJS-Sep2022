@@ -1,6 +1,6 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Book, BookSchema, BookDocument } from '../schema/book.schema';
+import { BookSchema } from '../schema/book.schema';
 import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { AdminService } from './admin.service';

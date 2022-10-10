@@ -2,8 +2,8 @@ import { Args, Mutation, Resolver, Subscription} from '@nestjs/graphql';
 import { UserService } from '../user.service';
 import { UserEntity } from '../model/user.entity';
 import { JWTAuthGuard } from '../../auth/auth.guard';
-import { Roles } from 'src/decorator/role.decorator';
-import { Role } from 'src/enum/role.enum';
+import { Roles } from '../../../decorator/role.decorator';
+import { Role } from '../../../enum/role.enum';
 import { UseGuards, Inject } from '@nestjs/common'
 import { PUB_SUB } from '../../pubSub/pubSub.module';
 import { RedisPubSub } from 'graphql-redis-subscriptions';

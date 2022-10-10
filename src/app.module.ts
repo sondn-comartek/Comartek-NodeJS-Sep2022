@@ -5,7 +5,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { MongooseModule } from '@nestjs/mongoose';
+
+
 import { AdminModule } from './modules/admin/admin.module';
 import { PublishConsumModule } from './modules/publishconsum/publishconsum.module';
 import { UserModule } from './modules/user/user.module';
@@ -14,8 +15,7 @@ import { BookModule } from './modules/book/book.module';
 import { PubSubModule } from './modules/pubSub/pubSub.module';
 import { OrderModule } from './modules/order/order.module';
 import { ConfigModule } from '@nestjs/config';
-import { BullModule } from '@nestjs/bull';
-import { HelperModule } from './modules/helper/helper.module';
+import { FileModule } from './modules/file/file.module';
 
 
 @Module({
@@ -58,6 +58,7 @@ import { HelperModule } from './modules/helper/helper.module';
   UserModule,
   BookModule,
   OrderModule,
+  FileModule,
   ],
   controllers: [AppController],
   exports: [AppService]

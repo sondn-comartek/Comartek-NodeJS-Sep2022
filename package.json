@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:migrationdb": "ts-node ./src/migration/migration-database.ts"
+    "migrate:migratedb": "ts-node ./src/migration/migration-database.ts"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.1.0",
@@ -29,6 +29,7 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.1.2",
     "@nestjs/jwt": "^9.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^9.2.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",

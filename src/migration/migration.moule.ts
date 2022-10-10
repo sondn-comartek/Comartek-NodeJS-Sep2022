@@ -13,6 +13,8 @@ import { MigrationSchema } from './model/migration.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { BullModule } from '@nestjs/bull';
 import config from './config';
+import { PublishConsumModule } from '../modules/publishconsum/publishconsum.module';
+import { HelperModule } from '../modules/helper/helper.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,7 +25,8 @@ import config from './config';
       
       
     }),
-    
+    HelperModule,  
+    PublishConsumModule.register({env: "migration"}),
     GlobalModule.register({env: process.env.TYPE}),
     AdminModule,
     BookModule,
