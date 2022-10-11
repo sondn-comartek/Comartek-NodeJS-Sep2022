@@ -1,0 +1,46 @@
+[{
+  "username": "admingiangdv1",
+  "firstname": "asdasdasd",
+  "lastname": "adasdasd",
+  "email": "giang@gmail.com",
+  "password": "$2b$10$nZLIDRK07RLX0P8U9zG0.OEhOp6snHYkHbR.XXAMAXWjOMkCsQNGW",
+  "phone": "324234234234",
+  "userstatus": "inactive",
+  "role": "admin"
+},{
+  "username": "admingiangdv112",
+  "firstname": "asdasdasd",
+  "lastname": "adasdasd",
+  "email": "giang@gmail.com",
+  "password": "$2b$10$0j1hkqUc1SUIQgdG3qckv.vGgpsdiMyoJM5hUmgwaNpubWV2ctqJO",
+  "phone": "324234234234",
+  "userstatus": "inactive",
+  "role": "customer"
+},{
+  "username": "admingiangdv1112",
+  "firstname": "asdasdasd",
+  "lastname": "adasdasd",
+  "email": "giang@gmail.com",
+  "password": "$2b$10$M55iDVFZPzi4TTjrbo1Vcu./2gEHXAXoUdX.GOc2OuqdQY1vMU406",
+  "phone": "324234234234",
+  "userstatus": "inactive",
+  "role": "customer"
+},{
+  "username": "admin1giangdv112",
+  "firstname": "asdasdasd",
+  "lastname": "adasdasd",
+  "email": "giang@gmail.com",
+  "password": "$2b$10$dPz9bE8qh82UjqM9IaFhLOcHvU2ooU6arlujbARc7YpMmL4vg.PYi",
+  "phone": "324234234234",
+  "userstatus": "inactive",
+  "role": "customer"
+},{
+  "username": "admin11giav112",
+  "firstname": "asdasdasd",
+  "lastname": "adasdasd",
+  "email": "giang@gmail.com",
+  "password": "$2b$10$YAnCwp4Dn.atklgf11JuIeetett18HyyqYYEFMXmin3QoZFVMno2y",
+  "phone": "324234234234",
+  "userstatus": "inactive",
+  "role": "customer"
+}]

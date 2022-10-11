@@ -1,0 +1,123 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserInfo {
+  id: String!
+  username: String!
+  firstname: String!
+  lastname: String!
+  phone: String!
+}
+
+type Auth {
+  """status"""
+  status: Int
+
+  """message"""
+  message: String
+
+  """jwt"""
+  jwt: String
+  name: String
+  id: String!
+  user: UserInfo!
+}
+
+type FileMessageOutput {
+  fileId: String!
+  message: String!
+}
+
+type RequireCSVOutput {
+  status: Int!
+  message: String!
+}
+
+type AdminCreateBookOutPut {
+  bookIds: [String!]!
+}
+
+type BookOutPut {
+  id: String!
+  name: String!
+}
+
+type UserOutPut {
+  username: String!
+  firstname: String!
+  lastname: String!
+  phone: String!
+  borrowBook: [BookOutPut!]!
+  numberBorrow: Int!
+}
+
+type BorrowBookOutput {
+  status: Int
+  message: String
+}
+
+type BorrowOrderBook {
+  orderid: String
+  userid: String
+  bookid: String
+  status: String
+}
+
+type Query {
+  getUser(userids: GetUserInput!): [UserOutPut!]!
+}
+
+input GetUserInput {
+  ids: [String!]!
+}
+
+type Mutation {
+  borrowBook(borrowbook: BorrowBookInput!): BorrowBookOutput!
+  processOrder(borrowbook: OrderAction!): BorrowBookOutput!
+  signUp(signUpData: SignUpInput!): Auth!
+  signIn(loginData: SignInInput!): Auth!
+  requireCSVUsers: RequireCSVOutput!
+  createBook(createbook: AdminCreateBookInput!): AdminCreateBookOutPut!
+}
+
+input BorrowBookInput {
+  bookid: String!
+}
+
+input OrderAction {
+  orderid: String!
+  action: String!
+}
+
+input SignUpInput {
+  username: String!
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  phone: String!
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}
+
+input AdminCreateBookInput {
+  number: Int!
+  name: String!
+  categorys: [String!]!
+  episode: Float
+  images: [Upload!]
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type Subscription {
+  addBook: BorrowOrderBook!
+  orderStatus: BorrowOrderBook!
+  newBook: [String!]!
+  onFileProcessScuccess: FileMessageOutput!
+}
