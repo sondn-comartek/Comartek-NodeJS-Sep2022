@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "903e66b3-9ccc-4239-9e61-cbd5e21536df",
+		"name": "CURD Base",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"login test status response\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401])",
+							"    const token = pm.response.json()",
+							"    pm.environment.set(\"token_login\", token?.message?.token)",
+							"",
+							"})",
+							"pm.test(\"login test format response\", function(){",
+							"   const result = pm.response.json()",
+							"   pm.expect(result?.messsage?.status).is.a('string')",
+							"   pm.expect(result?.message?.token).is.a('string')",
+							"// })",
+							"pm.test(\"login test format response error 401\", function(){",
+							"   const result = pm.response.json()",
+							"   pm.expect(pm.response.code).to.eql(401)",
+							"   pm.expect(result?.message?.error).is.a('string')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"nguyenling@gmail.com\",\n    \"password\": \"rootrootroot\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl_api}}/login",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// pm.test(\"register test status response\", function(){",
+							"//     pm.expect(pm.response.code).to.be.oneOf([200,201, 401])",
+							"// })",
+							"// pm.test(\"register test fomat response when success\", function(){",
+							"//     const result = pm.response.json()",
+							"//     pm.expect(result?.message?.status).to.eql(\"Created\")",
+							"//     pm.expect(result?.message?.user).to.be.an('object')",
+							"// })",
+							"// pm.test(\"register test fomat response when error\", function(){",
+							"//     const result = pm.response.json()",
+							"//     pm.expect(result?.message?.status).to.eql(\"Conflict\")",
+							"// })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"nguyenling@gmail.com\",\n    \"username\": \"nguyenling\",\n    \"password\": \"rootrootroot\",\n    \"re_password\": \"rootrootroot\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl_api}}/add/user",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"add",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"forgot password test status\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 401])",
+							"})",
+							"pm.test(\"forgot password success\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"OK\")",
+							"})",
+							"pm.test(\"forgot password fail\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"OK\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"nguyenling@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl_api}}/forgot",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"forgot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"change password test status response\", function(){",
+							"    pm.expect(pm.response.code).to.oneOf([200, 201, 401])",
+							"})",
+							"pm.test(\"change password success\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"OK\")",
+							"    pm.expect(result?.message?.user).to.an('object')",
+							"})",
+							"pm.test(\"change password error\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"Conflict\")",
+							"    pm.expect(result?.message?.error).to.a('string')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_login}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"123678\",\n    \"re_password\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl_api}}/change",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"change"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change password when using forgot password module",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"change password test status response\", function(){",
+							"    pm.expect(pm.response.code).to.oneOf([200, 201, 401])",
+							"})",
+							"pm.test(\"change password success\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"OK\")",
+							"    pm.expect(result?.message?.user).to.an('object')",
+							"})",
+							"pm.test(\"change password error\", function(){",
+							"    const result = pm.response.json()",
+							"    pm.expect(result?.message?.status).to.eql(\"Conflict\")",
+							"    pm.expect(result?.message?.error).to.a('string')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl_api}}/temp/{{token_forgot}}",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"temp",
+						"{{token_forgot}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make room chat",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.test(\"login test status response\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401])",
+							"    const token = pm.response.json()",
+							"    pm.environment.set(\"token_booking_room\", token?.message?.token)",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response test\", function(){ ",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401])",
+							"    const token = pm.response.json()?.room?.token",
+							"    pm.environment.set('token_booking_room', token)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_login}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl_api}}/make/room",
+					"host": [
+						"{{baseUrl_api}}"
+					],
+					"path": [
+						"make",
+						"room"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
