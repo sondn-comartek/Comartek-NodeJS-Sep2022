@@ -1,0 +1,17 @@
+case :
+genToken : k test
+hashPassword :
++ pass kp string
+signup 
++ email t?n t?i
++ pass != passconfirm
++ gen ra token
+login
++ email k t?n t?i
++ m?t kh?u sai
++ gen ra token
+change password
++ invalid token
++ success
+forgotPassword
++ email k t?n t?i
